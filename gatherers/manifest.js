@@ -47,7 +47,7 @@ class Manifest extends Gather {
   static gather(options) {
     const driver = options.driver;
 
-    return driver.querySelector('link[rel="manifest"]')
+    return driver.querySelector('head link[rel="manifest"]')
       .then(node => node.getAttribute('href'))
       .then(manifestURL => Manifest._loadFromURL(options, manifestURL))
       .then(manifestContent => {

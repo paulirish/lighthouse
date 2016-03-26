@@ -32,7 +32,7 @@ describe('Mobile-friendly: viewport audit', () => {
 
   it('passes when a viewport is provided', () => {
     return assert.equal(Audit.audit({
-      viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1',
+      viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'
     }).value, true);
   });
 });
