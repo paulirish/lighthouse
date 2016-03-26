@@ -14,14 +14,15 @@
       "number": true,
       "string": true
     }],
-    "no-unused-expressions": [2, {
+    "no-unused-expressions": [0, {
       "allowShortCircuit": true,
       "allowTernary": false
     }],
     "no-unused-vars": [2, {
       "vars": "all",
       "args": "after-used",
-      "argsIgnorePattern": "(^reject$|^_$)"
+      "argsIgnorePattern": "(^reject$|^_$)",
+      "varsIgnorePattern": "(^_$)"
     }],
     "quotes": [2, "single"],
     "require-jsdoc": 0,
