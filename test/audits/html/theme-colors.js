@@ -15,7 +15,6 @@
  */
 const Audit = require('../../../audits/html/theme-color.js');
 const assert = require('assert');
-const mockHtml = require('../../helpers/mock-html.js');
 
 /* global describe, it*/
 
@@ -24,49 +23,21 @@ describe('HTML: theme-color audit', () => {
     return assert.equal(Audit.audit({}).value, false);
   });
 
-  it('fails when invalid HTML and window given', () => {
+  it('fails when no value given', () => {
     return assert.equal(Audit.audit({
-      window: null,
-      html: null
+      themeColorMeta: null
     }).value, false);
   });
 
-  it('fails when no theme-color is present in the html', () => {
-    return assert.equal(Audit.audit(mockHtml()).value, false);
-  });
-
-  it('fails when theme-color has no content value', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta name="theme-color" content="">')).value, false);
-  });
-
-  it('fails when multiple theme-colors exist', () => {
-    return assert.equal(Audit.audit(
-      mockHtml(`<meta name="theme-color" content="#ffffff">
-        <meta name="theme-color" content="#ffffff">`)).value, false);
-  });
-
-  it('fails when theme-color exists in the body', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('', '<meta name="theme-color" content="#ffffff">')
-    ).value, false);
-  });
-
   it('succeeds when theme-color present in the html', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta name="theme-color" content="#ffffff">')
-    ).value, true);
-  });
-
-  it('succeeds when theme-color present in the html with id', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta id="my-theme-color" name="theme-color" content="#ffffff">')
-    ).value, true);
+    return assert.equal(Audit.audit({
+      themeColorMeta: '#fafa33'
+    }).value, true);
   });
 
   it('succeeds when theme-color has a CSS name content value', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta id="my-theme-color" name="theme-color" content="red">')
-    ).value, true);
+    return assert.equal(Audit.audit({
+      themeColorMeta: 'red'
+    }).value, true);
   });
 });

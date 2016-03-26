@@ -97,9 +97,7 @@ gulp.task('babel', () => {
     .pipe($.babel({
       presets: ['es2015']
     }))
-    .pipe(browserify({
-      ignore: 'jsdom' // Ignore jsdom since it's only needed for node env
-    }))
+    .pipe(browserify())
     .pipe(gulp.dest('app/scripts'))
     .pipe(gulp.dest('dist/scripts'));
 });

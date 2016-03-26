@@ -32,8 +32,8 @@ class ThemeColor extends Audit {
   }
 
   static audit(inputs) {
-    const hasThemeColorMeta = inputs.themeColorMeta;
-    return ThemeColor.generateAuditResult(hasThemeColorMeta);
+    const themeColorMeta = inputs.themeColorMeta;
+    return ThemeColor.generateAuditResult(!!themeColorMeta, themeColorMeta);
   }
 }
 

@@ -15,51 +15,25 @@
  */
 const Audit = require('../../../audits/mobile-friendly/viewport.js');
 const assert = require('assert');
-const mockHtml = require('../../helpers/mock-html.js');
 
 /* global describe, it*/
 
-// Need to disable camelcase check for dealing with background_color.
 /* eslint-disable camelcase */
 describe('Mobile-friendly: viewport audit', () => {
   it('fails when no input present', () => {
     return assert.equal(Audit.audit({}).value, false);
   });
 
-  it('fails when invalid HTML and window given', () => {
+  it('fails when HTML does not contain a viewport meta tag', () => {
     return assert.equal(Audit.audit({
-      window: null,
-      html: null
+      viewport: ''
     }).value, false);
   });
 
-  it('fails when HTML does not contain a viewport meta tag', () => {
-    return assert.equal(Audit.audit(mockHtml()).value, false);
-  });
-
-  it('fails when a viewport is in the body', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('', '<meta name="viewport" content="width=device-width">')
-    ).value, false);
-  });
-
-  it('fails when multiple viewports defined', () => {
-    return assert.equal(Audit.audit(
-      mockHtml(`<meta name="viewport" content="width=device-width">
-      <meta name="viewport" content="width=device-width">`)
-    ).value, false);
-  });
-
   it('passes when a viewport is provided', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta name="viewport" content="width=device-width">')
-    ).value, true);
-  });
-
-  it('passes when a viewport is provided with an id', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta id="my-viewport" name="viewport" content="width=device-width">')
-    ).value, true);
+    return assert.equal(Audit.audit({
+      viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1',
+    }).value, true);
   });
 });
 /* eslint-enable */

@@ -33,8 +33,8 @@ class Viewport extends Audit {
   }
 
   static audit(inputs) {
-    const hasViewport = inputs.viewport.includes('width=');
-    return Viewport.generateAuditResult(hasViewport);
+    const hasViewport = inputs.viewport && inputs.viewport.includes('width=');
+    return Viewport.generateAuditResult(!!hasViewport);
   }
 }
 

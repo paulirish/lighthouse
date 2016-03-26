@@ -28,7 +28,6 @@
     "chrome-devtools-frontend": "1.0.381789",
     "chrome-remote-interface": "^0.11.0",
     "devtools-timeline-model": "1.0.16",
-    "jsdom": "^8.1.0",
     "meow": "^3.7.0",
     "npmlog": "^2.0.3",
     "traceviewer": "^1.0.8"
