@@ -15,20 +15,21 @@
  */
 'use strict';
 
-class ThemeColor {
+const Gather = require('./gather');
 
-  static get tags() {
-    return ['HTML'];
-  }
+class Viewport extends Gather {
 
-  static get description() {
-    return 'Site has a theme-color meta tag';
-  }
+  static gather(options) {
+    const driver = options.driver;
 
-  static audit(inputs) {
-    const hasThemeColorMeta = inputs.themeColorMeta;
-    return ThemeColor.generateAuditResult(hasThemeColorMeta);
+    return driver.querySelector('head meta[name="viewport"]')
+      .then(node => node.getAttribute('content'))
+      .then(viewportValue => {
+        return {
+          viewport: viewportValue
+        };
+      });
   }
 }
 
-module.exports = ThemeColor;
+module.exports = Viewport;
