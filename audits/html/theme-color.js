@@ -1,5 +1,4 @@
 /**
- * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +15,34 @@
  */
 'use strict';
 
-const Audit = require('../audit');
-
-class Viewport extends Audit {
+class ThemeColor {
 
   static get tags() {
-    return ['Mobile Friendly'];
-  }
-
-  static get name() {
-    return 'viewport';
+    return ['HTML'];
   }
 
   static get description() {
-    return 'Site has a viewport meta tag';
+    return 'Site has a theme-color meta tag';
   }
 
   static audit(inputs) {
-    let hasViewport = false;
+    let hasThemeColor = false;
     if (inputs.window) {
-      const viewportElements =
-        inputs.window.document.querySelectorAll('head meta[name="viewport"]');
+      const themeColorElements =
+        inputs.window.document.querySelectorAll('head meta[name="theme-color"]');
 
-      if (viewportElements.length === 1 &&
-        viewportElements[0].getAttribute('content').indexOf('width=') !== -1) {
-        hasViewport = true;
+      if (themeColorElements.length === 1 &&
+        themeColorElements[0].getAttribute('content').length > 0) {
+        hasThemeColor = true;
       }
     }
 
-    return Viewport.generateAuditResult(hasViewport);
+    return {
+      value: hasThemeColor,
+      tags: ThemeColor.tags,
+      description: ThemeColor.description
+    };
   }
 }
 
-module.exports = Viewport;
+module.exports = ThemeColor;

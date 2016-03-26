@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const Audit = require('../../../audits/mobile-friendly/viewport.js');
+const Audit = require('../../../audits/html/theme-color.js');
 const assert = require('assert');
 const mockHtml = require('../../helpers/mock-html.js');
 
 /* global describe, it*/
 
-// Need to disable camelcase check for dealing with background_color.
-/* eslint-disable camelcase */
-describe('Mobile-friendly: viewport audit', () => {
-  it('fails when no input present', () => {
+describe('HTML: theme-color audit', () => {
+  it('fails when no window or html present', () => {
     return assert.equal(Audit.audit({}).value, false);
   });
 
@@ -33,33 +31,42 @@ describe('Mobile-friendly: viewport audit', () => {
     }).value, false);
   });
 
-  it('fails when HTML does not contain a viewport meta tag', () => {
+  it('fails when no theme-color is present in the html', () => {
     return assert.equal(Audit.audit(mockHtml()).value, false);
   });
 
-  it('fails when a viewport is in the body', () => {
+  it('fails when theme-color has no content value', () => {
     return assert.equal(Audit.audit(
-      mockHtml('', '<meta name="viewport" content="width=device-width">')
+      mockHtml('<meta name="theme-color" content="">')).value, false);
+  });
+
+  it('fails when multiple theme-colors exist', () => {
+    return assert.equal(Audit.audit(
+      mockHtml(`<meta name="theme-color" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">`)).value, false);
+  });
+
+  it('fails when theme-color exists in the body', () => {
+    return assert.equal(Audit.audit(
+      mockHtml('', '<meta name="theme-color" content="#ffffff">')
     ).value, false);
   });
 
-  it('fails when multiple viewports defined', () => {
+  it('succeeds when theme-color present in the html', () => {
     return assert.equal(Audit.audit(
-      mockHtml(`<meta name="viewport" content="width=device-width">
-      <meta name="viewport" content="width=device-width">`)
-    ).value, false);
-  });
-
-  it('passes when a viewport is provided', () => {
-    return assert.equal(Audit.audit(
-      mockHtml('<meta name="viewport" content="width=device-width">')
+      mockHtml('<meta name="theme-color" content="#ffffff">')
     ).value, true);
   });
 
-  it('passes when a viewport is provided with an id', () => {
+  it('succeeds when theme-color present in the html with id', () => {
     return assert.equal(Audit.audit(
-      mockHtml('<meta id="my-viewport" name="viewport" content="width=device-width">')
+      mockHtml('<meta id="my-theme-color" name="theme-color" content="#ffffff">')
+    ).value, true);
+  });
+
+  it('succeeds when theme-color has a CSS name content value', () => {
+    return assert.equal(Audit.audit(
+      mockHtml('<meta id="my-theme-color" name="theme-color" content="red">')
     ).value, true);
   });
 });
-/* eslint-enable */

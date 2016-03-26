@@ -16,7 +16,10 @@
  */
 'use strict';
 
+/* global window */
+
 const Gather = require('./gather');
+const jsdom = require('jsdom').jsdom;
 
 class HTML extends Gather {
 
@@ -28,7 +31,20 @@ class HTML extends Gather {
         .then(nodeId => driver.sendCommand('DOM.getOuterHTML', {
           nodeId: nodeId
         }))
-        .then(nodeHTML => ({html: nodeHTML.outerHTML}));
+        .then(nodeHTML => {
+          if (typeof window !== 'undefined') {
+            return {
+              window: window,
+              html: nodeHTML
+            };
+          }
+
+          const doc = jsdom(nodeHTML);
+          return {
+            window: doc.defaultView,
+            html: nodeHTML
+          };
+        });
   }
 }
 
