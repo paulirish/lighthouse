@@ -33,17 +33,7 @@ class Viewport extends Audit {
   }
 
   static audit(inputs) {
-    let hasViewport = false;
-    if (inputs.window) {
-      const viewportElements =
-        inputs.window.document.querySelectorAll('head meta[name="viewport"]');
-
-      if (viewportElements.length === 1 &&
-        viewportElements[0].getAttribute('content').indexOf('width=') !== -1) {
-        hasViewport = true;
-      }
-    }
-
+    const hasViewport = inputs.viewport.includes('width=');
     return Viewport.generateAuditResult(hasViewport);
   }
 }
