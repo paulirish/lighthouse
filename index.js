@@ -29,6 +29,8 @@ const gatherers = [
   require('./gatherers/load'),
   require('./gatherers/https'),
   require('./gatherers/service-worker'),
+  require('./gatherers/viewport'),
+  require('./gatherers/theme-color'),
   require('./gatherers/html'),
   require('./gatherers/manifest')
 ];

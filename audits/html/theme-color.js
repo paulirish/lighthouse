@@ -15,10 +15,16 @@
  */
 'use strict';
 
-class ThemeColor {
+const Audit = require('../audit');
+
+class ThemeColor extends Audit {
 
   static get tags() {
     return ['HTML'];
+  }
+
+  static get name() {
+    return 'theme-color-meta';
   }
 
   static get description() {
