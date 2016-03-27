@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +24,7 @@ class ThemeColor extends Gather {
     const driver = options.driver;
 
     return driver.querySelector('head meta[name="theme-color"]')
-      .then(node => node.getAttribute('content'))
+      .then(node => node && node.getAttribute('content'))
       .then(themeColorMeta => {
         return {themeColorMeta};
       });
