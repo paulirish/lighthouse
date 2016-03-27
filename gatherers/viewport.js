@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,10 +25,8 @@ class Viewport extends Gather {
 
     return driver.querySelector('head meta[name="viewport"]')
       .then(node => node.getAttribute('content'))
-      .then(viewportValue => {
-        return {
-          viewport: viewportValue
-        };
+      .then(viewport => {
+        return {viewport};
       });
   }
 }

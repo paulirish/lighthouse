@@ -26,7 +26,6 @@ class DriverStub {
 }
 
 /* global describe, it, beforeEach */
-
 describe('Element', () => {
   beforeEach(() => {
     this.stubbedDriver = new DriverStub();
@@ -48,6 +47,13 @@ describe('Element', () => {
   it('throws when no element is passed', () => {
     return assert.throws(() => {
       var _ = new Element(undefined, this.stubbedDriver);
+    });
+  });
+
+  it('returns null from getAttribute when no attribute found', () => {
+    var element = new Element(this.stubbedElement, this.stubbedDriver);
+    return element.getAttribute('notanattribute').then(value => {
+      assert.equal(value, null);
     });
   });
 

@@ -24,10 +24,8 @@ class ThemeColor extends Gather {
 
     return driver.querySelector('head meta[name="theme-color"]')
       .then(node => node.getAttribute('content'))
-      .then(metaThemeColor => {
-        return {
-          themeColorMeta: metaThemeColor
-        };
+      .then(themeColorMeta => {
+        return {themeColorMeta};
       });
   }
 }

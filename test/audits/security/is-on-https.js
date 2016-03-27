@@ -18,8 +18,6 @@ const assert = require('assert');
 
 /* global describe, it*/
 
-// Need to disable camelcase check for dealing with background_color.
-/* eslint-disable camelcase */
 describe('Security: HTTPS audit', () => {
   it('fails when no input present', () => {
     return assert.equal(Audit.audit({}).value, false);
@@ -43,4 +41,3 @@ describe('Security: HTTPS audit', () => {
     }).value, true);
   });
 });
-/* eslint-enable */

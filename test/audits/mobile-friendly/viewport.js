@@ -18,7 +18,6 @@ const assert = require('assert');
 
 /* global describe, it*/
 
-/* eslint-disable camelcase */
 describe('Mobile-friendly: viewport audit', () => {
   it('fails when no input present', () => {
     return assert.equal(Audit.audit({}).value, false);
@@ -36,4 +35,3 @@ describe('Mobile-friendly: viewport audit', () => {
     }).value, true);
   });
 });
-/* eslint-enable */

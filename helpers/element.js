@@ -27,7 +27,7 @@ class Element {
 
   /**
    * @param {!string} name
-   * @return {Promise<!string>}
+   * @return {Promise<string>}
    */
   getAttribute(name) {
     return this.driver
@@ -40,7 +40,7 @@ class Element {
       .then(resp => {
         const attrIndex = resp.attributes.indexOf(name);
         if (attrIndex === -1) {
-          return '';
+          return null;
         }
         return resp.attributes[attrIndex + 1];
       });
