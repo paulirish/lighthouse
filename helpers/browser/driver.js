@@ -138,7 +138,7 @@ class ChromeProtocol {
 
   /**
    * @param {!string} selector
-   * @return {Promise<!Element>}
+   * @return {Promise<Element>}
    */
   querySelector(selector) {
     return this.sendCommand('DOM.getDocument')

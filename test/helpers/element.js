@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,19 +34,19 @@ describe('Element', () => {
   });
 
   it('throws when no driver or element is passed', () => {
-    return assert.throws(() => {
+    assert.throws(() => {
       var _ = new Element();
     });
   });
 
   it('throws when no driver is passed', () => {
-    return assert.throws(() => {
+    assert.throws(() => {
       var _ = new Element(this.stubbedElement, undefined);
     });
   });
 
   it('throws when no element is passed', () => {
-    return assert.throws(() => {
+    assert.throws(() => {
       var _ = new Element(undefined, this.stubbedDriver);
     });
   });

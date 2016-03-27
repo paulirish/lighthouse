@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,23 +21,23 @@ const assert = require('assert');
 
 describe('HTML: theme-color audit', () => {
   it('fails when no window or html present', () => {
-    return assert.equal(Audit.audit({}).value, false);
+    assert.equal(Audit.audit({}).value, false);
   });
 
   it('fails when no value given', () => {
-    return assert.equal(Audit.audit({
+    assert.equal(Audit.audit({
       themeColorMeta: null
     }).value, false);
   });
 
   it('succeeds when theme-color present in the html', () => {
-    return assert.equal(Audit.audit({
+    assert.equal(Audit.audit({
       themeColorMeta: '#fafa33'
     }).value, true);
   });
 
   it('succeeds when theme-color has a CSS name content value', () => {
-    return assert.equal(Audit.audit({
+    assert.equal(Audit.audit({
       themeColorMeta: 'red'
     }).value, true);
   });
