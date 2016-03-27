@@ -149,7 +149,7 @@ class ChromeProtocol {
       }))
       .then(element => {
         if (element.nodeId === 0) {
-          throw Error(`Element not found with DOM.querySelector: ${selector}`);
+          return null;
         }
         return new Element(element, this);
       });
