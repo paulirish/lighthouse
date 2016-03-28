@@ -21,9 +21,9 @@ const Gather = require('./gather');
 class Viewport extends Gather {
 
   /**
-  @param {!{driver: !object}} options
-  @return {!Promise<{viewport: !string}>
-  */
+   * @param {!{driver: !object}} options
+   * @return {!Promise<{viewport: !string}>
+   */
   static gather(options) {
     const driver = options.driver;
 
