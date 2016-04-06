@@ -56,7 +56,7 @@ lighthouse({
     console.error('Runtime error encountered:', err);
     console.error(err.stack);
   }
-  process.exit(1);
+  // process.exit(1);
 });
 
 if (cli.flags.verbose) {

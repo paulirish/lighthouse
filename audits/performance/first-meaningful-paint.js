@@ -52,17 +52,19 @@ class FirstMeaningfulPaint extends Audit {
     return FMPMetric
         .parse(artifacts.traceContents)
         .then(fmp => {
-          if (fmp.err) {
+          if (fmp instanceof Error) {
             return {
               score: -1
             };
           }
 
+          const firstMeaningfulPaint = fmp.navigationStart - fmp.firstMeaningfulPaint;
+
           // Roughly an exponential curve.
           // < 1000ms: penalty=0
           // 3000ms: penalty=90
           // >= 5000ms: penalty=100
-          const power = (fmp.duration - 1000) * 0.001 * 0.5;
+          const power = (firstMeaningfulPaint - 1000) * 0.001 * 0.5;
           const penalty = power > 0 ? Math.pow(10, power) : 0;
           let score = 100 - penalty;
 
@@ -71,7 +73,7 @@ class FirstMeaningfulPaint extends Audit {
           score = Math.max(0, score);
 
           return {
-            duration: `${fmp.duration.toFixed(2)}ms`,
+            duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
             score: Math.round(score)
           };
         }, _ => {

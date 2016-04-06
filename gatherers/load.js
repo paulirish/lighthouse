@@ -27,7 +27,8 @@ class Load extends Gather {
     const artifacts = {};
 
     // Begin trace and network recording.
-    return driver.beginTrace()
+    return driver.removeServiceWorkers(url)
+      .then(_ => driver.beginTrace())
       .then(_ => driver.beginNetworkCollect())
 
       // Go to the URL.
@@ -46,6 +47,9 @@ class Load extends Gather {
       .then(_ => driver.endTrace())
       .then(traceContents => {
         artifacts.traceContents = traceContents;
+        var file = 'profile-' + Date.now() + '.devtools.trace';
+        require('fs').writeFileSync(file, JSON.stringify(traceContents, null, 2));
+        console.log('Trace file: ' + file);
       })
       .then(_ => artifacts);
   }

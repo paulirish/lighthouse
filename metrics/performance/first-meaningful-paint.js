@@ -23,44 +23,33 @@ class FirstMeaningfulPaint {
    * @param {!Array<!Object>} traceData
    */
   static parse(traceData) {
-    return new Promise((resolve, reject) => {
-      const model = new DevtoolsTimelineModel(traceData);
-      const events = model.timelineModel().mainThreadEvents();
-      const ret = {};
+    const model = new DevtoolsTimelineModel(traceData);
+    const events = model.timelineModel().mainThreadEvents();
 
-      const navStartEvent = events
-          .filter(FirstMeaningfulPaint._filterEventsForNavStart);
-      const firstTextPaintEvent = events
-          .filter(FirstMeaningfulPaint._filterEventsForFirstTextPaint);
+    // Identify the frameID of the main frame
+    const startedInPage = model.tracingModel().devToolsMetadataEvents()
+      .filter(e => e.name === 'TracingStartedInPage').slice(-1);
+    const frameID = startedInPage[0].args.data.page;
 
-      if (firstTextPaintEvent.length && navStartEvent.length) {
-        ret.duration = firstTextPaintEvent[0].startTime - navStartEvent[0].startTime;
-      } else {
-        ret.err = new Error('First meaningful paint metric not found');
-      }
+    // Find the start of navigation and our meaningful paint
+    const userTiming = events
+      .filter(e => e.categoriesString.includes('blink.user_timing'))
+      .sort((a, b) => b.ts - a.ts);
+    const navStart = userTiming.filter(e => {
+      return e.name === 'navigationStart' && e.args.frame === frameID;
+    }).slice(-1);
+    const conPaint = userTiming.filter(e => {
+      return e.name === 'firstContentfulPaint' && e.args.frame === frameID;
+    }).slice(-1);
 
-      resolve(ret);
-    });
-  }
-
-  /**
-   * @param {!DevtoolsTimelineModel.MainThreadEvent} e
-   * @return {boolean}
-   * @private
-   */
-  static _filterEventsForNavStart(e) {
-    return e.categoriesString.includes('blink.user_timing') &&
-        e.name === 'navigationStart';
-  }
-
-  /**
-   * @param {!DevtoolsTimelineModel.MainThreadEvent} e
-   * @return {boolean}
-   * @private
-   */
-  static _filterEventsForFirstTextPaint(e) {
-    return e.categoriesString.includes('blink.user_timing') &&
-        e.name === 'firstTextPaint';
+    // report the raw numbers
+    if (conPaint.length && navStart.length) {
+      return Promise.resolve({
+        navigationStart: navStart[0].startTime,
+        firstMeaningfulPaint: conPaint[0].startTime
+      });
+    }
+    return Promise.resolve(new Error('First meaningful paint metric not found'));
   }
 }
 

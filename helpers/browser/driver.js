@@ -43,8 +43,7 @@ class ChromeProtocol {
       'disabled-by-default-devtools.timeline',
       'disabled-by-default-devtools.timeline.frame',
       'disabled-by-default-devtools.timeline.stack',
-      'disabled-by-default-devtools.screenshot',
-      'disabled-by-default-v8.cpu_profile'
+      'disabled-by-default-devtools.screenshot'
     ];
 
     this.timeoutID = null;
@@ -272,8 +271,28 @@ class ChromeProtocol {
     return new Promise((resolve, reject) => {
       emulation.enableNexus5X(this);
       emulation.enableNetworkThrottling(this);
+      emulation.clearCache(this);
       emulation.disableCache(this);
       this.pendingCommandsComplete().then(_ => resolve());
+    });
+  }
+
+  removeServiceWorkers(url) {
+    return new Promise((resolve, reject) => {
+      this.on('ServiceWorker.workerRegistrationUpdated', data => {
+        // Unbind this listener so we only run this once.
+        this._chrome.removeAllListeners('ServiceWorker.workerRegistrationUpdated');
+        this.sendCommand('ServiceWorker.disable');
+        // Find any SW reg that matches the page and unregister it
+        const regs = data.registrations.filter(sw =>
+          url.startsWith(sw.scopeURL) && sw.isDeleted === false);
+        if (regs.length) {
+          return this.sendCommand('ServiceWorker.unregister', {scopeURL: regs[0].scopeURL})
+            .then(_ => resolve());
+        }
+        return resolve();
+      });
+      this.sendCommand('ServiceWorker.enable');
     });
   }
 }
