@@ -23,7 +23,6 @@ class FirstMeaningfulPaint {
    * @param {!Array<!Object>} traceData
    */
   static parse(traceData) {
-
     const model = new DevtoolsTimelineModel(traceData);
     const events = model.timelineModel().mainThreadEvents();
 
@@ -40,9 +39,17 @@ class FirstMeaningfulPaint {
       // Events can be unsorted, so we put in ascending order.
       .sort((a, b) => a.startTime - b.startTime);
 
+
+    // navigationStart == the network begins fetching the page URL
+    // CommitLoad == the first bytes of HTML are returned and Chrome considers
+    //   the navigation a success. A 'isMainFrame' boolean is attached to those events
+    //   However, that flag may be incorrect now, so we're ignoring it.
     const navStart = userTiming.filter(e => {
       return e.name === 'navigationStart' && e.args.frame === frameID;
     }).slice(-1);
+
+    // firstContentfulPaint == the first time that text or image content was
+    // painted. See src/third_party/WebKit/Source/core/paint/PaintTiming.h
     const conPaint = userTiming.filter(e => {
       return e.name === 'firstContentfulPaint' && e.args.frame === frameID;
     }).slice(-1);

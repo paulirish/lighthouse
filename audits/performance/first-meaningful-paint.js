@@ -54,7 +54,8 @@ class FirstMeaningfulPaint extends Audit {
         .then(fmp => {
           if (fmp instanceof Error) {
             return {
-              score: -1
+              score: -1,
+              debugString: fmp
             };
           }
 
@@ -84,7 +85,8 @@ class FirstMeaningfulPaint extends Audit {
           };
         })
         .then(result => {
-          return FirstMeaningfulPaint.generateAuditResult(result.score, result.duration);
+          return FirstMeaningfulPaint.generateAuditResult(result.score,
+              result.duration, result.debugString);
         });
   }
 }
