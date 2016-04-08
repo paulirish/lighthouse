@@ -28,6 +28,8 @@ gulp.task('js-compile', function() {
     'closure/typedefs/*.js',
     'closure/third_party/*.js',
     'audits/**/*.js',
+    'helpers/icons.js',
+    'aggregators/**/*.js',
     'metrics/performance/first-meaningful-paint.js'
   ])
     // TODO: hack to remove `require`s that Closure currently can't resolve.
@@ -38,18 +40,30 @@ gulp.task('js-compile', function() {
     .pipe(closureCompiler({
       compilation_level: 'SIMPLE',
       process_common_js_modules: true,
-      new_type_inf: true,
+      // new_type_inf: true, // Currently problematic for us
       checks_only: true,
       language_in: 'ECMASCRIPT6_STRICT',
       language_out: 'ECMASCRIPT5_STRICT',
       warning_level: 'VERBOSE',
+      jscomp_error: [
+        'checkTypes',
+        'conformanceViolations'
+      ],
       jscomp_warning: [
         // https://github.com/google/closure-compiler/wiki/Warnings
         'accessControls',
+        'checkRegExp',
         'const',
+        // 'reportUnknownTypes',
+        'missingProperties',
+        'missingReturn',
+        'newCheckTypes',
+        'strictModuleDepCheck',
+        'typeInvalidation',
+        'undefinedNames',
         'visibility'
-        // 'reportUnknownTypes'
-      ]
+      ],
+      conformance_configs: 'closure/conformance_config.textproto'
     }))
     .on('end', () => {
       gutil.log('Closure compilation successful.');

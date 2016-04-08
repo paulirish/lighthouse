@@ -19,7 +19,7 @@
 
 const Audit = require('../audit');
 
-class ManifestIcons192 extends Audit {
+class ManifestShortNameLength extends Audit {
   /**
    * @override
    */
@@ -31,14 +31,14 @@ class ManifestIcons192 extends Audit {
    * @override
    */
   static get name() {
-    return 'manifest-icons-192';
+    return 'manifest-short-name-length';
   }
 
   /**
    * @override
    */
   static get description() {
-    return 'Manifest contains 192px icons';
+    return 'App short_name won\'t be truncated on the homescreen';
   }
 
   /**
@@ -46,19 +46,26 @@ class ManifestIcons192 extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
-    let hasIcons = false;
+    let isShortNameShortEnough = false;
+    let debugString;
     const manifest = artifacts.manifest.value;
+    const suggestedLength = 12;
 
-    if (manifest && manifest.icons.value) {
-      const icons192 = manifest.icons.value.find(icon => {
-        const sizesArray = icon.value.sizes.value;
-        return !!sizesArray && sizesArray.indexOf('192x192') !== -1;
-      });
-      hasIcons = (!!icons192);
+    if (manifest && manifest.short_name && manifest.short_name.value) {
+      // Historically, Chrome recommended 12 chars as the maximum length to prevent truncation.
+      // See #69 for more discussion.
+      isShortNameShortEnough = (manifest.short_name.value.length <= suggestedLength);
+      if (!isShortNameShortEnough) {
+        debugString = `${suggestedLength} chars is the suggested maximum length`;
+      }
     }
 
-    return ManifestIcons192.generateAuditResult(hasIcons);
+    return ManifestShortNameLength.generateAuditResult(
+      isShortNameShortEnough,
+      undefined,
+      debugString
+    );
   }
 }
 
-module.exports = ManifestIcons192;
+module.exports = ManifestShortNameLength;

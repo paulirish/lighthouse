@@ -19,8 +19,27 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const manifestExists = require('../../audits/manifest/exists').name;
+
+/** @type {string} */
+const manifestName = require('../../audits/manifest/name').name;
+
+/** @type {string} */
+const manifestBackgroundColor = require('../../audits/manifest/background-color').name;
+
+/** @type {string} */
+const manifestThemeColor = require('../../audits/manifest/theme-color').name;
+
+/** @type {string} */
+const manifestIconsMin192 = require('../../audits/manifest/icons-min-192').name;
+
 class SplashScreen extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Will Launch With A Splash Screen';
   }
@@ -35,16 +54,12 @@ class SplashScreen extends Aggregate {
    *   - manifest has valid theme_color
    *   - icon of size >= 192x192
    *     - while optional, icons at 256, 384 and 512 will be used when appropriate
-   * More details: https://github.com/GoogleChrome/lighthouse/issues/24
+   * @see https://github.com/GoogleChrome/lighthouse/issues/24
+   *
+   * @override
+   * @return {!AggregationCriteria}
    */
   static get criteria() {
-    const manifestExists = require('../../audits/manifest/exists').name;
-    const manifestName = require('../../audits/manifest/name').name;
-    const manifestBackgroundColor = require('../../audits/manifest/background-color').name;
-    const manifestThemeColor = require('../../audits/manifest/theme-color').name;
-    const manifestIcons = require('../../audits/manifest/icons').name;
-    const manifestIcons192 = require('../../audits/manifest/icons-192').name;
-
     const criteria = {};
 
     criteria[manifestExists] = {
@@ -67,12 +82,7 @@ class SplashScreen extends Aggregate {
       weight: 0
     };
 
-    criteria[manifestIcons] = {
-      value: true,
-      weight: 1
-    };
-
-    criteria[manifestIcons192] = {
+    criteria[manifestIconsMin192] = {
       value: true,
       weight: 1
     };

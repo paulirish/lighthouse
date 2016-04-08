@@ -16,22 +16,37 @@
  */
 'use strict';
 
-class Gatherer {
+const Audit = require('../audit');
 
-  static gather(gatherers, options) {
-    const driver = options.driver;
-    const artifacts = [];
-
-    // Execute gatherers sequentially and return results array when complete.
-    return gatherers.reduce((chain, gatherer) => {
-      return chain
-        .then(_ => gatherer.gather(options))
-        .then(artifact => artifacts.push(artifact));
-    }, driver.connect())
-      .then(_ => driver.disconnect())
-      .then(_ => artifacts);
+class WorksOffline extends Audit {
+  /**
+   * @override
+   */
+  static get tags() {
+    return ['Offline'];
   }
 
+  /**
+   * @override
+   */
+  static get name() {
+    return 'works offline';
+  }
+
+  /**
+   * @override
+   */
+  static get description() {
+    return 'URL responds with a 200 when offline';
+  }
+
+  /**
+   * @param {!Artifacts} artifacts
+   * @return {!AuditResult}
+   */
+  static audit(artifacts) {
+    return WorksOffline.generateAuditResult(artifacts.responseCode === 200);
+  }
 }
 
-module.exports = Gatherer;
+module.exports = WorksOffline;

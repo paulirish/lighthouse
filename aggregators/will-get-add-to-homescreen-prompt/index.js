@@ -19,8 +19,30 @@
 
 const Aggregate = require('../aggregate');
 
+/** @type {string} */
+const serviceWorker = require('../../audits/offline/service-worker').name;
+
+/** @type {string} */
+const manifestExists = require('../../audits/manifest/exists').name;
+
+/** @type {string} */
+const manifestStartUrl = require('../../audits/manifest/start-url').name;
+
+/** @type {string} */
+const manifestIconsMin144 = require('../../audits/manifest/icons-min-144').name;
+
+/** @type {string} */
+const manifestShortName = require('../../audits/manifest/short-name').name;
+
+/** @type {string} */
+const manifestShortNameLength = require('../../audits/manifest/short-name-length').name;
+
 class AddToHomescreen extends Aggregate {
 
+  /**
+   * @override
+   * @return {string}
+   */
   static get name() {
     return 'Will Get Add to Homescreen Prompt';
   }
@@ -33,19 +55,15 @@ class AddToHomescreen extends Aggregate {
    *   - valid start_url
    *   - valid name
    *   - valid short_name
+   *   - short_name of reasonable length
    *   - icon of size >= 144x144 and png (either type `image/png` or filename ending in `.png`
-   * More details: https://github.com/GoogleChrome/lighthouse/issues/23
+   * @see https://github.com/GoogleChrome/lighthouse/issues/23
    *
-   * TODO: We should allow icons >=144, rather than >= 192
+
+   * @override
+   * @return {!AggregationCriteria}
    */
   static get criteria() {
-    const serviceWorker = require('../../audits/offline/service-worker').name;
-    const manifestExists = require('../../audits/manifest/exists').name;
-    const manifestStartUrl = require('../../audits/manifest/start-url').name;
-    const manifestIcons = require('../../audits/manifest/icons').name;
-    const manifestIcons192 = require('../../audits/manifest/icons-192').name;
-    const manifestShortName = require('../../audits/manifest/short-name').name;
-
     const criteria = {};
     criteria[serviceWorker] = {
       value: true,
@@ -62,17 +80,17 @@ class AddToHomescreen extends Aggregate {
       weight: 1
     };
 
-    criteria[manifestIcons] = {
-      value: true,
-      weight: 1
-    };
-
-    criteria[manifestIcons192] = {
+    criteria[manifestIconsMin144] = {
       value: true,
       weight: 1
     };
 
     criteria[manifestShortName] = {
+      value: true,
+      weight: 0
+    };
+
+    criteria[manifestShortNameLength] = {
       value: true,
       weight: 0
     };
