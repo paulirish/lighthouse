@@ -23,24 +23,31 @@ class FirstMeaningfulPaint {
    * @param {!Array<!Object>} traceData
    */
   static parse(traceData) {
+
     const model = new DevtoolsTimelineModel(traceData);
     const events = model.timelineModel().mainThreadEvents();
 
     // Identify the frameID of the main frame
     const startedInPage = model.tracingModel().devToolsMetadataEvents()
-      .filter(e => e.name === 'TracingStartedInPage').slice(-1);
+      .filter(e => e.name === 'TracingStartedInPage')
+      .sort((a, b) => a.startTime - b.startTime)
+      .slice(-1);
     const frameID = startedInPage[0].args.data.page;
 
     // Find the start of navigation and our meaningful paint
     const userTiming = events
       .filter(e => e.categoriesString.includes('blink.user_timing'))
-      .sort((a, b) => b.ts - a.ts);
+      // Events can be unsorted, so we put in ascending order.
+      .sort((a, b) => a.startTime - b.startTime);
+
     const navStart = userTiming.filter(e => {
       return e.name === 'navigationStart' && e.args.frame === frameID;
     }).slice(-1);
     const conPaint = userTiming.filter(e => {
       return e.name === 'firstContentfulPaint' && e.args.frame === frameID;
     }).slice(-1);
+
+
 
     // report the raw numbers
     if (conPaint.length && navStart.length) {
