@@ -70,9 +70,10 @@ class ChromeProtocol {
       chromeRemoteInterface({port: port}, chrome => {
         this._chrome = chrome;
         this.beginLogging();
-        this.beginEmulation().then(_ => {
-          resolve();
-        });
+
+        this.beginEmulation()
+          .then(_ => this.cleanCaches())
+          .then(_ => resolve());
       }).on('error', e => reject(e));
     });
   }
@@ -273,28 +274,21 @@ class ChromeProtocol {
   beginEmulation() {
     return Promise.all([
       emulation.enableNexus5X(this),
-      emulation.enableNetworkThrottling(this),
-      emulation.clearCache(this),
-      emulation.disableCache(this)
+      emulation.enableNetworkThrottling(this)
     ]);
   }
 
-  removeServiceWorkers(url) {
-    return new Promise((resolve, reject) => {
-      this.on('ServiceWorker.workerRegistrationUpdated', data => {
-        // Unbind this listener so we only run this once.
-        this._chrome.removeAllListeners('ServiceWorker.workerRegistrationUpdated');
-        this.sendCommand('ServiceWorker.disable');
-        // Find any SW reg that matches the page and unregister it
-        const regs = data.registrations.filter(sw =>
-          url.startsWith(sw.scopeURL) && sw.isDeleted === false);
-        if (regs.length) {
-          return this.sendCommand('ServiceWorker.unregister', {scopeURL: regs[0].scopeURL})
-            .then(_ => resolve());
-        }
-        return resolve();
-      });
-      this.sendCommand('ServiceWorker.enable');
+  cleanCaches() {
+    return Promise.all([
+      emulation.clearCache(this),
+      emulation.disableCache(this),
+      this.forceUpdateServiceWorkers()
+    ]);
+  }
+
+  forceUpdateServiceWorkers() {
+    return this.sendCommand('ServiceWorker.setForceUpdateOnPageLoad', {
+      forceUpdateOnPageLoad: true
     });
   }
 }
