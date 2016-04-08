@@ -84,7 +84,7 @@ function enableNexus5X(driver) {
   ]);
 }
 
-function clearCache(driver){
+function clearCache(driver) {
   driver.sendCommand('Network.clearBrowserCache');
 }
 
