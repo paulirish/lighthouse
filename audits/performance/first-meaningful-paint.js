@@ -49,17 +49,9 @@ class FirstMeaningfulPaint extends Audit {
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
-    return FMPMetric
-        .parse(artifacts.traceContents)
+    return FMPMetric.parse(artifacts.traceContents)
         .then(fmp => {
-          if (fmp instanceof Error) {
-            return {
-              score: -1,
-              debugString: fmp
-            };
-          }
-
-          // The core Time To fMP metric
+          // The fundamental Time To fMP metric
           const firstMeaningfulPaint = fmp.firstMeaningfulPaint - fmp.navigationStart;
 
           // Roughly an exponential curve.
@@ -78,11 +70,14 @@ class FirstMeaningfulPaint extends Audit {
             duration: `${firstMeaningfulPaint.toFixed(2)}ms`,
             score: Math.round(score)
           };
-        }, _ => {
+        }, err => {
           // Recover from trace parsing failures.
-          return {
-            score: -1
-          };
+          if (err instanceof Error) {
+            return {
+              score: -1,
+              debugString: err.message
+            };
+          }
         })
         .then(result => {
           return FirstMeaningfulPaint.generateAuditResult(result.score,
