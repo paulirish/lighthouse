@@ -67,7 +67,7 @@ function createResultsHTML(results) {
       const status = subitem.value ?
           `<span class="pass" ${debugString}>Pass</span>` :
           `<span class="fail" ${debugString}>Fail</span>`;
-      const rawValue = subitem.rawValue ? `(${subitem.rawValue})` : '';
+      const rawValue = subitem.rawValue ? `(${escapeHTML(subitem.rawValue)})` : '';
       groupHTML += `<li>${escapeHTML(subitem.description)}: ${status} ${rawValue}</li>`;
     });
 

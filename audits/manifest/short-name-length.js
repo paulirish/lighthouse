@@ -56,8 +56,8 @@ class ManifestShortNameLength extends Audit {
       // See #69 for more discussion.
       isShortNameShortEnough = (manifest.short_name.value.length <= suggestedLength);
       if (!isShortNameShortEnough) {
-        debugString = `${suggestedLength} chars is the suggested maximum homescreen label length.`;
-        debugString += `(Found: ${manifest.short_name.value.length} chars)`;
+        debugString = `${suggestedLength} chars is the suggested maximum homescreen label length`;
+        debugString += ` (Found: ${manifest.short_name.value.length} chars).`;
       }
     }
 
