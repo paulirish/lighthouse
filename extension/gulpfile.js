@@ -83,9 +83,9 @@ gulp.task('chromeManifest', () => {
 
 gulp.task('browserify', () => {
   return gulp.src([
-    'app/src/app.js',
+    'app/src/popup.js',
     'app/src/chromereload.js',
-    'app/src/background.js',
+    'app/src/lighthouse.js',
     'app/src/report.js'])
     .pipe($.browserify({
       ignore: [
@@ -114,7 +114,7 @@ gulp.task('watch', ['lint', 'browserify', 'html'], () => {
   gulp.watch([
     '*.js',
     'app/src/**/*.js',
-    '../helpers/**/*.js',
+    '../lib/**/*.js',
     '../audits/**/*.js',
     '../aggregators/**/*.js',
     '../gatherers/**/*.js',
