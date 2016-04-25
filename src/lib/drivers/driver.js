@@ -91,7 +91,7 @@ class DriverBase {
       // Inject the call to capture inspection.
       const expression = `window.__inspect = inspect;${asyncExpression}`;
 
-      this.on('inspectRequested', value => {
+      this.on('Runtime.inspectRequested', value => {
         // Tidy up the injected call.
         this.sendCommand('Runtime.evaluate', {
           expression: 'delete window.__inspect'
