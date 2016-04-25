@@ -30,7 +30,7 @@ class IsAccessible extends Aggregate {
    * @return {string}
    */
   static get name() {
-    return 'Has No Accessibility Violations';
+    return 'Is Accessible';
   }
 
   /**
@@ -48,7 +48,7 @@ class IsAccessible extends Aggregate {
   static get criteria() {
     const criteria = {};
     criteria[ARIAValidAttr] = {
-      value: 100,
+      value: true,
       weight: 1
     };
 
