@@ -36,11 +36,7 @@ function lint(files, options) {
 gulp.task('lint', lint([
   'app/src/**/*.js',
   'gulpfile.js'
-], {
-  env: {
-    es6: true
-  }
-}));
+]));
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
