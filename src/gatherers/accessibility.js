@@ -26,16 +26,9 @@ const axe = fs.readFileSync(
 
 function runA11yChecks() {
   axe.a11yCheck(document, function(results) {
-    window.__axeResults = results;
+    // Magically inserted by driver.evaluateAsync
+    window.__inspect(results);
   });
-}
-
-function fetchA11yResults() {
-  if (typeof window.__axeResults !== 'undefined') {
-    return window.__axeResults;
-  }
-
-  return null;
 }
 
 class Accessibility extends Gather {
@@ -50,41 +43,11 @@ class Accessibility extends Gather {
     };
   }
 
-  fetchResults(driver, count) {
-    if (count === 0) {
-      return Promise.resolve({
-        result: {
-          value: null
-        }
-      });
-    }
-
-    return new Promise((resolve, reject) => {
-      setTimeout(_ => {
-        driver.sendCommand('Runtime.evaluate', {
-          expression: `(${fetchA11yResults.toString()}())`,
-          returnByValue: true
-        }).then(response => {
-          // If the axe results aren't in try again.
-          if (response.result.value === null) {
-            return resolve(this.fetchResults(driver, count - 1));
-          }
-
-          resolve(response);
-        });
-      }, 100);
-    });
-  }
-
   afterPageLoad(options) {
     const driver = options.driver;
 
-    return driver.sendCommand('Runtime.evaluate', {
-      expression: `${axe};(${runA11yChecks.toString()}())`
-    })
+    return driver.evaluateAsync(`${axe};(${runA11yChecks.toString()}())`)
 
-    // Goes into a 'busy wait' for axe results to land.
-    .then(_ => this.fetchResults(driver, 10))
     .then(returnedData => {
       if (returnedData.result.value === undefined ||
           returnedData.result.value === null ||

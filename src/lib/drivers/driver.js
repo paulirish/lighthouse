@@ -86,6 +86,28 @@ class DriverBase {
     return Promise.reject(new Error('Not implemented'));
   }
 
+  evaluateAsync(asyncExpression) {
+    return new Promise((resolve, reject) => {
+      // Inject the call to capture inspection.
+      const expression = `window.__inspect = inspect;${asyncExpression}`;
+
+      this.on('inspectRequested', value => {
+        // Tidy up the injected call.
+        this.sendCommand('Runtime.evaluate', {
+          expression: 'delete window.__inspect'
+        }).then(_ => resolve(value));
+      });
+
+      this.sendCommand('Runtime.evaluate', {
+        expression,
+        includeCommandLineAPI: true,
+        generatePreview: false,
+        returnByValue: false,
+        userGesture: true
+      });
+    });
+  }
+
   gotoURL(url, options) {
     const waitForLoad = (options && options.waitForLoad) || false;
     return this.sendCommand('Page.enable')
