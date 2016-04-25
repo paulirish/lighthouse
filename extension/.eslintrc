@@ -1,11 +1,12 @@
 {
   "extends": "google",
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true
   },
   "globals": {
     "chrome": true,
-    "__lighthouse": true,
+    "__lighthouse": true
   },
   "rules": {
     "max-len": [2, 100, {

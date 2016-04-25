@@ -1,8 +1,11 @@
 node_modules
 *.pyc
 .DS_Store
+
 dist
 init.sh
+
+smoke-results
 npm-debug.log
 artifacts.log
 clovis-trace.log
