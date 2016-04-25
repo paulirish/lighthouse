@@ -100,7 +100,7 @@ gulp.task('browserify', () => {
 });
 
 gulp.task('clean', () => {
-  del(['.tmp', 'dist', 'app/scripts']).then(paths =>
+  return del(['.tmp', 'dist', 'app/scripts']).then(paths =>
     paths.forEach(path => gutil.log('deleted:', gutil.colors.blue(path)))
   );
 });

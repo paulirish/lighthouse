@@ -56,6 +56,13 @@ const flags = cli.flags;
 
 const driver = new ChromeProtocol();
 
+// set logging preferences
+if (cli.flags.verbose) {
+  log.level = 'verbose';
+} else if (cli.flags.quiet) {
+  log.level = 'error';
+}
+
 // kick off a lighthouse run
 lighthouse(driver, {url, flags})
   .then(results => {
@@ -73,10 +80,3 @@ lighthouse(driver, {url, flags})
     }
     process.exit(1);
   });
-
-// set logging preferences
-if (cli.flags.verbose) {
-  log.level = 'verbose';
-} else if (cli.flags.quiet) {
-  log.level = 'error';
-}
