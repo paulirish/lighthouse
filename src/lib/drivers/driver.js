@@ -89,21 +89,21 @@ class DriverBase {
   evaluateAsync(asyncExpression) {
     return new Promise((resolve, reject) => {
       // Inject the call to capture inspection.
-      const expression = `window.__inspect = inspect;${asyncExpression}`;
+      const expression = `window.__inspect = inspect; ${asyncExpression}`;
+      const cleanup = (_ => this.sendCommand('Runtime.evaluate', {
+        expression: 'delete window.__inspect'
+      }));
 
-      this.on('Runtime.inspectRequested', value => {
+      this.sendCommand('Runtime.enable');
+      this.on('Runtime.inspectRequested', evalResult => {
         // Tidy up the injected call.
-        this.sendCommand('Runtime.evaluate', {
-          expression: 'delete window.__inspect'
-        }).then(_ => resolve(value));
+        cleanup().then(_ =>
+          resolve(evalResult.object));
       });
 
       this.sendCommand('Runtime.evaluate', {
         expression,
-        includeCommandLineAPI: true,
-        generatePreview: false,
-        returnByValue: false,
-        userGesture: true
+        includeCommandLineAPI: true
       });
     });
   }
