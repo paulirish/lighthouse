@@ -7,7 +7,7 @@ const assert = require('assert');
 const TraceToTimelineModel = require('../../../../src/lib/traces/devtools-timeline-model');
 
 const filename = 'devtools-homepage-w-screenshots-trace.json';
-const events = fs.readFileSync('../../../fixtures/traces/' + filename, 'utf8');
+const events = fs.readFileSync('./test/fixtures/traces/' + filename, 'utf8');
 let model;
 
 describe('DevTools Timeline Model', function() {
