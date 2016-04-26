@@ -7,7 +7,7 @@ var assert = require('assert');
 var traceProcessor = require('../../../../src/lib/traces/tracing-processor');
 
 function readTrace(filename, cb) {
-  return fs.readFile('../../fixtures/traces/' + filename, 'utf8', cb);
+  return fs.readFile('./test/fixtures/traces/' + filename, 'utf8', cb);
 }
 
 describe('Trace Processor', function() {
