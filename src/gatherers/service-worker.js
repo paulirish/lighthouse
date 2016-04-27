@@ -17,8 +17,35 @@
 'use strict';
 
 const Gather = require('./gather');
+const WebInspector = require('../lib/web-inspector');
 
 class ServiceWorker extends Gather {
+
+  setup(options) {
+    const driver = options.driver;
+    driver.sendCommand('ServiceWorker.enable');
+    var mgr = this.mgr = WebInspector.ServiceWorkerManager.createWithFakeTarget();
+    var dispatcher = mgr._dispatcher;
+
+    driver.on('ServiceWorker.workerCreated', data =>
+      dispatcher.workerCreated(data.workerId, data.url, data.versionId));
+
+    driver.on('ServiceWorker.workerTerminated', data =>
+      dispatcher.workerTerminated(data.workerId));
+
+    driver.on('ServiceWorker.dispatchMessage', data =>
+      dispatcher.dispatchMessage(data.workerId, data.message));
+
+    driver.on('ServiceWorker.workerRegistrationUpdated', data =>
+      dispatcher.workerRegistrationUpdated(data.registrations));
+
+    driver.on('ServiceWorker.workerErrorReported', data =>
+      dispatcher.workerRegistrationUpdated(data.errorMessage));
+
+    driver.on('ServiceWorker.workerVersionUpdated', data =>
+      dispatcher.workerVersionUpdated(data.versions));
+  }
+
   reloadSetup(options) {
     const driver = options.driver;
     this.resolved = false;
@@ -47,7 +74,7 @@ class ServiceWorker extends Gather {
 
   beforeReloadPageLoad(options) {
     const driver = options.driver;
-    driver.sendCommand('ServiceWorker.enable');
+
 
     return this.artifactsResolved;
   }

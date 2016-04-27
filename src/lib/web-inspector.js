@@ -41,6 +41,7 @@ global.Runtime.experiments = {
 
 global.TreeElement = {};
 global.WorkerRuntime = {};
+global.InspectorBackendClass = {};
 
 global.Protocol = {
   Agents() {}
@@ -135,6 +136,10 @@ require('chrome-devtools-frontend/front_end/sdk/Target.js');
 require('chrome-devtools-frontend/front_end/sdk/NetworkManager.js');
 require('chrome-devtools-frontend/front_end/sdk/NetworkRequest.js');
 
+// Deps for service-worker manager
+require('chrome-devtools-frontend/front_end/sdk/InspectorBackend.js');
+require('chrome-devtools-frontend/front_end/sdk/ServiceWorkerManager.js');
+
 // Dependencies for timeline-model
 WebInspector.targetManager = {
   observeTargets() {}
@@ -176,24 +181,50 @@ WebInspector.DeferredTempFile.prototype = {
 // Dependencies for color parsing.
 require('chrome-devtools-frontend/front_end/common/Color.js');
 
+// Mocked-up WebInspector Target for NetworkManager
+const fakeNetworkAgent = {
+  enable() {}
+};
+const fakeServiceWorkerAgent = {
+  enable() {}
+};
+const fakeTarget = {
+  _modelByConstructor: new Map(),
+  networkAgent() {
+    return fakeNetworkAgent;
+  },
+  serviceWorkerAgent() {
+    return fakeServiceWorkerAgent;
+  },
+  registerNetworkDispatcher() { },
+  registerServiceWorkerDispatcher(swDsptchr) {
+    swDsptchr._manager._dispatcher = swDsptchr;
+  }
+};
+
 /**
  * Creates a new WebInspector NetworkManager using a mocked Target.
  * @return {!WebInspector.NetworkManager}
  */
 WebInspector.NetworkManager.createWithFakeTarget = function() {
-  // Mocked-up WebInspector Target for NetworkManager
-  const fakeNetworkAgent = {
-    enable() {}
-  };
-  const fakeTarget = {
-    _modelByConstructor: new Map(),
-    networkAgent() {
-      return fakeNetworkAgent;
-    },
-    registerNetworkDispatcher() {}
-  };
-
   return new WebInspector.NetworkManager(fakeTarget);
+};
+
+WebInspector.ServiceWorkerManager.createWithFakeTarget = function() {
+  return new WebInspector.ServiceWorkerManager(fakeTarget);
+};
+
+WebInspector.TargetManager = {
+  Events: {
+    MainFrameNavigated: 'MainFrameNavigated'
+  },
+  addEventListener: function() { }
+};
+WebInspector.targetManager = WebInspector.TargetManager;
+
+global.ServiceWorkerAgent = {
+  ServiceWorkerVersionRunningStatus: ["stopped", "starting", "running", "stopping"],
+  ServiceWorkerVersionStatus: ["new", "installing", "installed", "activating", "activated", "redundant"]
 };
 
 module.exports = WebInspector;
