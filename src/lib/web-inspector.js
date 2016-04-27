@@ -41,7 +41,7 @@ global.Runtime.experiments = {
 
 global.TreeElement = {};
 global.WorkerRuntime = {};
-global.InspectorBackendClass = {};
+const InspectorBackendClass = global.InspectorBackendClass = function () { };
 
 global.Protocol = {
   Agents() {}
@@ -137,13 +137,32 @@ require('chrome-devtools-frontend/front_end/sdk/NetworkManager.js');
 require('chrome-devtools-frontend/front_end/sdk/NetworkRequest.js');
 
 // Deps for service-worker manager
+
+require('chrome-devtools-frontend/front_end/sdk/TargetManager.js');
+require('chrome-devtools-frontend/front_end/host/InspectorFrontendHostAPI.js');
 require('chrome-devtools-frontend/front_end/sdk/InspectorBackend.js');
+require('chrome-devtools-frontend/front_end/sdk/ResourceTreeModel.js');
 require('chrome-devtools-frontend/front_end/sdk/ServiceWorkerManager.js');
+require('chrome-devtools-frontend/front_end/main/Connections.js');
+
+global.InspectorFrontendHost = new InspectorFrontendHostAPI();
+InspectorFrontendHost.events = new WebInspector.Object();
+
+global.location = {
+  toString: (_ => 'http://localhost:9222/devtools/inspector.html?ws=localhost:9222'),
+  origin: 'localhost'
+};
+require('chrome-devtools-frontend/front_end/Runtime.js');
+
+var targetType = WebInspector.Target.Type.Page; // WebInspector.Target.Type.ServiceWorker
+console.error('hi', InspectorBackendClass)
+var connection = new WebInspector.MainConnection();
+var target = WebInspector.targetManager.createTarget(WebInspector.UIString("Main"), targetType, connection, null);
 
 // Dependencies for timeline-model
-WebInspector.targetManager = {
-  observeTargets() {}
-};
+// WebInspector.targetManager = {
+//   observeTargets() {}
+// };
 WebInspector.settings = {
   createSetting() {}
 };
@@ -214,13 +233,13 @@ WebInspector.ServiceWorkerManager.createWithFakeTarget = function() {
   return new WebInspector.ServiceWorkerManager(fakeTarget);
 };
 
-WebInspector.TargetManager = {
-  Events: {
-    MainFrameNavigated: 'MainFrameNavigated'
-  },
-  addEventListener: function() { }
-};
-WebInspector.targetManager = WebInspector.TargetManager;
+// WebInspector.TargetManager = {
+//   Events: {
+//     MainFrameNavigated: 'MainFrameNavigated'
+//   },
+//   addEventListener: function() { }
+// };
+// WebInspector.targetManager = WebInspector.TargetManager;
 
 global.ServiceWorkerAgent = {
   ServiceWorkerVersionRunningStatus: ["stopped", "starting", "running", "stopping"],

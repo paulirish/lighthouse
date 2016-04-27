@@ -23,7 +23,6 @@ class ServiceWorker extends Gather {
 
   setup(options) {
     const driver = options.driver;
-    driver.sendCommand('ServiceWorker.enable');
     var mgr = this.mgr = WebInspector.ServiceWorkerManager.createWithFakeTarget();
     var dispatcher = mgr._dispatcher;
 
@@ -44,6 +43,8 @@ class ServiceWorker extends Gather {
 
     driver.on('ServiceWorker.workerVersionUpdated', data =>
       dispatcher.workerVersionUpdated(data.versions));
+
+    driver.sendCommand('ServiceWorker.enable');
   }
 
   reloadSetup(options) {
