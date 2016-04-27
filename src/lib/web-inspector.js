@@ -41,11 +41,12 @@ global.Runtime.experiments = {
 
 global.TreeElement = {};
 global.WorkerRuntime = {};
-const InspectorBackendClass = global.InspectorBackendClass = function () { };
+// const InspectorBackendClass = global.InspectorBackendClass = function () { };
+global.InspectorBackend = {};
 
-global.Protocol = {
-  Agents() {}
-};
+// global.Protocol = {
+//   Agents() {}
+// };
 
 global.WebInspector = {};
 const WebInspector = global.WebInspector;
@@ -126,12 +127,20 @@ global.PageAgent = {
     Other: 'other'
   }
 };
-// Dependencies for network-recorder
+
 require('chrome-devtools-frontend/front_end/common/Object.js');
 require('chrome-devtools-frontend/front_end/common/ParsedURL.js');
 require('chrome-devtools-frontend/front_end/common/ResourceType.js');
 require('chrome-devtools-frontend/front_end/common/UIString.js');
 require('chrome-devtools-frontend/front_end/platform/utilities.js');
+
+
+require('chrome-devtools-frontend/front_end/sdk/InspectorBackend.js');
+
+require('./web-inspector-backend.js');
+
+
+// Dependencies for network-recorder
 require('chrome-devtools-frontend/front_end/sdk/Target.js');
 require('chrome-devtools-frontend/front_end/sdk/NetworkManager.js');
 require('chrome-devtools-frontend/front_end/sdk/NetworkRequest.js');
@@ -140,22 +149,36 @@ require('chrome-devtools-frontend/front_end/sdk/NetworkRequest.js');
 
 require('chrome-devtools-frontend/front_end/sdk/TargetManager.js');
 require('chrome-devtools-frontend/front_end/host/InspectorFrontendHostAPI.js');
-require('chrome-devtools-frontend/front_end/sdk/InspectorBackend.js');
 require('chrome-devtools-frontend/front_end/sdk/ResourceTreeModel.js');
 require('chrome-devtools-frontend/front_end/sdk/ServiceWorkerManager.js');
 require('chrome-devtools-frontend/front_end/main/Connections.js');
+
+
 
 global.InspectorFrontendHost = new InspectorFrontendHostAPI();
 InspectorFrontendHost.events = new WebInspector.Object();
 
 global.location = {
-  toString: (_ => 'http://localhost:9222/devtools/inspector.html?ws=localhost:9222'),
+  toString: (_ => 'http://localhost:9111/devtools/inspector.html?ws=localhost:9000'),
   origin: 'localhost'
 };
 require('chrome-devtools-frontend/front_end/Runtime.js');
 
+
+WebInspector.ConsoleModel = function () { };
+WebInspector.NetworkLog = function () { };
+WebInspector.RuntimeModel = function () { };
+WebInspector.DebuggerModel = function () { };
+WebInspector.DOMModel = function () { };
+WebInspector.CSSModel = function () { };
+WebInspector.WorkerManager = function () { };
+WebInspector.CPUProfilerModel = function () { };
+WebInspector.HeapProfilerModel = function () { };
+WebInspector.TracingManager = function () { };
+
+
+
 var targetType = WebInspector.Target.Type.Page; // WebInspector.Target.Type.ServiceWorker
-console.error('hi', InspectorBackendClass)
 var connection = new WebInspector.MainConnection();
 var target = WebInspector.targetManager.createTarget(WebInspector.UIString("Main"), targetType, connection, null);
 
@@ -201,12 +224,7 @@ WebInspector.DeferredTempFile.prototype = {
 require('chrome-devtools-frontend/front_end/common/Color.js');
 
 // Mocked-up WebInspector Target for NetworkManager
-const fakeNetworkAgent = {
-  enable() {}
-};
-const fakeServiceWorkerAgent = {
-  enable() {}
-};
+
 const fakeTarget = {
   _modelByConstructor: new Map(),
   networkAgent() {
@@ -229,9 +247,6 @@ WebInspector.NetworkManager.createWithFakeTarget = function() {
   return new WebInspector.NetworkManager(fakeTarget);
 };
 
-WebInspector.ServiceWorkerManager.createWithFakeTarget = function() {
-  return new WebInspector.ServiceWorkerManager(fakeTarget);
-};
 
 // WebInspector.TargetManager = {
 //   Events: {
@@ -241,9 +256,14 @@ WebInspector.ServiceWorkerManager.createWithFakeTarget = function() {
 // };
 // WebInspector.targetManager = WebInspector.TargetManager;
 
-global.ServiceWorkerAgent = {
-  ServiceWorkerVersionRunningStatus: ["stopped", "starting", "running", "stopping"],
-  ServiceWorkerVersionStatus: ["new", "installing", "installed", "activating", "activated", "redundant"]
-};
+// global.ServiceWorkerAgent = {
+//   ServiceWorkerVersionRunningStatus: ["stopped", "starting", "running", "stopping"],
+//   ServiceWorkerVersionStatus: ["new", "installing", "installed", "activating", "activated", "redundant"]
+// };
 
-module.exports = WebInspector;
+
+
+module.exports = {
+  WebInspector,
+  target
+};

@@ -16,7 +16,7 @@
  */
 'use strict';
 
-const validateColor = require('./web-inspector').Color.parse;
+const validateColor = require('./web-inspector').WebInspector.Color.parse;
 
 const ALLOWED_DISPLAY_VALUES = [
   'fullscreen',

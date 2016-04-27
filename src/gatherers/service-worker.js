@@ -17,32 +17,33 @@
 'use strict';
 
 const Gather = require('./gather');
-const WebInspector = require('../lib/web-inspector');
+const WebInspectorObj = require('../lib/web-inspector');
+const target = WebInspectorObj.target;
+const WebInspector = WebInspectorObj.WebInspector;
 
 class ServiceWorker extends Gather {
 
   setup(options) {
     const driver = options.driver;
-    var mgr = this.mgr = WebInspector.ServiceWorkerManager.createWithFakeTarget();
-    var dispatcher = mgr._dispatcher;
+    this.mgr = target.serviceWorkerManager;
 
     driver.on('ServiceWorker.workerCreated', data =>
-      dispatcher.workerCreated(data.workerId, data.url, data.versionId));
+      this.mgr._workerCreated(data.workerId, data.url, data.versionId));
 
     driver.on('ServiceWorker.workerTerminated', data =>
-      dispatcher.workerTerminated(data.workerId));
+      this.mgr._workerTerminated(data.workerId));
 
     driver.on('ServiceWorker.dispatchMessage', data =>
-      dispatcher.dispatchMessage(data.workerId, data.message));
+      this.mgr._dispatchMessage(data.workerId, data.message));
 
     driver.on('ServiceWorker.workerRegistrationUpdated', data =>
-      dispatcher.workerRegistrationUpdated(data.registrations));
+      this.mgr._workerRegistrationUpdated(data.registrations));
 
     driver.on('ServiceWorker.workerErrorReported', data =>
-      dispatcher.workerRegistrationUpdated(data.errorMessage));
+      this.mgr._workerRegistrationUpdated(data.errorMessage));
 
     driver.on('ServiceWorker.workerVersionUpdated', data =>
-      dispatcher.workerVersionUpdated(data.versions));
+      this.mgr._workerVersionUpdated(data.versions));
 
     driver.sendCommand('ServiceWorker.enable');
   }
@@ -52,6 +53,7 @@ class ServiceWorker extends Gather {
     this.resolved = false;
 
     this.artifactsResolved = new Promise((res, _) => {
+      debugger;
       driver.on('ServiceWorker.workerVersionUpdated', data => {
         if (!this.resolved) {
           const controlledClients =

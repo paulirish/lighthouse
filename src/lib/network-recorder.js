@@ -16,7 +16,9 @@
  */
 'use strict';
 
-const NetworkManager = require('./web-inspector').NetworkManager;
+const WebInspectorObj = require('../lib/web-inspector');
+const target = WebInspectorObj.target;
+const NetworkManager = WebInspectorObj.WebInspector.NetworkManager;
 
 const REQUEST_FINISHED = NetworkManager.EventTypes.RequestFinished;
 
@@ -25,7 +27,7 @@ class NetworkRecorder {
     this._records = recordArray;
     this._rawEvents = rawEventsArray;
 
-    this.networkManager = NetworkManager.createWithFakeTarget();
+    this.networkManager = target.networkManager; //NetworkManager.createWithFakeTarget();
 
     // TODO(bckenny): loadingFailed calls are not recorded in REQUEST_FINISHED.
     this.networkManager.addEventListener(REQUEST_FINISHED, request => {
