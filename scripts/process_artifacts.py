@@ -16,7 +16,7 @@ import os
 import sys
 
 if 'CHROMIUM_SOURCE_PATH' not in os.environ:
-  print 'You must set the environment variable CHROMIUM_SOURCE_PATH'
+  print('You must set the environment variable CHROMIUM_SOURCE_PATH')
   sys.exit(1)
 
 CHROMIUM_SOURCE_PATH = os.environ['CHROMIUM_SOURCE_PATH']
@@ -30,12 +30,12 @@ from request_track import RequestTrack
 CLOVIS_TRACE_CATEGORIES = clovis_tracing.INITIAL_CATEGORIES
 
 def create_tracing_track(trace_events):
-  return {'events': [event for event in trace_events 
+  return {'events': [event for event in trace_events
             if event['cat'] in CLOVIS_TRACE_CATEGORIES
             or event['cat'] == '__metadata']}
 
 def create_page_track(frame_load_events):
-  events = [{'frame_id': e['frameId'], 'method': e['method']} 
+  events = [{'frame_id': e['frameId'], 'method': e['method']}
             for e in frame_load_events]
   return {'events': events}
 
@@ -58,7 +58,7 @@ clovis_trace['request_track'] = create_request_track(
                                   artifacts['rawNetworkEvents'])
 
 # Stubbing this to pass assertion for now
-# If the metadata is critical we can replicate the functionality of 
+# If the metadata is critical we can replicate the functionality of
 # `controller.ChromeControllerBase._StartConnection`
 # in lighthouse.
 clovis_trace['metadata'] = {}

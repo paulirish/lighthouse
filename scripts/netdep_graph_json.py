@@ -46,6 +46,6 @@ with open('clovis-trace.log') as f:
 	graph = get_network_dependency_graph(json.load(f))
 
 output_file = "dependency-graph.json"
-with open(output_file ,'w') as f: 
+with open(output_file ,'w') as f:
 	json.dump(graph.deps_graph.ToJsonDict(), f)
-	print 'Wrote dependency graph to {0}'.format(output_file)
+	print('Wrote dependency graph to {0}'.format(output_file))
