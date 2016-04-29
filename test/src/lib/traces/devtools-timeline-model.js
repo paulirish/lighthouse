@@ -1,6 +1,6 @@
 'use strict';
 
-/* global describe, it, WebInspector */
+/* global describe, it */
 
 const fs = require('fs');
 const assert = require('assert');
@@ -22,11 +22,6 @@ describe('DevTools Timeline Model', function() {
   // be consumed as a lib, without dirtying the shared natives
   it.skip('Array native globals dont leak', () => {
     assert.equal(Array.prototype.peekLast, undefined);
-  });
-
-  // Same story, but with global.WebInspector and a few other globals.
-  it.skip('WebInspector global doesn\'t leak', () => {
-    assert.equal(typeof WebInspector, 'undefined');
   });
 
   // We're not sandboxing so we don't expect conflicts of multiple instances
