@@ -17,13 +17,6 @@ describe('DevTools Timeline Model', function() {
     });
   });
 
-  // Our implementation in web-inspector.js doesn't sandbox the globals
-  // In the future, it'd be valuable to handle that so lighthouse can safely
-  // be consumed as a lib, without dirtying the shared natives
-  it.skip('Array native globals dont leak', () => {
-    assert.equal(Array.prototype.peekLast, undefined);
-  });
-
   // We're not sandboxing so we don't expect conflicts of multiple instances
   // So this test is somewhat unneccessary, but we'll keep it for the good of the order
   it('Multiple instances don\'t conflict', () => {
