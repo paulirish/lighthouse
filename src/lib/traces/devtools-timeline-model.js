@@ -82,13 +82,12 @@ class TimelineModel {
   }
 
  /**
-  * @ param  {!String} grouping Allowed values: None Category Subdomain Domain URL Name
-  * @ return {!WebInspector.TimelineProfileTree.Node} A grouped and sorted tree
+  * @param  {!string} grouping Allowed values: None Category Subdomain Domain URL EventName
+  * @return {!WebInspector.TimelineProfileTree.Node} A grouped and sorted tree
   */
   bottomUpGroupBy(grouping) {
     var topDown = this.topDown();
 
-    // One of: None Category Subdomain Domain URL EventName
     var groupSetting = WebInspector.TimelineAggregator.GroupBy[grouping];
     var groupingAggregator = this._aggregator.groupFunction(groupSetting);
     var bottomUpGrouped =

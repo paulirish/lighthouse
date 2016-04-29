@@ -173,14 +173,14 @@ WebInspector.DeferredTempFile.prototype = {
   finishWriting: function() {}
 };
 
-// add support for groupBy('Name')
+// add support for groupBy('EventName')
 WebInspector.TimelineAggregator.GroupBy.EventName = 'EventName';
 const oldNodeToGroupIdFunction = WebInspector.TimelineAggregator.prototype._nodeToGroupIdFunction;
 WebInspector.TimelineAggregator.prototype._nodeToGroupIdFunction = function(groupBy) {
   if (groupBy === WebInspector.TimelineAggregator.GroupBy.EventName) {
     return node => node.event.name;
   }
-  return oldNodeToGroupIdFunction.apply(this, arguments);
+  return oldNodeToGroupIdFunction.call(this, groupBy);
 };
 
 // Dependencies for color parsing.
