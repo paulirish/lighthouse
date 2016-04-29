@@ -17,11 +17,22 @@
 
 'use strict';
 
-// const WebInspector = require('../../../src/lib/web-inspector');
+const WebInspector = require('../../../src/lib/web-inspector');
 const assert = require('assert');
 
 /* global describe, it */
 describe('Web Inspector lib', function() {
+  it('WebInspector exported is the real one', () => {
+    assert.equal(typeof WebInspector, 'object');
+    assert.ok(WebInspector.TimelineModel);
+    assert.ok(WebInspector.TimelineUIUtils);
+    assert.ok(WebInspector.FilmStripModel);
+    assert.ok(WebInspector.TimelineProfileTree);
+    assert.ok(WebInspector.TimelineAggregator);
+    assert.ok(WebInspector.NetworkManager);
+    assert.ok(WebInspector.Color);
+  });
+
   // Our implementation of using DevTools doesn't sandbox natives
   // In the future, it'd be valuable to handle that so lighthouse can safely
   // be consumed as a lib, without dirtying the shared natives

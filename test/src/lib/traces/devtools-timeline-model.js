@@ -58,12 +58,9 @@ describe('DevTools Timeline Model', function() {
     const bottomUpByName = model.bottomUpGroupBy('EventName');
     const leavesCount = bottomUpByName.children.size;
     assert.equal(leavesCount, 15);
-    const result = new Map();
-    bottomUpByName.children.forEach(function(value, key) {
-      result.set(key, value.selfTime);
-    });
-    const time = [...result.values()][0].toFixed(2);
-    const name = [...result.keys()][0];
+    const topCosts = [...bottomUpByName.children.values()];
+    const time = topCosts[0].selfTime.toFixed(2);
+    const name = topCosts[0].id;
     assert.equal(time, '187.75');
     assert.equal(name, 'Layout');
   });
