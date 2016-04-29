@@ -17,8 +17,7 @@
 'use strict';
 
 const Driver = require('./driver.js');
-const log = (typeof process !== 'undefined' && 'version' in process) ?
-    require('npmlog').log : console.log.bind(console);
+const log = require('../log.js');
 
 /* globals chrome */
 
@@ -62,7 +61,7 @@ class ExtensionDriver extends Driver {
   beginLogging() {
     // log events received
     chrome.debugger.onEvent.addListener((source, method, params) =>
-     log('<=', method, params)
+     log.log('<=', method, params)
     );
   }
 
@@ -76,7 +75,7 @@ class ExtensionDriver extends Driver {
       this._listeners[eventName] = [];
     }
     // log event listeners being bound
-    log('listen for event =>', eventName);
+    log.log('listen for event =>', eventName);
     this._listeners[eventName].push(cb);
   }
 
@@ -101,19 +100,19 @@ class ExtensionDriver extends Driver {
    */
   sendCommand(command, params) {
     return new Promise((resolve, reject) => {
-      log('method => browser', command, params);
+      log.log('method => browser', command, params);
       chrome.debugger.sendCommand({tabId: this._tabId}, command, params, result => {
         if (chrome.runtime.lastError) {
-          log('error', 'method <= browser', command, result);
+          log.log('error', 'method <= browser', command, result);
           return reject(chrome.runtime.lastError);
         }
 
         if (result.wasThrown) {
-          log('error', 'method <= browser', command, result);
+          log.log('error', 'method <= browser', command, result);
           return reject(result.exceptionDetails);
         }
 
-        log('method <= browser OK', command, result);
+        log.log('method <= browser OK', command, result);
         resolve(result);
       });
     });

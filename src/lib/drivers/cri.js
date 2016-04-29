@@ -20,8 +20,7 @@ const Driver = require('./driver.js');
 const chromeRemoteInterface = require('chrome-remote-interface');
 const port = process.env.PORT || 9222;
 
-const log = (typeof process !== 'undefined' && 'version' in process) ?
-    require('npmlog').log : console.log.bind(console);
+const log = require('../log.js');
 
 class CriDriver extends Driver {
 
@@ -124,7 +123,7 @@ function _log(level, prefix, data) {
   const columns = (typeof process === 'undefined') ? Infinity : process.stdout.columns;
   const maxLength = columns - data.method.length - prefix.length - 7;
   const snippet = data.params ? JSON.stringify(data.params).substr(0, maxLength) : '';
-  log(level, prefix, data.method, snippet);
+  log.log(level, prefix, data.method, snippet);
 }
 
 module.exports = CriDriver;

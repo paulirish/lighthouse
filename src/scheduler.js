@@ -18,8 +18,7 @@
 
 const fs = require('fs');
 
-const log = (typeof process !== 'undefined' && 'version' in process) ?
-    require('npmlog').log : console.log.bind(console);
+const log = require('./lib/log.js');
 
 function loadPage(driver, gatherers, options) {
   const loadPage = options.flags.loadPage;
@@ -100,7 +99,7 @@ function flattenArtifacts(artifacts) {
 function saveArtifacts(artifacts) {
   const artifactsFilename = 'artifacts.log';
   fs.writeFileSync(artifactsFilename, JSON.stringify(artifacts));
-  log('info', 'artifacts file saved to disk', artifactsFilename);
+  log.log('info', 'artifacts file saved to disk', artifactsFilename);
 }
 
 function saveAssets(tracingData, url) {
@@ -109,7 +108,7 @@ function saveAssets(tracingData, url) {
   const filename = (hostname + '_' + date.toISOString() + '.trace.json')
       .replace(/[\/\?<>\\:\*\|":]/g, '-');
   fs.writeFileSync(filename, JSON.stringify(tracingData.traceContents, null, 2));
-  log('info', 'trace file saved to disk', filename);
+  log.log('info', 'trace file saved to disk', filename);
 }
 
 function run(gatherers, options) {

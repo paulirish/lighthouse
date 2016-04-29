@@ -176,11 +176,23 @@ WebInspector.DeferredTempFile.prototype = {
 // add support for groupBy('EventName')
 WebInspector.TimelineAggregator.GroupBy.EventName = 'EventName';
 const oldNodeToGroupIdFunction = WebInspector.TimelineAggregator.prototype._nodeToGroupIdFunction;
-WebInspector.TimelineAggregator.prototype._nodeToGroupIdFunction = function(groupBy) {
+WebInspector.TimelineAggregator.prototype._nodeToGroupIdFunction = function (groupBy) {
   if (groupBy === WebInspector.TimelineAggregator.GroupBy.EventName) {
     return node => node.event.name;
   }
   return oldNodeToGroupIdFunction.call(this, groupBy);
+};
+
+// Mock for WebInspector code that writes to console.
+WebInspector.ConsoleMessage = function() {};
+WebInspector.ConsoleMessage.MessageSource = {
+  Network: 'network'
+};
+WebInspector.ConsoleMessage.MessageLevel = {
+  Log: 'log'
+};
+WebInspector.ConsoleMessage.MessageType = {
+  Log: 'log'
 };
 
 // Dependencies for color parsing.
@@ -195,8 +207,15 @@ WebInspector.NetworkManager.createWithFakeTarget = function() {
   const fakeNetworkAgent = {
     enable() {}
   };
+  const fakeConsoleModel = {
+    addMessage() {},
+    target() {}
+  };
   const fakeTarget = {
     _modelByConstructor: new Map(),
+    get consoleModel() {
+      return fakeConsoleModel;
+    },
     networkAgent() {
       return fakeNetworkAgent;
     },

@@ -20,8 +20,7 @@
 const fs = require('fs');
 const Report = require('../report/report');
 
-const log = (typeof process !== 'undefined' && 'version' in process) ?
-    require('npmlog').log : console.log.bind(console);
+const log = require('../src/lib/log.js');
 
 /**
  * An enumeration of acceptable output modes:
@@ -45,7 +44,7 @@ const OUTPUT_MODE = {
  */
 function checkOutputMode(mode) {
   if (!OUTPUT_MODE.hasOwnProperty(mode)) {
-    log('warn', `Unknown output mode ${mode}; using pretty`);
+    log.log('warn', `Unknown output mode ${mode}; using pretty`);
     return OUTPUT_MODE.pretty;
   }
 
@@ -58,7 +57,7 @@ function checkOutputMode(mode) {
  */
 function checkOutputPath(path) {
   if (!path) {
-    log('warn', 'No output path set; using stdout');
+    log.log('warn', 'No output path set; using stdout');
     return 'stdout';
   }
 
