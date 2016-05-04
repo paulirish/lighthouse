@@ -46,11 +46,7 @@ class CriDriver extends Driver {
           this.beginLogging();
 
           // Switch on events from domains we care about.
-          this.enableRuntimeEvents()
-              .then(_ => this.enableSecurityEvents())
-              .then(_ => {
-                resolve();
-              });
+          this.enableRuntimeEvents().then(resolve);
         }).on('error', e => reject(e));
       });
       /* eslint-enable new-cap */

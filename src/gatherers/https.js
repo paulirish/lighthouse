@@ -27,6 +27,8 @@ class HTTPS extends Gather {
             data.schemeIsCryptographic)
       };
     });
+
+    driver.enableSecurityEvents();
   }
 }
 

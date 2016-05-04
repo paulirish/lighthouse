@@ -42,8 +42,7 @@ class ExtensionDriver extends Driver {
         this._tabId = tabId;
         this.beginLogging();
         return this.attachDebugger_(tabId)
-            .then(_ => this.enableRuntimeEvents())
-            .then(_ => this.enableSecurityEvents());
+            .then(_ => this.enableRuntimeEvents());
       });
   }
 
