@@ -59,8 +59,14 @@ class DriverBase {
     return this.sendCommand('Runtime.enable');
   }
 
-  enableSecurityEvents() {
-    return this.sendCommand('Security.enable');
+  getSecurityState() {
+    return new Promise((resolve, reject) => {
+      this.on('Security.securityStateChanged', data => {
+        this.sendCommand('Security.disable');
+        resolve(data);
+      });
+      this.sendCommand('Security.enable');
+    });
   }
 
   /**

@@ -21,14 +21,12 @@ const Gather = require('./gather');
 class HTTPS extends Gather {
   beforePageLoad(options) {
     const driver = options.driver;
-    driver.on('Security.securityStateChanged', data => {
+    driver.getSecurityState().then(data => {
       this.artifact = {
         https: (data.securityState === 'secure' &&
-            data.schemeIsCryptographic)
+          data.schemeIsCryptographic)
       };
     });
-
-    driver.enableSecurityEvents();
   }
 }
 
