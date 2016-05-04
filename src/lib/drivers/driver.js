@@ -59,7 +59,7 @@ class DriverBase {
 
   getSecurityState() {
     return new Promise((resolve, reject) => {
-      this.on('Security.securityStateChanged', data => {
+      this.once('Security.securityStateChanged', data => {
         this.sendCommand('Security.disable');
         resolve(data);
       });
