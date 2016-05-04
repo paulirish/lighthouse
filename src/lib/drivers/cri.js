@@ -44,9 +44,9 @@ class CriDriver extends Driver {
         chromeRemoteInterface({port: port, chooseTab: tab}, chrome => {
           this._chrome = chrome;
           this.beginLogging();
-
-          // Switch on events from domains we care about.
-          this.enableRuntimeEvents().then(resolve);
+          this.enableRuntimeEvents().then(_ => {
+            resolve();
+          });
         }).on('error', e => reject(e));
       });
       /* eslint-enable new-cap */
