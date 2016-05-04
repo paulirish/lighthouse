@@ -82,6 +82,14 @@ class DriverBase {
   }
 
   /**
+   * Bind a one-time listener for protocol events. Listener is removed once it
+   * has been called.
+   */
+  once() {
+    return Promise.reject(new Error('Not implemented'));
+  }
+
+  /**
    * Unbind event listeners
    */
   off() {

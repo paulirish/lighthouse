@@ -80,6 +80,21 @@ class ExtensionDriver extends Driver {
     this._listeners[eventName].push(cb);
   }
 
+  /**
+   * Bind a one-time listener for protocol events. Listener is removed once it
+   * has been called.
+   * @param {!string} eventName
+   * @param {function(...)} cb
+   */
+  once(eventName, cb) {
+    const cbGuard = function() {
+      cb(...arguments);
+      this.off(eventName, cbGuard);
+    }.bind(this);
+
+    this.on(eventName, cbGuard);
+  }
+
   _onEvent(source, method, params) {
     if (typeof this._listeners[method] === 'undefined') {
       return;
