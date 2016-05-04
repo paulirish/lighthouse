@@ -48,10 +48,10 @@ class ExtensionDriver extends Driver {
 
   disconnect() {
     if (this._tabId === null) {
-      return;
+      return Promise.resolve();
     }
 
-    this.detachDebugger_(this._tabId)
+    return this.detachDebugger_(this._tabId)
         .then(_ => {
           this._tabId = null;
           this.url = null;
@@ -78,6 +78,21 @@ class ExtensionDriver extends Driver {
     // log event listeners being bound
     log.log('listen for event =>', eventName);
     this._listeners[eventName].push(cb);
+  }
+
+  /**
+   * Bind a one-time listener for protocol events. Listener is removed once it
+   * has been called.
+   * @param {!string} eventName
+   * @param {function(...)} cb
+   */
+  once(eventName, cb) {
+    const cbGuard = function() {
+      cb(...arguments);
+      this.off(eventName, cbGuard);
+    }.bind(this);
+
+    this.on(eventName, cbGuard);
   }
 
   _onEvent(source, method, params) {

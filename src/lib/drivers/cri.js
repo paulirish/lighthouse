@@ -42,6 +42,7 @@ class CriDriver extends Driver {
         }
 
         chromeRemoteInterface({port: port, chooseTab: tab}, chrome => {
+          this._tab = tab;
           this._chrome = chrome;
           this.beginLogging();
           this.enableRuntimeEvents().then(_ => {
@@ -54,13 +55,31 @@ class CriDriver extends Driver {
   }
 
   disconnect() {
-    if (this._chrome === null) {
-      return;
-    }
+    return new Promise((resolve, reject) => {
+      if (!this._tab) {
+        return resolve();
+      }
 
-    this._chrome.close();
-    this._chrome = null;
-    this.url = null;
+      /* eslint-disable new-cap */
+      chromeRemoteInterface.Close({
+        id: this._tab.id
+      }, err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+      /* eslint-enable new-cap */
+    })
+    .then(() => {
+      if (this._chrome) {
+        this._chrome.close();
+      }
+      this._tab = null;
+      this._chrome = null;
+      this.url = null;
+    });
   }
 
   beginLogging() {
@@ -80,6 +99,21 @@ class CriDriver extends Driver {
     // log event listeners being bound
     _log('info', 'listen for event =>', {method: eventName});
     this._chrome.on(eventName, cb);
+  }
+
+  /**
+   * Bind a one-time listener for protocol events. Listener is removed once it
+   * has been called.
+   * @param {!string} eventName
+   * @param {function(...)} cb
+   */
+  once(eventName, cb) {
+    if (this._chrome === null) {
+      throw new Error('connect() must be called before attempting to listen to events.');
+    }
+    // log event listeners being bound
+    _log('info', 'listen once for event =>', {method: eventName});
+    this._chrome.once(eventName, cb);
   }
 
   /**
