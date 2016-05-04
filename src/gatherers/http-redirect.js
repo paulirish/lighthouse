@@ -38,7 +38,9 @@ class HTTPRedirect extends Gather {
     // If the URL hasn't changed then the origin URL was HTTP.
     if (httpURL === url) {
       this.artifact = {
-        redirectsHTTP: false
+        redirectsHTTP: {
+          value: false
+        }
       };
 
       return Promise.resolve();
