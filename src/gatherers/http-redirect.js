@@ -46,24 +46,46 @@ class HTTPRedirect extends Gather {
 
     return new Promise((resolve, reject) => {
       let securityStateChangedTimeout;
+      let noSecurityChangesTimeout;
+
       driver.on('Security.securityStateChanged', data => {
         // Clear out any previous results.
         if (securityStateChangedTimeout !== undefined) {
           clearTimeout(securityStateChangedTimeout);
         }
 
+        if (noSecurityChangesTimeout !== undefined) {
+          clearTimeout(noSecurityChangesTimeout);
+        }
+
         // Wait up to 3 seconds for updated security events.
         securityStateChangedTimeout = setTimeout(_ => {
           this.artifact = {
-            redirectsHTTP: data.schemeIsCryptographic
+            redirectsHTTP: {
+              value: data.schemeIsCryptographic
+            }
           };
           resolve();
         }, 3000);
       });
 
-      // Redirect out to about:blank
+      // Redirect out to about:blank first, because HTTP -> HTTPS causes a hang, similar to the way
+      // that Page.navigate vs Page.reload does. So we basically force the issue by going to
+      // about:blank first. That way there's no confusion.
       driver.gotoURL('about:blank', {waitForLoad: false})
           .then(_ => driver.gotoURL(httpURL, {waitForLoad: true}));
+
+      // Wait for 10 seconds then bail.
+      noSecurityChangesTimeout = setTimeout(_ => {
+        this.artifact = {
+          redirectsHTTP: {
+            value: false,
+            debugString: 'Timed out waiting for HTTP redirection.'
+          }
+        };
+
+        resolve();
+      }, 10000);
     });
   }
 }
