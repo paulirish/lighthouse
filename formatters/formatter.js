@@ -34,14 +34,16 @@ class Formatter {
 
   static _getFormatters() {
     this._formatters = {
-      accessibility: require('./accessibility')
+      accessibility: require('./accessibility'),
+      criticalNetworkChains: require('./critical-network-chains')
     };
   }
 
   static _generateSupportedFormats() {
     const formatNames = Object.keys(this._formatters);
     this._supportedFormatsNames = formatNames.reduce((prev, format) => {
-      prev[format.toUpperCase()] = format;
+      const formatName = format.replace(/([A-Z])/g, '_$1').toUpperCase();
+      prev[formatName] = format;
       return prev;
     }, {});
   }

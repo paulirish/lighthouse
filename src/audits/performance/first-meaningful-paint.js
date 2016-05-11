@@ -19,6 +19,7 @@
 
 const FMPMetric = require('../../metrics/first-meaningful-paint');
 const Audit = require('../audit');
+const Formatter = require('../../../formatters/formatter');
 
 class FirstMeaningfulPaint extends Audit {
   /**
@@ -88,6 +89,10 @@ class FirstMeaningfulPaint extends Audit {
           return FirstMeaningfulPaint.generateAuditResult({
             value: result.score,
             rawValue: result.duration,
+            extendedInfo: {
+              formatter: Formatter.SUPPORTED_FORMATS.CRITICAL_NETWORK_CHAINS,
+              value: artifacts.criticalNetworkChains
+            },
             debugString: result.debugString,
             optimalValue: this.optimalValue
           });
