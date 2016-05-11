@@ -180,7 +180,7 @@ class ReportGenerator {
         }
 
         const formatter = Formatter.getByName(subItem.extendedInfo.formatter);
-        const helpers = formatter.getHelpers(results);
+        const helpers = formatter.getHelpers();
         if (helpers) {
           Handlebars.registerHelper(helpers);
         }

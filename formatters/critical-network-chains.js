@@ -47,12 +47,13 @@ class CriticalNetworkChains extends Formatter {
   static _createURLTree(info) {
     return info.reduce((tree, item) => {
       let node = tree;
-      item.urls.forEach(itemUrl => {
-        if (!node[itemUrl]) {
-          node[itemUrl] = {};
+      item.urls.forEach((itemURL, index, arr) => {
+        if (!node[itemURL]) {
+          const isLastChild = (index === arr.length - 1);
+          node[itemURL] = isLastChild ? item.totalTimeBetweenBeginAndEnd : {};
         }
 
-        node = node[itemUrl];
+        node = node[itemURL];
       });
 
       return tree;
@@ -70,9 +71,10 @@ class CriticalNetworkChains extends Formatter {
     }
 
     function write(node, depth, parentIsLastChild) {
-      return Object.keys(node).reduce((output, itemUrl, currentIndex, arr) => {
+      return Object.keys(node).reduce((output, itemURL, currentIndex, arr) => {
         // Test if this node has children, and if it's the last child.
-        const hasChildren = Object.keys(node[itemUrl]).length > 0;
+        const hasChildren = (typeof node[itemURL] === 'object') &&
+            Object.keys(node[itemURL]).length > 0;
         const isLastChild = (currentIndex === arr.length - 1);
 
         // If the parent is the last child then don't drop the vertical bar.
@@ -85,7 +87,10 @@ class CriticalNetworkChains extends Formatter {
             (hasChildren ? '┳' : '━');
 
         // Return the previous output plus this new node, and recursively write its children.
-        return output + `${treeMarker} ${url}\n` + write(node[itemUrl], depth + 1, isLastChild);
+        return output + `${treeMarker} ${CriticalNetworkChains.formatURL(itemURL)}` +
+            // If this node has children, write them out. Othewise write the chain time.
+            (hasChildren ? '' : ` (${node[itemURL].toFixed(2)}ms)`) + '\n' +
+            write(node[itemURL], depth + 1, isLastChild);
       }, '');
     }
 
@@ -96,9 +101,9 @@ class CriticalNetworkChains extends Formatter {
     switch (type) {
       case 'pretty':
         return function(info) {
-          const urlTree = CriticalNetworkChains._createURLTreeOutput(info);
           const longestChain = CriticalNetworkChains._getLongestChainLength(info);
           const longestDuration = CriticalNetworkChains._getLongestChainDuration(info);
+          const urlTree = CriticalNetworkChains._createURLTreeOutput(info);
 
           const output = `    - Critical network chains: ${info.length}\n` +
           `    - Longest request chain (shorter is better): ${longestChain}\n` +
@@ -117,54 +122,67 @@ class CriticalNetworkChains extends Formatter {
     }
   }
 
-  static getHelpers(results) {
+  static formatTime(time) {
+    return time.toFixed(2);
+  }
+
+  static formatURL(resourceURL) {
+    const parsedResourceURL = url.parse(resourceURL);
+    const file = parsedResourceURL.path
+        // Grab the last two parts of the path.
+        .split('/').slice(-2).join('/')
+        // Remove any query strings.
+        .replace(/\?.*/, '');
+
+    return file;
+  }
+
+  static getHelpers() {
     return {
       createTreeStructure(info, opts) {
         return opts.fn({parent: null, node: CriticalNetworkChains._createURLTree(info)});
       },
 
-      trimURL(resourceURL) {
-        const resultsURL = url.parse(results.url);
-        const toTrim = resultsURL.protocol + '//' + resultsURL.hostname;
-        return resourceURL.replace(toTrim, '');
+      chains(info) {
+        return info.length;
       },
+
+      longestChain(info) {
+        return CriticalNetworkChains._getLongestChainLength(info);
+      },
+
+      longestDuration(info) {
+        return CriticalNetworkChains._getLongestChainDuration(info);
+      },
+
+      formatURL: CriticalNetworkChains.formatURL,
+
+      formatTime: CriticalNetworkChains.formatTime,
 
       childCount(node) {
         return Object.keys(node).length;
       },
 
-      createContextFor(parent, node, opts) {
+      createContextFor(parent, node, url, parentIsLastChild, opts) {
+        const siblings = Object.keys(parent.node);
+        const isLastChild = siblings.indexOf(url) === (siblings.length - 1);
+        const hasChildren = Object.keys(node).length > 0;
+
+        let depth = [];
+        let ancestor = parent.parent;
+        while (ancestor !== null) {
+          depth.push(!parentIsLastChild);
+          ancestor = ancestor.parent;
+        }
+
         return opts.fn({
           parent,
-          node
+          node,
+          isLastChild,
+          hasChildren,
+          parentIsLastChild,
+          depth
         });
-      },
-
-      padDepth(node) {
-        let depth = '';
-        while (node.parent !== null) {
-          depth += '&nbsp;&nbsp;';
-          node = node.parent;
-        }
-
-        return depth;
-      },
-
-      isLastChild(parent, url, opts) {
-        const keys = Object.keys(parent.node);
-        if (keys.indexOf(url) === keys.length - 1) {
-          return opts.fn(this);
-        }
-
-        return opts.inverse(this);
-      },
-
-      hasChildren(node, opts) {
-        if (Object.keys(node).length > 0) {
-          return opts.fn(this);
-        }
-
-        return opts.inverse(this);
       }
     };
   }
