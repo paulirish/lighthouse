@@ -1,0 +1,53 @@
+<!-- const treeMarker = leftPad('', padStr, depth) +
+                (isLastChild ? '┗━' : '┣━') +
+                (hasChildren ? '┳' : '━');
+ -->
+{{#*inline "writeNode"}}
+  <span class="cnc-node">
+    {{{ padDepth this }}}
+    <span class="cnc-node__tree-marker">
+    {{#isLastChild this.parent @key}}
+      ┗━
+    {{else}}
+      ┣━
+    {{/isLastChild}}
+
+    {{#hasChildren this.node}}
+      ┳
+    {{else}}
+      ━
+    {{/hasChildren}}
+    </span>
+
+    {{trimURL @key }}
+  </span>
+
+  {{#each this.node as |node|}}
+    {{#createContextFor .. node }}
+      {{> writeNode this }}
+    {{/createContextFor }}
+  {{/each}}
+{{/inline}}
+
+<style>
+.cnc-tree {
+  font-family: monospace;
+  font-style: normal !important;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.cnc-node {
+  display: block;
+  white-space: nowrap;
+}
+</style>
+<div class="cnc-tree">
+  {{#createTreeStructure this}}
+    {{#each this.node as |node| }}
+      {{#createContextFor .. node }}
+        {{> writeNode this }}
+      {{/createContextFor}}
+    {{/each}}
+  {{/createTreeStructure}}
+</div>

@@ -27,12 +27,12 @@ class Accessibilty extends Formatter {
     switch (type) {
       case 'pretty':
         return function(info) {
-          let output = `      - Rating: ${info.impact}\n` +
-          `      - See: ${info.helpUrl}\n` +
-          '      - Nodes:\n';
+          let output = `    - Rating: ${info.impact}\n` +
+          `    - See: ${info.helpUrl}\n` +
+          '    - Nodes:\n';
 
           info.nodes.reduce((prev, node) => {
-            return prev + `      - ${node.target}\n`;
+            return prev + `    - ${node.target}\n`;
           }, '');
 
           return output;
