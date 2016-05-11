@@ -18,7 +18,6 @@
 'use strict';
 
 const Gather = require('./gather');
-const log = require('../lib/log.js');
 
 /**
  * @param {!Array<Array<T>>} arr
@@ -140,36 +139,29 @@ class CriticalNetworkChains extends Gather {
 
   postProfiling(options, tracingData) {
     const chains = this.getCriticalChains(tracingData.networkRecords);
+    let nonTrivialChains = chains.filter(chain => chain.length > 1);
 
-    if (options.flags.useNetDepGraph) {
-      // There logs are here so we can test this gatherer
-      // Will be removed when we have a way to surface them in the report
-      const nonTrivialChains = chains.filter(chain => chain.length > 1);
+    // Note: Approximately,
+    // startTime: time when request was dispatched
+    // responseReceivedTime: either time to first byte, or time of receiving
+    //  the end of response headers
+    // endTime: time when response loading finished
+    nonTrivialChains = nonTrivialChains.map(chain => ({
+      urls: chain.map(request => request._url),
+      totalRequests: chain.length,
+      times: chain.map(request => ({
+        startTime: request.startTime,
+        endTime: request.endTime,
+        responseReceivedTime: request.responseReceivedTime
+      })),
+      totalTimeBetweenBeginAndEnd:
+        (chain[chain.length - 1].endTime - chain[0].startTime) * 1000,
+      totalLoadingTime: (chain.reduce((acc, req) =>
+        acc + (req.endTime - req.responseReceivedTime), 0)) * 1000
+    })).sort((a, b) =>
+      b.totalTimeBetweenBeginAndEnd - a.totalTimeBetweenBeginAndEnd);
 
-      // Note: Approximately,
-      // startTime: time when request was dispatched
-      // responseReceivedTime: either time to first byte, or time of receiving
-      //  the end of response headers
-      // endTime: time when response loading finished
-      const debuggingData = nonTrivialChains.map(chain => ({
-        urls: chain.map(request => request._url),
-        totalRequests: chain.length,
-        times: chain.map(request => ({
-          startTime: request.startTime,
-          endTime: request.endTime,
-          responseReceivedTime: request.responseReceivedTime
-        })),
-        totalTimeBetweenBeginAndEnd:
-          (chain[chain.length - 1].endTime - chain[0].startTime) * 1000,
-        totalLoadingTime: (chain.reduce((acc, req) =>
-          acc + (req.endTime - req.responseReceivedTime), 0)) * 1000
-      })).sort((a, b) =>
-        b.totalTimeBetweenBeginAndEnd - a.totalTimeBetweenBeginAndEnd);
-      log.log('info', 'cricital chains', JSON.stringify(debuggingData));
-      log.log('info', 'lengths of critical chains', debuggingData.map(d => d.totalRequests));
-    }
-
-    this.artifacts = {CriticalNetworkChains: chains};
+    this.artifact = {criticalNetworkChains: nonTrivialChains};
   }
 
   /**
