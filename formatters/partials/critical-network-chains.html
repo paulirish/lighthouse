@@ -26,9 +26,12 @@
     </span>
 
     <span class="cnc-node__tree-value">
-      {{formatURL @key }}
+      {{#parseURL @key }}
+        <span class="cnc-node__tree-file">{{ this.file }}</span>
+        <span class="cnc-node__tree-hostname">({{ this.hostname }})</span>
+      {{/parseURL}}
       {{#unless hasChildren}}
-        ({{formatTime this.node }}ms)
+        - <span class="cnc-node__chain-duration">{{formatTime this.node }}ms</span>
       {{/unless}}
     </span>
   </div>
@@ -88,6 +91,15 @@
 .cnc-node__tree-value {
   margin-left: 10px;
 }
+
+.cnc-node__chain-duration {
+  font-weight: bold;
+}
+
+.cnc-node__tree-hostname {
+  color: #999;
+}
+
 </style>
 <div class="cnc-tree">
   <div>Critical network chains: {{chains this}}</div>
@@ -97,7 +109,7 @@
     <div>
       <div>Chains</div>
       {{#each this.node as |node| }}
-        {{#createContextFor .. node @key false }}
+        {{#createContextFor .. node @key true }}
           {{> writeNode this }}
         {{/createContextFor}}
       {{/each}}

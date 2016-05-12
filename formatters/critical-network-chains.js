@@ -23,80 +23,15 @@ const fs = require('fs');
 const Formatter = require('./formatter');
 const html = fs.readFileSync(path.join(__dirname, 'partials/critical-network-chains.html'), 'utf8');
 
+// We need to use the ES7 Polyfill for Object.keys, which only polyfills if Object.values()
+// doesn't already exist.
+require('../third_party/object-values-polyfill');
+
 class CriticalNetworkChains extends Formatter {
-  static _getLongestChainLength(info) {
-    return info.reduce((total, item) => {
-      if (item.totalRequests > total) {
-        return item.totalRequests;
-      }
 
-      return total;
-    }, 0);
-  }
-
-  static _getLongestChainDuration(info) {
-    return info.reduce((total, item) => {
-      if (item.totalTimeBetweenBeginAndEnd > total) {
-        return item.totalTimeBetweenBeginAndEnd;
-      }
-
-      return total;
-    }, 0);
-  }
-
-  static _createURLTree(info) {
-    return info.reduce((tree, item) => {
-      let node = tree;
-      item.urls.forEach((itemURL, index, arr) => {
-        if (!node[itemURL]) {
-          const isLastChild = (index === arr.length - 1);
-          node[itemURL] = isLastChild ? item.totalTimeBetweenBeginAndEnd : {};
-        }
-
-        node = node[itemURL];
-      });
-
-      return tree;
-    }, {});
-  }
-
-  static _createURLTreeOutput(info) {
-    const urlTree = CriticalNetworkChains._createURLTree(info);
-
-    function leftPad(str, padStr, amount) {
-      while (amount--) {
-        str = padStr + str;
-      }
-      return str;
-    }
-
-    function write(node, depth, parentIsLastChild) {
-      return Object.keys(node).reduce((output, itemURL, currentIndex, arr) => {
-        // Test if this node has children, and if it's the last child.
-        const hasChildren = (typeof node[itemURL] === 'object') &&
-            Object.keys(node[itemURL]).length > 0;
-        const isLastChild = (currentIndex === arr.length - 1);
-
-        // If the parent is the last child then don't drop the vertical bar.
-        const padStr = parentIsLastChild ? '  ' : '┃ ';
-
-        // Create the appropriate tree marker based on the depth of this
-        // node as well as whether or not it has children and is itself the last child.
-        const treeMarker = leftPad('', padStr, depth) +
-            (isLastChild ? '┗━' : '┣━') +
-            (hasChildren ? '┳' : '━');
-
-        // Return the previous output plus this new node, and recursively write its children.
-        return output + `${treeMarker} ${CriticalNetworkChains.formatURL(itemURL)}` +
-            // If this node has children, write them out. Othewise write the chain time.
-            (hasChildren ? '' : ` (${node[itemURL].toFixed(2)}ms)`) + '\n' +
-            write(node[itemURL], depth + 1, isLastChild);
-      }, '');
-    }
-
-    return write(urlTree, 0);
-  }
-
+  /**
+   * gets the formatter for the CLI Printer and the HTML report.
+   */
   static getFormatter(type) {
     switch (type) {
       case 'pretty':
@@ -122,19 +57,119 @@ class CriticalNetworkChains extends Formatter {
     }
   }
 
+  static _getLongestChainLength(info) {
+    return info.reduce((total, item) => {
+      if (item.totalRequests > total) {
+        return item.totalRequests;
+      }
+
+      return total;
+    }, 0);
+  }
+
+  static _getLongestChainDuration(info) {
+    return info.reduce((total, item) => {
+      if (item.totalTimeBetweenBeginAndEnd > total) {
+        return item.totalTimeBetweenBeginAndEnd;
+      }
+
+      return total;
+    }, 0);
+  }
+
+  /**
+   * Refactors the gatherer's request information into a tree.
+   */
+  static _createURLTree(info) {
+    return info.reduce((tree, item) => {
+      let node = tree;
+      item.urls.forEach((itemURL, index, arr) => {
+        if (!node[itemURL]) {
+          const isLastChild = (index === arr.length - 1);
+          node[itemURL] = isLastChild ? item.totalTimeBetweenBeginAndEnd : {};
+        }
+
+        node = node[itemURL];
+      });
+
+      return tree;
+    }, {});
+  }
+
+  /**
+   * Converts the tree into an ASCII tree.
+   */
+  static _createURLTreeOutput(info) {
+    const urlTree = CriticalNetworkChains._createURLTree(info);
+
+    function leftPad(str, padStr, amount) {
+      while (amount--) {
+        str = padStr + str;
+      }
+      return str;
+    }
+
+    function write(node, depth, treeMarkers) {
+      return Object.keys(node).reduce((output, itemURL, currentIndex, arr) => {
+        // Test if this node has children, and if it's the last child.
+        const hasChildren = (typeof node[itemURL] === 'object') &&
+            Object.keys(node[itemURL]).length > 0;
+        const isLastChild = (currentIndex === arr.length - 1);
+
+        // If the parent is the last child then don't drop the vertical bar.
+        const ancestorTreeMarker = treeMarkers.reduce((markers, marker) => {
+          return markers + (marker ? '┃ ' : '  ');
+        }, '');
+
+        // Copy the tree markers so that we don't change by reference.
+        const newTreeMakers = treeMarkers.slice(0);
+
+        // Add on the new entry.
+        newTreeMakers.push(!isLastChild);
+
+        // Create the appropriate tree marker based on the depth of this
+        // node as well as whether or not it has children and is itself the last child.
+        const treeMarker = ancestorTreeMarker +
+            (isLastChild ? '┗━' : '┣━') +
+            (hasChildren ? '┳' : '━');
+
+        const parsedURL = CriticalNetworkChains.parseURL(itemURL);
+
+        // Return the previous output plus this new node, and recursively write its children.
+        return output + `${treeMarker} ${parsedURL.file} (${parsedURL.hostname})` +
+            // If this node has children, write them out. Othewise write the chain time.
+            (hasChildren ? '' : ` - ${node[itemURL].toFixed(2)}ms`) + '\n' +
+            write(node[itemURL], depth + 1, newTreeMakers);
+      }, '');
+    }
+
+    return write(urlTree, 0, []);
+  }
+
   static formatTime(time) {
     return time.toFixed(2);
   }
 
-  static formatURL(resourceURL) {
+  static parseURL(resourceURL, opts) {
     const parsedResourceURL = url.parse(resourceURL);
     const file = parsedResourceURL.path
-        // Grab the last two parts of the path.
-        .split('/').slice(-2).join('/')
         // Remove any query strings.
-        .replace(/\?.*/, '');
+        .replace(/\?.*/, '')
+        // Grab the last two parts of the path.
+        .split('/').slice(-2).join('/');
+    const hostname = parsedResourceURL.hostname;
+    const parsedURL = {
+      file,
+      hostname
+    };
 
-    return file;
+    // If we get passed the opts parameter, this is Handlebars, so we
+    // need to return the object back via the opts.fn so it becomes the context.
+    if (opts) {
+      return opts.fn(parsedURL);
+    }
+
+    return parsedURL;
   }
 
   static getHelpers() {
@@ -155,7 +190,7 @@ class CriticalNetworkChains extends Formatter {
         return CriticalNetworkChains._getLongestChainDuration(info);
       },
 
-      formatURL: CriticalNetworkChains.formatURL,
+      parseURL: CriticalNetworkChains.parseURL,
 
       formatTime: CriticalNetworkChains.formatTime,
 
@@ -163,15 +198,34 @@ class CriticalNetworkChains extends Formatter {
         return Object.keys(node).length;
       },
 
+      /**
+       * Helper function for Handlebars that creates the context for each node
+       * based on its parent. Calculates if this node is the last child, whether
+       * it has any children itself and what the tree looks like all the way back
+       * up to the root, so the tree markers can be drawn correctly.
+       */
       createContextFor(parent, node, url, parentIsLastChild, opts) {
         const siblings = Object.keys(parent.node);
         const isLastChild = siblings.indexOf(url) === (siblings.length - 1);
         const hasChildren = Object.keys(node).length > 0;
 
+        // Build up the tree markers stepping back up the tree.
         let depth = [];
-        let ancestor = parent.parent;
-        while (ancestor !== null) {
-          depth.push(!parentIsLastChild);
+        let ancestor = parent;
+        let ancestorIsLastChild = false;
+        let ancestorSiblings;
+        while (ancestor.parent !== null) {
+          // Find the ancestor node's siblings and figure out if it is the last
+          // child in amongst its siblings.
+          ancestorSiblings = Object.values(ancestor.parent.node);
+          ancestorIsLastChild =
+              (ancestorSiblings.indexOf(ancestor.node) === ancestorSiblings.length - 1);
+
+          // Push on the front of the array the inverse (not the last child requires a vertical
+          // bar in the tree, last child does not).
+          depth.unshift(!ancestorIsLastChild);
+
+          // Step back up the chain.
           ancestor = ancestor.parent;
         }
 
