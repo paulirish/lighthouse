@@ -36,8 +36,7 @@ class CriticalNetworkChains extends Formatter {
           const longestDuration = CriticalNetworkChains._getLongestChainDuration(info);
           const urlTree = CriticalNetworkChains._createURLTreeOutput(info);
 
-          const output = `    - Critical network chains: ${info.length}\n` +
-          `    - Longest request chain (shorter is better): ${longestChain}\n` +
+          const output = `    - Longest request chain (shorter is better): ${longestChain}\n` +
           `    - Longest chain duration (shorter is better): ${longestDuration.toFixed(2)}ms\n` +
           '    - Chains\n' +
               '      ' + urlTree.replace(/\n/g, '\n      ') + '\n';
