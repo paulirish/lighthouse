@@ -102,9 +102,9 @@
 
 </style>
 <div class="cnc-tree">
-  <div>Critical network chains: {{chains this}}</div>
-  <div>Longest request chain (shorter is better): {{longestChain this}}</div>
-  <div>Longest chain duration (shorter is better): {{formatTime (longestDuration this)}}ms</div>
+  <div>Critical network chains: <strong>{{chains this}}</strong></div>
+  <div>Longest request chain (shorter is better): <strong>{{longestChain this}}</strong></div>
+  <div>Longest chain duration (shorter is better): <strong>{{formatTime (longestDuration this)}}ms</strong></div>
   {{#createTreeStructure this}}
     <div>
       <div>Chains</div>
