@@ -23,10 +23,6 @@ const fs = require('fs');
 const Formatter = require('./formatter');
 const html = fs.readFileSync(path.join(__dirname, 'partials/critical-network-chains.html'), 'utf8');
 
-// We need to use the ES7 Polyfill for Object.keys, which only polyfills if Object.values()
-// doesn't already exist.
-require('../third_party/object-values-polyfill');
-
 class CriticalNetworkChains extends Formatter {
 
   /**
@@ -101,13 +97,6 @@ class CriticalNetworkChains extends Formatter {
    */
   static _createURLTreeOutput(info) {
     const urlTree = CriticalNetworkChains._createURLTree(info);
-
-    function leftPad(str, padStr, amount) {
-      while (amount--) {
-        str = padStr + str;
-      }
-      return str;
-    }
 
     function write(node, depth, treeMarkers) {
       return Object.keys(node).reduce((output, itemURL, currentIndex, arr) => {
@@ -204,29 +193,17 @@ class CriticalNetworkChains extends Formatter {
        * it has any children itself and what the tree looks like all the way back
        * up to the root, so the tree markers can be drawn correctly.
        */
-      createContextFor(parent, node, url, parentIsLastChild, opts) {
+      createContextFor(parent, node, url, treeMarkers, parentIsLastChild, opts) {
         const siblings = Object.keys(parent.node);
         const isLastChild = siblings.indexOf(url) === (siblings.length - 1);
         const hasChildren = Object.keys(node).length > 0;
 
-        // Build up the tree markers stepping back up the tree.
-        let depth = [];
-        let ancestor = parent;
-        let ancestorIsLastChild = false;
-        let ancestorSiblings;
-        while (ancestor.parent !== null) {
-          // Find the ancestor node's siblings and figure out if it is the last
-          // child in amongst its siblings.
-          ancestorSiblings = Object.values(ancestor.parent.node);
-          ancestorIsLastChild =
-              (ancestorSiblings.indexOf(ancestor.node) === ancestorSiblings.length - 1);
+        // Copy the tree markers so that we don't change by reference.
+        const newTreeMarkers = Array.isArray(treeMarkers) ? treeMarkers.slice(0) : [];
 
-          // Push on the front of the array the inverse (not the last child requires a vertical
-          // bar in the tree, last child does not).
-          depth.unshift(!ancestorIsLastChild);
-
-          // Step back up the chain.
-          ancestor = ancestor.parent;
+        // Add on the new entry.
+        if (typeof parentIsLastChild !== 'undefined') {
+          newTreeMarkers.push(!parentIsLastChild);
         }
 
         return opts.fn({
@@ -234,8 +211,7 @@ class CriticalNetworkChains extends Formatter {
           node,
           isLastChild,
           hasChildren,
-          parentIsLastChild,
-          depth
+          treeMarkers: newTreeMarkers
         });
       }
     };

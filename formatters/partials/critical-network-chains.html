@@ -1,7 +1,7 @@
 {{#*inline "writeNode"}}
   <div class="cnc-node" title="{{ @key }}">
     <span class="cnc-node__tree-marker">
-    {{#each depth as |separator| }}
+    {{#each treeMarkers as |separator| }}
       {{#separator}}
       <span class="tree-marker vert"></span>
       <span class="tree-marker space"></span>
@@ -37,7 +37,7 @@
   </div>
 
   {{#each this.node as |node|}}
-    {{#createContextFor .. node @key ../isLastChild }}
+    {{#createContextFor .. node @key ../treeMarkers ../isLastChild }}
       {{> writeNode this }}
     {{/createContextFor }}
   {{/each}}
@@ -109,7 +109,7 @@
     <div>
       <div>Chains</div>
       {{#each this.node as |node| }}
-        {{#createContextFor .. node @key true }}
+        {{#createContextFor .. node @key undefined undefined }}
           {{> writeNode this }}
         {{/createContextFor}}
       {{/each}}
