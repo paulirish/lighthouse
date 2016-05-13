@@ -139,27 +139,36 @@ class CriticalNetworkChains extends Gather {
 
   postProfiling(options, tracingData) {
     const chains = this.getCriticalChains(tracingData.networkRecords);
-    let nonTrivialChains = chains.filter(chain => chain.length > 1);
 
-    // Note: Approximately,
-    // startTime: time when request was dispatched
-    // responseReceivedTime: either time to first byte, or time of receiving
-    //  the end of response headers
-    // endTime: time when response loading finished
-    nonTrivialChains = nonTrivialChains.map(chain => ({
-      urls: chain.map(request => request._url),
-      totalRequests: chain.length,
-      times: chain.map(request => ({
+    let nonTrivialChains = chains.filter(chain => chain.length > 1);
+    nonTrivialChains = nonTrivialChains.map(chain => {
+      // Note: Approximately:
+      //  startTime: time when request was dispatched
+      //  responseReceivedTime: either time to first byte, or time of receiving
+      //    the end of response headers
+      //  endTime: time when response loading finished
+      const times = chain.map(request => ({
         startTime: request.startTime,
         endTime: request.endTime,
         responseReceivedTime: request.responseReceivedTime
-      })),
-      totalTimeBetweenBeginAndEnd:
-        (chain[chain.length - 1].endTime - chain[0].startTime) * 1000,
-      totalLoadingTime: (chain.reduce((acc, req) =>
-        acc + (req.endTime - req.responseReceivedTime), 0)) * 1000
-    })).sort((a, b) =>
-      b.totalTimeBetweenBeginAndEnd - a.totalTimeBetweenBeginAndEnd);
+      }));
+      const urls = chain.map(request => request._url);
+      const totalChainDuration = (chain[chain.length - 1].endTime - chain[0].startTime) * 1000;
+
+      // calculate time spent downloading resopnses
+      function downloadTime(acc, req) {
+        return acc + (req.endTime - req.responseReceivedTime);
+      }
+      const chainDownloadingTime = chain.reduce(downloadTime, 0) * 1000;
+
+      return {
+        urls,
+        totalRequests: chain.length,
+        times,
+        totalChainDuration,
+        chainDownloadingTime
+      };
+    }).sort((a, b) => b.totalChainDuration - a.totalChainDuration);
 
     this.artifact = {criticalNetworkChains: nonTrivialChains};
   }

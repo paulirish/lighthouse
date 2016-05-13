@@ -64,8 +64,8 @@ class CriticalNetworkChains extends Formatter {
 
   static _getLongestChainDuration(info) {
     return info.reduce((total, item) => {
-      if (item.totalTimeBetweenBeginAndEnd > total) {
-        return item.totalTimeBetweenBeginAndEnd;
+      if (item.totalChainDuration > total) {
+        return item.totalChainDuration;
       }
 
       return total;
@@ -81,7 +81,7 @@ class CriticalNetworkChains extends Formatter {
       item.urls.forEach((itemURL, index, arr) => {
         if (!node[itemURL]) {
           const isLastChild = (index === arr.length - 1);
-          node[itemURL] = isLastChild ? item.totalTimeBetweenBeginAndEnd : {};
+          node[itemURL] = isLastChild ? item.totalChainDuration : {};
         }
 
         node = node[itemURL];
