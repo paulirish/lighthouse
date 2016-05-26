@@ -53,6 +53,8 @@ class UserTimings extends Audit {
       throw new Error(FAILURE_MESSAGE);
     }
 
+    let timingsCount = 0;
+
     // Fetch blink.user_timing events from the tracing data
     const model = new TimeLineModel(artifacts.traceContents);
     const tModel = model.timelineModel();
@@ -63,6 +65,7 @@ class UserTimings extends Audit {
 
     // Reduce events to record only useful information
     if (typeof userTimings !== 'undefined') {
+      timingsCount = userTimings.length;
       userTimings = userTimings.map(ut => {
         return {
           name: ut.name,
@@ -75,7 +78,7 @@ class UserTimings extends Audit {
     }
 
     return UserTimings.generateAuditResult({
-      value: true,
+      value: timingsCount,
       extendedInfo: {
         /* Pass empty array rather than undefined */
         value: userTimings || []
