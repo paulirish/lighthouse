@@ -1,0 +1,19 @@
+<style>
+  .ut-measures {
+    font-size: 14px
+  }
+
+  .ut-measure_listing-duration {
+    font-weight: bold
+  }
+</style>
+
+<div>
+  <div class="ut-measures">
+    {{#each this}}
+      <div>
+        {{ this.name }} - <span class="ut-measure_listing-duration">{{ this.duration }}</span>
+      </div>
+    {{/each}}
+  </div>
+</div>

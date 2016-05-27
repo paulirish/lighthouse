@@ -18,7 +18,8 @@
 'use strict';
 
 const Audit = require('../audit');
-const TimeLineModel = require('../../lib/traces/devtools-timeline-model');
+const Formatter = require('../../../formatters/formatter');
+const TimelineModel = require('../../lib/traces/devtools-timeline-model');
 
 const FAILURE_MESSAGE = 'Trace data not found.';
 
@@ -41,7 +42,14 @@ class UserTimings extends Audit {
    * @override
    */
   static get description() {
-    return 'blink.user_timing events';
+    return 'window.performance.measure events fired by the site';
+  }
+
+  /**
+   * @return {!Array<string>}
+   */
+  static requiredArtifacts() {
+    return ['traceContents'];
   }
 
   /**
@@ -56,12 +64,12 @@ class UserTimings extends Audit {
     let timingsCount = 0;
 
     // Fetch blink.user_timing events from the tracing data
-    const model = new TimeLineModel(artifacts.traceContents);
-    const tModel = model.timelineModel();
-    const group = [...tModel.mainThreadAsyncEvents().keys()].find(
-      group => group.title === 'User Timing'
+    const timelineModel = new TimelineModel(artifacts.traceContents);
+    const modeledTraceData = timelineModel.timelineModel();
+    const key = [...modeledTraceData.mainThreadAsyncEvents().keys()].find(
+      key => key.title === 'User Timing'
     );
-    let userTimings = tModel.mainThreadAsyncEvents().get(group);
+    let userTimings = modeledTraceData.mainThreadAsyncEvents().get(key);
 
     // Reduce events to record only useful information
     if (typeof userTimings !== 'undefined') {
@@ -71,7 +79,7 @@ class UserTimings extends Audit {
           name: ut.name,
           startTime: ut.startTime,
           endTime: ut.endTime,
-          duration: ut.duration,
+          duration: ut.duration.toFixed(2) + 'ms',
           args: ut.args
         };
       });
@@ -80,6 +88,7 @@ class UserTimings extends Audit {
     return UserTimings.generateAuditResult({
       value: timingsCount,
       extendedInfo: {
+        formatter: Formatter.SUPPORTED_FORMATS.USER_TIMINGS,
         /* Pass empty array rather than undefined */
         value: userTimings || []
       }
