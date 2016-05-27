@@ -14,48 +14,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
-const Audit = require('../audit');
+const Aggregate = require('../aggregate');
 
-class WorksOffline extends Audit {
-  /**
-   * @override
-   */
-  static get category() {
-    return 'Offline';
-  }
+/** @type {string} */
+const CriticalRequestChains =
+    require('../../audits/performance/critical-request-chains').name;
+
+class PerformanceMetrics extends Aggregate {
 
   /**
    * @override
+   * @return {string}
    */
   static get name() {
-    return 'works offline';
+    return 'Performance Metrics';
   }
 
   /**
    * @override
+   * @return {string}
    */
   static get description() {
-    return 'URL responds with a 200 when offline';
+    return '';
   }
 
   /**
-   * @return {!Array<string>}
+   * @override
+   * @return {!AggregationType}
    */
-  static requiredArtifacts() {
-    return ['offlineResponseCode'];
+  static get type() {
+    return Aggregate.TYPES.PERFORMANCE_METRICS;
   }
 
   /**
-   * @param {!Artifacts} artifacts
-   * @return {!AuditResult}
+   * @override
+   * @return {!AggregationCriteria}
    */
-  static audit(artifacts) {
-    return WorksOffline.generateAuditResult({
-      value: artifacts.offlineResponseCode === 200
-    });
+  static get criteria() {
+    const criteria = {};
+    criteria[CriticalRequestChains] = {
+      value: 0,
+      weight: 1
+    };
+
+    return criteria;
   }
 }
 
-module.exports = WorksOffline;
+module.exports = PerformanceMetrics;

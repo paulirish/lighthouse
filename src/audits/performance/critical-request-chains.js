@@ -18,9 +18,9 @@
 'use strict';
 
 const Audit = require('../audit');
-const TracingProcessor = require('../../lib/traces/tracing-processor');
+const Formatter = require('../../../formatters/formatter');
 
-class InputReadinessMetric extends Audit {
+class CriticalRequestChains extends Audit {
   /**
    * @override
    */
@@ -32,57 +32,63 @@ class InputReadinessMetric extends Audit {
    * @override
    */
   static get name() {
-    return 'input-readiness';
+    return 'critical-request-chains';
   }
 
   /**
    * @override
    */
   static get description() {
-    return 'Input readiness - main thread availability';
+    return 'Critical Request Chains';
   }
 
   /**
    * @override
    */
   static get optimalValue() {
-    return '100';
+    return 0;
   }
 
   /**
    * @return {!Array<string>}
    */
   static requiredArtifacts() {
-    return ['traceContents'];
+    return ['criticalRequestChains'];
   }
 
   /**
-   * Audits the page to give a score for Input Readiness.
-   * @see https://github.com/GoogleChrome/lighthouse/issues/26
+   * Audits the page to give a score for First Meaningful Paint.
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
    * @return {!AuditResult} The score from the audit, ranging from 0-100.
    */
   static audit(artifacts) {
-    try {
-      const tracingProcessor = new TracingProcessor();
-      const model = tracingProcessor.init(artifacts.traceContents);
-      const hazardMetric = tracingProcessor.getInputReadiness(model);
+    let chainCount = 0;
+    function walk(node, depth, startTime) {
+      const children = Object.keys(node);
 
-      const readinessScore = Math.round(100 - (hazardMetric.numeric.value * 100));
-      const rawValue = hazardMetric.numeric.value.toFixed(4);
+      // Since a leaf node indicates the end of a chain, we can inspect the number
+      // of child nodes, and, if the count is zero, increment the count.
+      if (children.length === 0) {
+        chainCount++;
+      }
 
-      return InputReadinessMetric.generateAuditResult({
-        value: readinessScore,
-        rawValue: rawValue,
-        optimalValue: this.optimalValue
-      });
-    } catch (err) {
-      return InputReadinessMetric.generateAuditResult({
-        value: -1,
-        debugString: 'Unable to parse trace contents: ' + err.message
-      });
+      children.forEach(id => {
+        const child = node[id];
+        walk(child.children, depth + 1, startTime);
+      }, '');
     }
+
+    walk(artifacts.criticalRequestChains, 0);
+
+    return CriticalRequestChains.generateAuditResult({
+      value: chainCount,
+      optimalValue: this.optimalValue,
+      extendedInfo: {
+        formatter: Formatter.SUPPORTED_FORMATS.CRITICAL_REQUEST_CHAINS,
+        value: artifacts.criticalRequestChains
+      }
+    });
   }
 }
 
-module.exports = InputReadinessMetric;
+module.exports = CriticalRequestChains;
