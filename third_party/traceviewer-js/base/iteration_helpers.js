@@ -9,11 +9,52 @@ require("./base.js");
 'use strict';
 
 global.tr.exportTo('tr.b', function() {
-  function asArray(arrayish) {
+  /**
+   * Converts any object which is either (a) an iterable, or (b) an
+   * "array-ish" obect (has length property and can be indexed into)
+   * into an array.
+   */
+  function asArray(x) {
     var values = [];
-    for (var i = 0; i < arrayish.length; i++)
-      values.push(arrayish[i]);
+    if (x[Symbol.iterator])
+      for (var value of x)
+        values.push(value);
+    else
+      for (var i = 0; i < x.length; i++)
+        values.push(x[i]);
     return values;
+  }
+
+  /**
+   * Returns the only element in the iterable. If the iterable is empty or has
+   * more than one element, an error is thrown.
+   */
+  function getOnlyElement(iterable) {
+    var iterator = iterable[Symbol.iterator]();
+
+    var firstIteration = iterator.next();
+    if (firstIteration.done)
+      throw new Error('getOnlyElement was passed an empty iterable.');
+
+    var secondIteration = iterator.next();
+    if (!secondIteration.done)
+      throw new Error(
+          'getOnlyElement was passed an iterable with multiple elements.');
+
+    return firstIteration.value;
+  }
+
+  /**
+   * Returns the first element in the iterable. If the iterable is empty, an
+   * error is thrown.
+   */
+  function getFirstElement(iterable) {
+    var iterator = iterable[Symbol.iterator]();
+    var result = iterator.next();
+    if (result.done)
+      throw new Error('getFirstElement was passed an empty iterable.');
+
+    return result.value;
   }
 
   function compareArrays(x, y, elementCmp) {
@@ -373,6 +414,8 @@ global.tr.exportTo('tr.b', function() {
     dictionaryKeys: dictionaryKeys,
     dictionaryValues: dictionaryValues,
     dictionaryContainsValue: dictionaryContainsValue,
+    getOnlyElement: getOnlyElement,
+    getFirstElement: getFirstElement,
     group: group,
     iterItems: iterItems,
     mapItems: mapItems,

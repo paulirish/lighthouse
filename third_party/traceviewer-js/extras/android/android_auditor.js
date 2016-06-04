@@ -44,11 +44,7 @@ global.tr.exportTo('tr.e.audits', function() {
   }
 
   function frameIsActivityStart(frame) {
-    for (var i = 0; i < frame.associatedEvents.length; i++) {
-      if (frame.associatedEvents[i].title == 'activityStart')
-        return true;
-    }
-    return false;
+    return frame.associatedEvents.any(x => x.title === 'activityStart');
   }
 
   function frameMissedDeadline(frame) {
@@ -220,7 +216,7 @@ global.tr.exportTo('tr.e.audits', function() {
       'ListView recycling taking too much time per frame. Ensure your Adapter#getView() binds data efficiently.'); // @suppress longLineCheck
   AndroidAuditor.getListViewAlert_ = function(frame) {
     var events = frame.associatedEvents.filter(function(event) {
-      return event.title == 'obtainView' || event.title == 'setupListItem';
+      return event.title === 'obtainView' || event.title === 'setupListItem';
     });
     var duration = Statistics.sum(events, getCpuDuration);
 
@@ -257,7 +253,7 @@ global.tr.exportTo('tr.e.audits', function() {
           .build());
   AndroidAuditor.getMeasureLayoutAlert_ = function(frame) {
     var events = frame.associatedEvents.filter(function(event) {
-      return event.title == 'measure' || event.title == 'layout';
+      return event.title === 'measure' || event.title === 'layout';
     });
     var duration = Statistics.sum(events, getCpuDuration);
 
@@ -280,10 +276,10 @@ global.tr.exportTo('tr.e.audits', function() {
           .build());
   AndroidAuditor.getViewDrawAlert_ = function(frame) {
     var slice = undefined;
-    for (var i = 0; i < frame.associatedEvents.length; i++) {
-      if (frame.associatedEvents[i].title == 'getDisplayList' ||
-          frame.associatedEvents[i].title == 'Record View#draw()') {
-        slice = frame.associatedEvents[i];
+    for (var event of frame.associatedEvents) {
+      if (event.title === 'getDisplayList' ||
+          event.title === 'Record View#draw()') {
+        slice = event;
         break;
       }
     }

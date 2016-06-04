@@ -17,7 +17,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
       tr.v.Unit.byName.timeDurationInMs_smallerIsBetter,
       tr.b.Range.fromExplicitRange(4, 200), 100);
 
-  function computeExecuteMetrics(valueList, model) {
+  function computeExecuteMetrics(values, model) {
     var cpuTotalExecution = DURATION_NUMERIC_BUILDER.build();
     var wallTotalExecution = DURATION_NUMERIC_BUILDER.build();
     var cpuSelfExecution = DURATION_NUMERIC_BUILDER.build();
@@ -30,21 +30,21 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallSelfExecution.add(e.selfTime);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_execution_cpu_total', cpuTotalExecution,
+    values.addValue(new tr.v.NumericValue(
+        'v8_execution_cpu_total', cpuTotalExecution,
         { description: 'cpu total time spent in script execution' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_execution_wall_total', wallTotalExecution,
+    values.addValue(new tr.v.NumericValue(
+        'v8_execution_wall_total', wallTotalExecution,
         { description: 'wall total time spent in script execution' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_execution_cpu_self', cpuSelfExecution,
+    values.addValue(new tr.v.NumericValue(
+        'v8_execution_cpu_self', cpuSelfExecution,
         { description: 'cpu self time spent in script execution' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_execution_wall_self', wallSelfExecution,
+    values.addValue(new tr.v.NumericValue(
+        'v8_execution_wall_self', wallSelfExecution,
         { description: 'wall self time spent in script execution' }));
   }
 
-  function computeParseLazyMetrics(valueList, model) {
+  function computeParseLazyMetrics(values, model) {
     var cpuSelfParseLazy = DURATION_NUMERIC_BUILDER.build();
     var wallSelfParseLazy = DURATION_NUMERIC_BUILDER.build();
 
@@ -57,15 +57,15 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallSelfParseLazy.add(e.selfTime);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_parse_lazy_cpu_self', cpuSelfParseLazy,
+    values.addValue(new tr.v.NumericValue(
+        'v8_parse_lazy_cpu_self', cpuSelfParseLazy,
         { description: 'cpu self time spent performing lazy parsing' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_parse_lazy_wall_self', wallSelfParseLazy,
+    values.addValue(new tr.v.NumericValue(
+        'v8_parse_lazy_wall_self', wallSelfParseLazy,
         { description: 'wall self time spent performing lazy parsing' }));
   }
 
-  function computeCompileFullCodeMetrics(valueList, model) {
+  function computeCompileFullCodeMetrics(values, model) {
     var cpuSelfCompileFullCode = DURATION_NUMERIC_BUILDER.build();
     var wallSelfCompileFullCode = DURATION_NUMERIC_BUILDER.build();
 
@@ -74,18 +74,18 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallSelfCompileFullCode.add(e.selfTime);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_compile_full_code_cpu_self',
+    values.addValue(new tr.v.NumericValue(
+        'v8_compile_full_code_cpu_self',
         cpuSelfCompileFullCode,
         { description: 'cpu self time spent performing compiling full code' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_compile_full_code_wall_self',
+    values.addValue(new tr.v.NumericValue(
+        'v8_compile_full_code_wall_self',
         wallSelfCompileFullCode, {
           description: 'wall self time spent performing compiling full code'
         }));
   }
 
-  function computeCompileIgnitionMetrics(valueList, model) {
+  function computeCompileIgnitionMetrics(values, model) {
     var cpuSelfCompileIgnition = DURATION_NUMERIC_BUILDER.build();
     var wallSelfCompileIgnition = DURATION_NUMERIC_BUILDER.build();
 
@@ -94,18 +94,18 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallSelfCompileIgnition.add(e.selfTime);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_compile_ignition_cpu_self',
+    values.addValue(new tr.v.NumericValue(
+        'v8_compile_ignition_cpu_self',
         cpuSelfCompileIgnition,
         { description: 'cpu self time spent in compile ignition' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_compile_ignition_wall_self',
+    values.addValue(new tr.v.NumericValue(
+        'v8_compile_ignition_wall_self',
         wallSelfCompileIgnition, {
           description: 'wall self time spent in compile ignition'
         }));
   }
 
-  function computeRecompileMetrics(valueList, model) {
+  function computeRecompileMetrics(values, model) {
     var cpuTotalRecompileSynchronous = DURATION_NUMERIC_BUILDER.build();
     var wallTotalRecompileSynchronous = DURATION_NUMERIC_BUILDER.build();
     var cpuTotalRecompileConcurrent = DURATION_NUMERIC_BUILDER.build();
@@ -122,12 +122,12 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallTotalRecompileOverall.add(e.duration);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_recompile_synchronous_cpu_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_recompile_synchronous_cpu_total',
         cpuTotalRecompileSynchronous,
         { description: 'cpu total time spent in synchronous recompilation' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_recompile_synchronous_wall_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_recompile_synchronous_wall_total',
         wallTotalRecompileSynchronous,
         { description: 'wall total time spent in synchronous recompilation' }));
 
@@ -139,29 +139,29 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallTotalRecompileOverall.add(e.duration);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_recompile_concurrent_cpu_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_recompile_concurrent_cpu_total',
         cpuTotalRecompileConcurrent,
         { description: 'cpu total time spent in concurrent recompilation' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_recompile_concurrent_wall_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_recompile_concurrent_wall_total',
         wallTotalRecompileConcurrent,
         { description: 'wall total time spent in concurrent recompilation' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_recompile_overall_cpu_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_recompile_overall_cpu_total',
         cpuTotalRecompileOverall, {
           description:
               'cpu total time spent in synchronous or concurrent recompilation'
         }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_recompile_overall_wall_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_recompile_overall_wall_total',
         wallTotalRecompileOverall, {
           description:
               'wall total time spent in synchronous or concurrent recompilation'
         }));
   }
 
-  function computeOptimizeCodeMetrics(valueList, model) {
+  function computeOptimizeCodeMetrics(values, model) {
     var cpuTotalOptimizeCode = DURATION_NUMERIC_BUILDER.build();
     var wallTotalOptimizeCode = DURATION_NUMERIC_BUILDER.build();
 
@@ -170,17 +170,17 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallTotalOptimizeCode.add(e.duration);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_optimize_code_cpu_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_optimize_code_cpu_total',
         cpuTotalOptimizeCode,
         { description: 'cpu total time spent in code optimization' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_optimize_code_wall_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_optimize_code_wall_total',
         wallTotalOptimizeCode,
         { description: 'wall total time spent in code optimization' }));
   }
 
-  function computeDeoptimizeCodeMetrics(valueList, model) {
+  function computeDeoptimizeCodeMetrics(values, model) {
     var cpuTotalDeoptimizeCode = DURATION_NUMERIC_BUILDER.build();
     var wallTotalDeoptimizeCode = DURATION_NUMERIC_BUILDER.build();
 
@@ -189,29 +189,25 @@ global.tr.exportTo('tr.metrics.v8', function() {
       wallTotalDeoptimizeCode.add(e.duration);
     });
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_deoptimize_code_cpu_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_deoptimize_code_cpu_total',
         cpuTotalDeoptimizeCode,
         { description: 'cpu total time spent in code deoptimization' }));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl, 'v8_deoptimize_code_wall_total',
+    values.addValue(new tr.v.NumericValue(
+        'v8_deoptimize_code_wall_total',
         wallTotalDeoptimizeCode,
         { description: 'wall total time spent in code deoptimization' }));
   }
 
-  function executionMetric(valueList, model) {
-    computeExecuteMetrics(valueList, model);
-    computeParseLazyMetrics(valueList, model);
-    computeCompileIgnitionMetrics(valueList, model);
-    computeCompileFullCodeMetrics(valueList, model);
-    computeRecompileMetrics(valueList, model);
-    computeOptimizeCodeMetrics(valueList, model);
-    computeDeoptimizeCodeMetrics(valueList, model);
+  function executionMetric(values, model) {
+    computeExecuteMetrics(values, model);
+    computeParseLazyMetrics(values, model);
+    computeCompileIgnitionMetrics(values, model);
+    computeCompileFullCodeMetrics(values, model);
+    computeRecompileMetrics(values, model);
+    computeOptimizeCodeMetrics(values, model);
+    computeDeoptimizeCodeMetrics(values, model);
   }
-
-  executionMetric.prototype = {
-    __proto__: Function.prototype
-  };
 
   tr.metrics.MetricRegistry.register(executionMetric);
 

@@ -12,7 +12,7 @@ require("../value/value.js");
 
 global.tr.exportTo('tr.metrics', function() {
 
-  function tracingMetric(valueList, model) {
+  function tracingMetric(values, model) {
     if (!model.stats.hasEventSizesinBytes) {
       throw new Error('Model stats does not have event size information. ' +
                       'Please enable ImportOptions.trackDetailedModelStats.');
@@ -86,38 +86,33 @@ global.tr.exportTo('tr.metrics', function() {
     var totalTraceBytesValue = new tr.v.ScalarNumeric(
         tr.v.Unit.byName.sizeInBytes_smallerIsBetter, totalTraceBytes);
 
-    var diagnostics = {
-      category_with_max_event_size: {
-        name: categoryWithMaxEventBytes,
-        size_in_bytes: maxEventBytesPerCategory
-      }
+    var biggestCategory = {
+      name: categoryWithMaxEventBytes,
+      size_in_bytes: maxEventBytesPerCategory
     };
 
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl,
-        'Total trace size in bytes',
-        totalTraceBytesValue,
-        undefined, undefined, diagnostics));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl,
-        'Max number of events per second',
-        maxEventCountPerSecValue,
-        undefined, undefined, diagnostics));
-    valueList.addValue(new tr.v.NumericValue(
-        model.canonicalUrl,
-        'Max event size in bytes per second',
-        maxEventBytesPerSecValue,
-        undefined, undefined, diagnostics));
-  }
+    var totalBytes = new tr.v.NumericValue(
+        'Total trace size in bytes', totalTraceBytesValue);
+    totalBytes.diagnostics.add(
+        'category_with_max_event_size', new tr.v.d.Generic(biggestCategory));
+    values.addValue(totalBytes);
 
-  tracingMetric.prototype = {
-    __proto__: Function.prototype
-  };
+    var peakEvents = new tr.v.NumericValue(
+        'Max number of events per second', maxEventCountPerSecValue);
+    peakEvents.diagnostics.add(
+        'category_with_max_event_size', new tr.v.d.Generic(biggestCategory));
+    values.addValue(peakEvents);
+
+    var peakBytes = new tr.v.NumericValue(
+        'Max event size in bytes per second', maxEventBytesPerSecValue);
+    peakBytes.diagnostics.add(
+        'category_with_max_event_size', new tr.v.d.Generic(biggestCategory));
+    values.addValue(peakBytes);
+  }
 
   tr.metrics.MetricRegistry.register(tracingMetric);
 
   return {
     tracingMetric: tracingMetric
   };
-
 });

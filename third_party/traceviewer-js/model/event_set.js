@@ -64,6 +64,11 @@ global.tr.exportTo('tr.model', function() {
       return this.guid_;
     },
 
+    *[Symbol.iterator]() {
+      for (var i = 0; i < this.length_; ++i)
+        yield this[i];
+    },
+
     clear: function() {
       for (var i = 0; i < this.length_; ++i)
         delete this[i];

@@ -102,7 +102,7 @@ global.tr.exportTo('tr', function() {
     this.importWarnings_ = [];
     this.reportedImportWarnings_ = {};
 
-    this.isTimeHighResolution_ = undefined;
+    this.isTimeHighResolution_ = true;
 
     this.patchupsToApply_ = [];
 
@@ -391,16 +391,10 @@ global.tr.exportTo('tr', function() {
     },
 
     get isTimeHighResolution() {
-      if (this.isTimeHighResolution_ === undefined)
-        this.isTimeHighResolution_ = this.isTimeHighResolutionHeuristic_();
       return this.isTimeHighResolution_;
     },
 
     set isTimeHighResolution(value) {
-      if (this.isTimeHighResolution_ === value)
-        return;
-      if (this.isTimeHighResolution_ !== undefined)
-        throw new Error('isTimeHighResolution already set');
       this.isTimeHighResolution_ = value;
     },
 
@@ -556,6 +550,7 @@ global.tr.exportTo('tr', function() {
               patchup.scopedId, patchup.ts);
           if (snapshot) {
             patchup.object[patchup.field] = snapshot;
+            snapshot.referencedAt(patchup.item, patchup.object, patchup.field);
             return;
           }
         }
@@ -569,38 +564,6 @@ global.tr.exportTo('tr', function() {
         if (patchup.pidRef === old_pid_ref)
           patchup.pidRef = new_pid_ref;
       });
-    },
-
-    isTimeHighResolutionHeuristic_: function() {
-      if (this.intrinsicTimeUnit !== tr.v.TimeDisplayModes.ms)
-        return false;
-      // If the timer is only precise to the millisecond, then almost all event
-      // will be precisely X ms apart. We check that by looking at the
-      // decimal part of each event's start time. We create 100 bins for
-      // these fractions. If at least 90% of the events are in the same bin then
-      // the timer is deemed to be low resolution.
-      var nbEvents = 0;
-      var nbPerBin = [];
-      var maxEvents = 0;
-      for (var i = 0; i < 100; ++i)
-        nbPerBin.push(0);
-      this.iterateAllEvents(function(event) {
-        nbEvents++;
-        if (event.start !== undefined) {
-          // Compute
-          var remainder = Math.floor(
-              (event.start - Math.floor(event.start)) * 100);
-          nbPerBin[remainder]++;
-          maxEvents = Math.max(maxEvents, nbPerBin[remainder]);
-        }
-      });
-      // If there are too few events our heuristic is not very good, assume the
-      // timer is high resolution.
-      if (nbEvents < 100)
-        return true;
-      // If more than 90% of the events are snapped precisely on milliseconds
-      // boundary we got a trace with a low resolution timer.
-      return (maxEvents / nbEvents) < 0.9;
     },
 
     /**
@@ -636,7 +599,7 @@ global.tr.exportTo('tr', function() {
     },
 
     searchItemForIDRefs_: function(pid, itemTimestampField, item) {
-      if (!item.args)
+      if (!item.args && !item.contexts)
         return;
       var patchupsToApply = this.patchupsToApply_;
 
@@ -653,6 +616,7 @@ global.tr.exportTo('tr', function() {
         // refs have been located. Otherwise, we could end up recursing in
         // ways we definitely didn't intend.
         patchupsToApply.push({
+          item: item,
           object: object,
           field: fieldName,
           pidRef: pidRef,
@@ -684,6 +648,7 @@ global.tr.exportTo('tr', function() {
       }
 
       iterObjectFieldsRecursively(item.args);
+      iterObjectFieldsRecursively(item.contexts);
     }
   };
 

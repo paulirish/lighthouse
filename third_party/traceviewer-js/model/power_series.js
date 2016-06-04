@@ -68,7 +68,7 @@ global.tr.exportTo('tr.model', function() {
 
         var sampleRange = new tr.b.Range();
         sampleRange.addValue(sample.start);
-        sampleRange.addValue(nextSample ? nextSample.start : Infinity);
+        sampleRange.addValue(nextSample ? nextSample.start : sample.start);
 
         var timeIntersection = measurementRange.findIntersection(sampleRange);
 

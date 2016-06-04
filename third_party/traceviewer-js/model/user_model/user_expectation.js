@@ -67,8 +67,7 @@ global.tr.exportTo('tr.model.um', function() {
     },
 
     get stableId() {
-      return ('UserExpectation.' +
-          this.parentModel.userModel.expectations.indexOf(this));
+      return ('UserExpectation.' + this.guid);
     },
 
     get typeInfo() {

@@ -20,18 +20,14 @@ global.tr.exportTo('tr.metrics.v8', function() {
   var MS_PER_SECOND = 1000;
   var WINDOW_SIZE_MS = MS_PER_SECOND / TARGET_FPS;
 
-  function gcMetric(valueList, model) {
-    addDurationOfTopEvents(valueList, model);
-    addTotalDurationOfTopEvents(valueList, model);
-    addDurationOfSubEvents(valueList, model);
-    addIdleTimesOfTopEvents(valueList, model);
-    addTotalIdleTimesOfTopEvents(valueList, model);
-    addV8ExecuteMutatorUtilization(valueList, model);
+  function gcMetric(values, model) {
+    addDurationOfTopEvents(values, model);
+    addTotalDurationOfTopEvents(values, model);
+    addDurationOfSubEvents(values, model);
+    addIdleTimesOfTopEvents(values, model);
+    addTotalIdleTimesOfTopEvents(values, model);
+    addV8ExecuteMutatorUtilization(values, model);
   }
-
-  gcMetric.prototype = {
-    __proto__: Function.prototype
-  };
 
   tr.metrics.MetricRegistry.register(gcMetric);
 
@@ -97,7 +93,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
    * Example output:
    * - Animation-v8_gc_full_mark_compactor.
    */
-  function addDurationOfTopEvents(valueList, model) {
+  function addDurationOfTopEvents(values, model) {
     groupAndProcessEvents(model,
       tr.metrics.v8.utils.isTopGarbageCollectionEvent,
       tr.metrics.v8.utils.topGarbageCollectionEventName,
@@ -106,8 +102,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
         events.forEach(function(event) {
           cpuDuration.add(event.cpuDuration);
         });
-        valueList.addValue(
-          new tr.v.NumericValue(model.canonicalUrl,
+        values.addValue(new tr.v.NumericValue(
             stageTitle + '-' + name, cpuDuration));
       }
     );
@@ -117,7 +112,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
    * Example output:
    * - Animation:v8_gc_total
    */
-  function addTotalDurationOfTopEvents(valueList, model) {
+  function addTotalDurationOfTopEvents(values, model) {
     groupAndProcessEvents(model,
       tr.metrics.v8.utils.isTopGarbageCollectionEvent,
       event => 'v8-gc-total',
@@ -126,8 +121,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
         events.forEach(function(event) {
           cpuDuration.add(event.cpuDuration);
         });
-        valueList.addValue(
-          new tr.v.NumericValue(model.canonicalUrl,
+        values.addValue(new tr.v.NumericValue(
             stageTitle + '-' + name, cpuDuration));
       }
     );
@@ -137,7 +131,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
    * Example output:
    * - Animation-v8-gc-full-mark-compactor-evacuate.
    */
-  function addDurationOfSubEvents(valueList, model) {
+  function addDurationOfSubEvents(values, model) {
     groupAndProcessEvents(model,
       tr.metrics.v8.utils.isSubGarbageCollectionEvent,
       tr.metrics.v8.utils.subGarbageCollectionEventName,
@@ -146,8 +140,7 @@ global.tr.exportTo('tr.metrics.v8', function() {
         events.forEach(function(event) {
           cpuDuration.add(event.cpuDuration);
         });
-        valueList.addValue(
-          new tr.v.NumericValue(model.canonicalUrl,
+        values.addValue(new tr.v.NumericValue(
             stageTitle + '-' + name, cpuDuration));
       }
     );
@@ -159,12 +152,12 @@ global.tr.exportTo('tr.metrics.v8', function() {
    * - Animation-v8-gc-full-mark-compactor_outside_idle,
    * - Animation-v8-gc-full-mark-compactor_percentage_idle.
    */
-  function addIdleTimesOfTopEvents(valueList, model) {
+  function addIdleTimesOfTopEvents(values, model) {
     groupAndProcessEvents(model,
       tr.metrics.v8.utils.isTopGarbageCollectionEvent,
       tr.metrics.v8.utils.topGarbageCollectionEventName,
       function(stageTitle, name, events) {
-        addIdleTimes(valueList, model, stageTitle, name, events);
+        addIdleTimes(values, model, stageTitle, name, events);
       }
     );
   }
@@ -175,17 +168,17 @@ global.tr.exportTo('tr.metrics.v8', function() {
    * - Animation-v8-gc-total_outside_idle,
    * - Animation-v8-gc-total_percentage_idle.
    */
-  function addTotalIdleTimesOfTopEvents(valueList, model) {
+  function addTotalIdleTimesOfTopEvents(values, model) {
     groupAndProcessEvents(model,
       tr.metrics.v8.utils.isTopGarbageCollectionEvent,
       event => 'v8-gc-total',
       function(stageTitle, name, events) {
-        addIdleTimes(valueList, model, stageTitle, name, events);
+        addIdleTimes(values, model, stageTitle, name, events);
       }
     );
   }
 
-  function addIdleTimes(valueList, model, stageTitle, name, events) {
+  function addIdleTimes(values, model, stageTitle, name, events) {
     var cpuDuration = createNumericForIdleTime();
     var insideIdle = createNumericForIdleTime();
     var outsideIdle = createNumericForIdleTime();
@@ -214,21 +207,18 @@ global.tr.exportTo('tr.metrics.v8', function() {
       outsideIdle.add(event.cpuDuration - inside);
       idleDeadlineOverrun.add(overrun);
     });
-    valueList.addValue(
-      new tr.v.NumericValue(model.canonicalUrl,
+    values.addValue(new tr.v.NumericValue(
         stageTitle + '-' + name + '_idle_deadline_overrun',
         idleDeadlineOverrun));
-    valueList.addValue(
-      new tr.v.NumericValue(model.canonicalUrl,
+    values.addValue(new tr.v.NumericValue(
         stageTitle + '-' + name + '_outside_idle', outsideIdle));
     var percentage = createPercentage(insideIdle.sum,
                                       cpuDuration.sum);
-    valueList.addValue(
-      new tr.v.NumericValue(model.canonicalUrl,
+    values.addValue(new tr.v.NumericValue(
         stageTitle + '-' + name + '_percentage_idle', percentage));
   }
 
-  function addV8ExecuteMutatorUtilization(valueList, model) {
+  function addV8ExecuteMutatorUtilization(values, model) {
     groupAndProcessEvents(model,
         tr.metrics.v8.utils.isTopV8ExecuteEvent,
         event => 'v8-execute',
@@ -254,14 +244,14 @@ global.tr.exportTo('tr.metrics.v8', function() {
           [0.90, 0.95, 0.99].forEach(function(percent) {
             var value = new tr.v.ScalarNumeric(percentage_biggerIsBetter,
                 mutatorUtilization.percentile(1.0 - percent) * 100);
-            valueList.addValue(new tr.v.NumericValue(model.canonicalUrl,
+            values.addValue(new tr.v.NumericValue(
                 stageTitle + '-v8-execute-mutator-utilization_pct_0' +
                 percent * 100,
                 value));
           });
           var value = new tr.v.ScalarNumeric(percentage_biggerIsBetter,
               mutatorUtilization.min);
-          valueList.addValue(new tr.v.NumericValue(model.canonicalUrl,
+          values.addValue(new tr.v.NumericValue(
               stageTitle + '-v8-execute-mutator-utilization_min', value));
         }
     );
