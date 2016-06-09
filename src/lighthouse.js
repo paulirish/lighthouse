@@ -50,8 +50,7 @@ const AUDITS = [
   require('./audits/performance/speed-index-metric'),
   require('./audits/performance/user-timings'),
   require('./audits/performance/screenshots'),
-  // TODO: https://github.com/GoogleChrome/lighthouse/issues/336
-  // require('./audits/performance/input-readiness-metric'),
+  require('./audits/performance/input-readiness-metric'),
   require('./audits/performance/critical-request-chains'),
   require('./audits/manifest/exists'),
   require('./audits/manifest/background-color'),

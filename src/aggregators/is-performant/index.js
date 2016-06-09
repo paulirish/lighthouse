@@ -20,8 +20,7 @@
 const Aggregate = require('../aggregate');
 const firstMeaningfulPaint = require('../../audits/performance/first-meaningful-paint');
 const speedIndexMetric = require('../../audits/performance/speed-index-metric');
-// TODO: https://github.com/GoogleChrome/lighthouse/issues/336
-// const inputReadinessMetric = require('../../audits/performance/input-readiness-metric');
+const inputReadinessMetric = require('../../audits/performance/input-readiness-metric');
 
 class IsPerformant extends Aggregate {
 
@@ -64,10 +63,10 @@ class IsPerformant extends Aggregate {
       value: 100,
       weight: 1
     };
-    // criteria[inputReadinessMetric.meta.name] = {
-    //   value: 100,
-    //   weight: 1
-    // };
+    criteria[inputReadinessMetric.meta.name] = {
+      value: 100,
+      weight: 1
+    };
 
     criteria['scrolling-60fps'] = {
       value: true,
