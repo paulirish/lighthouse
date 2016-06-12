@@ -30,7 +30,7 @@ class InputReadinessMetric extends Audit {
       name: 'input-readiness',
       description: 'Input readiness - main thread availability',
       optimalValue: '100',  // SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString()
-      requiredArtifacts: ['traceContents']
+      requiredArtifacts: ['traceContents', 'speedline']
     };
   }
 
@@ -42,12 +42,21 @@ class InputReadinessMetric extends Audit {
    */
   static audit(artifacts) {
     try {
-      const tracingProcessor = new TracingProcessor();
-      const model = tracingProcessor.init(artifacts.traceContents);
-      const hazardMetric = tracingProcessor.getInputReadiness(model);
+      // Use speedline's first paint as start of range for input readiness check.
+      const startTime = artifacts.speedline.first;
 
-      const readinessScore = Math.round(100 - (hazardMetric.numeric.value * 100));
-      const rawValue = hazardMetric.numeric.value.toFixed(4);
+      let readiness = TracingProcessor.getRiskToResponsiveness(artifacts.traceContents, startTime);
+
+      const str = readiness.reduce((str, result, index) => {
+        const preamble = index === 0 ? '' : ', ';
+        const percentage = Math.round(result.percentile * 100) + '%';
+        const value = result.time.toFixed(1) + 'ms';
+        str += `${preamble}${percentage}: ${value}`;
+        return str;
+      }, '');
+
+      const readinessScore = readiness[0].time;
+      const rawValue = str;
 
       return InputReadinessMetric.generateAuditResult({
         value: readinessScore,

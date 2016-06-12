@@ -97,21 +97,109 @@ class TraceProcessor {
     return model;
   }
 
-  getInputReadiness(model) {
-    // Now set up the user expectations model.
-    // this fake idle Interaction Record is used to grab the readiness out of
-    // TODO(paullewis) start the idle at firstPaint/fCP and end it at end of recording
-    const idle = new traceviewer.model.um.IdleExpectation(model, 'test', 0, 10000);
-    model.userModel.expectations.push(idle);
+  static kahanSum(arr) {
+    var sum = 0;
+    var error = 0;
+    for (var i = 0; i < arr.length; i++) {
+      var correctedNextTerm = arr[i] - error;
+      var nextSum = sum + correctedNextTerm;
+      error = (nextSum - sum) - correctedNextTerm;
+      sum = nextSum;
+    }
+    return sum;
+  }
 
-    // Set up a value list for the hazard metric.
-    // TODO use new approach from ben
-    //   https://github.com/GoogleChrome/lighthouse/pull/284#issuecomment-217263964
-    const valueList = new traceviewer.metrics.ValueList();
-    traceviewer.metrics.sh.hazardMetric(valueList, model);
-    // grab last item, as it matches the fake idle we push()'d into the model'
-    const metricValue = valueList.valueDicts[valueList.valueDicts.length - 1];
-    return metricValue;
+  static _findMainThread(model, processId, threadId) {
+    const modelHelper = model.getOrCreateHelper(traceviewer.model.helpers.ChromeModelHelper);
+    const renderHelpers = traceviewer.b.dictionaryValues(modelHelper.rendererHelpers);
+    const mainThread = renderHelpers.find(helper => {
+      return helper.mainThread &&
+        helper.pid === processId &&
+        helper.mainThread.tid === threadId;
+    }).mainThread;
+
+    return mainThread;
+  }
+
+  static getRiskToResponsiveness(trace, startTime) {
+    // TODO(bckenny): can just filter for top level slices in our process/thread ourselves?
+    const tracingProcessor = new TraceProcessor();
+    const model = tracingProcessor.init(trace);
+
+    // Find the main thread.
+    const startEvent = trace.find(event => {
+      return event.name === 'TracingStartedInPage';
+    });
+    const mainThread = TraceProcessor._findMainThread(model, startEvent.pid, startEvent.tid);
+
+    // Range of input readiness we care about.
+    const interactiveRange = traceviewer.b.Range.fromExplicitRange(startTime, model.bounds.max);
+
+    // TODO(bckenny): tests for percentiles at < idleTime and near 1
+    // normalize and sort array of percentiles requested?
+    // tests where all durations are same length
+    // single duration case
+    // make sure tasks at ends are included (and clip them to range)
+
+    const durations = [];
+    let busyTime = 0;
+    let busyError = 0;
+    mainThread.sliceGroup.topLevelSlices.forEach(slice => {
+      if (!interactiveRange.intersectsExplicitRangeExclusive(slice.start, slice.end)) {
+        return;
+      }
+
+      durations.push(slice.duration);
+      const duration = slice.duration - busyError;
+      const tmpTotal = busyTime + duration;
+      busyError = (tmpTotal - busyTime) - duration;
+      busyTime = tmpTotal;
+    });
+
+    durations.sort((a, b) => a - b);
+    const totalTime = model.bounds.max - startTime;
+
+    console.log('num of tasks:', durations.length, 'over', totalTime + 'ms');
+    console.log('max task length:', durations[durations.length - 1] + 'ms');
+    console.log('second max task length:', durations[durations.length - 2] + 'ms');
+
+    let completedTime = totalTime - busyTime;
+    let x = 0;
+    let cdfValue = completedTime / totalTime;
+    let nextX = 0;
+    let nextCdfValue = cdfValue;
+    let durationIndex = 0;
+    const results = [];
+
+    // Find percentiles of interest in order.
+    for (let percentile of [0.5, 0.75, 0.9, 0.99, 1]) {
+      // Loop over each duration, calculating a CDF value for each, until the
+      // next CDF value is above target percentile.
+      while (nextCdfValue < percentile) {
+        x = nextX;
+        cdfValue = nextCdfValue;
+        completedTime += durations[durationIndex];
+        durationIndex++;
+        nextX = durations[durationIndex];
+
+        const remainingCount = durations.length - durationIndex;
+        if (remainingCount === 1) {
+          // At the end of the duration array, just cap CDF value to 1 to avoid numerical issues.
+          nextCdfValue = 1;
+        } else {
+          nextCdfValue = (completedTime + nextX * remainingCount) / totalTime;
+        }
+      }
+
+      // Interpolate between previous and next CDF values to find precise time of percentile.
+      const t = nextCdfValue === cdfValue ? 0 : (percentile - cdfValue) / (nextCdfValue - cdfValue);
+      results.push({
+        percentile,
+        time: x + t * (nextX - x)
+      });
+    }
+
+    return results;
   }
 
   /**
