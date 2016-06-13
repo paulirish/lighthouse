@@ -51,6 +51,7 @@ const AUDITS = [
   require('./audits/performance/user-timings'),
   require('./audits/performance/screenshots'),
   require('./audits/performance/input-readiness-metric'),
+  require('./audits/performance/time-to-interactive'),
   require('./audits/performance/critical-request-chains'),
   require('./audits/manifest/exists'),
   require('./audits/manifest/background-color'),

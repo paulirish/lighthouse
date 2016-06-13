@@ -28,7 +28,7 @@ class InputReadinessMetric extends Audit {
     return {
       category: 'Performance',
       name: 'input-readiness',
-      description: 'Input readiness - main thread availability',
+      description: 'Estimated Input Latency',
       optimalValue: '100',  // SCORING_POINT_OF_DIMINISHING_RETURNS.toLocaleString()
       requiredArtifacts: ['traceContents', 'speedline']
     };

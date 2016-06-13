@@ -121,10 +121,13 @@ class TraceProcessor {
     return mainThread;
   }
 
-  static getRiskToResponsiveness(trace, startTime) {
+  static getRiskToResponsiveness(trace, startTime, endTime, model) {
     // TODO(bckenny): can just filter for top level slices in our process/thread ourselves?
-    const tracingProcessor = new TraceProcessor();
-    const model = tracingProcessor.init(trace);
+
+    if (!model) {
+      const tracingProcessor = new TraceProcessor();
+      model = tracingProcessor.init(trace);
+    }
 
     // Find the main thread.
     const startEvent = trace.find(event => {
