@@ -138,7 +138,6 @@ class TraceProcessor {
     // TODO(bckenny): tests for percentiles at < idleTime and near 1
     // normalize and sort array of percentiles requested?
     // tests where all durations are same length
-    // single duration case
     // make sure tasks at ends are included (and clip them to range)
 
     const durations = [];
@@ -168,7 +167,7 @@ class TraceProcessor {
     let cdfValue = completedTime / totalTime;
     let nextX = 0;
     let nextCdfValue = cdfValue;
-    let durationIndex = 0;
+    let durationIndex = -1;
     const results = [];
 
     // Find percentiles of interest in order.
@@ -176,9 +175,9 @@ class TraceProcessor {
       // Loop over each duration, calculating a CDF value for each, until the
       // next CDF value is above target percentile.
       while (nextCdfValue < percentile) {
+        completedTime += nextX;
         x = nextX;
         cdfValue = nextCdfValue;
-        completedTime += durations[durationIndex];
         durationIndex++;
         nextX = durations[durationIndex];
 
@@ -195,7 +194,7 @@ class TraceProcessor {
       const t = nextCdfValue === cdfValue ? 0 : (percentile - cdfValue) / (nextCdfValue - cdfValue);
       results.push({
         percentile,
-        time: x + t * (nextX - x)
+        time: x * (1 - t) + nextX * t
       });
     }
 
