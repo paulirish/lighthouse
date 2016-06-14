@@ -43,13 +43,10 @@ module.exports = function(url, flags, config) {
     const driver = new ChromeProtocol();
 
     // set logging preferences, assume quiet
-    log.level = 'error';
-
-    // There's little point in testing the logging level, so skip.
-    /* istanbul ignore if */
-    if (flags.logLevel) {
-      log.level = flags.logLevel;
+    if (!flags.logLevel) {
+      flags.logLevel = 'error';
     }
+    log.setLevel(flags.logLevel);
 
     // kick off a lighthouse run
     resolve(Runner.run(driver, {url, flags, config}));

@@ -73,7 +73,7 @@ if (cli.flags.listAllAudits) {
         return i.replace(/\.js$/, '');
       });
 
-  log.info('All lighthouse audits:', audits.join(', '));
+  log.log('All lighthouse audits:', audits.join(', '));
   process.exit(0);
 }
 

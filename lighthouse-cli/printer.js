@@ -45,7 +45,7 @@ const OUTPUT_MODE = {
  */
 function checkOutputMode(mode) {
   if (!OUTPUT_MODE.hasOwnProperty(mode)) {
-    log.log('warn', `Unknown output mode ${mode}; using pretty`);
+    log.warn(`Unknown output mode ${mode}; using pretty`);
     return OUTPUT_MODE.pretty;
   }
 
@@ -58,7 +58,7 @@ function checkOutputMode(mode) {
  */
 function checkOutputPath(path) {
   if (!path) {
-    log.log('warn', 'No output path set; using stdout');
+    log.warn('No output path set; using stdout');
     return 'stdout';
   }
 
@@ -149,7 +149,7 @@ function writeFile(filePath, output, outputMode) {
       if (err) {
         return reject(err);
       }
-      log.info('printer', `${outputMode} output written to ${filePath}`);
+      log.log(`${outputMode} output written to ${filePath}`);
       resolve();
     });
   });
