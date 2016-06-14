@@ -15,39 +15,10 @@
  * limitations under the License.
  */
 'use strict';
-const debug = require('debug');
 
-function setLevel(level) {
-  if (level === 'verbose') {
-    debug.enable('*');
-  } else if (level === 'error') {
-    debug.enable('*:error');
-  } else {
-    debug.enable('*, -*:verbose');
-  }
-}
+const npmlog = require('npmlog');
 
-let loggers = {};
-function _log(title, logargs) {
-  const args = Array.from(logargs).slice(1);
-  if (!loggers[title]) {
-    loggers[title] = debug(title);
-  }
-  return loggers[title].apply(null, args);
-}
+// Use `npmlog` in node, `console` in browser and electron.
+const isNode = !!process && !process.browser && !process.versions.electron;
 
-module.exports = {
-  setLevel,
-  log: function(title) {
-    return _log(title, arguments);
-  },
-  warn: function(title) {
-    return _log(`${title}:warn`, arguments);
-  },
-  error: function(title) {
-    return _log(`${title}:error`, arguments);
-  },
-  verbose: function(title) {
-    return _log(`${title}:verbose`, arguments);
-  }
-};
+module.exports = isNode ? npmlog : console;
