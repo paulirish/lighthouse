@@ -18,6 +18,7 @@
 
 const log = require('../lib/log.js');
 const Audit = require('../audits/audit');
+const path = require('path');
 
 class GatherRunner {
   static loadPage(driver, options) {
@@ -169,6 +170,12 @@ class GatherRunner {
       options.flags = {};
     }
 
+    if (typeof options.config === 'undefined') {
+      return Promise.reject(new Error('You must provide a config'));
+    }
+
+    const configJSON = options.config.json;
+
     // Default mobile emulation and page loading to true.
     // The extension will switch these off initially.
     if (typeof options.flags.mobile === 'undefined') {
@@ -179,7 +186,7 @@ class GatherRunner {
       options.flags.loadPage = true;
     }
 
-    passes = this.instantiateGatherers(passes);
+    passes = this.instantiateGatherers(passes, configJSON.paths.gatherers);
 
     return driver.connect()
       .then(_ => this.setupDriver(driver, 1, options))
@@ -214,6 +221,10 @@ class GatherRunner {
         const artifacts = Object.assign({}, tracingData);
         passes.forEach(pass => {
           pass.gatherers.forEach(gatherer => {
+            if (typeof gatherer.artifact === 'undefined') {
+              throw new Error(`${gatherer.constructor.name} failed to provide an artifact.`);
+            }
+
             artifacts[gatherer.name] = gatherer.artifact;
           });
         });
@@ -221,11 +232,36 @@ class GatherRunner {
       });
   }
 
-  static getGathererClass(gatherer) {
-    return require(`./gatherers/${gatherer}`);
+  static getGathererClass(gatherer, paths) {
+    const rootPath = path.join(__dirname, '../../');
+
+    // Check each path to see if the gatherer can be located. First match wins.
+    const gathererDefinition = paths.reduce((definition, gathererPath) => {
+      // If the definition has already been found, just propagate it. Otherwise try a search
+      // on the path in this iteration of the loop.
+      if (definition !== null) {
+        return definition;
+      }
+
+      const requirePath = gathererPath.startsWith('/') ?
+          gathererPath :
+          path.join(rootPath, gathererPath);
+
+      try {
+        return require(`${requirePath}/${gatherer}`);
+      } catch (requireError) {
+        return null;
+      }
+    }, null);
+
+    if (!gathererDefinition) {
+      throw new Error(`Unable to locate gatherer: ${gatherer}`);
+    }
+
+    return gathererDefinition;
   }
 
-  static instantiateGatherers(passes) {
+  static instantiateGatherers(passes, paths) {
     return passes.map(pass => {
       pass.gatherers = pass.gatherers.map(gatherer => {
         // If this is already instantiated, don't do anything else.
@@ -233,7 +269,7 @@ class GatherRunner {
           return gatherer;
         }
 
-        const GathererClass = GatherRunner.getGathererClass(gatherer);
+        const GathererClass = GatherRunner.getGathererClass(gatherer, paths);
         return new GathererClass();
       });
 
