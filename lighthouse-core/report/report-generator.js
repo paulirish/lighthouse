@@ -104,6 +104,27 @@ class ReportGenerator {
       }
       return number;
     });
+    
+    // Is a value is boolean?
+    Handlebars.registerHelper('is-bool', (value) => (typeof value === 'boolean'));
+    
+    // a > b
+    Handlebars.registerHelper('gt', (a, b) => (a > b));
+    
+    // !value
+    Handlebars.registerHelper('not', (value) => !value);
+    
+    // arg1 && arg2 && ... && argn
+    Handlebars.registerHelper('and', (...args) => {
+      const options = args.pop();
+      let arg;
+      for (arg of args) {
+        if (!arg) {
+          break;
+        }
+      }
+      return arg;
+    })
   }
 
   /**
@@ -222,6 +243,7 @@ class ReportGenerator {
       lighthouseVersion: results.lighthouseVersion,
       generatedTime: this._formatTime(results.generatedTime),
       css: this.getReportCSS(inline),
+      reportContext: 'extension', // devtools, extension, cli
       script: this.getReportJS(inline),
       aggregations: results.aggregations,
       auditsByCategory: this._createPWAAuditsByCategory(results.aggregations)

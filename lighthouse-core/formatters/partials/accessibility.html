@@ -1,3 +1,4 @@
+{{!--
 <style>
 .axe-violation {
   color: #D0021B;
@@ -17,15 +18,20 @@
   color: #D0021B;
 }
 </style>
-<div class="axe-violation">
-  <details>
-    <summary>
-      <a class="axe-violation__help--{{ this.impact }}" href="{{ this.helpUrl }}" target="_blank">{{ this.help }}</a>
-    </summary>
-    <ul>
-    {{#each this.nodes}}
-      <li><code>{{ this.target }}</code></li>
-    {{/each}}
-    </ul>
-  </details>
-</div>
+--}}
+
+<details class="subitem__details">
+  <summary class="subitem__detail">
+    {{#if (gt this.nodes.length 1)}}
+      {{this.nodes.length}} elements fail this test
+    {{else}}
+      {{this.nodes.length}} element fails this test
+    {{/if}}
+    <a href="{{ this.helpUrl }}" target="_blank"><small>learn more</small></a>
+  </summary>
+  <ul class="subitem__details">
+  {{#each this.nodes}}
+    <li class="subitem__detail"><code>{{ this.target }}</code></li>
+  {{/each}}
+  </ul>
+</details>
