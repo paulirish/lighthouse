@@ -16,9 +16,7 @@
  */
 
 /**
- * @fileoverview Audits a page to see how the size of DOM it creates. Stats like
- * tree depth, # children, and total nodes are returned. The score is calculated
- * based solely on the total number of nodes found on the page.
+ * @fileoverview Audit a page to see if it does not use incorrect layers that overlap layer or huge and repaninted layer.
  */
 
 'use strict';
