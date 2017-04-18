@@ -53,7 +53,8 @@ module.exports = {
       "dobetterweb/optimized-images",
       "dobetterweb/response-compression",
       "dobetterweb/tags-blocking-first-paint",
-      "dobetterweb/websql"
+      "dobetterweb/websql",
+      "dobetterweb/layers"
     ]
   }],
 
@@ -132,7 +133,8 @@ module.exports = {
     "dobetterweb/notification-on-start",
     "dobetterweb/script-blocking-first-paint",
     "dobetterweb/uses-http2",
-    "dobetterweb/uses-passive-event-listeners"
+    "dobetterweb/uses-passive-event-listeners",
+    "dobetterweb/incorrect-layers"
   ],
 
   "aggregations": [{
@@ -565,6 +567,10 @@ module.exports = {
         "user-timings": {
           "expectedValue": true,
           "weight": 1
+        },
+        "incorrect-layers": {
+          "expectedValue": true,
+          "weight": 1
         }
       }
     }]
@@ -625,7 +631,8 @@ module.exports = {
         {"id": "total-byte-weight", "weight": 0},
         {"id": "dom-size", "weight": 0},
         {"id": "critical-request-chains", "weight": 0},
-        {"id": "user-timings", "weight": 0}
+        {"id": "user-timings", "weight": 0},
+        {"id": "incorrect-layers", "weight": 0}
       ]
     },
     "accessibility": {
