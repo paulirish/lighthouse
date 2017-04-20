@@ -25,14 +25,7 @@ last-run-results.html
 closure-error.log
 
 !lighthouse-cli/index.js
-lighthouse-cli/*.map
-lighthouse-cli/*.js
 
-lighthouse-cli/commands/*.map
-lighthouse-cli/commands/*.js
-
-lighthouse-cli/types/*.js
-lighthouse-cli/types/*.map
 
 /chrome-linux/
 /chrome-win32/
