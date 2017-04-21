@@ -487,6 +487,10 @@ cloneable-readable@^1.0.0:
     process-nextick-args "^1.0.6"
     through2 "^2.0.1"
 
+"closurecompiler-externs@git://github.com/voxtok/node-library-externs.git#refactoring-to-use-nti":
+  version "1.0.4"
+  resolved "git://github.com/voxtok/node-library-externs.git#fe7f3492ad169a46b88b73bc9dfb66cb722b0a50"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"

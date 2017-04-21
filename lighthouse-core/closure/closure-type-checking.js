@@ -88,10 +88,86 @@ gulp.task('compile-report', () => {
   }))
   .pipe(gulp.dest('../'))
   .on('end', () => {
-    gutil.log('Closure compilation successful.');
+    gutil.log('report Closure compilation successful.');
   });
 });
 
 /* eslint-enable */
 
-gulp.start('compile-report');
+
+/* eslint-disable camelcase */
+gulp.task('compile-others', () => {
+  return gulp.src([
+    // externs
+    'closure/typedefs/*.js',
+    'closure/third_party/*.js',
+    process.cwd() + '/../node_modules/closurecompiler-externs/*.js',
+
+    // sources
+    'gather/gatherers/**/*.js',
+    'lib/*.js'
+  ])
+
+  // Ignore `module.exports` and `self.ClassName = ClassName` statements.
+  .pipe(replace(/^\s\smodule\.exports = \w+;$/gm, ';'))
+  .pipe(replace(/^\s\sself\.(\w+) = \1;$/gm, ';'))
+
+  .pipe(closureCompiler({
+    compilation_level: 'SIMPLE',
+    // new_type_inf: true,
+    language_in: 'ECMASCRIPT6_STRICT',
+    language_out: 'ECMASCRIPT5_STRICT',
+    process_common_js_modules: true,
+    warning_level: process.env.CI ? 'QUIET' : 'VERBOSE',
+    jscomp_error: [
+      'checkTypes',
+    ],
+    jscomp_off: 'commonJsModuleLoad',
+    jscomp_warning: [
+      // https://github.com/google/closure-compiler/wiki/Warnings
+      'accessControls',
+      'checkRegExp',
+      'const',
+      'reportUnknownTypes',
+      'missingProperties',
+      'missingReturn',
+      'strictModuleDepCheck',
+      'typeInvalidation',
+      'undefinedNames',
+      'visibility',
+
+      'checkDebuggerStatement',
+      'externsValidation',
+      'uselessCode',
+      'ambiguousFunctionDecl',
+      'checkTypes',
+      'es3',
+      'es5Strict',
+      'globalThis',
+      'nonStandardJsDocs',
+      'suspiciousCode',
+      'unknownDefines',
+
+      // nullable/undefined checker when new_type_inf enabled.
+      'newCheckTypesAllChecks',
+    ],
+    conformance_configs: 'closure/conformance_config.textproto',
+    // externs: 
+    // Debug output control.
+    checks_only: !PRINT_CODE,
+    print_tree: PRINT_AST,
+    js_output_file: OUTPUT_FILE,
+    formatting: 'PRETTY_PRINT',
+    preserve_type_annotations: true,
+  }))
+  .pipe(gulp.dest('../'))
+  .on('end', () => {
+    gutil.log('others Closure compilation successful.');
+  });
+});
+
+/* eslint-enable */
+
+// gulp.task('compile', ['compile-report', 'compile-others']);
+gulp.task('compile', ['compile-others']);
+gulp.start('compile');

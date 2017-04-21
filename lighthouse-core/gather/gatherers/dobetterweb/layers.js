@@ -35,7 +35,7 @@ function forcedChangeLayerTree() {
 /* istanbul ignore next */
 
 class Layers extends Gatherer {
-  
+
   /**
    * @return {!Array<Protocol.LayerTree.Layer>}
    */
@@ -141,7 +141,7 @@ class Layers extends Gatherer {
   /**
    * @param {!Object} options
    * @param {{networkRecords: !Array<!NetworkRecord>}} tracingData
-   * @return {!Promise<!Array<{id: string, paintCount: number, layerId: number, parentLayerId: number, compositingReasons: <!Array<string>>, width: number, height: number}>>}
+   * @return {!Promise<Layers.LayerResults>}
    */
   afterPass(options) {
     this.driver = options.driver;
@@ -156,3 +156,22 @@ class Layers extends Gatherer {
 }
 
 module.exports = Layers;
+
+/**
+ * @typedef {{
+ *     id: string,
+ *     paintCount: number,
+ *     layerId: number,
+ *     parentLayerId: number,
+ *     compositingReasons: !Array<string>,
+ *     width: number,
+ *     height: number
+ * }}
+ */
+Layers.LayerResult; // eslint-disable-line no-unused-expressions
+
+/**
+ * @typedef {!Array <Layers.LayerResult>}
+ */
+Layers.LayerResults; // eslint-disable-line no-unused-expressions
+

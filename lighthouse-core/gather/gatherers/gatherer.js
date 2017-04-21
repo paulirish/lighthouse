@@ -27,6 +27,8 @@
  * `true`, the runner will treat it as an error internal to the gatherer and
  * continue execution of any remaining gatherers.
  */
+
+// @interface
 class Gatherer {
   /**
    * @return {string}
@@ -55,7 +57,7 @@ class Gatherer {
    * executed, and — if generated in this pass — the trace is ended. The trace
    * and record of network activity are provided in `loadData`.
    * @param {!Object} options
-   * @param {networkRecords: !Array, trace: {traceEvents: !Array}} loadData
+   * @param {{networkRecords: !Array, trace: {traceEvents: !Array}}} loadData
    * @return {*|!Promise<*>}
    */
   afterPass(options, loadData) { }

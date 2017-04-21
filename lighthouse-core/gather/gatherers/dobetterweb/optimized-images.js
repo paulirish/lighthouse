@@ -149,7 +149,7 @@ class OptimizedImages extends Gatherer {
   /**
    * @param {!Object} options
    * @param {{networkRecords: !Array<!NetworRecord>}} traceData
-   * @return {!Promise<!Array<!Object>}
+   * @return {!Promise<!Array<!Object>>}
    */
   afterPass(options, traceData) {
     const networkRecords = traceData.networkRecords;
