@@ -55,7 +55,7 @@ class DOM {
    * @throws {Error}
    */
   cloneTemplate(selector, context) {
-    const template = /** @type {HTMLTemplateElement} */ (context.querySelector(selector));
+    const template = /** @type {?HTMLTemplateElement} */ (context.querySelector(selector));
     if (!template) {
       throw new Error(`Template not found: template${selector}`);
     }
