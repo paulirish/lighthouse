@@ -35,7 +35,10 @@ function forcedChangeLayerTree() {
 /* istanbul ignore next */
 
 class Layers extends Gatherer {
-
+  
+  /**
+   * @return {!Array<Protocol.LayerTree.Layer>}
+   */
   gathererLayer() {
     return new Promise((resolve) => {
       const scriptSrc = `(${forcedChangeLayerTree.toString()}())`;
