@@ -85,7 +85,7 @@ class GatherRunner {
     return Promise.resolve()
       // Begin tracing only if requested by config.
       .then(_ => options.config.recordTrace && driver.beginTrace(options.flags))
-      // Network is always recorded for internal use, even if not saved as artifact.
+      // Network is always recorded for gatherer use
       .then(_ => driver.beginNetworkCollect(options))
       // Navigate.
       .then(_ => driver.gotoURL(options.url, {
@@ -250,7 +250,7 @@ class GatherRunner {
       return driver.endNetworkCollect();
     }).then(networkRecords => {
       GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
-      // expose devtoolsLog & networkRecords to gatherers
+      // Expose devtoolsLog & networkRecords to gatherers
       passData.devtoolsLog = driver.devtoolsLog;
       passData.networkRecords = networkRecords;
       log.verbose('statusEnd', status);
@@ -352,15 +352,18 @@ class GatherRunner {
             .then(_ => GatherRunner.pass(runOptions, gathererResults))
             .then(_ => GatherRunner.afterPass(runOptions, gathererResults))
             .then(passData => {
-              // If requested by config, merge trace and network data for this
-              // pass into tracingData.
+              // If requested by config, merge trace -> tracingData
               const passName = config.passName || Audit.DEFAULT_PASS;
               if (config.recordTrace) {
                 tracingData.traces[passName] = passData.trace;
               }
 
+<<<<<<< HEAD
               // passData.networkRecords is now discarded and not added onto artifacts
               tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
+=======
+              tracingData.networkRecords[passName] = passData.networkRecords;
+>>>>>>> 07e0aab1... Remove recordNetwork (#2102)
 
               if (passIndex === 0) {
                 urlAfterRedirects = runOptions.url;
