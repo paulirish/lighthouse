@@ -51,12 +51,13 @@ class LoadFastEnough4Pwa extends Audit {
    * @return {!AuditResult}
    */
   static audit(artifacts) {
+
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
       const allRequestLatencies = networkRecords.map(record => {
         // Ignore requests that don't have timing data or resources that have
         // previously been requested and are coming from the cache.
-        if (!record._timing || record._fromDiskCache) {
+        if (!record._timing || record._fromDiskCache || record._fromMemoryCache) {
           return undefined;
         }
 
