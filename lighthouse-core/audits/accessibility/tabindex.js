@@ -24,7 +24,7 @@ class TabIndex extends AxeAudit {
       failureDescription: 'Some elements have a `[tabindex]` value greater than 0.',
       helpText: 'A value greater than 0 implies an explicit navigation ordering. ' +
           'Although technically valid, this often creates frustrating experiences ' +
-          'for users who rely on assistive technologies. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/tabindex).',
+          'for users who rely on assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/1.1/tabindex).',
       requiredArtifacts: ['Accessibility']
     };
   }
