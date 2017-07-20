@@ -24,7 +24,7 @@ class ImageAlt extends AxeAudit {
       failureDescription: 'Image elements do not have `[alt]` attributes.',
       helpText: 'Informative elements should aim for short, descriptive alternate text. ' +
           'Decorative elements can be ignored with an empty alt attribute.' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/image-alt).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/image-alt).',
       requiredArtifacts: ['Accessibility']
     };
   }

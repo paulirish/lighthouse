@@ -26,7 +26,7 @@ class List extends AxeAudit {
           'supporting elements (`<script>` and `<template>`).',
       helpText: 'Screen readers have a specific way of announcing lists. Ensuring proper list ' +
           'structure aids screen reader output. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/list).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/list).',
       requiredArtifacts: ['Accessibility']
     };
   }

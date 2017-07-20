@@ -24,7 +24,7 @@ class InputImageAlt extends AxeAudit {
       failureDescription: '`<input type="image">` elements do not have `[alt]` text.',
       helpText: 'When an image is being used as an `<input>` button, providing alternative text ' +
           'can help screen reader users understand the purpose of the button. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/input-image-alt).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/input-image-alt).',
       requiredArtifacts: ['Accessibility']
     };
   }

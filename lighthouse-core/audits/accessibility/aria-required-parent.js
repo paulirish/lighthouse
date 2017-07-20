@@ -25,7 +25,7 @@ class AriaRequiredParent extends AxeAudit {
       failureDescription: '`[role]`s are not contained by their required parent element.',
       helpText: 'Some ARIA child roles must be contained by specific parent roles to ' +
           'properly perform their intended accessibility functions. ' +
-          '[Learn more](https://dequeuniversity.com/rules/worldspace/2.1/aria-required-parent).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-required-parent).',
       requiredArtifacts: ['Accessibility']
     };
   }

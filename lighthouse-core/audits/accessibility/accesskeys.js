@@ -24,7 +24,7 @@ class Accesskeys extends AxeAudit {
       failureDescription: '`[accesskey]` values are not unique.',
       helpText: 'Access keys let users quickly focus a part of the page. For proper ' +
           'navigation, each access key must be unique. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/accesskeys).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys).',
       requiredArtifacts: ['Accessibility']
     };
   }

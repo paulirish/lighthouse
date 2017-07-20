@@ -26,7 +26,7 @@ class DefinitionList extends AxeAudit {
           'groups, `<script>` or `<template>` elements.',
       helpText: 'When definition lists are not properly marked up, screen readers may produce ' +
           'confusing or inaccurate output. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/definition-list).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/definition-list).',
       requiredArtifacts: ['Accessibility']
     };
   }

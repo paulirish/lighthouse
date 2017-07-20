@@ -24,7 +24,7 @@ class ARIAValidAttr extends AxeAudit {
       failureDescription: '`[aria-*]` attributes are not valid or misspelled.',
       helpText: 'Assistive technologies, like screen readers, can\'t interpret ARIA ' +
           'attributes with invalid names. [Learn ' +
-          'more](https://dequeuniversity.com/rules/axe/1.1/aria-valid-attr).',
+          'more](https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr).',
       requiredArtifacts: ['Accessibility']
     };
   }

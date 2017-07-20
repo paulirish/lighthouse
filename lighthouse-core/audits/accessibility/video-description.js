@@ -25,7 +25,7 @@ class VideoDescription extends AxeAudit {
           '`[kind="description"]`.',
       helpText: 'Audio descriptions provide relevant information for videos that dialogue ' +
           'cannot, such as facial expressions and scenes. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/video-description).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/video-description).',
       requiredArtifacts: ['Accessibility']
     };
   }

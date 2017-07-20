@@ -25,7 +25,7 @@ class VideoCaption extends AxeAudit {
           'with `[kind="captions"]`.',
       helpText: 'When a video provides a caption it is easier for deaf and hearing impaired ' +
           'users to access its information. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/video-caption).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/video-caption).',
       requiredArtifacts: ['Accessibility']
     };
   }

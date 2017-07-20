@@ -24,7 +24,7 @@ class DuplicateId extends AxeAudit {
       failureDescription: '`[id]` attributes on the page are not unique.',
       helpText: 'The value of an id attribute must be unique to prevent ' +
           'other instances from being overlooked by assistive technologies. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/duplicate-id).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/duplicate-id).',
       requiredArtifacts: ['Accessibility']
     };
   }

@@ -28,7 +28,7 @@ class LayoutTable extends AxeAudit {
       helpText: 'A table being used for layout purposes should not include data elements, ' +
           'such as the th or caption elements or the summary attribute, because this can ' +
           'create a confusing experience for screen reader users. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/layout-table).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/layout-table).',
       requiredArtifacts: ['Accessibility']
     };
   }

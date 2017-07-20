@@ -25,7 +25,7 @@ class ListItem extends AxeAudit {
           'or `<ol>` parent elements.',
       helpText: 'Screen readers require list items (`<li>`) to be contained within a ' +
           'parent `<ul>` or `<ol>` to be announced properly. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/listitem).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/listitem).',
       requiredArtifacts: ['Accessibility']
     };
   }

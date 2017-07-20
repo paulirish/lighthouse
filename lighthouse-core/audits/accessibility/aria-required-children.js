@@ -26,7 +26,7 @@ class AriaRequiredChildren extends AxeAudit {
           'are missing.',
       helpText: 'Some ARIA parent roles must contain specific child roles to perform ' +
           'their intended accessibility functions. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/aria-required-children).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-required-children).',
       requiredArtifacts: ['Accessibility']
     };
   }

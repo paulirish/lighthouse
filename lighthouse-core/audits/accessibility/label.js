@@ -24,7 +24,7 @@ class Label extends AxeAudit {
       failureDescription: 'Form elements do not have associated labels.',
       helpText: 'Labels ensure that form controls are announced properly by assistive ' +
           'technologies, like screen readers. [Learn ' +
-          'more](https://dequeuniversity.com/rules/axe/1.1/label).',
+          'more](https://dequeuniversity.com/rules/axe/2.2/label).',
       requiredArtifacts: ['Accessibility']
     };
   }

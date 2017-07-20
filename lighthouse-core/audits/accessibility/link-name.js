@@ -25,7 +25,7 @@ class LinkName extends AxeAudit {
       helpText: 'Link text (and alternate text for images, when used as links) that is ' +
           'discernible, unique, and focusable improves the navigation experience for ' +
           'screen reader users. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/link-name).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/link-name).',
       requiredArtifacts: ['Accessibility']
     };
   }

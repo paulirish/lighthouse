@@ -26,7 +26,7 @@ class AudioCaption extends AxeAudit {
       helpText: 'Captions make audio elements usable for deaf or hearing-impaired users, ' +
           'providing critical information such as who is talking, what they\'re saying, ' +
           'and other non-speech information. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/audio-caption).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/audio-caption).',
       requiredArtifacts: ['Accessibility']
     };
   }

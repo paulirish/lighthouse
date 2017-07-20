@@ -26,7 +26,7 @@ class HTMLHasLang extends AxeAudit {
           'that the page is in the default language that the user chose when setting up the ' +
           'screen reader. If the page isn\'t actually in the default language, then the screen ' +
           'reader might not announce the page\'s text correctly. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/html-lang).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/html-lang).',
       requiredArtifacts: ['Accessibility']
     };
   }

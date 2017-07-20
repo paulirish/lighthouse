@@ -24,7 +24,7 @@ class DocumentTitle extends AxeAudit {
       failureDescription: 'Document does not have a `<title>` element.',
       helpText: 'Screen reader users use page titles to get an overview of the contents of ' +
           'the page. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/1.1/document-title).',
+          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/document-title).',
       requiredArtifacts: ['Accessibility']
     };
   }
