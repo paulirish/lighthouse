@@ -132,7 +132,7 @@ class LighthouseReportViewer {
 
       const features = new ViewerUIFeatures(dom, saveCallback);
       features.initFeatures(json);
-    } catch(e) {
+    } catch (e) {
       logger.error(`Error rendering report: ${e.message}`);
       dom.resetTemplates(); // TODO(bckenny): hack
       container.textContent = '';
@@ -163,7 +163,7 @@ class LighthouseReportViewer {
       let json;
       try {
         json = JSON.parse(str);
-      } catch(e) {
+      } catch (e) {
         throw new Error('Could not parse JSON file.');
       }
 

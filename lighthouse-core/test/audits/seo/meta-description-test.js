@@ -28,7 +28,7 @@ describe('SEO: description audit', () => {
 
   it('fails when description consists only of whitespace', () => {
     const auditResult = Audit.audit({
-      MetaDescription: '	 ',
+      MetaDescription: '\t\xa0',
     });
     assert.equal(auditResult.rawValue, false);
     assert.ok(auditResult.debugString.includes('empty'), auditResult.debugString);

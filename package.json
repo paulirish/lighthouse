@@ -60,7 +60,7 @@
     "codecov": "^2.2.0",
     "coveralls": "^2.11.9",
     "eslint": "^4.7.2",
-    "eslint-config-google": "^0.7.1",
+    "eslint-config-google": "^0.9.1",
     "google-closure-compiler": "^20170521.0.0",
     "gulp": "^3.9.1",
     "gulp-replace": "^0.5.4",
