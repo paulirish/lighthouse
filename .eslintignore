@@ -23,3 +23,5 @@ chrome-launcher/*.js
 
 # Generated files
 plots/out*
+
+!.eslintrc.js
