@@ -8,6 +8,7 @@ module.exports = {
   },
   "rules": {
     // 2 == error, 1 == warning, 0 == off
+    "eqeqeq": 2,
     "indent": [2, 2, {
       "SwitchCase": 1,
       "VariableDeclarator": 2,

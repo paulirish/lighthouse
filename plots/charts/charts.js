@@ -20,7 +20,7 @@ let elementId = 1;
  */
 const queuedPlots = [];
 function enqueuePlot(fn) {
-  const isFirst = queuedPlots.length == 0;
+  const isFirst = queuedPlots.length === 0;
   queuedPlots.push(fn);
   if (isFirst) {
     renderPlots();

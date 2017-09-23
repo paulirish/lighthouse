@@ -181,7 +181,7 @@ class RenderingScheduler {
   }
 
   enqueue(fn) {
-    const isFirst = this._queue.length == 0;
+    const isFirst = this._queue.length === 0;
     this._queue.push(fn);
     if (isFirst) {
       this._render();
