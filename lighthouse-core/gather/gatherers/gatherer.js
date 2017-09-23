@@ -50,7 +50,6 @@ class Gatherer {
   afterPass(options, loadData) { }
 
   /* eslint-enable no-unused-vars */
-
 }
 
 module.exports = Gatherer;

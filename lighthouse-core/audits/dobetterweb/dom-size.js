@@ -73,9 +73,9 @@ class DOMSize extends Audit {
     //   3000: score=50
     //   >= 5970: score≈0
     const score = Audit.computeLogNormalScore(
-      stats.totalDOMNodes,
-      SCORING_POINT_OF_DIMINISHING_RETURNS,
-      SCORING_MEDIAN
+        stats.totalDOMNodes,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
     );
 
     const cards = [{
@@ -109,7 +109,6 @@ class DOMSize extends Audit {
       },
     };
   }
-
 }
 
 module.exports = DOMSize;

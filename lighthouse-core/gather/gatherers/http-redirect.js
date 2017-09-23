@@ -13,7 +13,6 @@ const Gatherer = require('./gatherer');
  * TODO: Instead of abusing a loadPage pass for this test, it could likely just do an XHR instead
  */
 class HTTPRedirect extends Gatherer {
-
   constructor() {
     super();
     this._preRedirectURL = undefined;

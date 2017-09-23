@@ -10,7 +10,6 @@ const Gatherer = require('../gatherer');
 const MAX_WAIT_TIMEOUT = 500;
 
 class WebSQL extends Gatherer {
-
   listenForDatabaseEvents(driver) {
     let timeout;
 

@@ -25,7 +25,7 @@ describe('Cache Contents gatherer', () => {
         },
       },
     }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 });

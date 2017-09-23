@@ -11,7 +11,6 @@ const log = require('lighthouse-logger');
 /* globals chrome */
 
 class ExtensionConnection extends Connection {
-
   constructor() {
     super();
     this._tabId = null;

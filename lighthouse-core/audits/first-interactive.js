@@ -43,9 +43,9 @@ class FirstInteractiveMetric extends Audit {
       .then(firstInteractive => {
         return {
           score: Audit.computeLogNormalScore(
-            firstInteractive.timeInMs,
-            SCORING_POINT_OF_DIMINISHING_RETURNS,
-            SCORING_MEDIAN
+              firstInteractive.timeInMs,
+              SCORING_POINT_OF_DIMINISHING_RETURNS,
+              SCORING_MEDIAN
           ),
           rawValue: firstInteractive.timeInMs,
           displayValue: Util.formatMilliseconds(firstInteractive.timeInMs),

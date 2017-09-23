@@ -52,7 +52,6 @@ const loggersByTitle = {};
 const loggingBufferColumns = 25;
 
 class Log {
-
   static _logToStdErr(title, argsArray) {
     const log = Log.loggerfn(title);
     log(...argsArray);

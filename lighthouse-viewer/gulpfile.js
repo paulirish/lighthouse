@@ -50,14 +50,14 @@ gulp.task('lint', () => {
     'test/**/*.js',
     'gulpfile.js',
   ])
-  .pipe($.eslint())
-  .pipe($.eslint.format())
-  .pipe($.eslint.failAfterError());
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.eslint.failAfterError());
 });
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
-  .pipe(gulp.dest(`dist/images`));
+    .pipe(gulp.dest(`dist/images`));
 });
 
 // Concat Report and Viewer stylesheets into single viewer.css file.
@@ -90,7 +90,7 @@ gulp.task('polyfills', () => {
     'node_modules/url-search-params/build/url-search-params.js',
     'node_modules/whatwg-fetch/fetch.js',
   ])
-  .pipe(gulp.dest(`dist/src/polyfills`));
+    .pipe(gulp.dest(`dist/src/polyfills`));
 });
 
 // Combine multiple JS bundles into single viewer.js file.
@@ -185,8 +185,8 @@ gulp.task('deploy', cb => {
 
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'compile-js',
-    ['html', 'pwa', 'images', 'concat-css', 'polyfills'], cb);
+      'lint', 'compile-js',
+      ['html', 'pwa', 'images', 'concat-css', 'polyfills'], cb);
 });
 
 gulp.task('default', ['clean'], cb => {

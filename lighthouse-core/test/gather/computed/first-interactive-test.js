@@ -53,7 +53,7 @@ describe('FirstInteractive computed artifact:', () => {
     before(() => {
       originalMainThreadEventsFunc = TracingProcessor.getMainThreadTopLevelEvents;
       TracingProcessor.getMainThreadTopLevelEvents = () => mainThreadEvents
-          .map(evt => Object.assign(evt, {duration: evt.end - evt.start}));
+        .map(evt => Object.assign(evt, {duration: evt.end - evt.start}));
     });
 
     after(() => {

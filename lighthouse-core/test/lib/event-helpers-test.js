@@ -20,7 +20,7 @@ describe('event helpers', () => {
         assert.ok('label' in obj, 'helper adds a label property');
         assert.ok('pre' in obj, 'helper adds a pre property');
         assert.ok(obj.label.match(/line: (?:\d+), col: (?:\d+)/),
-                  'label is not formatted correctly');
+            'label is not formatted correctly');
         const regEx = new RegExp(`.addEventListener\\('${listener.type}', `);
         assert.ok(obj.pre.match(regEx), 'code snippet is not formatted correctly');
       });
@@ -31,7 +31,7 @@ describe('event helpers', () => {
         const obj = EventHelpers.addFormattedCodeSnippet(listener);
         assert.ok(obj.pre.indexOf('Window') !== 0, 'Window was not lowercase');
         assert.ok(obj.pre.indexOf('#document') !== 0,
-                  '#document was not replaced with document');
+            '#document was not replaced with document');
       });
     });
   });

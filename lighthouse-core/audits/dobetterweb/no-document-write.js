@@ -13,7 +13,6 @@
 const ViolationAudit = require('../violation-audit');
 
 class NoDocWriteAudit extends ViolationAudit {
-
   /**
    * @return {!AuditMeta}
    */

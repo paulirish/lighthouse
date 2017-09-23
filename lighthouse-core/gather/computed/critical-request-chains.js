@@ -9,7 +9,6 @@ const ComputedArtifact = require('./computed-artifact');
 const WebInspector = require('../../lib/web-inspector');
 
 class CriticalRequestChains extends ComputedArtifact {
-
   get name() {
     return 'CriticalRequestChains';
   }

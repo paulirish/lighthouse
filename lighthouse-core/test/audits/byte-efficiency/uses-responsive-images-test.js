@@ -41,9 +41,9 @@ describe('Page uses responsive images', () => {
         ViewportDimensions: {devicePixelRatio: data.devicePixelRatio || 1},
         ImageUsage: [
           generateImage(
-            generateSize(...data.clientSize),
-            generateSize(...data.naturalSize, 'natural'),
-            generateRecord(data.sizeInKb, data.durationInMs || 200)
+              generateSize(...data.clientSize),
+              generateSize(...data.naturalSize, 'natural'),
+              generateRecord(data.sizeInKb, data.durationInMs || 200)
           ),
         ],
       });
@@ -94,9 +94,9 @@ describe('Page uses responsive images', () => {
       ViewportDimensions: {devicePixelRatio: 2},
       ImageUsage: [
         generateImage(
-          generateSize(100, 100),
-          generateSize(300, 300, 'natural'),
-          null
+            generateSize(100, 100),
+            generateSize(300, 300, 'natural'),
+            null
         ),
       ],
     });
@@ -109,22 +109,22 @@ describe('Page uses responsive images', () => {
       ViewportDimensions: {devicePixelRatio: 2},
       ImageUsage: [
         generateImage(
-          generateSize(200, 200),
-          generateSize(450, 450, 'natural'),
-          generateRecord(100, 300),
-          'https://google.com/logo.png'
+            generateSize(200, 200),
+            generateSize(450, 450, 'natural'),
+            generateRecord(100, 300),
+            'https://google.com/logo.png'
         ),
         generateImage(
-          generateSize(100, 100),
-          generateSize(210, 210, 'natural'),
-          generateRecord(90, 500),
-          'https://google.com/logo2.png'
+            generateSize(100, 100),
+            generateSize(210, 210, 'natural'),
+            generateRecord(90, 500),
+            'https://google.com/logo2.png'
         ),
         generateImage(
-          generateSize(100, 100),
-          generateSize(80, 80, 'natural'),
-          generateRecord(20, 100),
-          'data:image/jpeg;base64,foobar'
+            generateSize(100, 100),
+            generateSize(80, 80, 'natural'),
+            generateRecord(20, 100),
+            'data:image/jpeg;base64,foobar'
         ),
       ],
     });

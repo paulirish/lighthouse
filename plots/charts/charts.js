@@ -150,7 +150,7 @@ function generateLinePlotChartPerMetric() {
 // eslint-disable-next-line no-unused-vars
 function generateBoxPlotPerSite() {
   const sitesCount = metrics.reduce(
-    (acc, metric) => Math.max(acc, generatedResults[metric].length), 0);
+      (acc, metric) => Math.max(acc, generatedResults[metric].length), 0);
   for (let i = 0; i < sitesCount; i++) {
     const data = metrics
       .map(metric => ({
@@ -185,9 +185,7 @@ function generateBoxPlotPerSite() {
 // eslint-disable-next-line no-unused-vars
 function generateGroupedBarChart() {
   const sitesCount = metrics.reduce(
-    (acc, metric) => Math.max(acc, generatedResults[metric].length),
-    0
-  );
+      (acc, metric) => Math.max(acc, generatedResults[metric].length), 0);
   for (let i = 0; i < sitesCount; i++) {
     const data = metrics.map(metric => ({
       y: generatedResults[metric][i].metrics.map(m => m ? m.timing : null),

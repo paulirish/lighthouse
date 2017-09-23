@@ -81,7 +81,7 @@ class CategoryRenderer {
     this._dom.find('.lh-score__title', element).appendChild(
         this._dom.convertMarkdownCodeSnippets(title));
     this._dom.find('.lh-score__description', element)
-        .appendChild(this._dom.convertMarkdownLinkSnippets(description));
+      .appendChild(this._dom.convertMarkdownLinkSnippets(description));
 
     return /** @type {!Element} **/ (element);
   }
@@ -214,9 +214,8 @@ class CategoryRenderer {
     const summmaryEl = this._dom.createChildOf(element, 'summary', 'lh-audit-group__summary');
     const headerEl = this._dom.createChildOf(summmaryEl, 'div', 'lh-audit-group__header');
     this._dom.createChildOf(summmaryEl, 'div',
-      `lh-toggle-arrow  ${expandable ? '' : ' lh-toggle-arrow-unexpandable'}`, {
-        title: 'See audits',
-      });
+        `lh-toggle-arrow  ${expandable ? '' : ' lh-toggle-arrow-unexpandable'}`,
+        {title: 'See audits'});
 
     if (group.description) {
       const auditGroupDescription = this._dom.createElement('div', 'lh-audit-group__description');
@@ -347,7 +346,7 @@ class CategoryRenderer {
     // Create a passed section if there are passing audits.
     if (passedAudits.length) {
       const passedElem = this._renderPassedAuditsSection(
-        passedAudits.map(audit => this._renderAudit(audit))
+          passedAudits.map(audit => this._renderAudit(audit))
       );
       element.appendChild(passedElem);
     }
@@ -403,8 +402,8 @@ class CategoryRenderer {
     element.appendChild(metricAuditsEl);
 
     const hintAudits = category.audits
-        .filter(audit => audit.group === 'perf-hint' && audit.score < 100)
-        .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
+      .filter(audit => audit.group === 'perf-hint' && audit.score < 100)
+      .sort((auditA, auditB) => auditB.result.rawValue - auditA.result.rawValue);
     if (hintAudits.length) {
       const maxWaste = Math.max(...hintAudits.map(audit => audit.result.rawValue));
       const scale = Math.ceil(maxWaste / 1000) * 1000;
@@ -415,7 +414,7 @@ class CategoryRenderer {
     }
 
     const infoAudits = category.audits
-        .filter(audit => audit.group === 'perf-info' && audit.score < 100);
+      .filter(audit => audit.group === 'perf-info' && audit.score < 100);
     if (infoAudits.length) {
       const infoAuditsEl = this._renderAuditGroup(groups['perf-info'], {expandable: false});
       infoAudits.forEach(item => infoAuditsEl.appendChild(this._renderAudit(item)));
@@ -424,9 +423,9 @@ class CategoryRenderer {
     }
 
     const passedElements = category.audits
-        .filter(audit => (audit.group === 'perf-hint' || audit.group === 'perf-info') &&
-            audit.score === 100)
-        .map(audit => this._renderAudit(audit));
+      .filter(audit => (audit.group === 'perf-hint' || audit.group === 'perf-info') &&
+          audit.score === 100)
+      .map(audit => this._renderAudit(audit));
 
     if (!passedElements.length) return element;
 

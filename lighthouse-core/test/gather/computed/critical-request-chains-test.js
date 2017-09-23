@@ -18,15 +18,15 @@ const LOW = 'Low';
 const VERY_LOW = 'VeryLow';
 
 function mockTracingData(prioritiesList, edges) {
-  const networkRecords = prioritiesList.map((priority, index) =>
-      ({requestId: index.toString(),
-        _resourceType: {
-          _category: 'fake',
-        },
-        finished: true,
-        priority: () => priority,
-        initiatorRequest: () => null,
-      }));
+  const networkRecords = prioritiesList.map((priority, index) => ({
+    requestId: index.toString(),
+    _resourceType: {
+      _category: 'fake',
+    },
+    finished: true,
+    priority: () => priority,
+    initiatorRequest: () => null,
+  }));
 
   // add mock initiator information
   edges.forEach(edge => {
@@ -91,21 +91,21 @@ describe('CriticalRequestChain gatherer: extractChain function', () => {
     }));
 
   it('returns correct data for chain interleaved with non-critical requests',
-    () => testGetCriticalChain({
-      priorityList: [MEDIUM, HIGH, LOW, MEDIUM, HIGH, VERY_LOW],
-      edges: [[0, 1], [1, 2], [2, 3], [3, 4]],
-      expected: {
-        0: {
-          request: constructEmptyRequest(),
-          children: {
-            1: {
-              request: constructEmptyRequest(),
-              children: {},
+      () => testGetCriticalChain({
+        priorityList: [MEDIUM, HIGH, LOW, MEDIUM, HIGH, VERY_LOW],
+        edges: [[0, 1], [1, 2], [2, 3], [3, 4]],
+        expected: {
+          0: {
+            request: constructEmptyRequest(),
+            children: {
+              1: {
+                request: constructEmptyRequest(),
+                children: {},
+              },
             },
           },
         },
-      },
-    }));
+      }));
 
   it('returns correct data for two parallel chains', () =>
     testGetCriticalChain({

@@ -75,9 +75,9 @@ class ReportGeneratorV2 {
     const firstReplacement = replacements[0];
     const nextReplacements = replacements.slice(1);
     return source
-        .split(firstReplacement.search)
-        .map(part => ReportGeneratorV2.replaceStrings(part, nextReplacements))
-        .join(firstReplacement.replacement);
+      .split(firstReplacement.search)
+      .map(part => ReportGeneratorV2.replaceStrings(part, nextReplacements))
+      .join(firstReplacement.replacement);
   }
 
   /**

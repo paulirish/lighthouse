@@ -42,7 +42,6 @@ function getCSSPropsInStyleSheet(parseTree) {
 }
 
 class Styles extends Gatherer {
-
   constructor() {
     super();
     this._activeStyleSheetIds = [];

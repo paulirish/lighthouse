@@ -13,7 +13,6 @@
 const Gatherer = require('../gatherer');
 
 class EventListeners extends Gatherer {
-
   listenForScriptParsedEvents() {
     this._listener = script => {
       this._parsedScripts.set(script.scriptId, script);

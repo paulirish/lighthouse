@@ -52,7 +52,7 @@ module.exports = {
   },
   endTrace() {
     return Promise.resolve(
-      require('../fixtures/traces/progressive-app.json')
+        require('../fixtures/traces/progressive-app.json')
     );
   },
   beginDevtoolsLog() {},

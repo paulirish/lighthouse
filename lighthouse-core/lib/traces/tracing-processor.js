@@ -90,10 +90,10 @@ class TraceProcessor {
    * @return {!Array<{percentile: number, time: number}>}
    */
   static getRiskToResponsiveness(
-    tabTrace,
-    startTime = 0,
-    endTime = tabTrace.timings.traceEnd,
-    percentiles = [0.5, 0.75, 0.9, 0.99, 1]
+      tabTrace,
+      startTime = 0,
+      endTime = tabTrace.timings.traceEnd,
+      percentiles = [0.5, 0.75, 0.9, 0.99, 1]
   ) {
     const totalTime = endTime - startTime;
     percentiles.sort((a, b) => a - b);

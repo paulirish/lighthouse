@@ -137,9 +137,9 @@ describe('GatherRunner', function() {
       return true;
     };
     const driver = getMockedEmulationDriver(
-      createEmulationCheck('calledDeviceEmulation'),
-      createEmulationCheck('calledNetworkEmulation'),
-      createEmulationCheck('calledCpuEmulation')
+        createEmulationCheck('calledDeviceEmulation'),
+        createEmulationCheck('calledNetworkEmulation'),
+        createEmulationCheck('calledCpuEmulation')
     );
 
     return GatherRunner.setupDriver(driver, {}, {
@@ -162,9 +162,9 @@ describe('GatherRunner', function() {
       return true;
     };
     const driver = getMockedEmulationDriver(
-      createEmulationCheck('calledDeviceEmulation', false),
-      createEmulationCheck('calledNetworkEmulation', true),
-      createEmulationCheck('calledCpuEmulation', true)
+        createEmulationCheck('calledDeviceEmulation', false),
+        createEmulationCheck('calledNetworkEmulation', true),
+        createEmulationCheck('calledCpuEmulation', true)
     );
 
     return GatherRunner.setupDriver(driver, {}, {
@@ -189,9 +189,9 @@ describe('GatherRunner', function() {
       return true;
     };
     const driver = getMockedEmulationDriver(
-      createEmulationCheck('calledDeviceEmulation'),
-      createEmulationCheck('calledNetworkEmulation'),
-      createEmulationCheck('calledCpuEmulation')
+        createEmulationCheck('calledDeviceEmulation'),
+        createEmulationCheck('calledNetworkEmulation'),
+        createEmulationCheck('calledCpuEmulation')
     );
 
     return GatherRunner.setupDriver(driver, {}, {
@@ -218,9 +218,9 @@ describe('GatherRunner', function() {
       return true;
     };
     const driver = getMockedEmulationDriver(
-      createEmulationCheck('calledDeviceEmulation'),
-      createEmulationCheck('calledNetworkEmulation'),
-      createEmulationCheck('calledCpuEmulation')
+        createEmulationCheck('calledDeviceEmulation'),
+        createEmulationCheck('calledNetworkEmulation'),
+        createEmulationCheck('calledCpuEmulation')
     );
 
     return GatherRunner.setupDriver(driver, {}, {
@@ -340,8 +340,8 @@ describe('GatherRunner', function() {
         gatherers: [],
       },
     }).then(() => assert.deepStrictEqual(
-      receivedUrlPatterns.sort(),
-      ['*.jpeg', '.jpg', '.woff2', 'http://*.evil.com']
+        receivedUrlPatterns.sort(),
+        ['*.jpeg', '.jpg', '.woff2', 'http://*.evil.com']
     ));
   });
 
@@ -471,9 +471,9 @@ describe('GatherRunner', function() {
 
   it('rejects when not given a config', () => {
     return GatherRunner.run({}, {url: 'http://example.com'})
-        .then(_ => assert.ok(false), err => {
-          assert.ok(/config/i.test(err));
-        });
+      .then(_ => assert.ok(false), err => {
+        assert.ok(/config/i.test(err));
+      });
   });
 
   it('does as many passes as are required', () => {
@@ -574,7 +574,7 @@ describe('GatherRunner', function() {
     const configPath = __dirname;
 
     return assert.doesNotThrow(_ =>
-        GatherRunner.getGathererClass('../fixtures/valid-custom-gatherer', configPath));
+      GatherRunner.getGathererClass('../fixtures/valid-custom-gatherer', configPath));
   });
 
   it('loads a gatherer from node_modules/', () => {
@@ -595,7 +595,7 @@ describe('GatherRunner', function() {
     const relativeGathererPath = path.relative(process.cwd(), absoluteGathererPath);
 
     return assert.doesNotThrow(_ =>
-        GatherRunner.getGathererClass(relativeGathererPath));
+      GatherRunner.getGathererClass(relativeGathererPath));
   });
 
   it('throws but not for missing gatherer when it has a dependency error', () => {
@@ -612,13 +612,13 @@ describe('GatherRunner', function() {
     const root = path.resolve(__dirname, '../fixtures/invalid-gatherers');
 
     assert.throws(_ => GatherRunner.getGathererClass('missing-before-pass', root),
-      /beforePass\(\) method/);
+        /beforePass\(\) method/);
 
     assert.throws(_ => GatherRunner.getGathererClass('missing-pass', root),
-      /pass\(\) method/);
+        /pass\(\) method/);
 
     assert.throws(_ => GatherRunner.getGathererClass('missing-after-pass', root),
-      /afterPass\(\) method/);
+        /afterPass\(\) method/);
   });
 
   describe('#assertPageLoaded', () => {
@@ -836,8 +836,8 @@ describe('GatherRunner', function() {
         flags: {},
         config: new Config({}),
       }).then(
-        _ => assert.ok(false),
-        err => assert.strictEqual(err.message, errorMessage));
+          _ => assert.ok(false),
+          err => assert.strictEqual(err.message, errorMessage));
     });
 
     it('rejects if a gatherer does not provide an artifact', () => {

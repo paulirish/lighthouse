@@ -32,21 +32,21 @@ function sizeAtLeast(sizeRequirement, manifest) {
   const flattenedSizes = [].concat(...nestedSizes);
 
   return flattenedSizes
-      // First, filter out any undefined values, in case an icon was defined without a size
-      .filter(size => typeof size === 'string')
-      // discard sizes that are not AAxBB (eg. "any")
-      .filter(size => /\d+x\d+/.test(size))
-      .filter(size => {
-        // Split the '24x24' strings into ['24','24'] arrays
-        const sizeStrs = size.split(/x/i);
-        // Cast the ['24','24'] strings into [24,24] numbers
-        const sizeNums = [parseFloat(sizeStrs[0]), parseFloat(sizeStrs[1])];
-        // Only keep sizes that are as big as our required size
-        const areIconsBigEnough = sizeNums[0] >= sizeRequirement && sizeNums[1] >= sizeRequirement;
-        // Square is required: https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/manifest/manifest_icon_selector.cc&q=ManifestIconSelector::IconSizesContainsBiggerThanMinimumSize&sq=package:chromium
-        const areIconsSquare = sizeNums[0] === sizeNums[1];
-        return areIconsBigEnough && areIconsSquare;
-      });
+    // First, filter out any undefined values, in case an icon was defined without a size
+    .filter(size => typeof size === 'string')
+    // discard sizes that are not AAxBB (eg. "any")
+    .filter(size => /\d+x\d+/.test(size))
+    .filter(size => {
+      // Split the '24x24' strings into ['24','24'] arrays
+      const sizeStrs = size.split(/x/i);
+      // Cast the ['24','24'] strings into [24,24] numbers
+      const sizeNums = [parseFloat(sizeStrs[0]), parseFloat(sizeStrs[1])];
+      // Only keep sizes that are as big as our required size
+      const areIconsBigEnough = sizeNums[0] >= sizeRequirement && sizeNums[1] >= sizeRequirement;
+      // Square is required: https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/manifest/manifest_icon_selector.cc&q=ManifestIconSelector::IconSizesContainsBiggerThanMinimumSize&sq=package:chromium
+      const areIconsSquare = sizeNums[0] === sizeNums[1];
+      return areIconsBigEnough && areIconsSquare;
+    });
 }
 
 module.exports = {

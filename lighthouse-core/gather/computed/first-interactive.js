@@ -182,7 +182,7 @@ class FirstInteractive extends ComputedArtifact {
     }
 
     const longTasksAfterFMP = TracingProcessor.getMainThreadTopLevelEvents(traceOfTab, FMP)
-        .filter(evt => evt.duration >= LONG_TASK_THRESHOLD);
+      .filter(evt => evt.duration >= LONG_TASK_THRESHOLD);
     const firstInteractive = FirstInteractive.findQuietWindow(FMP, traceEnd, longTasksAfterFMP);
 
     const valueInMs = Math.max(firstInteractive, DCL);

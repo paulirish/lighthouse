@@ -116,9 +116,9 @@ class Charts {
   _renderPreviewChart(data, title) {
     this._renderingScheduler.enqueue(_ => {
       Plotly.newPlot(
-        this._createPreviewChartElement(data, title),
-        data,
-        Object.assign({title}, this._layout)
+          this._createPreviewChartElement(data, title),
+          data,
+          Object.assign({title}, this._layout)
       );
     });
   }
@@ -165,12 +165,12 @@ class Charts {
 
   _renderFocusedChart(data, title, element) {
     Plotly.newPlot(
-      element,
-      data,
-      Object.assign({title}, this._layout, {
-        width: document.body.clientWidth - 100,
-        height: 500,
-      })
+        element,
+        data,
+        Object.assign({title}, this._layout, {
+          width: document.body.clientWidth - 100,
+          height: 500,
+        })
     );
   }
 }

@@ -139,7 +139,7 @@ class CriticalRequestChainRenderer {
 
     for (const key of Object.keys(segment.node.children)) {
       const childSegment = CriticalRequestChainRenderer.createSegment(segment.node.children, key,
-         segment.startTime, segment.transferSize, segment.treeMarkers, segment.isLastChild);
+          segment.startTime, segment.transferSize, segment.treeMarkers, segment.isLastChild);
       CriticalRequestChainRenderer.buildTree(dom, tmpl, childSegment, detailsEl, details);
     }
   }

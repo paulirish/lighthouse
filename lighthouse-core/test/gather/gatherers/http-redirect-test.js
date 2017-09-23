@@ -39,10 +39,10 @@ describe('HTTP Redirect gatherer', () => {
 
     httpRedirectGather.beforePass(opts);
     return httpRedirectGather
-        .afterPass(opts)
-        .then(_ => {
-          assert.equal(opts.url, 'https://example.com');
-        });
+      .afterPass(opts)
+      .then(_ => {
+        assert.equal(opts.url, 'https://example.com');
+      });
   });
 
   it('returns an artifact', () => {
@@ -67,8 +67,8 @@ describe('HTTP Redirect gatherer', () => {
         },
       },
     }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 
   it('handles driver timeout', () => {
@@ -90,7 +90,7 @@ describe('HTTP Redirect gatherer', () => {
 
       _testTimeout: fastTimeout,
     }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 });

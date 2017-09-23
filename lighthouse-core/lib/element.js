@@ -6,7 +6,6 @@
 'use strict';
 
 class Element {
-
   constructor(element, driver) {
     if (!element || !driver) {
       throw Error('Driver and element required to create Element');

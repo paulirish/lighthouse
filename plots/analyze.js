@@ -38,8 +38,8 @@ function main() {
   });
   const generatedResults = groupByMetrics(allResults);
   fs.writeFileSync(
-    path.resolve(outPath, constants.GENERATED_RESULTS_FILENAME),
-    `var generatedResults = ${JSON.stringify(generatedResults)}`
+      path.resolve(outPath, constants.GENERATED_RESULTS_FILENAME),
+      `var generatedResults = ${JSON.stringify(generatedResults)}`
   );
   const chartsPath = path.resolve(__dirname, constants.CHARTS_FOLDER);
   utils.copy(path.resolve(chartsPath, constants.CHARTS_HTML_FILENAME), outPath);
@@ -49,7 +49,7 @@ function main() {
   if (process.env.CI) {
     return;
   }
-  console.log('Opening the charts web page...');  // eslint-disable-line no-console
+  console.log('Opening the charts web page...'); // eslint-disable-line no-console
   opn(path.resolve(outPath, constants.CHARTS_HTML_FILENAME));
 }
 
@@ -107,7 +107,7 @@ function readResult(lighthouseReportPath) {
  */
 function groupByMetrics(results) {
   const metricNames = Metrics.metricsDefinitions.map(metric => metric.name)
-      .concat(Object.keys(constants.TIMING_NAME_MAP).map(key => constants.TIMING_NAME_MAP[key]));
+    .concat(Object.keys(constants.TIMING_NAME_MAP).map(key => constants.TIMING_NAME_MAP[key]));
 
   return metricNames.reduce((acc, metricName, index) => {
     acc[metricName] = results.map(siteResult => ({

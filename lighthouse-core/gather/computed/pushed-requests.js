@@ -8,7 +8,6 @@
 const ComputedArtifact = require('./computed-artifact');
 
 class PushedRequests extends ComputedArtifact {
-
   get name() {
     return 'PushedRequests';
   }

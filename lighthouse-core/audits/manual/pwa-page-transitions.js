@@ -12,7 +12,6 @@ const ManualAudit = require('./manual-audit');
  */
 
 class PWAPageTransitions extends ManualAudit {
-
   /**
    * @return {!AuditMeta}
    */

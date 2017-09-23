@@ -30,10 +30,10 @@ describe('Images: aspect-ratio audit', () => {
       const result = Audit.audit({
         ImageUsage: [
           generateImage(
-            {width: data.clientSize[0], height: data.clientSize[1]},
-            {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
-            generateRecord(),
-            data.props
+              {width: data.clientSize[0], height: data.clientSize[1]},
+              {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
+              generateRecord(),
+              data.props
           ),
         ],
       });

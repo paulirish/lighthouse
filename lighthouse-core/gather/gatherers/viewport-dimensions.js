@@ -24,7 +24,6 @@ function getViewportDimensions() {
 }
 
 class ViewportDimensions extends Gatherer {
-
   /**
    * @param {!Object} options
    * @return {!Promise<{innerWidth: number, outerWidth: number, devicePixelRatio: number}>}
@@ -34,15 +33,15 @@ class ViewportDimensions extends Gatherer {
 
     return driver.evaluateAsync(`(${getViewportDimensions.toString()}())`)
 
-    .then(dimensions => {
-      const allNumeric = Object.keys(dimensions).every(key => Number.isFinite(dimensions[key]));
-      if (!allNumeric) {
-        const results = JSON.stringify(dimensions);
-        throw new Error(`ViewportDimensions results were not numeric: ${results}`);
-      }
+      .then(dimensions => {
+        const allNumeric = Object.keys(dimensions).every(key => Number.isFinite(dimensions[key]));
+        if (!allNumeric) {
+          const results = JSON.stringify(dimensions);
+          throw new Error(`ViewportDimensions results were not numeric: ${results}`);
+        }
 
-      return dimensions;
-    });
+        return dimensions;
+      });
   }
 }
 

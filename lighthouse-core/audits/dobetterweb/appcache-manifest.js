@@ -13,7 +13,6 @@
 const Audit = require('../audit');
 
 class AppCacheManifestAttr extends Audit {
-
   /**
    * @return {!AuditMeta}
    */

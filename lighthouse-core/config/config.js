@@ -31,7 +31,7 @@ function cleanTrace(trace) {
     return {
       pid: evt.pid,
       tid: evt.tid,
-      ts: ts || 0,  // default to 0 for now
+      ts: ts || 0, // default to 0 for now
       ph: 'I',
       cat: 'disabled-by-default-devtools.timeline',
       name: 'TracingStartedInPage',
@@ -185,7 +185,7 @@ function assertValidAudit(auditDefinition, auditPath) {
 
   if (typeof auditDefinition.meta.description !== 'string') {
     throw new Error(
-      `${auditName} has no meta.description property, or the property is not a string.`
+        `${auditName} has no meta.description property, or the property is not a string.`
     );
   }
 
@@ -198,17 +198,17 @@ function assertValidAudit(auditDefinition, auditPath) {
 
   if (typeof auditDefinition.meta.helpText !== 'string') {
     throw new Error(
-      `${auditName} has no meta.helpText property, or the property is not a string.`
+        `${auditName} has no meta.helpText property, or the property is not a string.`
     );
   } else if (auditDefinition.meta.helpText === '') {
     throw new Error(
-      `${auditName} has an empty meta.helpText string. Please add a description for the UI.`
+        `${auditName} has an empty meta.helpText string. Please add a description for the UI.`
     );
   }
 
   if (!Array.isArray(auditDefinition.meta.requiredArtifacts)) {
     throw new Error(
-      `${auditName} has no meta.requiredArtifacts property, or the property is not an array.`
+        `${auditName} has no meta.requiredArtifacts property, or the property is not an array.`
     );
   }
 }
@@ -473,10 +473,10 @@ class Config {
     return new Set(audits.map(audit => audit.id));
   }
 
- /**
-  * @param {{categories: !Object<string, {name: string}>}} config
-  * @return {!Array<{id: string, name: string}>}
-  */
+  /**
+   * @param {{categories: !Object<string, {name: string}>}} config
+   * @return {!Array<{id: string, name: string}>}
+   */
   static getCategories(config) {
     return Object.keys(config.categories).map(id => {
       const name = config.categories[id].name;

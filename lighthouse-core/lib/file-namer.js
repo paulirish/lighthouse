@@ -27,7 +27,7 @@ function getFilenamePrefix(results) {
 
   const filenamePrefix = `${hostname}_${dateStr}_${timeStr}`;
   // replace characters that are unfriendly to filenames
-  return filenamePrefix.replace(/[\/\?<>\\:\*\|":]/g, '-');
+  return filenamePrefix.replace(/[/?<>\\:*|":]/g, '-');
 }
 
 let URLConstructor;

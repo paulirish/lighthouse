@@ -19,7 +19,6 @@ const validColor = require('../lib/web-inspector').Color.parse;
  */
 
 class ThemedOmnibox extends MultiCheckAudit {
-
   /**
    * @return {!AuditMeta}
    */

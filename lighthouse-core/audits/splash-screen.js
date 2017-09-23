@@ -21,7 +21,6 @@ const MultiCheckAudit = require('./multi-check-audit');
  */
 
 class SplashScreen extends MultiCheckAudit {
-
   /**
    * @return {!AuditMeta}
    */

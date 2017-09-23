@@ -44,7 +44,7 @@ class CriConnection extends Connection {
           }
           // first, we activate it to a foreground tab, then we connect
           return this._runJsonCommand(`activate/${firstTab.id}`)
-              .then(_ => this._connectToSocket(firstTab));
+            .then(_ => this._connectToSocket(firstTab));
         });
       });
   }

@@ -37,8 +37,8 @@ describe('Performance: speed-index-metric audit', () => {
   it('throws an error if no frames', () => {
     const artifacts = mockArtifactsWithSpeedlineResult({frames: []});
     return Audit.audit(artifacts).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 
   it('throws an error if speed index of 0', () => {
@@ -49,8 +49,8 @@ describe('Performance: speed-index-metric audit', () => {
     const artifacts = mockArtifactsWithSpeedlineResult(SpeedlineResult);
 
     return Audit.audit(artifacts).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 
   it('scores speed index of 831 as 100', () => {

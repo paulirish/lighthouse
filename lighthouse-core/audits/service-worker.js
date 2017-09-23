@@ -37,7 +37,7 @@ class ServiceWorker extends Audit {
 
     const origin = new URL(url).origin;
     const matchingSW = versions.filter(v => v.status === 'activated')
-        .find(v => new URL(v.scriptURL).origin === origin);
+      .find(v => new URL(v.scriptURL).origin === origin);
 
     return {
       rawValue: !!matchingSW,

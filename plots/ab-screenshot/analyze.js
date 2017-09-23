@@ -47,11 +47,11 @@ function main() {
   }
   const outFilePath = path.resolve(constants.OUT_PATH, 'screenshotsComparison.js');
   fs.writeFileSync(
-    outFilePath,
-    `var aggregatedScreenshots = ${JSON.stringify(aggregatedScreenshots, undefined, 2)}`
+      outFilePath,
+      `var aggregatedScreenshots = ${JSON.stringify(aggregatedScreenshots, undefined, 2)}`
   );
   console.log('Wrote output to:', outFilePath); // eslint-disable-line no-console
-  console.log('Opening the screenshot viewer web page...');  // eslint-disable-line no-console
+  console.log('Opening the screenshot viewer web page...'); // eslint-disable-line no-console
   opn(path.resolve(__dirname, 'index.html'));
 }
 

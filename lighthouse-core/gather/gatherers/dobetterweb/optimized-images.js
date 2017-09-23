@@ -4,10 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
- /**
-  * @fileoverview Determines optimized jpeg/webp filesizes for all same-origin and dataURI images by
-  *   running the images through canvas in the browser context.
-  */
+/**
+ * @fileoverview Determines optimized jpeg/webp filesizes for all same-origin and dataURI images by
+ *   running the images through canvas in the browser context.
+ */
 'use strict';
 
 const Gatherer = require('../gatherer');

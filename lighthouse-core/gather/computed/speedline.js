@@ -9,7 +9,6 @@ const ComputedArtifact = require('./computed-artifact');
 const speedline = require('speedline');
 
 class Speedline extends ComputedArtifact {
-
   get name() {
     return 'Speedline';
   }

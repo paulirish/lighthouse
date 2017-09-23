@@ -372,7 +372,7 @@ describe('Config', () => {
     assert.equal(config.passes.length, 2, 'preserves both passes');
     assert.ok(config.passes[0].recordTrace, 'preserves recordTrace pass');
     assert.equal(config.categories['needed-category'].audits.length, 2,
-      'removes skipped audit from category');
+        'removes skipped audit from category');
   });
 
 
@@ -518,7 +518,7 @@ describe('Config', () => {
         artifacts: {
           traces: {
             defaultPass: path.resolve(__dirname,
-                            '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
+                '../fixtures/traces/trace-user-timings-no-tracingstartedinpage.json'),
           },
           devtoolsLogs: {
             defaultPass: path.resolve(__dirname, '../fixtures/perflog.json'),
@@ -527,7 +527,7 @@ describe('Config', () => {
       });
 
       assert.ok(config.artifacts.traces.defaultPass.traceEvents.find(
-            e => e.name === 'TracingStartedInPage' && e.args.data.page === '0xhad00p'));
+          e => e.name === 'TracingStartedInPage' && e.args.data.page === '0xhad00p'));
     });
   });
 

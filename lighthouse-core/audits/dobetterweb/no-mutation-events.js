@@ -16,7 +16,6 @@ const Audit = require('../audit');
 const EventHelpers = require('../../lib/event-helpers');
 
 class NoMutationEventsAudit extends Audit {
-
   static get MUTATION_EVENTS() {
     return [
       'DOMAttrModified',

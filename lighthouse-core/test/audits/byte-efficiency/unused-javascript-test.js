@@ -81,8 +81,8 @@ describe('UnusedJavaScript audit', () => {
     const recordInline = generateRecord('inline.html', 1000000, {_name: 'document'});
 
     const result = UnusedJavaScript.audit_(
-      {JsUsage: [scriptA, scriptB, scriptUnknown, inlineA, inlineB]},
-      [recordA, recordB, recordInline]
+        {JsUsage: [scriptA, scriptB, scriptUnknown, inlineA, inlineB]},
+        [recordA, recordB, recordInline]
     );
 
     it('should merge duplicates', () => {

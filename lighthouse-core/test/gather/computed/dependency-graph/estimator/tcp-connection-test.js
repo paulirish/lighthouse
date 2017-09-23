@@ -176,37 +176,37 @@ describe('DependencyGraph/Estimator/TcpConnection', () => {
         const thirdStoppingPoint = 10500 - firstStoppingPoint - secondStoppingPoint;
 
         const firstSegment = connection.simulateDownloadUntil(
-          bytesToDownload,
-          0,
-          firstStoppingPoint
+            bytesToDownload,
+            0,
+            firstStoppingPoint
         );
         const firstOvershoot = firstSegment.timeElapsed - firstStoppingPoint;
 
         connection.setCongestionWindow(firstSegment.congestionWindow);
         const secondSegment = connection.simulateDownloadUntil(
-          bytesToDownload - firstSegment.bytesDownloaded,
-          firstSegment.timeElapsed,
-          secondStoppingPoint - firstOvershoot
+            bytesToDownload - firstSegment.bytesDownloaded,
+            firstSegment.timeElapsed,
+            secondStoppingPoint - firstOvershoot
         );
         const secondOvershoot = firstOvershoot + secondSegment.timeElapsed - secondStoppingPoint;
 
         connection.setCongestionWindow(secondSegment.congestionWindow);
         const thirdSegment = connection.simulateDownloadUntil(
-          bytesToDownload - firstSegment.bytesDownloaded - secondSegment.bytesDownloaded,
-          firstSegment.timeElapsed + secondSegment.timeElapsed
+            bytesToDownload - firstSegment.bytesDownloaded - secondSegment.bytesDownloaded,
+            firstSegment.timeElapsed + secondSegment.timeElapsed
         );
         const thirdOvershoot = secondOvershoot + thirdSegment.timeElapsed - thirdStoppingPoint;
 
         assert.equal(thirdOvershoot, 0);
         assert.equal(
-          firstSegment.bytesDownloaded +
-            secondSegment.bytesDownloaded +
-            thirdSegment.bytesDownloaded,
-          bytesToDownload
+            firstSegment.bytesDownloaded +
+                secondSegment.bytesDownloaded +
+                thirdSegment.bytesDownloaded,
+            bytesToDownload
         );
         assert.equal(
-          firstSegment.timeElapsed + secondSegment.timeElapsed + thirdSegment.timeElapsed,
-          10500
+            firstSegment.timeElapsed + secondSegment.timeElapsed + thirdSegment.timeElapsed,
+            10500
         );
       });
     });

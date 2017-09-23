@@ -13,7 +13,6 @@
 /* globals self URL Blob CustomEvent getFilenamePrefix window */
 
 class ReportUIFeatures {
-
   /**
    * @param {!DOM} dom
    */
@@ -60,7 +59,7 @@ class ReportUIFeatures {
    */
   _fireEventOn(name, target = this._document, detail) {
     const event = new CustomEvent(name, detail ? {detail} : null);
-    this._document.dispatchEvent(event);
+    target.dispatchEvent(event);
   }
 
   _setupMediaQueryListeners() {

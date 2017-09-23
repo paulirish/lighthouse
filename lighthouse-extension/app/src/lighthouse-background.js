@@ -122,7 +122,7 @@ window.runLighthouseInExtension = function(options, categoryIDs) {
   log.setLevel('info');
   const connection = new ExtensionProtocol();
   // return enableOtherChromeExtensions(false)
-    // .then(_ => connection.getCurrentTabURL())
+  // .then(_ => connection.getCurrentTabURL())
   return connection.getCurrentTabURL()
     .then(url => window.runLighthouseForConnection(connection, url, options, categoryIDs))
     .then(results => {

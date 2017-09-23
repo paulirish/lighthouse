@@ -33,10 +33,10 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    */
   static indexStylesheetsById(styles, networkRecords) {
     const indexedNetworkRecords = networkRecords
-        .reduce((indexed, record) => {
-          indexed[record.url] = record;
-          return indexed;
-        }, {});
+      .reduce((indexed, record) => {
+        indexed[record.url] = record;
+        return indexed;
+      }, {});
 
     return styles.reduce((indexed, stylesheet) => {
       indexed[stylesheet.header.styleSheetId] = Object.assign({
@@ -97,10 +97,10 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    */
   static determineContentPreview(content) {
     let preview = content
-        .slice(0, PREVIEW_LENGTH * 5)
-        .replace(/( {2,}|\t)+/g, '  ') // remove leading indentation if present
-        .replace(/\n\s+}/g, '\n}') // completely remove indentation of closing braces
-        .trim(); // trim the leading whitespace
+      .slice(0, PREVIEW_LENGTH * 5)
+      .replace(/( {2,}|\t)+/g, '  ') // remove leading indentation if present
+      .replace(/\n\s+}/g, '\n}') // completely remove indentation of closing braces
+      .trim(); // trim the leading whitespace
 
     if (preview.length > PREVIEW_LENGTH) {
       const firstRuleStart = preview.indexOf('{');
@@ -161,8 +161,8 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       UnusedCSSRules.indexUsedRules(usage, indexedSheets);
 
       const results = Object.keys(indexedSheets)
-          .map(sheetId => UnusedCSSRules.mapSheetToResult(indexedSheets[sheetId], pageUrl))
-          .filter(sheet => sheet && sheet.wastedBytes > 1024);
+        .map(sheetId => UnusedCSSRules.mapSheetToResult(indexedSheets[sheetId], pageUrl))
+        .filter(sheet => sheet && sheet.wastedBytes > 1024);
 
       const headings = [
         {key: 'url', itemType: 'url', text: 'URL'},

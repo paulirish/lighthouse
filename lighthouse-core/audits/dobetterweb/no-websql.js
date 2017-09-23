@@ -14,7 +14,6 @@
 const Audit = require('../audit');
 
 class NoWebSQLAudit extends Audit {
-
   /**
    * @return {!AuditMeta}
    */

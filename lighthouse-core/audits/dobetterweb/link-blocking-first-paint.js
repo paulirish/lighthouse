@@ -21,7 +21,6 @@ const scoreForWastedMs = require('../byte-efficiency/byte-efficiency-audit').sco
 const LOAD_THRESHOLD_IN_MS = 50;
 
 class LinkBlockingFirstPaintAudit extends Audit {
-
   /**
    * @return {!AuditMeta}
    */

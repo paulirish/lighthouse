@@ -51,7 +51,6 @@ class NotificationOnStart extends ViolationAudit {
       details,
     };
   }
-
 }
 
 module.exports = NotificationOnStart;

@@ -15,7 +15,6 @@ const PWA_DISPLAY_VALUES = ['minimal-ui', 'fullscreen', 'standalone'];
 const SUGGESTED_SHORTNAME_LENGTH = 12;
 
 class ManifestValues extends ComputedArtifact {
-
   get name() {
     return 'ManifestValues';
   }
@@ -112,7 +111,6 @@ class ManifestValues extends ComputedArtifact {
       allChecks: remainingChecks,
     };
   }
-
 }
 
 module.exports = ManifestValues;

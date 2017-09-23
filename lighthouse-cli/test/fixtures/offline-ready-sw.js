@@ -27,7 +27,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 
   const populateCaches = caches.open(PRECACHE)
-      .then(cache => cache.addAll(PRECACHE_URLS));
+    .then(cache => cache.addAll(PRECACHE_URLS));
 
   event.waitUntil(populateCaches);
 });
@@ -36,13 +36,13 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   const currentCaches = [PRECACHE, RUNTIME];
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
-    }).then(cachesToDelete => {
-      return Promise.all(cachesToDelete.map(cacheToDelete => {
-        return caches.delete(cacheToDelete);
-      }));
-    }).then(() => self.clients.claim())
+      caches.keys().then(cacheNames => {
+        return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
+      }).then(cachesToDelete => {
+        return Promise.all(cachesToDelete.map(cacheToDelete => {
+          return caches.delete(cacheToDelete);
+        }));
+      }).then(() => self.clients.claim())
   );
 });
 
@@ -56,17 +56,17 @@ self.addEventListener('fetch', event => {
   }
 
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+      caches.match(event.request).then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
 
-      return caches.open(RUNTIME).then(cache => {
-        return fetch(event.request).then(response => {
-          // Put a copy of the response in the runtime cache.
-          return cache.put(event.request, response.clone()).then(_ => response);
+        return caches.open(RUNTIME).then(cache => {
+          return fetch(event.request).then(response => {
+            // Put a copy of the response in the runtime cache.
+            return cache.put(event.request, response.clone()).then(_ => response);
+          });
         });
-      });
-    })
+      })
   );
 });

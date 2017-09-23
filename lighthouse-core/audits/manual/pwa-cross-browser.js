@@ -13,7 +13,6 @@ const ManualAudit = require('./manual-audit');
  */
 
 class PWACrossBrowser extends ManualAudit {
-
   /**
    * @return {!AuditMeta}
    */

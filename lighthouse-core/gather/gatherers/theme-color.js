@@ -8,7 +8,6 @@
 const Gatherer = require('./gatherer');
 
 class ThemeColor extends Gatherer {
-
   /**
    * @param {{driver: !Object}} options
    * @return {!Promise<?string>} The value of the theme-color meta's content attribute, or null

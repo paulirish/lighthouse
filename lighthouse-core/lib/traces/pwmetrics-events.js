@@ -200,7 +200,7 @@ class Metrics {
     const navStartMetric = metrics.find(e => e.id === 'navstart');
     if (!navStartMetric) return;
     this._navigationStartEvt = this._traceEvents.find(
-      e => e.name === 'navigationStart' && e.ts === navStartMetric.ts
+        e => e.name === 'navigationStart' && e.ts === navStartMetric.ts
     );
   }
 

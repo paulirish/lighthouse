@@ -29,7 +29,6 @@ const SWAudit = require('./service-worker');
  */
 
 class WebappInstallBanner extends MultiCheckAudit {
-
   /**
    * @return {!AuditMeta}
    */

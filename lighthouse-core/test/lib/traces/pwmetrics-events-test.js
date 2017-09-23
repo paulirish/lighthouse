@@ -25,12 +25,12 @@ describe('metrics events class', () => {
     assert.equal(evts.length, 2 * metricsWithoutNavstart, 'All expected fake events not created');
 
     const definitionsWithoutEvents = Metrics.metricsDefinitions
-        .filter(metric => metric.id !== 'navstart')
-        .filter(metric => !evts.find(e => e.name === metric.name));
+      .filter(metric => metric.id !== 'navstart')
+      .filter(metric => !evts.find(e => e.name === metric.name));
     assert.strictEqual(definitionsWithoutEvents.length, 0, 'metrics are missing fake events');
 
     const eventsWithoutDefinitions = evts
-        .filter(evt => !Metrics.metricsDefinitions.find(metric => metric.name === evt.name));
+      .filter(evt => !Metrics.metricsDefinitions.find(metric => metric.name === evt.name));
     assert.strictEqual(eventsWithoutDefinitions.length, 0, 'fake events w/o a metric definition');
   });
 

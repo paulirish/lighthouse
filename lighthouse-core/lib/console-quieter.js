@@ -10,7 +10,6 @@
 const log = require('lighthouse-logger');
 
 class ConsoleQuieter {
-
   static mute(opts) {
     ConsoleQuieter._logs = ConsoleQuieter._logs || [];
 

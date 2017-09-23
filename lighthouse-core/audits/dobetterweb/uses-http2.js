@@ -16,7 +16,6 @@ const Audit = require('../audit');
 const Util = require('../../report/v2/renderer/util.js');
 
 class UsesHTTP2Audit extends Audit {
-
   /**
    * @return {!AuditMeta}
    */
@@ -44,7 +43,7 @@ class UsesHTTP2Audit extends Audit {
       // Filter requests that are on the same host as the page and not over h2.
       const resources = networkRecords.filter(record => {
         // test the protocol first to avoid (potentially) expensive URL parsing
-        const isOldHttp = /HTTP\/[01][\.\d]?/i.test(record.protocol);
+        const isOldHttp = /HTTP\/[01][.\d]?/i.test(record.protocol);
         if (!isOldHttp) return false;
         const requestHost = new URL(record._url).host;
         return requestHost === finalHost;

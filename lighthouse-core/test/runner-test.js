@@ -239,8 +239,8 @@ describe('Runner', () => {
       });
 
       return Runner.run({}, {url, config}).then(
-        _ => assert.ok(false),
-        err => assert.strictEqual(err.message, errorMessage));
+          _ => assert.ok(false),
+          err => assert.strictEqual(err.message, errorMessage));
     });
   });
 

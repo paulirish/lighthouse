@@ -30,11 +30,11 @@ function main() {
   const results = {};
   for (const inputPath of inputPaths) {
     const result = fs.readFileSync(
-      path.resolve(inputPath, constants.GENERATED_RESULTS_FILENAME),
-      'utf-8'
+        path.resolve(inputPath, constants.GENERATED_RESULTS_FILENAME),
+        'utf-8'
     );
     results[path.basename(inputPath)] = /** @type {!ResultsByMetric} */ (JSON.parse(
-      result.replace('var generatedResults = ', '')
+        result.replace('var generatedResults = ', '')
     ));
   }
 
@@ -44,8 +44,8 @@ function main() {
     fs.mkdirSync(constants.OUT_PATH);
   }
   fs.writeFileSync(
-    path.resolve(constants.OUT_PATH, 'dashboard-results.js'),
-    `const dashboardResults = ${JSON.stringify(groupByMetricResults, undefined, 2)}`
+      path.resolve(constants.OUT_PATH, 'dashboard-results.js'),
+      `const dashboardResults = ${JSON.stringify(groupByMetricResults, undefined, 2)}`
   );
 
   if (process.env.CI) {
@@ -65,23 +65,23 @@ main();
  */
 function groupByMetric(results) {
   return Object.keys(results).reduce(
-    (acc, batchId) => {
-      const batchResults = results[batchId];
-      Object.keys(batchResults).forEach(metricId => {
-        if (!acc[metricId]) {
-          acc[metricId] = {};
-        }
-        const sites = batchResults[metricId];
-        sites.forEach(site => {
-          if (!acc[metricId][site.site]) {
-            acc[metricId][site.site] = {};
+      (acc, batchId) => {
+        const batchResults = results[batchId];
+        Object.keys(batchResults).forEach(metricId => {
+          if (!acc[metricId]) {
+            acc[metricId] = {};
           }
-          acc[metricId][site.site][batchId] = site.metrics;
+          const sites = batchResults[metricId];
+          sites.forEach(site => {
+            if (!acc[metricId][site.site]) {
+              acc[metricId][site.site] = {};
+            }
+            acc[metricId][site.site][batchId] = site.metrics;
+          });
         });
-      });
-      return acc;
-    },
-    {}
+        return acc;
+      },
+      {}
   );
 }
 
@@ -135,7 +135,7 @@ function isOutParentFolder(fullPath) {
       }
       for (const maybeRunFolder of fs.readdirSync(maybeSitePath)) {
         const maybeLighthouseResults = path.resolve(
-          maybeSitePath, maybeRunFolder, constants.LIGHTHOUSE_RESULTS_FILENAME);
+            maybeSitePath, maybeRunFolder, constants.LIGHTHOUSE_RESULTS_FILENAME);
         if (utils.isFile(maybeLighthouseResults)) {
           return true;
         }

@@ -46,8 +46,8 @@ class Audit {
    */
   static computeLogNormalScore(measuredValue, diminishingReturnsValue, medianValue) {
     const distribution = statistics.getLogNormalDistribution(
-      medianValue,
-      diminishingReturnsValue
+        medianValue,
+        diminishingReturnsValue
     );
 
     let score = 100 * distribution.computeComplementaryPercentile(measuredValue);

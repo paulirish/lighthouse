@@ -13,7 +13,6 @@
 const Audit = require('../audit');
 
 class ManualAudit extends Audit {
-
   /**
    * @return {!AuditMeta}
    */

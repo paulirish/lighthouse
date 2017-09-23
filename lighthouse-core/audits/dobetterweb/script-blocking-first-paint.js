@@ -14,7 +14,6 @@ const Audit = require('../audit');
 const LinkBlockingFirstPaintAudit = require('./link-blocking-first-paint');
 
 class ScriptBlockingFirstPaint extends Audit {
-
   /**
    * @return {!AuditMeta}
    */

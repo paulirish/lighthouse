@@ -51,7 +51,6 @@ class GeolocationOnStart extends ViolationAudit {
       details,
     };
   }
-
 }
 
 module.exports = GeolocationOnStart;

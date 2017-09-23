@@ -89,7 +89,7 @@ describe('CategoryRenderer', () => {
 
     assert.deepEqual(score, score.firstElementChild, 'first child is a score');
     assert.ok(value.classList.contains('lh-score__value--numeric'),
-              'category score is numeric');
+        'category score is numeric');
     assert.equal(value.textContent, Math.round(category.score), 'category score is rounded');
     assert.equal(title.textContent, category.name, 'title is set');
     assert.ok(description.querySelector('a'), 'description contains converted markdown links');
@@ -108,8 +108,9 @@ describe('CategoryRenderer', () => {
     const audit = {result: auditResult, score: 100};
     const category = {name: 'Fake', description: '', score: 100, audits: [audit]};
     const categoryDOM = renderer.render(category, sampleResults.reportGroups);
-    assert.ok(categoryDOM.querySelector(
-        '.lh-category > .lh-audit-group:not(.lh-passed-audits) > .lh-audit'),
+    assert.ok(
+        categoryDOM.querySelector(
+            '.lh-category > .lh-audit-group:not(.lh-passed-audits) > .lh-audit'),
         'did not render as failed');
     assert.ok(categoryDOM.querySelector('.lh-debug'), 'did not render debug message');
   });
@@ -137,7 +138,7 @@ describe('CategoryRenderer', () => {
 
       assert.deepEqual(score, score.firstElementChild, 'first child is a score');
       assert.ok(value.classList.contains('lh-score__value--numeric'),
-                'category score is numeric');
+          'category score is numeric');
       assert.equal(value.textContent, Math.round(category.score), 'category score is rounded');
       assert.equal(title.textContent, category.name, 'title is set');
     });
@@ -237,7 +238,7 @@ describe('CategoryRenderer', () => {
 
       assert.deepEqual(score, score.firstElementChild, 'first child is a score');
       assert.ok(value.classList.contains('lh-score__value--numeric'),
-                'category score is numeric');
+          'category score is numeric');
       assert.equal(value.textContent, Math.round(category.score), 'category score is rounded');
       assert.equal(title.textContent, category.name, 'title is set');
       assert.ok(description.querySelector('a'), 'description contains converted markdown links');

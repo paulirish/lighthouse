@@ -173,9 +173,9 @@ describe('TracingProcessor lib', () => {
       };
 
       const ret = TracingProcessor.getMainThreadTopLevelEvents(
-        tabTrace,
-        50,
-        1500
+          tabTrace,
+          50,
+          1500
       );
       assert.equal(ret.length, 2);
       assert.equal(ret[0].start, 40);

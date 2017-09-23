@@ -9,7 +9,6 @@ const ComputedArtifact = require('./computed-artifact');
 const DevtoolsTimelineModel = require('../../lib/traces/devtools-timeline-model');
 
 class ScreenshotFilmstrip extends ComputedArtifact {
-
   get name() {
     return 'Screenshots';
   }

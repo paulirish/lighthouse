@@ -62,12 +62,12 @@ class TraceOfTab extends ComputedArtifact {
 
     // FCP will follow at/after the FP
     const firstContentfulPaint = frameEvents.find(
-      e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
+        e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
     );
 
     // fMP will follow at/after the FP
     let firstMeaningfulPaint = frameEvents.find(
-      e => e.name === 'firstMeaningfulPaint' && e.ts > navigationStart.ts
+        e => e.name === 'firstMeaningfulPaint' && e.ts > navigationStart.ts
     );
     let fmpFellBack = false;
 
@@ -88,7 +88,7 @@ class TraceOfTab extends ComputedArtifact {
 
     const onLoad = frameEvents.find(e => e.name === 'loadEventEnd' && e.ts > navigationStart.ts);
     const domContentLoaded = frameEvents.find(
-      e => e.name === 'domContentLoadedEventEnd' && e.ts > navigationStart.ts
+        e => e.name === 'domContentLoadedEventEnd' && e.ts > navigationStart.ts
     );
 
     // subset all trace events to just our tab's process (incl threads other than main)

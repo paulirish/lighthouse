@@ -16,7 +16,6 @@ const URL = require('../../lib/url-shim');
 const StyleHelpers = require('../../lib/styles-helpers');
 
 class NoOldFlexboxAudit extends Audit {
-
   /**
    * @return {!AuditMeta}
    */

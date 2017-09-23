@@ -34,8 +34,8 @@ describe('Page does not use mutation events', () => {
 
     const itemHeaders = auditResult.details.itemHeaders;
     assert.deepEqual(Object.keys(itemHeaders).map(key => itemHeaders[key].text),
-                     ['URL', 'Event', 'Line', 'Col', 'Snippet'],
-                     'table headings are correct and in order');
+        ['URL', 'Event', 'Line', 'Col', 'Snippet'],
+        'table headings are correct and in order');
   });
 
   it('fails when listener is missing a url property', () => {

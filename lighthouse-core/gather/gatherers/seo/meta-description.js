@@ -8,7 +8,6 @@
 const Gatherer = require('../gatherer');
 
 class MetaDescription extends Gatherer {
-
   /**
    * @param {{driver: !Object}} options Run options
    * @return {!Promise<?string>} The value of the description meta's content attribute, or null

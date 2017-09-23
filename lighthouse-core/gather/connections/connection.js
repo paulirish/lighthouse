@@ -9,7 +9,6 @@ const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
 
 class Connection {
-
   constructor() {
     this._lastCommandId = 0;
     /** @type {!Map<number, {resolve: function(*), reject: function(*), method: string}>}*/
@@ -96,7 +95,7 @@ class Connection {
         }
 
         log.formatProtocol('method <= browser OK',
-          {method: callback.method, params: object.result}, 'verbose');
+            {method: callback.method, params: object.result}, 'verbose');
         return object.result;
       }));
     } else if (object.id) {

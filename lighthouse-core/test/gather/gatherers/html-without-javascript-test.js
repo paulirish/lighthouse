@@ -34,10 +34,10 @@ describe('HTML without JavaScript gatherer', () => {
       },
     };
     return htmlWithoutJavaScriptGather
-        .afterPass(opts)
-        .then(_ => {
-          assert.equal(opts.disableJavaScript, false);
-        });
+      .afterPass(opts)
+      .then(_ => {
+        assert.equal(opts.disableJavaScript, false);
+      });
   });
 
   it('returns an artifact', () => {
@@ -61,7 +61,7 @@ describe('HTML without JavaScript gatherer', () => {
         },
       },
     }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 });

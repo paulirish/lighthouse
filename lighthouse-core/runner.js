@@ -195,19 +195,20 @@ class Runner {
       // all required artifacts are in good shape, so we proceed
       return audit.audit(artifacts);
     // Fill remaining audit result fields.
-    }).then(auditResult => Audit.generateAuditResult(audit, auditResult))
-    .catch(err => {
-      log.warn(audit.meta.name, `Caught exception: ${err.message}`);
-      if (err.fatal) {
-        throw err;
-      }
+    })
+      .then(auditResult => Audit.generateAuditResult(audit, auditResult))
+      .catch(err => {
+        log.warn(audit.meta.name, `Caught exception: ${err.message}`);
+        if (err.fatal) {
+          throw err;
+        }
 
-      // Non-fatal error become error audit result.
-      return Audit.generateErrorAuditResult(audit, 'Audit error: ' + err.message);
-    }).then(result => {
-      log.verbose('statusEnd', status);
-      return result;
-    });
+        // Non-fatal error become error audit result.
+        return Audit.generateErrorAuditResult(audit, 'Audit error: ' + err.message);
+      }).then(result => {
+        log.verbose('statusEnd', status);
+        return result;
+      });
   }
 
   /**
@@ -229,9 +230,9 @@ class Runner {
       ...fs.readdirSync(path.join(__dirname, './audits/dobetterweb')).map(f => `dobetterweb/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/seo')).map(f => `seo/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/accessibility'))
-          .map(f => `accessibility/${f}`),
+        .map(f => `accessibility/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/byte-efficiency'))
-          .map(f => `byte-efficiency/${f}`),
+        .map(f => `byte-efficiency/${f}`),
       ...fs.readdirSync(path.join(__dirname, './audits/manual')).map(f => `manual/${f}`),
     ];
     return fileList.filter(f => {
@@ -248,7 +249,7 @@ class Runner {
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers')),
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers/seo')).map(f => `seo/${f}`),
       ...fs.readdirSync(path.join(__dirname, './gather/gatherers/dobetterweb'))
-          .map(f => `dobetterweb/${f}`),
+        .map(f => `dobetterweb/${f}`),
     ];
     return fileList.filter(f => /\.js$/.test(f) && f !== 'gatherer.js').sort();
   }

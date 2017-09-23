@@ -25,8 +25,8 @@ const args = require('yargs')
   })
   .default('n', 3)
   .group(
-    ['disable-device-emulation', 'disable-cpu-throttling', 'disable-network-throttling'],
-    'Lighthouse settings:')
+      ['disable-device-emulation', 'disable-cpu-throttling', 'disable-network-throttling'],
+      'Lighthouse settings:')
   .boolean(['disable-device-emulation', 'disable-cpu-throttling', 'disable-network-throttling'])
   .describe({
     'disable-device-emulation': 'Disable Nexus 5X emulation',
@@ -120,8 +120,7 @@ function runAnalysisWithNewChromeInstances() {
           return singleRunAnalysis(url, launcher, {ignoreRun})
             .catch(handleError)
             .then(() => launcher.kill());
-        })
-        .catch(handleError);
+        }).catch(handleError);
       });
     }
   }
@@ -221,7 +220,7 @@ function analyzeWithLighthouse(launcher, url, outputPath, assetsPath, {ignoreRun
  * @return {string}
  */
 function sanitize(string) {
-  const illegalRe = /[\/\?<>\\:\*\|":]/g;
+  const illegalRe = /[/?<>\\:*|":]/g;
   const controlRe = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line no-control-regex
   const reservedRe = /^\.+$/;
 

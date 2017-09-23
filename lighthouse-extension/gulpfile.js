@@ -30,15 +30,15 @@ const COMMIT_HASH = require('child_process')
 const BANNER = `// lighthouse, browserified. ${VERSION} (${COMMIT_HASH})\n`;
 
 const audits = LighthouseRunner.getAuditList()
-    .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
+  .map(f => '../lighthouse-core/audits/' + f.replace(/\.js$/, ''));
 
 const gatherers = LighthouseRunner.getGathererList()
-    .map(f => '../lighthouse-core/gather/gatherers/' + f.replace(/\.js$/, ''));
+  .map(f => '../lighthouse-core/gather/gatherers/' + f.replace(/\.js$/, ''));
 
 const computedArtifacts = fs.readdirSync(
     path.join(__dirname, '../lighthouse-core/gather/computed/'))
-    .filter(f => /\.js$/.test(f))
-    .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
+  .filter(f => /\.js$/.test(f))
+  .map(f => '../lighthouse-core/gather/computed/' + f.replace(/\.js$/, ''));
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -53,8 +53,8 @@ gulp.task('extras', () => {
     base: 'app',
     dot: true,
   })
-  .pipe(debug({title: 'copying to dist:'}))
-  .pipe(gulp.dest(distDir));
+    .pipe(debug({title: 'copying to dist:'}))
+    .pipe(gulp.dest(distDir));
 });
 
 gulp.task('lint', () => {
@@ -62,24 +62,24 @@ gulp.task('lint', () => {
     'app/src/**/*.js',
     'gulpfile.js',
   ])
-  .pipe(eslint())
-  .pipe(eslint.format())
-  .pipe(eslint.failAfterError());
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
-  .pipe(gulp.dest(`${distDir}/images`));
+    .pipe(gulp.dest(`${distDir}/images`));
 });
 
 gulp.task('css', () => {
   return gulp.src('app/styles/**/*.css')
-  .pipe(gulp.dest(`${distDir}/styles`));
+    .pipe(gulp.dest(`${distDir}/styles`));
 });
 
 gulp.task('html', () => {
   return gulp.src('app/*.html')
-  .pipe(gulp.dest(distDir));
+    .pipe(gulp.dest(distDir));
 });
 
 gulp.task('chromeManifest', () => {
@@ -93,17 +93,17 @@ gulp.task('chromeManifest', () => {
     },
   };
   return gulp.src('app/manifest.json')
-  .pipe(chromeManifest(manifestOpts))
-  .pipe(gulp.dest(distDir));
+    .pipe(chromeManifest(manifestOpts))
+    .pipe(gulp.dest(distDir));
 });
 
 function applyBrowserifyTransforms(bundle) {
   // Fix an issue with imported speedline code that doesn't brfs well.
   return bundle.transform('./fs-transform', {global: true})
-  // Transform the fs.readFile etc, but do so in all the modules.
-  .transform('brfs', {global: true})
-  // Strip everything out of package.json includes except for the version.
-  .transform('package-json-versionify');
+    // Transform the fs.readFile etc, but do so in all the modules.
+    .transform('brfs', {global: true})
+    // Strip everything out of package.json includes except for the version.
+    .transform('package-json-versionify');
 }
 
 gulp.task('browserify-lighthouse', () => {
@@ -119,12 +119,12 @@ gulp.task('browserify-lighthouse', () => {
       // Do the additional transform to convert references of devtools-timeline-model
       // to the modified version internal to Lighthouse.
       bundle.transform('./dtm-transform.js', {global: true})
-      .ignore('../lighthouse-core/lib/asset-saver.js') // relative from gulpfile location
-      .ignore('source-map')
-      .ignore('whatwg-url')
-      .ignore('url')
-      .ignore('debug/node')
-      .ignore('pako/lib/zlib/inflate.js');
+        .ignore('../lighthouse-core/lib/asset-saver.js') // relative from gulpfile location
+        .ignore('source-map')
+        .ignore('whatwg-url')
+        .ignore('url')
+        .ignore('debug/node')
+        .ignore('pako/lib/zlib/inflate.js');
 
       // Expose the audits, gatherers, and computed artifacts so they can be dynamically loaded.
       const corePath = '../lighthouse-core/';
@@ -215,14 +215,14 @@ gulp.task('watch', ['browserify', 'html'], () => {
 gulp.task('package', function() {
   const manifest = require(`./${distDir}/manifest.json`);
   return gulp.src(`${distDir}/**`)
-  .pipe(zip(`lighthouse-${manifest.version}.zip`))
-  .pipe(gulp.dest('package'));
+    .pipe(zip(`lighthouse-${manifest.version}.zip`))
+    .pipe(gulp.dest('package'));
 });
 
 gulp.task('build', cb => {
   runSequence(
-    'lint', 'browserify', 'chromeManifest',
-    ['html', 'images', 'css', 'extras'], cb);
+      'lint', 'browserify', 'chromeManifest',
+      ['html', 'images', 'css', 'extras'], cb);
 });
 
 gulp.task('build:production', cb => {

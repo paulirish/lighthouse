@@ -211,8 +211,8 @@ describe('DependencyGraph/Node', () => {
       const graph = createComplexGraph();
       const ids = [];
       graph.nodeF.traverse(
-        node => ids.push(node.id),
-        node => node.getDependencies()
+          node => ids.push(node.id),
+          node => node.getDependencies()
       );
 
       assert.deepEqual(ids, ['F', 'E', 'D', 'B', 'C', 'A']);

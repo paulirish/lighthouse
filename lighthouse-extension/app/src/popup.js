@@ -119,7 +119,7 @@ function onGenerateReportButtonClick(background, selectedCategories) {
   feedbackEl.textContent = '';
 
   const categoryIDs = Object.keys(selectedCategories)
-      .filter(key => !!selectedCategories[key]);
+    .filter(key => !!selectedCategories[key]);
 
   background.runLighthouseInExtension({
     restoreCleanState: true,
@@ -211,7 +211,7 @@ function initPopup() {
     okButton.addEventListener('click', () => {
       // Save settings when options page is closed.
       const selectedCategories = Array.from(optionsEl.querySelectorAll(':checked'))
-          .map(input => input.value);
+        .map(input => input.value);
       const disableExtensions = document.querySelector('.setting-disable-extensions').checked;
 
       background.saveSettings({selectedCategories, disableExtensions});

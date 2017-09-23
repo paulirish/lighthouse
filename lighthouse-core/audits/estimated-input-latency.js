@@ -51,9 +51,9 @@ class EstimatedInputLatency extends Audit {
     //  75th Percentile ≈ 133ms
     //  95th Percentile ≈ 199ms
     const score = Audit.computeLogNormalScore(
-      ninetieth.time,
-      SCORING_POINT_OF_DIMINISHING_RETURNS,
-      SCORING_MEDIAN
+        ninetieth.time,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
     );
 
     return {
@@ -77,7 +77,7 @@ class EstimatedInputLatency extends Audit {
     const trace = artifacts.traces[this.DEFAULT_PASS];
 
     return artifacts.requestTraceOfTab(trace)
-        .then(EstimatedInputLatency.calculate);
+      .then(EstimatedInputLatency.calculate);
   }
 }
 

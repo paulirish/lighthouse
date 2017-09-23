@@ -25,8 +25,8 @@ describe('Accessibility gatherer', () => {
         },
       },
     }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 
   it('fails if result has no violations array', () => {
@@ -39,8 +39,8 @@ describe('Accessibility gatherer', () => {
         },
       },
     }).then(
-      _ => assert.ok(false),
-      _ => assert.ok(true));
+        _ => assert.ok(false),
+        _ => assert.ok(true));
   });
 
   it('propagates error retrieving the results', () => {
@@ -52,7 +52,7 @@ describe('Accessibility gatherer', () => {
         },
       },
     }).then(
-      _ => assert.ok(false),
-      err => assert.ok(err.message.includes(error)));
+        _ => assert.ok(false),
+        err => assert.ok(err.message.includes(error)));
   });
 });

@@ -30,7 +30,7 @@ describe('Page does not use old CSS flexbox', () => {
     assert.equal(auditResult.extendedInfo.value.results.length, 2);
     assert.equal(auditResult.extendedInfo.value.results.length, 2);
     assert.equal(auditResult.extendedInfo.value.results[0].url, '/do_better_web_tests.html');
-    assert.ok(auditResult.extendedInfo.value.results[0].pre.match(/display\: box/));
+    assert.ok(auditResult.extendedInfo.value.results[0].pre.match(/display: box/));
 
     const headings = auditResult.extendedInfo.value.tableHeadings;
     assert.deepEqual(Object.keys(headings).map(key => headings[key]),

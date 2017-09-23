@@ -45,8 +45,8 @@ class CacheStartUrl extends Audit {
     const startURL = manifest.start_url.value;
     /** @const {string} */
     const altStartURL = startURL
-        .replace(/\?utm_([^=]*)=([^&]|$)*/, '')
-        .replace(/\?$/, '');
+      .replace(/\?utm_([^=]*)=([^&]|$)*/, '')
+      .replace(/\?$/, '');
 
     // Now find the start_url in the cacheContents. This test is less than ideal since the Service
     // Worker can rewrite a request from the start URL to anything else in the cache, and so a TODO

@@ -114,10 +114,10 @@ class GithubApi {
           return resp.json().then(json => {
             // Attempt to use first file in gist with report extension.
             const filename = Object.keys(json.files)
-                .find(filename => filename.endsWith(GithubApi.LH_JSON_EXT));
+              .find(filename => filename.endsWith(GithubApi.LH_JSON_EXT));
             if (!filename) {
               throw new Error(
-                `Failed to find a Lighthouse report (*${GithubApi.LH_JSON_EXT}) in gist ${id}`
+                  `Failed to find a Lighthouse report (*${GithubApi.LH_JSON_EXT}) in gist ${id}`
               );
             }
             const f = json.files[filename];

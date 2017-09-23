@@ -39,9 +39,9 @@ class StartUrl extends Gatherer {
       driver.on('Network.loadingFinished', fetchDone);
       driver.on('Network.loadingFailed', fetchDone);
       driver.evaluateAsync(
-        `fetch('${url}')
-          .then(response => response.status)
-          .catch(err => -1)`
+          `fetch('${url}')
+            .then(response => response.status)
+            .catch(err => -1)`
       ).catch(err => reject(err));
     });
   }

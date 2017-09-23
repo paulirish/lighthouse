@@ -102,9 +102,9 @@ class FirstMeaningfulPaint extends Audit {
     //   >= 14000ms: score≈0
     const firstMeaningfulPaint = traceOfTab.timings.firstMeaningfulPaint;
     const score = Audit.computeLogNormalScore(
-      firstMeaningfulPaint,
-      SCORING_POINT_OF_DIMINISHING_RETURNS,
-      SCORING_MEDIAN
+        firstMeaningfulPaint,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
     );
 
     return {

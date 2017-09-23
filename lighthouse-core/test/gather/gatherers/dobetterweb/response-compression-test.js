@@ -163,10 +163,10 @@ describe('Optimized responses', () => {
       record.requestId = record._requestId;
       record.resourceType = () => {
         return Object.assign(
-          {
-            isTextType: () => record._resourceType._isTextType,
-          },
-          record._resourceType
+            {
+              isTextType: () => record._resourceType._isTextType,
+            },
+            record._resourceType
         );
       };
 

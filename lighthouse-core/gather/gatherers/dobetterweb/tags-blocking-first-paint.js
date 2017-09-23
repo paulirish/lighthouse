@@ -4,18 +4,18 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
- /**
-  * @fileoverview
-  *   Identifies stylesheets, HTML Imports, and scripts that potentially block
-  *   the first paint of the page by running several scripts in the page context.
-  *   Candidate blocking tags are collected by querying for all script tags in
-  *   the head of the page and all link tags that are either matching media
-  *   stylesheets or non-async HTML imports. These are then compared to the
-  *   network requests to ensure they were initiated by the parser and not
-  *   injected with script. To avoid false positives from strategies like
-  *   (http://filamentgroup.github.io/loadCSS/test/preload.html), a separate
-  *   script is run to flag all links that at one point were rel=preload.
-  */
+/**
+ * @fileoverview
+ *   Identifies stylesheets, HTML Imports, and scripts that potentially block
+ *   the first paint of the page by running several scripts in the page context.
+ *   Candidate blocking tags are collected by querying for all script tags in
+ *   the head of the page and all link tags that are either matching media
+ *   stylesheets or non-async HTML imports. These are then compared to the
+ *   network requests to ensure they were initiated by the parser and not
+ *   injected with script. To avoid false positives from strategies like
+ *   (http://filamentgroup.github.io/loadCSS/test/preload.html), a separate
+ *   script is run to flag all links that at one point were rel=preload.
+ */
 
 'use strict';
 

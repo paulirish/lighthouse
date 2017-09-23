@@ -22,8 +22,7 @@ Object.keys(assert)
       }
       return _origFn.apply(this, args);
     };
-  }
-);
+  });
 
 // store the count of assertions on each test's state object
 beforeEach(function() {

@@ -84,13 +84,13 @@ describe('Manifest gatherer', () => {
       driver: {
         getAppManifest() {
           return Promise.reject(
-            new Error(`Unable to retrieve manifest at ${EXAMPLE_MANIFEST_URL}.`)
+              new Error(`Unable to retrieve manifest at ${EXAMPLE_MANIFEST_URL}.`)
           );
         },
       },
     }).then(
-      _ => assert.ok(false),
-      err => assert.ok(err.message.includes(EXAMPLE_MANIFEST_URL)));
+        _ => assert.ok(false),
+        err => assert.ok(err.message.includes(EXAMPLE_MANIFEST_URL)));
   });
 
   it('returns null when the page had no manifest', () => {

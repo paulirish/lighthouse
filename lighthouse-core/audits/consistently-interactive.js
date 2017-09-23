@@ -149,9 +149,9 @@ class ConsistentlyInteractiveMetric extends Audit {
         period.end > FMPTsInMs + REQUIRED_QUIET_WINDOW &&
         period.end - period.start >= REQUIRED_QUIET_WINDOW;
     const networkQuietPeriods = this._findNetworkQuietPeriods(networkRecords, traceOfTab)
-        .filter(isLongEnoughQuietPeriod);
+      .filter(isLongEnoughQuietPeriod);
     const cpuQuietPeriods = this._findCPUQuietPeriods(longTasks, traceOfTab)
-        .filter(isLongEnoughQuietPeriod);
+      .filter(isLongEnoughQuietPeriod);
 
     const cpuQueue = cpuQuietPeriods.slice();
     const networkQueue = networkQuietPeriods.slice();
@@ -216,24 +216,24 @@ class ConsistentlyInteractiveMetric extends Audit {
         }
 
         const longTasks = TracingProcessor.getMainThreadTopLevelEvents(traceOfTab)
-            .filter(event => event.duration >= 50);
+          .filter(event => event.duration >= 50);
         const quietPeriodInfo = this.findOverlappingQuietPeriods(longTasks, networkRecords,
             traceOfTab);
         const cpuQuietPeriod = quietPeriodInfo.cpuQuietPeriod;
 
         const timestamp = Math.max(
-          cpuQuietPeriod.start,
-          traceOfTab.timestamps.firstMeaningfulPaint / 1000,
-          traceOfTab.timestamps.domContentLoaded / 1000
+            cpuQuietPeriod.start,
+            traceOfTab.timestamps.firstMeaningfulPaint / 1000,
+            traceOfTab.timestamps.domContentLoaded / 1000
         ) * 1000;
         const timeInMs = (timestamp - traceOfTab.timestamps.navigationStart) / 1000;
         const extendedInfo = Object.assign(quietPeriodInfo, {timestamp, timeInMs});
 
         return {
           score: Audit.computeLogNormalScore(
-            timeInMs,
-            SCORING_POINT_OF_DIMINISHING_RETURNS,
-            SCORING_MEDIAN
+              timeInMs,
+              SCORING_POINT_OF_DIMINISHING_RETURNS,
+              SCORING_MEDIAN
           ),
           rawValue: timeInMs,
           displayValue: Util.formatMilliseconds(timeInMs),

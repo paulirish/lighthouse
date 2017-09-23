@@ -104,9 +104,9 @@ describe('Trace of Tab computed artifact:', () => {
     assert.notEqual(trace.navigationStartEvt.ts, 1966813346529, 'picked wrong frame');
     assert.notEqual(trace.navigationStartEvt.ts, 1966813520313, 'picked wrong frame');
     assert.equal(
-      trace.navigationStartEvt.ts,
-      1966813258737,
-      'didnt select navStart event with same timestamp as usertiming measure'
+        trace.navigationStartEvt.ts,
+        1966813258737,
+        'didnt select navStart event with same timestamp as usertiming measure'
     );
     assert.equal(trace.firstContentfulPaintEvt, undefined, 'bad fcp');
     assert.equal(trace.firstMeaningfulPaintEvt, undefined, 'bad fmp');
@@ -119,7 +119,7 @@ describe('Trace of Tab computed artifact:', () => {
     const mainPid = trace.mainThreadEvents[0].pid;
 
     const freshProcessEvents = JSON.parse(traceJson).traceEvents
-        .filter(e => e.pid === mainPid);
+      .filter(e => e.pid === mainPid);
 
     // Group all events with the same timestamp in original trace order.
     const tsMap = new Map();

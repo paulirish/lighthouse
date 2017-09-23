@@ -8,7 +8,6 @@
 const Gatherer = require('./gatherer');
 
 class Viewport extends Gatherer {
-
   /**
    * @param {{driver: !Object}} options Run options
    * @return {!Promise<?string>} The value of the viewport meta's content attribute, or null

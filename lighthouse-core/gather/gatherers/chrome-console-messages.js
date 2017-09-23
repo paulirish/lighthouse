@@ -13,7 +13,6 @@
 const Gatherer = require('./gatherer');
 
 class ChromeConsoleMessages extends Gatherer {
-
   constructor() {
     super();
     this._logEntries = [];
@@ -35,10 +34,10 @@ class ChromeConsoleMessages extends Gatherer {
 
   afterPass(options) {
     return Promise.resolve()
-        .then(_ => options.driver.sendCommand('Log.stopViolationsReport'))
-        .then(_ => options.driver.off('Log.entryAdded', this._onConsoleEntryAdded))
-        .then(_ => options.driver.sendCommand('Log.disable'))
-        .then(_ => this._logEntries);
+      .then(_ => options.driver.sendCommand('Log.stopViolationsReport'))
+      .then(_ => options.driver.off('Log.entryAdded', this._onConsoleEntryAdded))
+      .then(_ => options.driver.sendCommand('Log.disable'))
+      .then(_ => this._logEntries);
   }
 }
 

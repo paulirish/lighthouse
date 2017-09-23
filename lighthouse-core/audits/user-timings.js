@@ -49,31 +49,31 @@ class UserTimings extends Audit {
           evt.name !== 'paintNonDefaultBackgroundColor' &&
           evt.args.frame === undefined;
     })
-    .forEach(ut => {
-      // Mark events fall under phases R and I (or i)
-      if (ut.ph === 'R' || ut.ph.toUpperCase() === 'I') {
-        userTimings.push({
-          name: ut.name,
-          isMark: true,
-          args: ut.args,
-          startTime: ut.ts,
-        });
+      .forEach(ut => {
+        // Mark events fall under phases R and I (or i)
+        if (ut.ph === 'R' || ut.ph.toUpperCase() === 'I') {
+          userTimings.push({
+            name: ut.name,
+            isMark: true,
+            args: ut.args,
+            startTime: ut.ts,
+          });
 
-      // Beginning of measure event, keep track of this events start time
-      } else if (ut.ph.toLowerCase() === 'b') {
-        measuresStartTimes[ut.name] = ut.ts;
+        // Beginning of measure event, keep track of this events start time
+        } else if (ut.ph.toLowerCase() === 'b') {
+          measuresStartTimes[ut.name] = ut.ts;
 
-      // End of measure event
-      } else if (ut.ph.toLowerCase() === 'e') {
-        userTimings.push({
-          name: ut.name,
-          isMark: false,
-          args: ut.args,
-          startTime: measuresStartTimes[ut.name],
-          endTime: ut.ts,
-        });
-      }
-    });
+        // End of measure event
+        } else if (ut.ph.toLowerCase() === 'e') {
+          userTimings.push({
+            name: ut.name,
+            isMark: false,
+            args: ut.args,
+            startTime: measuresStartTimes[ut.name],
+            endTime: ut.ts,
+          });
+        }
+      });
 
     // baseline the timestamps against navStart, and translate to milliseconds
     userTimings.forEach(ut => {
