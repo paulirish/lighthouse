@@ -15,7 +15,7 @@
     "gulp": "^3.9.1",
     "gulp-chrome-manifest": "0.0.13",
     "gulp-debug": "^2.1.2",
-    "gulp-eslint": "^3.0.1",
+    "gulp-eslint": "^4.0.0",
     "gulp-header": "^1.8.9",
     "gulp-livereload": "^3.8.1",
     "gulp-tap": "^0.1.3",
