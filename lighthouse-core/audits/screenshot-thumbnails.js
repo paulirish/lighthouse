@@ -99,8 +99,9 @@ class ScreenshotThumbnails extends Audit {
 
         const imageData = frameForTimestamp.getParsedImage();
         const thumbnailImageData = ScreenshotThumbnails.scaleImageToThumbnail(imageData);
-        const base64Data = cachedThumbnails.get(frameForTimestamp) ||
-            jpeg.encode(thumbnailImageData, 90).data.toString('base64');
+        const base64Data =
+          cachedThumbnails.get(frameForTimestamp) ||
+          jpeg.encode(thumbnailImageData, 90).data.toString('base64');
 
         cachedThumbnails.set(frameForTimestamp, base64Data);
         thumbnails.push({

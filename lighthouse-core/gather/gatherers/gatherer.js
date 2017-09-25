@@ -30,14 +30,14 @@ class Gatherer {
    * Called before navigation to target url.
    * @param {!Object} options
    */
-  beforePass(options) { }
+  beforePass(options) {}
 
   /**
    * Called after target page is loaded. If a trace is enabled for this pass,
    * the trace is still being recorded.
    * @param {!Object} options
    */
-  pass(options) { }
+  pass(options) {}
 
   /**
    * Called after target page is loaded, all gatherer `pass` methods have been
@@ -47,7 +47,7 @@ class Gatherer {
    * @param {networkRecords: !Array, trace: {traceEvents: !Array}} loadData
    * @return {*|!Promise<*>}
    */
-  afterPass(options, loadData) { }
+  afterPass(options, loadData) {}
 
   /* eslint-enable no-unused-vars */
 }

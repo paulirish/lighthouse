@@ -1,4 +1,3 @@
-
 /**
  * @license Copyright 2017 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,13 +16,17 @@ class PWACrossBrowser extends ManualAudit {
    * @return {!AuditMeta}
    */
   static get meta() {
-    return Object.assign({
-      category: 'PWA',
-      name: 'pwa-cross-browser',
-      helpText: 'To reach the most number of users, sites should work across ' +
-      'every major browser. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#site-works-cross-browser).',
-      description: 'Site works cross-browser',
-    }, super.meta);
+    return Object.assign(
+      {
+        category: 'PWA',
+        name: 'pwa-cross-browser',
+        helpText:
+          'To reach the most number of users, sites should work across ' +
+          'every major browser. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#site-works-cross-browser).',
+        description: 'Site works cross-browser',
+      },
+      super.meta
+    );
   }
 }
 

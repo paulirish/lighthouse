@@ -10,13 +10,11 @@ const Gatherer = require('./gatherer');
 class ServiceWorker extends Gatherer {
   beforePass(options) {
     const driver = options.driver;
-    return driver
-      .getServiceWorkerVersions()
-      .then(data => {
-        return {
-          versions: data.versions,
-        };
-      });
+    return driver.getServiceWorkerVersions().then(data => {
+      return {
+        versions: data.versions,
+      };
+    });
   }
 }
 

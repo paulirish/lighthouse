@@ -25,7 +25,8 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
       name: 'uses-request-compression',
       informative: true,
       description: 'Enable text compression',
-      helpText: 'Text-based responses should be served with compression (gzip, deflate or brotli)' +
+      helpText:
+        'Text-based responses should be served with compression (gzip, deflate or brotli)' +
         ' to minimize total network bytes.' +
         ' [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer).',
       requiredArtifacts: ['ResponseCompression', 'devtoolsLogs'],
@@ -48,16 +49,18 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
 
       // we require at least 10% savings off the original size AND at least 1400 bytes
       // if the savings is smaller than either, we don't care
-      if (1 - gzipSize / originalSize < IGNORE_THRESHOLD_IN_PERCENT ||
-          gzipSavings < IGNORE_THRESHOLD_IN_BYTES
+      if (
+        1 - gzipSize / originalSize < IGNORE_THRESHOLD_IN_PERCENT ||
+        gzipSavings < IGNORE_THRESHOLD_IN_BYTES
       ) {
         return;
       }
 
       // remove duplicates
       const url = URL.elideDataURI(record.url);
-      const isDuplicate = results.find(res => res.url === url &&
-        res.totalBytes === record.resourceSize);
+      const isDuplicate = results.find(
+        res => res.url === url && res.totalBytes === record.resourceSize
+      );
       if (isDuplicate) {
         return;
       }

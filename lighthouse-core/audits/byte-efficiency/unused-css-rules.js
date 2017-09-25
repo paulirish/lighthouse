@@ -19,9 +19,10 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       name: 'unused-css-rules',
       description: 'Unused CSS rules',
       informative: true,
-      helpText: 'Remove unused rules from stylesheets to reduce unnecessary ' +
-          'bytes consumed by network activity. ' +
-          '[Learn more](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)',
+      helpText:
+        'Remove unused rules from stylesheets to reduce unnecessary ' +
+        'bytes consumed by network activity. ' +
+        '[Learn more](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)',
       requiredArtifacts: ['CSSUsage', 'Styles', 'URL', 'devtoolsLogs'],
     };
   }
@@ -32,17 +33,19 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
    * @return {!Object} A map of styleSheetId to stylesheet information.
    */
   static indexStylesheetsById(styles, networkRecords) {
-    const indexedNetworkRecords = networkRecords
-      .reduce((indexed, record) => {
-        indexed[record.url] = record;
-        return indexed;
-      }, {});
+    const indexedNetworkRecords = networkRecords.reduce((indexed, record) => {
+      indexed[record.url] = record;
+      return indexed;
+    }, {});
 
     return styles.reduce((indexed, stylesheet) => {
-      indexed[stylesheet.header.styleSheetId] = Object.assign({
-        usedRules: [],
-        networkRecord: indexedNetworkRecords[stylesheet.header.sourceURL],
-      }, stylesheet);
+      indexed[stylesheet.header.styleSheetId] = Object.assign(
+        {
+          usedRules: [],
+          networkRecord: indexedNetworkRecords[stylesheet.header.sourceURL],
+        },
+        stylesheet
+      );
       return indexed;
     }, {});
   }
@@ -79,7 +82,10 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
     }
 
     const totalTransferredBytes = ByteEfficiencyAudit.estimateTransferSize(
-        stylesheetInfo.networkRecord, totalUncompressedBytes, 'stylesheet');
+      stylesheetInfo.networkRecord,
+      totalUncompressedBytes,
+      'stylesheet'
+    );
     const percentUnused = (totalUncompressedBytes - usedUncompressedBytes) / totalUncompressedBytes;
     const wastedBytes = Math.round(percentUnused * totalTransferredBytes);
 
@@ -106,9 +112,12 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       const firstRuleStart = preview.indexOf('{');
       const firstRuleEnd = preview.indexOf('}');
 
-      if (firstRuleStart === -1 || firstRuleEnd === -1
-          || firstRuleStart > firstRuleEnd
-          || firstRuleStart > PREVIEW_LENGTH) {
+      if (
+        firstRuleStart === -1 ||
+        firstRuleEnd === -1 ||
+        firstRuleStart > firstRuleEnd ||
+        firstRuleStart > PREVIEW_LENGTH
+      ) {
         // We couldn't determine the first rule-set or it's not within the preview
         preview = preview.slice(0, PREVIEW_LENGTH) + '...';
       } else if (firstRuleEnd < PREVIEW_LENGTH) {
@@ -117,9 +126,10 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       } else {
         // The first rule-set doesn't fit within the preview, just show as many as we can
         const lastSemicolonIndex = preview.slice(0, PREVIEW_LENGTH).lastIndexOf(';');
-        preview = lastSemicolonIndex < firstRuleStart ?
-            preview.slice(0, PREVIEW_LENGTH) + '... } ...' :
-            preview.slice(0, lastSemicolonIndex + 1) + ' ... } ...';
+        preview =
+          lastSemicolonIndex < firstRuleStart
+            ? preview.slice(0, PREVIEW_LENGTH) + '... } ...'
+            : preview.slice(0, lastSemicolonIndex + 1) + ' ... } ...';
       }
     }
 

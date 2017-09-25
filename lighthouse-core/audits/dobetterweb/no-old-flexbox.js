@@ -25,8 +25,9 @@ class NoOldFlexboxAudit extends Audit {
       name: 'no-old-flexbox',
       description: 'Avoids old CSS flexbox',
       failureDescription: 'Uses old CSS flexbox',
-      helpText: 'The 2009 spec of Flexbox is deprecated and is 2.3x slower than the latest ' +
-          'spec. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/old-flexbox).',
+      helpText:
+        'The 2009 spec of Flexbox is deprecated and is 2.3x slower than the latest ' +
+        'spec. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/old-flexbox).',
       requiredArtifacts: ['Styles', 'URL'],
     };
   }
@@ -38,10 +39,15 @@ class NoOldFlexboxAudit extends Audit {
   static audit(artifacts) {
     // https://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
     // (e.g. box-flex, box-orient, box-flex-group, display: flexbox (2011 version))
-    const displayPropResults = StyleHelpers.filterStylesheetsByUsage(artifacts.Styles,
-        'display', StyleHelpers.addVendorPrefixes(['box', 'flexbox']));
-    const otherPropResults = StyleHelpers.filterStylesheetsByUsage(artifacts.Styles,
-        StyleHelpers.addVendorPrefixes(['box-flex', 'box-orient', 'box-flex-group']));
+    const displayPropResults = StyleHelpers.filterStylesheetsByUsage(
+      artifacts.Styles,
+      'display',
+      StyleHelpers.addVendorPrefixes(['box', 'flexbox'])
+    );
+    const otherPropResults = StyleHelpers.filterStylesheetsByUsage(
+      artifacts.Styles,
+      StyleHelpers.addVendorPrefixes(['box-flex', 'box-orient', 'box-flex-group'])
+    );
 
     const sheetsUsingOldFlexbox = displayPropResults.concat(otherPropResults);
 
@@ -74,8 +80,11 @@ class NoOldFlexboxAudit extends Audit {
         value: {
           results: urlList,
           tableHeadings: {
-            url: 'URL', startLine: 'Line in the stylesheet / <style>', location: 'Column start/end',
-            pre: 'Snippet'},
+            url: 'URL',
+            startLine: 'Line in the stylesheet / <style>',
+            location: 'Column start/end',
+            pre: 'Snippet',
+          },
         },
       },
     };

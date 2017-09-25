@@ -39,8 +39,9 @@ class NoMutationEventsAudit extends Audit {
       name: 'no-mutation-events',
       description: 'Avoids Mutation Events in its own scripts',
       failureDescription: 'Uses Mutation Events in its own scripts',
-      helpText: 'Mutation Events are deprecated and harm performance. Consider using Mutation ' +
-          'Observers instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/mutation-events).',
+      helpText:
+        'Mutation Events are deprecated and harm performance. Consider using Mutation ' +
+        'Observers instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/mutation-events).',
       requiredArtifacts: ['URL', 'EventListeners'],
     };
   }
@@ -53,17 +54,19 @@ class NoMutationEventsAudit extends Audit {
     let debugString;
     const listeners = artifacts.EventListeners;
 
-    const results = listeners.filter(loc => {
-      const isMutationEvent = this.MUTATION_EVENTS.includes(loc.type);
-      let sameHost = URL.hostsMatch(artifacts.URL.finalUrl, loc.url);
+    const results = listeners
+      .filter(loc => {
+        const isMutationEvent = this.MUTATION_EVENTS.includes(loc.type);
+        let sameHost = URL.hostsMatch(artifacts.URL.finalUrl, loc.url);
 
-      if (!URL.isValid(loc.url) && isMutationEvent) {
-        sameHost = true;
-        debugString = URL.INVALID_URL_DEBUG_STRING;
-      }
+        if (!URL.isValid(loc.url) && isMutationEvent) {
+          sameHost = true;
+          debugString = URL.INVALID_URL_DEBUG_STRING;
+        }
 
-      return sameHost && isMutationEvent;
-    }).map(EventHelpers.addFormattedCodeSnippet);
+        return sameHost && isMutationEvent;
+      })
+      .map(EventHelpers.addFormattedCodeSnippet);
 
     const groupedResults = EventHelpers.groupCodeSnippetsByLocation(results);
 

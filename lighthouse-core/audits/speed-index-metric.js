@@ -22,8 +22,9 @@ class SpeedIndexMetric extends Audit {
       category: 'Performance',
       name: 'speed-index-metric',
       description: 'Perceptual Speed Index',
-      helpText: 'Speed Index shows how quickly the contents of a page are visibly populated. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index).',
+      helpText:
+        'Speed Index shows how quickly the contents of a page are visibly populated. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index).',
       optimalValue: `< ${Util.formatNumber(SCORING_POINT_OF_DIMINISHING_RETURNS)}`,
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
@@ -63,9 +64,9 @@ class SpeedIndexMetric extends Audit {
       //  75th Percentile = 8,820
       //  95th Percentile = 17,400
       const score = Audit.computeLogNormalScore(
-          speedline.perceptualSpeedIndex,
-          SCORING_POINT_OF_DIMINISHING_RETURNS,
-          SCORING_MEDIAN
+        speedline.perceptualSpeedIndex,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
       );
 
       const extendedInfo = {

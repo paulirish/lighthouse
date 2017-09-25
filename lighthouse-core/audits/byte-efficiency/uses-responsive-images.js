@@ -46,7 +46,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
-    const wastedRatio = 1 - (usedPixels / actualPixels);
+    const wastedRatio = 1 - usedPixels / actualPixels;
     const totalBytes = image.networkRecord.resourceSize;
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
@@ -97,8 +97,9 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       }
     });
 
-    const results = Array.from(resultsMap.values())
-      .filter(item => item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES);
+    const results = Array.from(resultsMap.values()).filter(
+      item => item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES
+    );
 
     const headings = [
       {key: 'preview', itemType: 'thumbnail', text: ''},

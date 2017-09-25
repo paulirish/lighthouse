@@ -38,9 +38,10 @@ class WebappInstallBanner extends MultiCheckAudit {
       name: 'webapp-install-banner',
       description: 'User can be prompted to Install the Web App',
       failureDescription: 'User will not be prompted to Install the Web App',
-      helpText: 'Browsers can proactively prompt users to add your app to their homescreen, ' +
-          'which can lead to higher engagement. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/install-prompt).',
+      helpText:
+        'Browsers can proactively prompt users to add your app to their homescreen, ' +
+        'which can lead to higher engagement. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/install-prompt).',
       requiredArtifacts: ['URL', 'ServiceWorker', 'Manifest', 'StartUrl'],
     };
   }
@@ -59,15 +60,12 @@ class WebappInstallBanner extends MultiCheckAudit {
       'hasPWADisplayValue',
       'hasIconsAtLeast192px',
     ];
-    manifestValues.allChecks
-      .filter(item => bannerCheckIds.includes(item.id))
-      .forEach(item => {
-        if (!item.passing) {
-          failures.push(item.failureText);
-        }
-      });
+    manifestValues.allChecks.filter(item => bannerCheckIds.includes(item.id)).forEach(item => {
+      if (!item.passing) {
+        failures.push(item.failureText);
+      }
+    });
   }
-
 
   static assessServiceWorker(artifacts, result) {
     const hasServiceWorker = SWAudit.audit(artifacts).rawValue;
@@ -80,7 +78,7 @@ class WebappInstallBanner extends MultiCheckAudit {
     const hasOfflineStartUrl = artifacts.StartUrl.statusCode === 200;
 
     if (!hasOfflineStartUrl) {
-      result.failures.push('Service worker does not successfully serve the manifest\'s start_url');
+      result.failures.push("Service worker does not successfully serve the manifest's start_url");
     }
 
     if (artifacts.StartUrl.debugString) {

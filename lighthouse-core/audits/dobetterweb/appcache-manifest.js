@@ -22,8 +22,9 @@ class AppCacheManifestAttr extends Audit {
       name: 'appcache-manifest',
       description: 'Avoids Application Cache',
       failureDescription: 'Uses Application Cache',
-      helpText: 'Application Cache is deprecated. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/appcache).',
+      helpText:
+        'Application Cache is deprecated. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/appcache).',
       requiredArtifacts: ['AppCacheManifest'],
     };
   }
@@ -34,8 +35,9 @@ class AppCacheManifestAttr extends Audit {
    */
   static audit(artifacts) {
     const usingAppcache = artifacts.AppCacheManifest !== null;
-    const debugString = usingAppcache ?
-        `Found <html manifest="${artifacts.AppCacheManifest}">.` : '';
+    const debugString = usingAppcache
+      ? `Found <html manifest="${artifacts.AppCacheManifest}">.`
+      : '';
 
     return {
       rawValue: !usingAppcache,

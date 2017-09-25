@@ -33,18 +33,20 @@ class ManifestValues extends ComputedArtifact {
       {
         id: 'hasIconsAtLeast192px',
         failureText: 'Manifest does not have icons at least 192px',
-        validate: manifest => icons.doExist(manifest.value) &&
-            icons.sizeAtLeast(192, /** @type {!Manifest} */ (manifest.value)).length > 0,
+        validate: manifest =>
+          icons.doExist(manifest.value) &&
+          icons.sizeAtLeast(192, /** @type {!Manifest} */ (manifest.value)).length > 0,
       },
       {
         id: 'hasIconsAtLeast512px',
         failureText: 'Manifest does not have icons at least 512px',
-        validate: manifest => icons.doExist(manifest.value) &&
-            icons.sizeAtLeast(512, /** @type {!Manifest} */ (manifest.value)).length > 0,
+        validate: manifest =>
+          icons.doExist(manifest.value) &&
+          icons.sizeAtLeast(512, /** @type {!Manifest} */ (manifest.value)).length > 0,
       },
       {
         id: 'hasPWADisplayValue',
-        failureText: 'Manifest\'s `display` value is not one of: ' + PWA_DISPLAY_VALUES.join(' | '),
+        failureText: "Manifest's `display` value is not one of: " + PWA_DISPLAY_VALUES.join(' | '),
         validate: manifest => PWA_DISPLAY_VALUES.includes(manifest.value.display.value),
       },
       {
@@ -65,8 +67,9 @@ class ManifestValues extends ComputedArtifact {
       {
         id: 'shortNameLength',
         failureText: 'Manifest `short_name` will be truncated when displayed on the homescreen',
-        validate: manifest => !!manifest.value.short_name.value &&
-            manifest.value.short_name.value.length <= SUGGESTED_SHORTNAME_LENGTH,
+        validate: manifest =>
+          !!manifest.value.short_name.value &&
+          manifest.value.short_name.value.length <= SUGGESTED_SHORTNAME_LENGTH,
       },
       {
         id: 'hasName',

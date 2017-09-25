@@ -16,36 +16,37 @@ const axeLibSource = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'ut
 // containing any violations.
 /* istanbul ignore next */
 function runA11yChecks() {
-  return window.axe.run(document, {
-    elementRef: true,
-    runOnly: {
-      type: 'tag',
-      values: [
-        'wcag2a',
-        'wcag2aa',
-      ],
-    },
-    rules: {
-      'tabindex': {enabled: true},
-      'table-fake-caption': {enabled: true},
-      'td-has-header': {enabled: true},
-      'area-alt': {enabled: false},
-      'blink': {enabled: false},
-      'server-side-image-map': {enabled: false},
-    },
-  }).then(axeResult => {
-    // Augment the node objects with outerHTML snippet & custom path string
-    axeResult.violations.forEach(v => v.nodes.forEach(node => {
-      node.path = getNodePath(node.element);
-      node.snippet = getOuterHTMLSnippet(node.element);
-      // avoid circular JSON concerns
-      node.element = node.any = node.all = node.none = undefined;
-    }));
+  return window.axe
+    .run(document, {
+      elementRef: true,
+      runOnly: {
+        type: 'tag',
+        values: ['wcag2a', 'wcag2aa'],
+      },
+      rules: {
+        tabindex: {enabled: true},
+        'table-fake-caption': {enabled: true},
+        'td-has-header': {enabled: true},
+        'area-alt': {enabled: false},
+        blink: {enabled: false},
+        'server-side-image-map': {enabled: false},
+      },
+    })
+    .then(axeResult => {
+      // Augment the node objects with outerHTML snippet & custom path string
+      axeResult.violations.forEach(v =>
+        v.nodes.forEach(node => {
+          node.path = getNodePath(node.element);
+          node.snippet = getOuterHTMLSnippet(node.element);
+          // avoid circular JSON concerns
+          node.element = node.any = node.all = node.none = undefined;
+        })
+      );
 
-    // We only need violations, and circular references are possible outside of violations
-    axeResult = {violations: axeResult.violations};
-    return axeResult;
-  });
+      // We only need violations, and circular references are possible outside of violations
+      axeResult = {violations: axeResult.violations};
+      return axeResult;
+    });
 
   // Adapted from DevTools' SDK.DOMNode.prototype.path
   //   https://github.com/ChromeDevTools/devtools-frontend/blob/7a2e162ddefd/front_end/sdk/DOMModel.js#L530-L552
@@ -53,10 +54,9 @@ function runA11yChecks() {
   function getNodePath(node) {
     function getNodeIndex(node) {
       let index = 0;
-      while (node = node.previousSibling) {
+      while ((node = node.previousSibling)) {
         // skip empty text nodes
-        if (node.nodeType === Node.TEXT_NODE &&
-          node.textContent.trim().length === 0) continue;
+        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length === 0) continue;
         index++;
       }
       return index;

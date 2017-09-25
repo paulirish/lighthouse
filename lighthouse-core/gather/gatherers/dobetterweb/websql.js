@@ -36,10 +36,9 @@ class WebSQL extends Gatherer {
    * @return {?{id: string, domain: string, name: string, version: string}}
    */
   afterPass(options) {
-    return this.listenForDatabaseEvents(options.driver)
-      .then(result => {
-        return result && result.database;
-      });
+    return this.listenForDatabaseEvents(options.driver).then(result => {
+      return result && result.database;
+    });
   }
 }
 

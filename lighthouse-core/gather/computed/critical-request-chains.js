@@ -29,8 +29,10 @@ class CriticalRequestChains extends ComputedArtifact {
       WebInspector.resourceTypes.Image._category,
       WebInspector.resourceTypes.XHR._category,
     ];
-    if (nonCriticalResourceTypes.includes(resourceTypeCategory) ||
-        request.mimeType && request.mimeType.startsWith('image/')) {
+    if (
+      nonCriticalResourceTypes.includes(resourceTypeCategory) ||
+      (request.mimeType && request.mimeType.startsWith('image/'))
+    ) {
       return false;
     }
 
@@ -130,8 +132,7 @@ class CriticalRequestChains extends ComputedArtifact {
    * @return {!Promise<!Object>}
    */
   compute_(devtoolsLog, artifacts) {
-    return artifacts.requestNetworkRecords(devtoolsLog)
-      .then(CriticalRequestChains.extractChain);
+    return artifacts.requestNetworkRecords(devtoolsLog).then(CriticalRequestChains.extractChain);
   }
 }
 

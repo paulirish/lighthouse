@@ -30,7 +30,8 @@ class SplashScreen extends MultiCheckAudit {
       name: 'splash-screen',
       description: 'Configured for a custom splash screen',
       failureDescription: 'Is not configured for a custom splash screen',
-      helpText: 'A default splash screen will be constructed for your app, but satisfying these requirements guarantee a high-quality [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) that transitions the user from tapping the home screen icon to your app\'s first paint',
+      helpText:
+        "A default splash screen will be constructed for your app, but satisfying these requirements guarantee a high-quality [splash screen](https://developers.google.com/web/updates/2015/10/splashscreen) that transitions the user from tapping the home screen icon to your app's first paint",
       requiredArtifacts: ['Manifest'],
     };
   }
@@ -56,7 +57,6 @@ class SplashScreen extends MultiCheckAudit {
         }
       });
   }
-
 
   static audit_(artifacts) {
     const failures = [];

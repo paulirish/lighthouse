@@ -39,20 +39,24 @@ function getOptimizedNumBytes(url) {
     }
 
     img.addEventListener('error', reject);
-    img.addEventListener('load', () => {
-      try {
-        canvas.height = img.height;
-        canvas.width = img.width;
-        context.drawImage(img, 0, 0);
+    img.addEventListener(
+      'load',
+      () => {
+        try {
+          canvas.height = img.height;
+          canvas.width = img.width;
+          context.drawImage(img, 0, 0);
 
-        const jpeg = getTypeStats('image/jpeg', 0.92);
-        const webp = getTypeStats('image/webp', 0.85);
+          const jpeg = getTypeStats('image/jpeg', 0.92);
+          const webp = getTypeStats('image/webp', 0.85);
 
-        resolve({jpeg, webp});
-      } catch (err) {
-        reject(err);
-      }
-    }, false);
+          resolve({jpeg, webp});
+        } catch (err) {
+          reject(err);
+        }
+      },
+      false
+    );
 
     img.src = url;
   });
@@ -111,45 +115,49 @@ class OptimizedImages extends Gatherer {
   calculateImageStats(driver, networkRecord) {
     // TODO(phulce): remove this dance of trying _getEncodedResponse with a fallback when Audits
     // domain hits stable in Chrome 62
-    return Promise.resolve(networkRecord.requestId).then(requestId => {
-      if (this._getEncodedResponseUnsupported) return;
-      return this._getEncodedResponse(driver, requestId, 'jpeg').then(jpegData => {
-        return this._getEncodedResponse(driver, requestId, 'webp').then(webpData => {
+    return Promise.resolve(networkRecord.requestId)
+      .then(requestId => {
+        if (this._getEncodedResponseUnsupported) return;
+        return this._getEncodedResponse(driver, requestId, 'jpeg')
+          .then(jpegData => {
+            return this._getEncodedResponse(driver, requestId, 'webp').then(webpData => {
+              return {
+                fromProtocol: true,
+                originalSize: networkRecord.resourceSize,
+                jpegSize: jpegData.encodedSize,
+                webpSize: webpData.encodedSize,
+              };
+            });
+          })
+          .catch(err => {
+            if (/wasn't found/.test(err.message)) {
+              // Mark non-support so we don't keep attempting the protocol method over and over
+              this._getEncodedResponseUnsupported = true;
+            } else {
+              throw err;
+            }
+          });
+      })
+      .then(result => {
+        if (result) return result;
+
+        // Take the slower fallback path if getEncodedResponse isn't available yet
+        // CORS canvas tainting doesn't support cross-origin images, so skip them early
+        if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) return null;
+
+        const script = `(${getOptimizedNumBytes.toString()})(${JSON.stringify(networkRecord.url)})`;
+        return driver.evaluateAsync(script).then(stats => {
+          if (!stats) return null;
+          const isBase64DataUri = networkRecord.isBase64DataUri;
+          const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
           return {
-            fromProtocol: true,
-            originalSize: networkRecord.resourceSize,
-            jpegSize: jpegData.encodedSize,
-            webpSize: webpData.encodedSize,
+            fromProtocol: false,
+            originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
+            jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
+            webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
           };
         });
-      }).catch(err => {
-        if (/wasn't found/.test(err.message)) {
-          // Mark non-support so we don't keep attempting the protocol method over and over
-          this._getEncodedResponseUnsupported = true;
-        } else {
-          throw err;
-        }
       });
-    }).then(result => {
-      if (result) return result;
-
-      // Take the slower fallback path if getEncodedResponse isn't available yet
-      // CORS canvas tainting doesn't support cross-origin images, so skip them early
-      if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) return null;
-
-      const script = `(${getOptimizedNumBytes.toString()})(${JSON.stringify(networkRecord.url)})`;
-      return driver.evaluateAsync(script).then(stats => {
-        if (!stats) return null;
-        const isBase64DataUri = networkRecord.isBase64DataUri;
-        const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
-        return {
-          fromProtocol: false,
-          originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
-          jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
-          webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
-        };
-      });
-    });
   }
 
   /**

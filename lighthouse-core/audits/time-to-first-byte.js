@@ -20,7 +20,8 @@ class TTFBMetric extends Audit {
       name: 'time-to-first-byte',
       description: 'Keep server response times low (TTFB)',
       informative: true,
-      helpText: 'Time To First Byte identifies the time at which your server sends a response.' +
+      helpText:
+        'Time To First Byte identifies the time at which your server sends a response.' +
         ' [Learn more](https://developers.google.com/web/tools/chrome-devtools/network-performance/issues).',
       requiredArtifacts: ['devtoolsLogs', 'URL'],
     };
@@ -39,32 +40,31 @@ class TTFBMetric extends Audit {
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
-    return artifacts.requestNetworkRecords(devtoolsLogs)
-      .then((networkRecords) => {
-        let debugString = '';
+    return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
+      let debugString = '';
 
-        const finalUrl = artifacts.URL.finalUrl;
-        const finalUrlRequest = networkRecords.find(record => record._url === finalUrl);
-        const ttfb = TTFBMetric.caclulateTTFB(finalUrlRequest);
-        const passed = ttfb < TTFB_THRESHOLD;
+      const finalUrl = artifacts.URL.finalUrl;
+      const finalUrlRequest = networkRecords.find(record => record._url === finalUrl);
+      const ttfb = TTFBMetric.caclulateTTFB(finalUrlRequest);
+      const passed = ttfb < TTFB_THRESHOLD;
 
-        if (!passed) {
-          debugString = `Root document took ${Util.formatMilliseconds(ttfb, 1)} ms` +
-            'to get the first byte.';
-        }
+      if (!passed) {
+        debugString =
+          `Root document took ${Util.formatMilliseconds(ttfb, 1)} ms` + 'to get the first byte.';
+      }
 
-        return {
-          rawValue: ttfb,
-          score: passed,
-          displayValue: Util.formatMilliseconds(ttfb),
-          extendedInfo: {
-            value: {
-              wastedMs: ttfb - TTFB_THRESHOLD,
-            },
+      return {
+        rawValue: ttfb,
+        score: passed,
+        displayValue: Util.formatMilliseconds(ttfb),
+        extendedInfo: {
+          value: {
+            wastedMs: ttfb - TTFB_THRESHOLD,
           },
-          debugString,
-        };
-      });
+        },
+        debugString,
+      };
+    });
   }
 }
 

@@ -27,8 +27,9 @@ class PredictivePerf extends Audit {
       category: 'Performance',
       name: 'predictive-perf',
       description: 'Predicted Performance (beta)',
-      helpText: 'Predicted performance evaluates how your site will perform under ' +
-          'a 3G connection on a mobile device.',
+      helpText:
+        'Predicted performance evaluates how your site will perform under ' +
+        'a 3G connection on a mobile device.',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
@@ -75,9 +76,11 @@ class PredictivePerf extends Audit {
       // Include everything that might be a long task
       if (node.type === Node.TYPES.CPU) return node.event.dur > minimumCpuTaskDuration;
       // Include all scripts and high priority requests
-      return node.resourceType === 'script' ||
-          node.record.priority() === 'High' ||
-          node.record.priority() === 'VeryHigh';
+      return (
+        node.resourceType === 'script' ||
+        node.record.priority() === 'High' ||
+        node.record.priority() === 'VeryHigh'
+      );
     });
   }
 
@@ -95,8 +98,9 @@ class PredictivePerf extends Audit {
    */
   static getLastLongTaskEndTime(nodeTiming) {
     return Array.from(nodeTiming.entries())
-      .filter(([node, timing]) => node.type === Node.TYPES.CPU &&
-          timing.endTime - timing.startTime > 50)
+      .filter(
+        ([node, timing]) => node.type === Node.TYPES.CPU && timing.endTime - timing.startTime > 50
+      )
       .map(([_, timing]) => timing.endTime)
       .reduce((max, x) => Math.max(max, x), 0);
   }
@@ -143,9 +147,9 @@ class PredictivePerf extends Audit {
 
       const meanDuration = sum / Object.keys(values).length;
       const score = Audit.computeLogNormalScore(
-          meanDuration,
-          SCORING_POINT_OF_DIMINISHING_RETURNS,
-          SCORING_MEDIAN
+        meanDuration,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
       );
 
       return {

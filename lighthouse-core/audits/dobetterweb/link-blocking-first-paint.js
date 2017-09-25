@@ -30,9 +30,10 @@ class LinkBlockingFirstPaintAudit extends Audit {
       name: 'link-blocking-first-paint',
       description: 'Reduce render-blocking stylesheets',
       informative: true,
-      helpText: 'Link elements are blocking the first paint of your page. Consider ' +
-          'inlining critical links and deferring non-critical ones. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
+      helpText:
+        'Link elements are blocking the first paint of your page. Consider ' +
+        'inlining critical links and deferring non-critical ones. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
       requiredArtifacts: ['TagsBlockingFirstPaint', 'traces'],
     };
   }
@@ -46,18 +47,26 @@ class LinkBlockingFirstPaintAudit extends Audit {
    *    many milliseconds to load.
    * @return {!AuditResult} The object to pass to `generateAuditResult`
    */
-  static computeAuditResultForTags(artifacts, tagFilter, endTimeMax = Infinity,
-      loadDurationThreshold = 0) {
+  static computeAuditResultForTags(
+    artifacts,
+    tagFilter,
+    endTimeMax = Infinity,
+    loadDurationThreshold = 0
+  ) {
     const artifact = artifacts.TagsBlockingFirstPaint;
 
     const filtered = artifact.filter(item => {
-      return item.tag.tagName === tagFilter &&
+      return (
+        item.tag.tagName === tagFilter &&
         (item.endTime - item.startTime) * 1000 >= loadDurationThreshold &&
-        item.endTime * 1000 < endTimeMax;
+        item.endTime * 1000 < endTimeMax
+      );
     });
 
-    const startTime = filtered.length === 0 ? 0 :
-        filtered.reduce((t, item) => Math.min(t, item.startTime), Number.MAX_VALUE);
+    const startTime =
+      filtered.length === 0
+        ? 0
+        : filtered.reduce((t, item) => Math.min(t, item.startTime), Number.MAX_VALUE);
     let endTime = 0;
 
     const results = filtered.map(item => {

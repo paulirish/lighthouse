@@ -17,14 +17,14 @@ class Port {
    * @param {!string} eventName, 'message', 'close'
    * @param {function(string|undefined)} cb
    */
-  on(eventName, cb) { }
+  on(eventName, cb) {}
 
   /**
    * @param {string} message
    */
-  send(message) { }
+  send(message) {}
 
-  close() { }
+  close() {}
 }
 
 /* eslint-enable no-unused-vars */

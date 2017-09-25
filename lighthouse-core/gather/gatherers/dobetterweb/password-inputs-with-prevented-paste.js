@@ -24,10 +24,8 @@ function findPasswordInputsWithPreventedPaste() {
   }
 
   return Array.from(document.querySelectorAll('input[type="password"]'))
-    .filter(passwordInput =>
-      !passwordInput.dispatchEvent(
-          new ClipboardEvent('paste', {cancelable: true})
-      )
+    .filter(
+      passwordInput => !passwordInput.dispatchEvent(new ClipboardEvent('paste', {cancelable: true}))
     )
     .map(passwordInput => ({
       snippet: getOuterHTMLSnippet(passwordInput),
@@ -41,11 +39,8 @@ class PasswordInputsWithPreventedPaste extends Gatherer {
    */
   afterPass(options) {
     const driver = options.driver;
-    return driver.evaluateAsync(
-        `(${findPasswordInputsWithPreventedPaste.toString()}())`
-    );
+    return driver.evaluateAsync(`(${findPasswordInputsWithPreventedPaste.toString()}())`);
   }
 }
-
 
 module.exports = PasswordInputsWithPreventedPaste;

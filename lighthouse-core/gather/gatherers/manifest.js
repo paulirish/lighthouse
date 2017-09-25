@@ -25,19 +25,20 @@ class Manifest extends Gatherer {
    * @return {!Promise<?Manifest>}
    */
   afterPass(options) {
-    return options.driver.getAppManifest()
-      .then(response => {
-        if (!response) {
-          return null;
-        }
+    return options.driver.getAppManifest().then(response => {
+      if (!response) {
+        return null;
+      }
 
-        const isBomEncoded = response.data.charCodeAt(0) === BOM_FIRSTCHAR;
-        if (isBomEncoded) {
-          response.data = Buffer.from(response.data).slice(BOM_LENGTH).toString();
-        }
+      const isBomEncoded = response.data.charCodeAt(0) === BOM_FIRSTCHAR;
+      if (isBomEncoded) {
+        response.data = Buffer.from(response.data)
+          .slice(BOM_LENGTH)
+          .toString();
+      }
 
-        return manifestParser(response.data, response.url, options.url);
-      });
+      return manifestParser(response.data, response.url, options.url);
+    });
   }
 }
 

@@ -28,8 +28,9 @@ class ThemedOmnibox extends MultiCheckAudit {
       name: 'themed-omnibox',
       description: 'Address bar matches brand colors',
       failureDescription: 'Address bar does not match brand colors',
-      helpText: 'The browser address bar can be themed to match your site. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/address-bar).',
+      helpText:
+        'The browser address bar can be themed to match your site. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/address-bar).',
       requiredArtifacts: ['Manifest', 'ThemeColor'],
     };
   }

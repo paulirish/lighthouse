@@ -14,13 +14,18 @@ class Offline extends Gatherer {
   }
 
   afterPass(options, tracingData) {
-    const navigationRecord = tracingData.networkRecords.filter(record => {
-      return URL.equalWithExcludedFragments(record._url, options.url) &&
-        record._fetchedViaServiceWorker;
-    }).pop(); // Take the last record that matches.
+    const navigationRecord = tracingData.networkRecords
+      .filter(record => {
+        return (
+          URL.equalWithExcludedFragments(record._url, options.url) &&
+          record._fetchedViaServiceWorker
+        );
+      })
+      .pop(); // Take the last record that matches.
 
-    return options.driver.goOnline(options)
-      .then(_ => navigationRecord ? navigationRecord.statusCode : -1);
+    return options.driver
+      .goOnline(options)
+      .then(_ => (navigationRecord ? navigationRecord.statusCode : -1));
   }
 }
 

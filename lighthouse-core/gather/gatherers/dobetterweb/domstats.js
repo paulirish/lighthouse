@@ -60,8 +60,8 @@ function elementPathInDOM(element) {
       const isShadowHost = node.host && node.localName !== 'a';
       node = isShadowHost ? node.host : node.parentElement;
     } else {
-      const isShadowHost = node.parentNode && node.parentNode.host &&
-                           node.parentNode.localName !== 'a';
+      const isShadowHost =
+        node.parentNode && node.parentNode.host && node.parentNode.localName !== 'a';
       node = isShadowHost ? node.parentNode.host : node.parentElement;
     }
 
@@ -83,13 +83,13 @@ function elementPathInDOM(element) {
  * @return {!number}
  */
 /* istanbul ignore next */
-function getDOMStats(element, deep=true) {
+function getDOMStats(element, deep = true) {
   let deepestNode = null;
   let maxDepth = 0;
   let maxWidth = 0;
   let parentWithMostChildren = null;
 
-  const _calcDOMWidthAndHeight = function(element, depth=1) {
+  const _calcDOMWidthAndHeight = function(element, depth = 1) {
     if (depth > maxDepth) {
       deepestNode = element;
       maxDepth = depth;
@@ -137,12 +137,15 @@ class DOMStats extends Gatherer {
       ${elementPathInDOM.toString()};
       return (${getDOMStats.toString()}(document.documentElement));
     })()`;
-    return options.driver.sendCommand('DOM.enable')
+    return options.driver
+      .sendCommand('DOM.enable')
       .then(() => options.driver.evaluateAsync(expression))
-      .then(results => options.driver.getElementsInDocument().then(allNodes => {
-        results.totalDOMNodes = allNodes.length;
-        return options.driver.sendCommand('DOM.disable').then(() => results);
-      }));
+      .then(results =>
+        options.driver.getElementsInDocument().then(allNodes => {
+          results.totalDOMNodes = allNodes.length;
+          return options.driver.sendCommand('DOM.disable').then(() => results);
+        })
+      );
   }
 }
 

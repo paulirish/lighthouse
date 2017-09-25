@@ -28,7 +28,8 @@ class OffscreenImages extends ByteEfficiencyAudit {
       name: 'offscreen-images',
       description: 'Offscreen images',
       informative: true,
-      helpText: 'Consider lazy-loading offscreen images to improve page load speed ' +
+      helpText:
+        'Consider lazy-loading offscreen images to improve page load speed ' +
         'and time to interactive. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/offscreen-images).',
       requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'traces', 'devtoolsLogs'],
@@ -117,8 +118,9 @@ class OffscreenImages extends ByteEfficiencyAudit {
     return artifacts.requestFirstInteractive(trace).then(firstInteractive => {
       const ttiTimestamp = firstInteractive.timestamp / 1000000;
       const results = Array.from(resultsMap.values()).filter(item => {
-        const isWasteful = item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
-            item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
+        const isWasteful =
+          item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES &&
+          item.wastedPercent > IGNORE_THRESHOLD_IN_PERCENT;
         const loadedEarly = item.requestStartTime < ttiTimestamp;
         return isWasteful && loadedEarly;
       });

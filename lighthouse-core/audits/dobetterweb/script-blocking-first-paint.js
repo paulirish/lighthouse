@@ -23,9 +23,10 @@ class ScriptBlockingFirstPaint extends Audit {
       name: 'script-blocking-first-paint',
       description: 'Reduce render-blocking scripts',
       informative: true,
-      helpText: 'Script elements are blocking the first paint of your page. Consider inlining ' +
-          'critical scripts and deferring non-critical ones. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
+      helpText:
+        'Script elements are blocking the first paint of your page. Consider inlining ' +
+        'critical scripts and deferring non-critical ones. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
       requiredArtifacts: ['TagsBlockingFirstPaint', 'traces'],
     };
   }

@@ -30,12 +30,11 @@ class HTTPRedirect extends Gatherer {
     // Allow override for faster testing.
     const timeout = options._testTimeout || 10000;
 
-    const securityPromise = options.driver.getSecurityState()
-      .then(state => {
-        return {
-          value: state.schemeIsCryptographic,
-        };
-      });
+    const securityPromise = options.driver.getSecurityState().then(state => {
+      return {
+        value: state.schemeIsCryptographic,
+      };
+    });
 
     let noSecurityChangesTimeout;
     const timeoutPromise = new Promise((resolve, reject) => {
@@ -46,17 +45,16 @@ class HTTPRedirect extends Gatherer {
       }, timeout);
     });
 
-    return Promise.race([
-      securityPromise,
-      timeoutPromise,
-    ]).then(result => {
-      // Clear timeout. No effect if it won, no need to wait if it lost.
-      clearTimeout(noSecurityChangesTimeout);
-      return result;
-    }).catch(err => {
-      clearTimeout(noSecurityChangesTimeout);
-      throw err;
-    });
+    return Promise.race([securityPromise, timeoutPromise])
+      .then(result => {
+        // Clear timeout. No effect if it won, no need to wait if it lost.
+        clearTimeout(noSecurityChangesTimeout);
+        return result;
+      })
+      .catch(err => {
+        clearTimeout(noSecurityChangesTimeout);
+        throw err;
+      });
   }
 }
 

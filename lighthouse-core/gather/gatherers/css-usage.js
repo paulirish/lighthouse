@@ -12,7 +12,8 @@ const Gatherer = require('./gatherer');
  */
 class CSSUsage extends Gatherer {
   beforePass(options) {
-    return options.driver.sendCommand('DOM.enable')
+    return options.driver
+      .sendCommand('DOM.enable')
       .then(_ => options.driver.sendCommand('CSS.enable'))
       .then(_ => options.driver.sendCommand('CSS.startRuleUsageTracking'));
   }
@@ -21,7 +22,8 @@ class CSSUsage extends Gatherer {
     const driver = options.driver;
 
     return driver.sendCommand('CSS.stopRuleUsageTracking').then(results => {
-      return driver.sendCommand('CSS.disable')
+      return driver
+        .sendCommand('CSS.disable')
         .then(_ => driver.sendCommand('DOM.disable'))
         .then(_ => results.ruleUsage);
     });

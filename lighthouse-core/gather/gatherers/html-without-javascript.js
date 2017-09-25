@@ -30,16 +30,15 @@ class HTMLWithoutJavaScript extends Gatherer {
     // Reset the JS disable.
     options.disableJavaScript = false;
 
-    return options.driver.evaluateAsync(`(${getBodyText.toString()}())`)
-      .then(result => {
-        if (typeof result !== 'string') {
-          throw new Error('document body innerText returned by protocol was not a string');
-        }
+    return options.driver.evaluateAsync(`(${getBodyText.toString()}())`).then(result => {
+      if (typeof result !== 'string') {
+        throw new Error('document body innerText returned by protocol was not a string');
+      }
 
-        return {
-          value: result,
-        };
-      });
+      return {
+        value: result,
+      };
+    });
   }
 }
 

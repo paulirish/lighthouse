@@ -46,21 +46,20 @@ class ExtensionConnection extends Connection {
       return Promise.resolve();
     }
 
-    return this._queryCurrentTab()
-      .then(tab => {
-        const tabId = this._tabId = tab.id;
-        chrome.debugger.onEvent.addListener(this._onEvent);
-        chrome.debugger.onDetach.addListener(this._onUnexpectedDetach);
+    return this._queryCurrentTab().then(tab => {
+      const tabId = (this._tabId = tab.id);
+      chrome.debugger.onEvent.addListener(this._onEvent);
+      chrome.debugger.onDetach.addListener(this._onUnexpectedDetach);
 
-        return new Promise((resolve, reject) => {
-          chrome.debugger.attach({tabId}, '1.1', _ => {
-            if (chrome.runtime.lastError) {
-              return reject(new Error(chrome.runtime.lastError.message));
-            }
-            resolve(tabId);
-          });
+      return new Promise((resolve, reject) => {
+        chrome.debugger.attach({tabId}, '1.1', _ => {
+          if (chrome.runtime.lastError) {
+            return reject(new Error(chrome.runtime.lastError.message));
+          }
+          resolve(tabId);
         });
       });
+    });
   }
 
   /**
@@ -127,19 +126,19 @@ class ExtensionConnection extends Connection {
         currentWindow: true,
       };
 
-      chrome.tabs.query(queryOpts, (tabs => {
+      chrome.tabs.query(queryOpts, tabs => {
         if (chrome.runtime.lastError) {
           return reject(chrome.runtime.lastError);
         }
         if (tabs.length === 0) {
-          const message = 'Couldn\'t resolve current tab. Please file a bug.';
+          const message = "Couldn't resolve current tab. Please file a bug.";
           return reject(new Error(message));
         }
         if (tabs.length > 1) {
           log.warn('ExtensionConnection', '_queryCurrentTab returned multiple tabs');
         }
         resolve(tabs[0]);
-      }));
+      });
     });
   }
 

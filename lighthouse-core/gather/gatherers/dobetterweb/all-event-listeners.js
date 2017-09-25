@@ -49,11 +49,13 @@ class EventListeners extends Gatherer {
 
     return promise.then(result => {
       const obj = result.object || result.result;
-      return this.driver.sendCommand('DOMDebugger.getEventListeners', {
-        objectId: obj.objectId,
-      }).then(results => {
-        return {listeners: results.listeners, tagName: obj.description};
-      });
+      return this.driver
+        .sendCommand('DOMDebugger.getEventListeners', {
+          objectId: obj.objectId,
+        })
+        .then(results => {
+          return {listeners: results.listeners, tagName: obj.description};
+        });
     });
   }
 
@@ -101,9 +103,11 @@ class EventListeners extends Gatherer {
    */
   collectListeners(nodes) {
     // Gather event listeners from each node in parallel.
-    return Promise.all(nodes.map(node => {
-      return this.getEventListeners(node.element ? node.element.nodeId : node);
-    })).then(nestedListeners => [].concat(...nestedListeners));
+    return Promise.all(
+      nodes.map(node => {
+        return this.getEventListeners(node.element ? node.element.nodeId : node);
+      })
+    ).then(nestedListeners => [].concat(...nestedListeners));
   }
 
   /**
@@ -113,16 +117,17 @@ class EventListeners extends Gatherer {
   afterPass(options) {
     this.driver = options.driver;
     this._parsedScripts = new Map();
-    return options.driver.sendCommand('DOM.enable')
+    return options.driver
+      .sendCommand('DOM.enable')
       .then(() => this.listenForScriptParsedEvents())
       .then(() => this.unlistenForScriptParsedEvents())
       .then(() => options.driver.getElementsInDocument())
       .then(nodes => {
         nodes.push('document', 'window');
         return this.collectListeners(nodes);
-      }).then(listeners => {
-        return options.driver.sendCommand('DOM.disable')
-          .then(() => listeners);
+      })
+      .then(listeners => {
+        return options.driver.sendCommand('DOM.disable').then(() => listeners);
       });
   }
 }

@@ -17,9 +17,10 @@ class WithoutJavaScript extends Audit {
       name: 'without-javascript',
       description: 'Contains some content when JavaScript is not available',
       failureDescription: 'Does not provide fallback content when JavaScript is not available',
-      helpText: 'Your app should display some content when JavaScript is disabled, even if it\'s ' +
-          'just a warning to the user that JavaScript is required to use the app. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/no-js).',
+      helpText:
+        "Your app should display some content when JavaScript is disabled, even if it's " +
+        'just a warning to the user that JavaScript is required to use the app. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/no-js).',
       requiredArtifacts: ['HTMLWithoutJavaScript'],
     };
   }

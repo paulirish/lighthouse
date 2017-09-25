@@ -40,10 +40,12 @@ class TraceOfTab extends ComputedArtifact {
     // *must* be stable to keep events correctly nested.
     const keyEvents = trace.traceEvents
       .filter(e => {
-        return e.cat.includes('blink.user_timing') ||
+        return (
+          e.cat.includes('blink.user_timing') ||
           e.cat.includes('loading') ||
           e.cat.includes('devtools.timeline') ||
-          e.name === 'TracingStartedInPage';
+          e.name === 'TracingStartedInPage'
+        );
       })
       .stableSort((event0, event1) => event0.ts - event1.ts);
 
@@ -62,12 +64,12 @@ class TraceOfTab extends ComputedArtifact {
 
     // FCP will follow at/after the FP
     const firstContentfulPaint = frameEvents.find(
-        e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
+      e => e.name === 'firstContentfulPaint' && e.ts > navigationStart.ts
     );
 
     // fMP will follow at/after the FP
     let firstMeaningfulPaint = frameEvents.find(
-        e => e.name === 'firstMeaningfulPaint' && e.ts > navigationStart.ts
+      e => e.name === 'firstMeaningfulPaint' && e.ts > navigationStart.ts
     );
     let fmpFellBack = false;
 
@@ -88,7 +90,7 @@ class TraceOfTab extends ComputedArtifact {
 
     const onLoad = frameEvents.find(e => e.name === 'loadEventEnd' && e.ts > navigationStart.ts);
     const domContentLoaded = frameEvents.find(
-        e => e.name === 'domContentLoadedEventEnd' && e.ts > navigationStart.ts
+      e => e.name === 'domContentLoadedEventEnd' && e.ts > navigationStart.ts
     );
 
     // subset all trace events to just our tab's process (incl threads other than main)
@@ -97,8 +99,7 @@ class TraceOfTab extends ComputedArtifact {
       .filter(e => e.pid === startedInPageEvt.pid)
       .stableSort((event0, event1) => event0.ts - event1.ts);
 
-    const mainThreadEvents = processEvents
-      .filter(e => e.tid === startedInPageEvt.tid);
+    const mainThreadEvents = processEvents.filter(e => e.tid === startedInPageEvt.tid);
 
     const traceEnd = trace.traceEvents.reduce((max, evt) => {
       return max.ts > evt.ts ? max : evt;

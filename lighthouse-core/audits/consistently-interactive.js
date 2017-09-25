@@ -33,9 +33,10 @@ class ConsistentlyInteractiveMetric extends Audit {
       category: 'Performance',
       name: 'consistently-interactive',
       description: 'Consistently Interactive (beta)',
-      helpText: 'Consistently Interactive marks the time at which the page is ' +
-          'fully interactive. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive).',
+      helpText:
+        'Consistently Interactive marks the time at which the page is ' +
+        'fully interactive. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
@@ -146,12 +147,14 @@ class ConsistentlyInteractiveMetric extends Audit {
     const FMPTsInMs = traceOfTab.timestamps.firstMeaningfulPaint / 1000;
 
     const isLongEnoughQuietPeriod = period =>
-        period.end > FMPTsInMs + REQUIRED_QUIET_WINDOW &&
-        period.end - period.start >= REQUIRED_QUIET_WINDOW;
-    const networkQuietPeriods = this._findNetworkQuietPeriods(networkRecords, traceOfTab)
-      .filter(isLongEnoughQuietPeriod);
-    const cpuQuietPeriods = this._findCPUQuietPeriods(longTasks, traceOfTab)
-      .filter(isLongEnoughQuietPeriod);
+      period.end > FMPTsInMs + REQUIRED_QUIET_WINDOW &&
+      period.end - period.start >= REQUIRED_QUIET_WINDOW;
+    const networkQuietPeriods = this._findNetworkQuietPeriods(networkRecords, traceOfTab).filter(
+      isLongEnoughQuietPeriod
+    );
+    const cpuQuietPeriods = this._findCPUQuietPeriods(longTasks, traceOfTab).filter(
+      isLongEnoughQuietPeriod
+    );
 
     const cpuQueue = cpuQuietPeriods.slice();
     const networkQueue = networkQuietPeriods.slice();
@@ -188,9 +191,11 @@ class ConsistentlyInteractiveMetric extends Audit {
     }
 
     const culprit = cpuCandidate ? 'Network' : 'Main thread';
-    throw new Error(`${culprit} activity continued through the end of the trace recording. ` +
-      'Consistently Interactive requires a minimum of 5 seconds of both main thread idle and ' +
-      'network idle.');
+    throw new Error(
+      `${culprit} activity continued through the end of the trace recording. ` +
+        'Consistently Interactive requires a minimum of 5 seconds of both main thread idle and ' +
+        'network idle.'
+    );
   }
 
   /**
@@ -205,44 +210,48 @@ class ConsistentlyInteractiveMetric extends Audit {
       artifacts.requestTraceOfTab(trace),
     ];
 
-    return Promise.all(computedArtifacts)
-      .then(([networkRecords, traceOfTab]) => {
-        if (!traceOfTab.timestamps.firstMeaningfulPaint) {
-          throw new Error('No firstMeaningfulPaint found in trace.');
-        }
+    return Promise.all(computedArtifacts).then(([networkRecords, traceOfTab]) => {
+      if (!traceOfTab.timestamps.firstMeaningfulPaint) {
+        throw new Error('No firstMeaningfulPaint found in trace.');
+      }
 
-        if (!traceOfTab.timestamps.domContentLoaded) {
-          throw new Error('No domContentLoaded found in trace.');
-        }
+      if (!traceOfTab.timestamps.domContentLoaded) {
+        throw new Error('No domContentLoaded found in trace.');
+      }
 
-        const longTasks = TracingProcessor.getMainThreadTopLevelEvents(traceOfTab)
-          .filter(event => event.duration >= 50);
-        const quietPeriodInfo = this.findOverlappingQuietPeriods(longTasks, networkRecords,
-            traceOfTab);
-        const cpuQuietPeriod = quietPeriodInfo.cpuQuietPeriod;
+      const longTasks = TracingProcessor.getMainThreadTopLevelEvents(traceOfTab).filter(
+        event => event.duration >= 50
+      );
+      const quietPeriodInfo = this.findOverlappingQuietPeriods(
+        longTasks,
+        networkRecords,
+        traceOfTab
+      );
+      const cpuQuietPeriod = quietPeriodInfo.cpuQuietPeriod;
 
-        const timestamp = Math.max(
-            cpuQuietPeriod.start,
-            traceOfTab.timestamps.firstMeaningfulPaint / 1000,
-            traceOfTab.timestamps.domContentLoaded / 1000
+      const timestamp =
+        Math.max(
+          cpuQuietPeriod.start,
+          traceOfTab.timestamps.firstMeaningfulPaint / 1000,
+          traceOfTab.timestamps.domContentLoaded / 1000
         ) * 1000;
-        const timeInMs = (timestamp - traceOfTab.timestamps.navigationStart) / 1000;
-        const extendedInfo = Object.assign(quietPeriodInfo, {timestamp, timeInMs});
+      const timeInMs = (timestamp - traceOfTab.timestamps.navigationStart) / 1000;
+      const extendedInfo = Object.assign(quietPeriodInfo, {timestamp, timeInMs});
 
-        return {
-          score: Audit.computeLogNormalScore(
-              timeInMs,
-              SCORING_POINT_OF_DIMINISHING_RETURNS,
-              SCORING_MEDIAN
-          ),
-          rawValue: timeInMs,
-          displayValue: Util.formatMilliseconds(timeInMs),
-          optimalValue: this.meta.optimalValue,
-          extendedInfo: {
-            value: extendedInfo,
-          },
-        };
-      });
+      return {
+        score: Audit.computeLogNormalScore(
+          timeInMs,
+          SCORING_POINT_OF_DIMINISHING_RETURNS,
+          SCORING_MEDIAN
+        ),
+        rawValue: timeInMs,
+        displayValue: Util.formatMilliseconds(timeInMs),
+        optimalValue: this.meta.optimalValue,
+        extendedInfo: {
+          value: extendedInfo,
+        },
+      };
+    });
   }
 }
 

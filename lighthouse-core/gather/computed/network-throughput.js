@@ -22,18 +22,25 @@ class NetworkThroughput extends ComputedArtifact {
    */
   static getThroughput(networkRecords) {
     let totalBytes = 0;
-    const timeBoundaries = networkRecords.reduce((boundaries, record) => {
-      const scheme = record.parsedURL && record.parsedURL.scheme;
-      if (scheme === 'data' || record.failed || !record.finished ||
-          record.statusCode > 300 || !record.transferSize) {
-        return boundaries;
-      }
+    const timeBoundaries = networkRecords
+      .reduce((boundaries, record) => {
+        const scheme = record.parsedURL && record.parsedURL.scheme;
+        if (
+          scheme === 'data' ||
+          record.failed ||
+          !record.finished ||
+          record.statusCode > 300 ||
+          !record.transferSize
+        ) {
+          return boundaries;
+        }
 
-      totalBytes += record.transferSize;
-      boundaries.push({time: record.responseReceivedTime, isStart: true});
-      boundaries.push({time: record.endTime, isStart: false});
-      return boundaries;
-    }, []).sort((a, b) => a.time - b.time);
+        totalBytes += record.transferSize;
+        boundaries.push({time: record.responseReceivedTime, isStart: true});
+        boundaries.push({time: record.endTime, isStart: false});
+        return boundaries;
+      }, [])
+      .sort((a, b) => a.time - b.time);
 
     if (!timeBoundaries.length) {
       return Infinity;
@@ -65,8 +72,7 @@ class NetworkThroughput extends ComputedArtifact {
    * @return {!Promise<!Object>}
    */
   compute_(devtoolsLog, artifacts) {
-    return artifacts.requestNetworkRecords(devtoolsLog)
-      .then(NetworkThroughput.getThroughput);
+    return artifacts.requestNetworkRecords(devtoolsLog).then(NetworkThroughput.getThroughput);
   }
 }
 

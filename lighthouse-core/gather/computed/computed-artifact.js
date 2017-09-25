@@ -129,8 +129,9 @@ class ComputedArtifact {
       return Promise.resolve(this._cacheGet(artifacts));
     }
 
-    const artifactPromise = Promise.resolve()
-      .then(_ => this.compute_(...artifacts, this._allComputedArtifacts));
+    const artifactPromise = Promise.resolve().then(_ =>
+      this.compute_(...artifacts, this._allComputedArtifacts)
+    );
     this._cacheSet(artifacts, artifactPromise);
 
     return artifactPromise;

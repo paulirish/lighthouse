@@ -18,9 +18,10 @@ class ServiceWorker extends Audit {
       name: 'service-worker',
       description: 'Registers a service worker',
       failureDescription: 'Does not register a service worker',
-      helpText: 'The service worker is the technology that enables your app to use many ' +
-         'Progressive Web App features, such as offline, add to homescreen, and push ' +
-         'notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker).',
+      helpText:
+        'The service worker is the technology that enables your app to use many ' +
+        'Progressive Web App features, such as offline, add to homescreen, and push ' +
+        'notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker).',
       requiredArtifacts: ['URL', 'ServiceWorker'],
     };
   }
@@ -36,7 +37,8 @@ class ServiceWorker extends Audit {
     const url = artifacts.URL.finalUrl;
 
     const origin = new URL(url).origin;
-    const matchingSW = versions.filter(v => v.status === 'activated')
+    const matchingSW = versions
+      .filter(v => v.status === 'activated')
       .find(v => new URL(v.scriptURL).origin === origin);
 
     return {

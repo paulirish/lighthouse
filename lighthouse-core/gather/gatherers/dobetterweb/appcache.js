@@ -17,8 +17,7 @@ class AppCacheManifest extends Gatherer {
   afterPass(options) {
     const driver = options.driver;
 
-    return driver.querySelector('html')
-      .then(node => node && node.getAttribute('manifest'));
+    return driver.querySelector('html').then(node => node && node.getAttribute('manifest'));
   }
 }
 

@@ -25,9 +25,9 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       description: 'Avoids enormous network payloads',
       failureDescription: 'Has enormous network payloads',
       helpText:
-          'Network transfer size [costs users real money](https://whatdoesmysitecost.com/) ' +
-          'and is [highly correlated](http://httparchive.org/interesting.php#onLoad) with long load times. ' +
-          'Try to find ways to reduce the size of required files.',
+        'Network transfer size [costs users real money](https://whatdoesmysitecost.com/) ' +
+        'and is [highly correlated](http://httparchive.org/interesting.php#onLoad) with long load times. ' +
+        'Try to find ways to reduce the size of required files.',
       scoringMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['devtoolsLogs'],
     };
@@ -63,15 +63,14 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       const totalCompletedRequests = results.length;
       results = results.sort((itemA, itemB) => itemB.totalBytes - itemA.totalBytes).slice(0, 10);
 
-
       // Use the CDF of a log-normal distribution for scoring.
       //   <= 1600KB: score≈100
       //   4000KB: score=50
       //   >= 9000KB: score≈0
       const score = ByteEfficiencyAudit.computeLogNormalScore(
-          totalBytes,
-          SCORING_POINT_OF_DIMINISHING_RETURNS,
-          SCORING_MEDIAN
+        totalBytes,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
       );
 
       const headings = [

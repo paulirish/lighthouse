@@ -18,9 +18,10 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       name: 'external-anchors-use-rel-noopener',
       description: 'Opens external anchors using `rel="noopener"`',
       failureDescription: 'Does not open external anchors using `rel="noopener"`',
-      helpText: 'Open new tabs using `rel="noopener"` to improve performance and ' +
-          'prevent security vulnerabilities. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
+      helpText:
+        'Open new tabs using `rel="noopener"` to improve performance and ' +
+        'prevent security vulnerabilities. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
       requiredArtifacts: ['URL', 'AnchorsWithNoRelNoopener'],
     };
   }
@@ -41,9 +42,10 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         try {
           return new URL(anchor.href).host !== pageHost;
         } catch (err) {
-          debugString = 'Lighthouse was unable to determine the destination ' +
-              'of some anchor tags. If they are not used as hyperlinks, ' +
-              'consider removing the _blank target.';
+          debugString =
+            'Lighthouse was unable to determine the destination ' +
+            'of some anchor tags. If they are not used as hyperlinks, ' +
+            'consider removing the _blank target.';
           return true;
         }
       })
@@ -52,10 +54,12 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
           href: anchor.href || 'Unknown',
           target: anchor.target || '',
           rel: anchor.rel || '',
-          url: '<a' +
-              (anchor.href ? ` href="${anchor.href}"` : '') +
-              (anchor.target ? ` target="${anchor.target}"` : '') +
-              (anchor.rel ? ` rel="${anchor.rel}"` : '') + '>',
+          url:
+            '<a' +
+            (anchor.href ? ` href="${anchor.href}"` : '') +
+            (anchor.target ? ` target="${anchor.target}"` : '') +
+            (anchor.rel ? ` rel="${anchor.rel}"` : '') +
+            '>',
         };
       });
 

@@ -15,7 +15,8 @@ class ThemeColor extends Gatherer {
   afterPass(options) {
     const driver = options.driver;
 
-    return driver.querySelector('head meta[name="theme-color"]')
+    return driver
+      .querySelector('head meta[name="theme-color"]')
       .then(node => node && node.getAttribute('content'));
   }
 }

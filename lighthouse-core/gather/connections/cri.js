@@ -43,8 +43,9 @@ class CriConnection extends Connection {
             return Promise.reject(new Error('Cannot create new tab, and no tabs already open.'));
           }
           // first, we activate it to a foreground tab, then we connect
-          return this._runJsonCommand(`activate/${firstTab.id}`)
-            .then(_ => this._connectToSocket(firstTab));
+          return this._runJsonCommand(`activate/${firstTab.id}`).then(_ =>
+            this._connectToSocket(firstTab)
+          );
         });
       });
   }
@@ -77,31 +78,36 @@ class CriConnection extends Connection {
    */
   _runJsonCommand(command) {
     return new Promise((resolve, reject) => {
-      const request = http.get({
-        hostname: this.hostname,
-        port: this.port,
-        path: '/json/' + command,
-      }, response => {
-        let data = '';
-        response.on('data', chunk => {
-          data += chunk;
-        });
-        response.on('end', _ => {
-          if (response.statusCode === 200) {
-            try {
-              resolve(JSON.parse(data));
-              return;
-            } catch (e) {
-              // In the case of 'close' & 'activate' Chromium returns a string rather than JSON: goo.gl/7v27xD
-              if (data === 'Target is closing' || data === 'Target activated') {
-                return resolve({message: data});
+      const request = http.get(
+        {
+          hostname: this.hostname,
+          port: this.port,
+          path: '/json/' + command,
+        },
+        response => {
+          let data = '';
+          response.on('data', chunk => {
+            data += chunk;
+          });
+          response.on('end', _ => {
+            if (response.statusCode === 200) {
+              try {
+                resolve(JSON.parse(data));
+                return;
+              } catch (e) {
+                // In the case of 'close' & 'activate' Chromium returns a string rather than JSON: goo.gl/7v27xD
+                if (data === 'Target is closing' || data === 'Target activated') {
+                  return resolve({message: data});
+                }
+                return reject(e);
               }
-              return reject(e);
             }
-          }
-          reject(new Error(`Protocol JSON API error (${command}), status: ${response.statusCode}`));
-        });
-      });
+            reject(
+              new Error(`Protocol JSON API error (${command}), status: ${response.statusCode}`)
+            );
+          });
+        }
+      );
 
       request.setTimeout(CONNECT_TIMEOUT, _ => {
         request.abort();

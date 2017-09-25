@@ -24,7 +24,8 @@ class UsesWebPImages extends ByteEfficiencyAudit {
       name: 'uses-webp-images',
       description: 'Serve images as WebP',
       informative: true,
-      helpText: 'WebP provides better lossy and lossless compression than PNG or JPEG, ' +
+      helpText:
+        'WebP provides better lossy and lossless compression than PNG or JPEG, ' +
         'which means faster downloads and less data consumption. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/webp).',
       requiredArtifacts: ['OptimizedImages', 'devtoolsLogs'],

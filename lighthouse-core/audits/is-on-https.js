@@ -22,11 +22,12 @@ class HTTPS extends Audit {
       name: 'is-on-https',
       description: 'Uses HTTPS',
       failureDescription: 'Does not use HTTPS',
-      helpText: 'All sites should be protected with HTTPS, even ones that don\'t handle ' +
-          'sensitive data. HTTPS prevents intruders from tampering with or passively listening ' +
-          'in on the communications between your app and your users, and is a prerequisite for ' +
-          'HTTP/2 and many new web platform APIs. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/https).',
+      helpText:
+        "All sites should be protected with HTTPS, even ones that don't handle " +
+        'sensitive data. HTTPS prevents intruders from tampering with or passively listening ' +
+        'in on the communications between your app and your users, and is a prerequisite for ' +
+        'HTTP/2 and many new web platform APIs. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/https).',
       requiredArtifacts: ['devtoolsLogs'],
     };
   }
@@ -36,9 +37,11 @@ class HTTPS extends Audit {
    * @return {boolean}
    */
   static isSecureRecord(record) {
-    return SECURE_SCHEMES.includes(record.scheme) ||
-           SECURE_SCHEMES.includes(record.protocol) ||
-           SECURE_DOMAINS.includes(record.domain);
+    return (
+      SECURE_SCHEMES.includes(record.scheme) ||
+      SECURE_SCHEMES.includes(record.protocol) ||
+      SECURE_DOMAINS.includes(record.domain)
+    );
   }
 
   /**

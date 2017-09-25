@@ -23,9 +23,10 @@ class Deprecations extends Audit {
       category: 'Deprecations',
       name: 'deprecations',
       description: 'Avoids deprecated APIs',
-      failureDescription: 'Uses deprecated API\'s',
-      helpText: 'Deprecated APIs will eventually be removed from the browser. ' +
-          '[Learn more](https://www.chromestatus.com/features#deprecated).',
+      failureDescription: "Uses deprecated API's",
+      helpText:
+        'Deprecated APIs will eventually be removed from the browser. ' +
+        '[Learn more](https://www.chromestatus.com/features#deprecated).',
       requiredArtifacts: ['ChromeConsoleMessages'],
     };
   }

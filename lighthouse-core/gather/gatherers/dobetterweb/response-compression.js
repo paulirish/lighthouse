@@ -28,14 +28,19 @@ class ResponseCompression extends Gatherer {
       const isTextBasedResource = record.resourceType() && record.resourceType().isTextType();
       const isChromeExtensionResource = record.url.startsWith(CHROME_EXTENSION_PROTOCOL);
 
-      if (!isTextBasedResource || !record.resourceSize || !record.finished ||
-        isChromeExtensionResource) {
+      if (
+        !isTextBasedResource ||
+        !record.resourceSize ||
+        !record.finished ||
+        isChromeExtensionResource
+      ) {
         return;
       }
 
-      const isContentEncoded = record.responseHeaders.find(header =>
-        header.name.toLowerCase() === 'content-encoding' &&
-        compressionTypes.includes(header.value)
+      const isContentEncoded = record.responseHeaders.find(
+        header =>
+          header.name.toLowerCase() === 'content-encoding' &&
+          compressionTypes.includes(header.value)
       );
 
       if (!isContentEncoded) {
@@ -56,29 +61,31 @@ class ResponseCompression extends Gatherer {
     const textRecords = ResponseCompression.filterUnoptimizedResponses(networkRecords);
 
     const driver = options.driver;
-    return Promise.all(textRecords.map(record => {
-      return driver.getRequestContent(record.requestId).then(content => {
-        // if we don't have any content gzipSize is set to 0
-        if (!content) {
-          record.gzipSize = 0;
+    return Promise.all(
+      textRecords.map(record => {
+        return driver.getRequestContent(record.requestId).then(content => {
+          // if we don't have any content gzipSize is set to 0
+          if (!content) {
+            record.gzipSize = 0;
 
-          return record;
-        }
+            return record;
+          }
 
-        return new Promise((resolve, reject) => {
-          return gzip(content, (err, res) => {
-            if (err) {
-              return reject(err);
-            }
+          return new Promise((resolve, reject) => {
+            return gzip(content, (err, res) => {
+              if (err) {
+                return reject(err);
+              }
 
-            // get gzip size
-            record.gzipSize = Buffer.byteLength(res, 'utf8');
+              // get gzip size
+              record.gzipSize = Buffer.byteLength(res, 'utf8');
 
-            resolve(record);
+              resolve(record);
+            });
           });
         });
-      });
-    }));
+      })
+    );
   }
 }
 

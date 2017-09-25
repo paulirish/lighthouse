@@ -30,7 +30,10 @@ function getCSSPropsInStyleSheet(parseTree) {
       return;
     }
 
-    const keyVal = node.toString().split(':').map(item => item.trim());
+    const keyVal = node
+      .toString()
+      .split(':')
+      .map(item => item.trim());
     results.push({
       property: {name: keyVal[0], val: keyVal[1]},
       declarationRange: node.declarationRange,
@@ -73,8 +76,7 @@ class Styles extends Gatherer {
   beginStylesCollect(driver) {
     driver.on('CSS.styleSheetAdded', this._onStyleSheetAdded);
     driver.on('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
-    return driver.sendCommand('DOM.enable')
-      .then(_ => driver.sendCommand('CSS.enable'));
+    return driver.sendCommand('DOM.enable').then(_ => driver.sendCommand('CSS.enable'));
   }
 
   endStylesCollect(driver) {
@@ -88,33 +90,38 @@ class Styles extends Gatherer {
 
       // Get text content of each style.
       const contentPromises = this._activeStyleSheetIds.map(sheetId => {
-        return driver.sendCommand('CSS.getStyleSheetText', {
-          styleSheetId: sheetId,
-        }).then(content => {
-          const styleHeader = this._activeStyleHeaders[sheetId];
-          styleHeader.content = content.text;
+        return driver
+          .sendCommand('CSS.getStyleSheetText', {
+            styleSheetId: sheetId,
+          })
+          .then(content => {
+            const styleHeader = this._activeStyleHeaders[sheetId];
+            styleHeader.content = content.text;
 
-          const parsedContent = parser.parse(styleHeader.content);
-          if (parsedContent.error) {
-            const error = parsedContent.error.toString().slice(0, 100);
-            log.warn('Styles Gatherer', `Could not parse content: ${error}…`);
-            styleHeader.parsedContent = [];
-          } else {
-            styleHeader.parsedContent = getCSSPropsInStyleSheet(parsedContent);
-          }
+            const parsedContent = parser.parse(styleHeader.content);
+            if (parsedContent.error) {
+              const error = parsedContent.error.toString().slice(0, 100);
+              log.warn('Styles Gatherer', `Could not parse content: ${error}…`);
+              styleHeader.parsedContent = [];
+            } else {
+              styleHeader.parsedContent = getCSSPropsInStyleSheet(parsedContent);
+            }
 
-          return styleHeader;
-        });
+            return styleHeader;
+          });
       });
 
-      Promise.all(contentPromises).then(styleHeaders => {
-        driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
-        driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
+      Promise.all(contentPromises)
+        .then(styleHeaders => {
+          driver.off('CSS.styleSheetAdded', this._onStyleSheetAdded);
+          driver.off('CSS.styleSheetRemoved', this._onStyleSheetRemoved);
 
-        return driver.sendCommand('CSS.disable')
-          .then(_ => driver.sendCommand('DOM.disable'))
-          .then(_ => resolve(styleHeaders));
-      }).catch(err => reject(err));
+          return driver
+            .sendCommand('CSS.disable')
+            .then(_ => driver.sendCommand('DOM.disable'))
+            .then(_ => resolve(styleHeaders));
+        })
+        .catch(err => reject(err));
     });
   }
 
@@ -123,20 +130,19 @@ class Styles extends Gatherer {
   }
 
   afterPass(options) {
-    return this.endStylesCollect(options.driver)
-      .then(stylesheets => {
-        // Generally want unique stylesheets. Mark those with the same text content.
-        // An example where stylesheets are the same is if the user includes a
-        // stylesheet more than once (these have unique stylesheet ids according to
-        // the DevTools protocol). Another example is many instances of a shadow
-        // root that share the same <style> tag.
-        const map = new Map(stylesheets.map(s => [s.content, s]));
-        return stylesheets.map(stylesheet => {
-          const idInMap = map.get(stylesheet.content).header.styleSheetId;
-          stylesheet.isDuplicate = idInMap !== stylesheet.header.styleSheetId;
-          return stylesheet;
-        });
+    return this.endStylesCollect(options.driver).then(stylesheets => {
+      // Generally want unique stylesheets. Mark those with the same text content.
+      // An example where stylesheets are the same is if the user includes a
+      // stylesheet more than once (these have unique stylesheet ids according to
+      // the DevTools protocol). Another example is many instances of a shadow
+      // root that share the same <style> tag.
+      const map = new Map(stylesheets.map(s => [s.content, s]));
+      return stylesheets.map(stylesheet => {
+        const idInMap = map.get(stylesheet.content).header.styleSheetId;
+        stylesheet.isDuplicate = idInMap !== stylesheet.header.styleSheetId;
+        return stylesheet;
       });
+    });
   }
 }
 

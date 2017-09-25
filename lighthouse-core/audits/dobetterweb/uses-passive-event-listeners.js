@@ -23,9 +23,10 @@ class PassiveEventsAudit extends ViolationAudit {
       name: 'uses-passive-event-listeners',
       description: 'Uses passive listeners to improve scrolling performance',
       failureDescription: 'Does not use passive listeners to improve scrolling performance',
-      helpText: 'Consider marking your touch and wheel event listeners as `passive` ' +
-          'to improve your page\'s scroll performance. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners).',
+      helpText:
+        'Consider marking your touch and wheel event listeners as `passive` ' +
+        "to improve your page's scroll performance. " +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners).',
       requiredArtifacts: ['ChromeConsoleMessages'],
     };
   }

@@ -38,7 +38,8 @@ class DOMSize extends Audit {
       description: 'Avoids an excessive DOM size',
       failureDescription: 'Uses an excessive DOM size',
       optimalValue: `< ${DOMSize.MAX_DOM_NODES.toLocaleString()} nodes`,
-      helpText: 'Browser engineers recommend pages contain fewer than ' +
+      helpText:
+        'Browser engineers recommend pages contain fewer than ' +
         `~${Util.formatNumber(DOMSize.MAX_DOM_NODES)} DOM nodes. The sweet spot is a tree ` +
         `depth < ${MAX_DOM_TREE_DEPTH} elements and fewer than ${MAX_DOM_TREE_WIDTH} ` +
         'children/parent element. A large DOM can increase memory usage, cause longer ' +
@@ -62,37 +63,45 @@ class DOMSize extends Audit {
      *     div >
      *       span
      */
-    const depthSnippet = stats.depth.pathToElement.reduce((str, curr, i) => {
-      return `${str}\n` + '  '.repeat(i) + `${curr} >`;
-    }, '').replace(/>$/g, '').trim();
-    const widthSnippet = 'Element with most children:\n' +
-        stats.width.pathToElement[stats.width.pathToElement.length - 1];
+    const depthSnippet = stats.depth.pathToElement
+      .reduce((str, curr, i) => {
+        return `${str}\n` + '  '.repeat(i) + `${curr} >`;
+      }, '')
+      .replace(/>$/g, '')
+      .trim();
+    const widthSnippet =
+      'Element with most children:\n' +
+      stats.width.pathToElement[stats.width.pathToElement.length - 1];
 
     // Use the CDF of a log-normal distribution for scoring.
     //   <= 1500: score≈100
     //   3000: score=50
     //   >= 5970: score≈0
     const score = Audit.computeLogNormalScore(
-        stats.totalDOMNodes,
-        SCORING_POINT_OF_DIMINISHING_RETURNS,
-        SCORING_MEDIAN
+      stats.totalDOMNodes,
+      SCORING_POINT_OF_DIMINISHING_RETURNS,
+      SCORING_MEDIAN
     );
 
-    const cards = [{
-      title: 'Total DOM Nodes',
-      value: Util.formatNumber(stats.totalDOMNodes),
-      target: `< ${Util.formatNumber(MAX_DOM_NODES)} nodes`,
-    }, {
-      title: 'DOM Depth',
-      value: Util.formatNumber(stats.depth.max),
-      snippet: depthSnippet,
-      target: `< ${Util.formatNumber(MAX_DOM_TREE_DEPTH)}`,
-    }, {
-      title: 'Maximum Children',
-      value: Util.formatNumber(stats.width.max),
-      snippet: widthSnippet,
-      target: `< ${Util.formatNumber(MAX_DOM_TREE_WIDTH)} nodes`,
-    }];
+    const cards = [
+      {
+        title: 'Total DOM Nodes',
+        value: Util.formatNumber(stats.totalDOMNodes),
+        target: `< ${Util.formatNumber(MAX_DOM_NODES)} nodes`,
+      },
+      {
+        title: 'DOM Depth',
+        value: Util.formatNumber(stats.depth.max),
+        snippet: depthSnippet,
+        target: `< ${Util.formatNumber(MAX_DOM_TREE_DEPTH)}`,
+      },
+      {
+        title: 'Maximum Children',
+        value: Util.formatNumber(stats.width.max),
+        snippet: widthSnippet,
+        target: `< ${Util.formatNumber(MAX_DOM_TREE_WIDTH)} nodes`,
+      },
+    ];
 
     return {
       score,

@@ -13,24 +13,26 @@ const Gatherer = require('./gatherer');
 /* istanbul ignore next */
 function getCacheContents() {
   // Get every cache by name.
-  return caches.keys()
+  return (
+    caches
+      .keys()
+      // Open each one.
+      .then(cacheNames => Promise.all(cacheNames.map(cacheName => caches.open(cacheName))))
+      .then(caches => {
+        const requests = [];
 
-    // Open each one.
-    .then(cacheNames => Promise.all(cacheNames.map(cacheName => caches.open(cacheName))))
-
-    .then(caches => {
-      const requests = [];
-
-      // Take each cache and get any requests is contains, and bounce each one down to its URL.
-      return Promise.all(caches.map(cache => {
-        return cache.keys()
-          .then(reqs => {
-            requests.push(...reqs.map(r => r.url));
-          });
-      })).then(_ => {
-        return requests;
-      });
-    });
+        // Take each cache and get any requests is contains, and bounce each one down to its URL.
+        return Promise.all(
+          caches.map(cache => {
+            return cache.keys().then(reqs => {
+              requests.push(...reqs.map(r => r.url));
+            });
+          })
+        ).then(_ => {
+          return requests;
+        });
+      })
+  );
 }
 
 class CacheContents extends Gatherer {
@@ -42,14 +44,12 @@ class CacheContents extends Gatherer {
   afterPass(options) {
     const driver = options.driver;
 
-    return driver
-      .evaluateAsync(`(${getCacheContents.toString()}())`)
-      .then(returnedValue => {
-        if (!returnedValue || !Array.isArray(returnedValue)) {
-          throw new Error('Unable to retrieve cache contents');
-        }
-        return returnedValue;
-      });
+    return driver.evaluateAsync(`(${getCacheContents.toString()}())`).then(returnedValue => {
+      if (!returnedValue || !Array.isArray(returnedValue)) {
+        throw new Error('Unable to retrieve cache contents');
+      }
+      return returnedValue;
+    });
   }
 }
 

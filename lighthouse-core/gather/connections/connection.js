@@ -85,28 +85,35 @@ class Connection {
       const callback = this._callbacks.get(object.id);
       this._callbacks.delete(object.id);
 
-      return callback.resolve(Promise.resolve().then(_ => {
-        if (object.error) {
-          const logLevel = callback.options && callback.options.silent ? 'verbose' : 'error';
-          log.formatProtocol('method <= browser ERR', {method: callback.method}, logLevel);
-          let errMsg = `(${callback.method}): ${object.error.message}`;
-          if (object.error.data) errMsg += ` (${object.error.data})`;
-          throw new Error(`Protocol error ${errMsg}`);
-        }
+      return callback.resolve(
+        Promise.resolve().then(_ => {
+          if (object.error) {
+            const logLevel = callback.options && callback.options.silent ? 'verbose' : 'error';
+            log.formatProtocol('method <= browser ERR', {method: callback.method}, logLevel);
+            let errMsg = `(${callback.method}): ${object.error.message}`;
+            if (object.error.data) errMsg += ` (${object.error.data})`;
+            throw new Error(`Protocol error ${errMsg}`);
+          }
 
-        log.formatProtocol('method <= browser OK',
-            {method: callback.method, params: object.result}, 'verbose');
-        return object.result;
-      }));
+          log.formatProtocol(
+            'method <= browser OK',
+            {method: callback.method, params: object.result},
+            'verbose'
+          );
+          return object.result;
+        })
+      );
     } else if (object.id) {
       // In DevTools we receive responses to commands we did not send which we cannot act on, so we
       // just log these occurrences.
       const error = object.error && object.error.message;
-      log.formatProtocol(`disowned method <= browser ${error ? 'ERR' : 'OK'}`,
-          {method: object.method, params: error || object.result}, 'verbose');
+      log.formatProtocol(
+        `disowned method <= browser ${error ? 'ERR' : 'OK'}`,
+        {method: object.method, params: error || object.result},
+        'verbose'
+      );
     } else {
-      log.formatProtocol('<= event',
-          {method: object.method, params: object.params}, 'verbose');
+      log.formatProtocol('<= event', {method: object.method, params: object.params}, 'verbose');
       this.emitNotification(object.method, object.params);
     }
   }

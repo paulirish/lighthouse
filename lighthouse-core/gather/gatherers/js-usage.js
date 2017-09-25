@@ -12,7 +12,8 @@ const Gatherer = require('./gatherer');
  */
 class JsUsage extends Gatherer {
   beforePass(options) {
-    return options.driver.sendCommand('Profiler.enable')
+    return options.driver
+      .sendCommand('Profiler.enable')
       .then(_ => options.driver.sendCommand('Profiler.startPreciseCoverage'));
   }
 
@@ -24,7 +25,8 @@ class JsUsage extends Gatherer {
     const driver = options.driver;
 
     return driver.sendCommand('Profiler.takePreciseCoverage').then(results => {
-      return driver.sendCommand('Profiler.stopPreciseCoverage')
+      return driver
+        .sendCommand('Profiler.stopPreciseCoverage')
         .then(_ => driver.sendCommand('Profiler.disable'))
         .then(_ => results.result);
     });

@@ -41,8 +41,7 @@ class ImageAspectRatio extends Audit {
     const displayedAspectRatio = image.width / image.height;
     const doRatiosMatch = Math.abs(actualAspectRatio - displayedAspectRatio) < THRESHOLD;
 
-    if (!Number.isFinite(actualAspectRatio) ||
-      !Number.isFinite(displayedAspectRatio)) {
+    if (!Number.isFinite(actualAspectRatio) || !Number.isFinite(displayedAspectRatio)) {
       return new Error(`Invalid image sizing information ${url}`);
     }
 
@@ -70,22 +69,21 @@ class ImageAspectRatio extends Audit {
 
     let debugString;
     const results = [];
-    images.filter(image => {
-      // filter out images that don't have following properties
-      // networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
-      return image.networkRecord &&
-        image.width &&
-        image.height &&
-        !image.usesObjectFit;
-    }).forEach(image => {
-      const processed = ImageAspectRatio.computeAspectRatios(image);
-      if (processed instanceof Error) {
-        debugString = processed.message;
-        return;
-      }
+    images
+      .filter(image => {
+        // filter out images that don't have following properties
+        // networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
+        return image.networkRecord && image.width && image.height && !image.usesObjectFit;
+      })
+      .forEach(image => {
+        const processed = ImageAspectRatio.computeAspectRatios(image);
+        if (processed instanceof Error) {
+          debugString = processed.message;
+          return;
+        }
 
-      if (!processed.doRatiosMatch) results.push(processed);
-    });
+        if (!processed.doRatiosMatch) results.push(processed);
+      });
 
     const headings = [
       {key: 'preview', itemType: 'thumbnail', text: ''},

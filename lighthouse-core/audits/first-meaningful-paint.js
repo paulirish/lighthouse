@@ -13,7 +13,6 @@ const Util = require('../report/v2/renderer/util.js');
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1600;
 const SCORING_MEDIAN = 4000;
 
-
 class FirstMeaningfulPaint extends Audit {
   /**
    * @return {!AuditMeta}
@@ -24,8 +23,9 @@ class FirstMeaningfulPaint extends Audit {
       name: 'first-meaningful-paint',
       description: 'First meaningful paint',
       optimalValue: `< ${Util.formatMilliseconds(SCORING_POINT_OF_DIMINISHING_RETURNS, 1)}`,
-      helpText: 'First meaningful paint measures when the primary content of a page is visible. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint).',
+      helpText:
+        'First meaningful paint measures when the primary content of a page is visible. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
@@ -102,9 +102,9 @@ class FirstMeaningfulPaint extends Audit {
     //   >= 14000ms: score≈0
     const firstMeaningfulPaint = traceOfTab.timings.firstMeaningfulPaint;
     const score = Audit.computeLogNormalScore(
-        firstMeaningfulPaint,
-        SCORING_POINT_OF_DIMINISHING_RETURNS,
-        SCORING_MEDIAN
+      firstMeaningfulPaint,
+      SCORING_POINT_OF_DIMINISHING_RETURNS,
+      SCORING_MEDIAN
     );
 
     return {

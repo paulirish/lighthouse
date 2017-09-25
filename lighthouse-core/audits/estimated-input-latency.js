@@ -24,11 +24,12 @@ class EstimatedInputLatency extends Audit {
       name: 'estimated-input-latency',
       description: 'Estimated Input Latency',
       optimalValue: `< ${Util.formatMilliseconds(SCORING_POINT_OF_DIMINISHING_RETURNS, 1)}`,
-      helpText: 'The score above is an estimate of how long your app takes to respond to user ' +
-          'input, in milliseconds. There is a 90% probability that a user encounters this amount ' +
-          'of latency, or less. 10% of the time a user can expect additional latency. If your ' +
-          'score is higher than Lighthouse\'s target score, users may perceive your app as ' +
-          'laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency).',
+      helpText:
+        'The score above is an estimate of how long your app takes to respond to user ' +
+        'input, in milliseconds. There is a 90% probability that a user encounters this amount ' +
+        'of latency, or less. 10% of the time a user can expect additional latency. If your ' +
+        "score is higher than Lighthouse's target score, users may perceive your app as " +
+        'laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
@@ -51,9 +52,9 @@ class EstimatedInputLatency extends Audit {
     //  75th Percentile ≈ 133ms
     //  95th Percentile ≈ 199ms
     const score = Audit.computeLogNormalScore(
-        ninetieth.time,
-        SCORING_POINT_OF_DIMINISHING_RETURNS,
-        SCORING_MEDIAN
+      ninetieth.time,
+      SCORING_POINT_OF_DIMINISHING_RETURNS,
+      SCORING_MEDIAN
     );
 
     return {
@@ -76,8 +77,7 @@ class EstimatedInputLatency extends Audit {
   static audit(artifacts) {
     const trace = artifacts.traces[this.DEFAULT_PASS];
 
-    return artifacts.requestTraceOfTab(trace)
-      .then(EstimatedInputLatency.calculate);
+    return artifacts.requestTraceOfTab(trace).then(EstimatedInputLatency.calculate);
   }
 }
 

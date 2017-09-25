@@ -46,8 +46,9 @@ function collectImageElementInfo() {
       naturalHeight: element.naturalHeight,
       isCss: false,
       isPicture: element.parentElement.tagName === 'PICTURE',
-      usesObjectFit: computedStyle.getPropertyValue('object-fit') === 'cover'
-      || computedStyle.getPropertyValue('object-fit') === 'contain',
+      usesObjectFit:
+        computedStyle.getPropertyValue('object-fit') === 'cover' ||
+        computedStyle.getPropertyValue('object-fit') === 'contain',
     };
   });
 
@@ -59,8 +60,7 @@ function collectImageElementInfo() {
 
   const cssImages = allElements.reduce((images, element) => {
     const style = window.getComputedStyle(element);
-    if (!CSS_URL_REGEX.test(style.backgroundImage) ||
-        !CSS_SIZE_REGEX.test(style.backgroundSize)) {
+    if (!CSS_URL_REGEX.test(style.backgroundImage) || !CSS_SIZE_REGEX.test(style.backgroundSize)) {
       return images;
     }
 
@@ -115,14 +115,13 @@ class ImageUsage extends Gatherer {
    */
   fetchElementWithSizeInformation(element) {
     const url = JSON.stringify(element.src);
-    return this.driver.evaluateAsync(`(${determineNaturalSize.toString()})(${url})`)
-      .then(size => {
-        return Object.assign(element, size);
-      });
+    return this.driver.evaluateAsync(`(${determineNaturalSize.toString()})(${url})`).then(size => {
+      return Object.assign(element, size);
+    });
   }
 
   afterPass(options, traceData) {
-    const driver = this.driver = options.driver;
+    const driver = (this.driver = options.driver);
     const indexedNetworkRecords = traceData.networkRecords.reduce((map, record) => {
       if (/^image/.test(record._mimeType) && record.finished) {
         map[record._url] = {
@@ -143,27 +142,27 @@ class ImageUsage extends Gatherer {
       return (${collectImageElementInfo.toString()})();
     })()`;
 
-    return driver.evaluateAsync(expression)
-      .then(elements => {
-        return elements.reduce((promise, element) => {
-          return promise.then(collector => {
-            // link up the image with its network record
-            element.networkRecord = indexedNetworkRecords[element.src];
+    return driver.evaluateAsync(expression).then(elements => {
+      return elements.reduce((promise, element) => {
+        return promise.then(collector => {
+          // link up the image with its network record
+          element.networkRecord = indexedNetworkRecords[element.src];
 
-            // Images within `picture` behave strangely and natural size information isn't accurate,
-            // CSS images have no natural size information at all.
-            // Try to get the actual size if we can.
-            const elementPromise = (element.isPicture || element.isCss) && element.networkRecord ?
-                this.fetchElementWithSizeInformation(element) :
-                Promise.resolve(element);
+          // Images within `picture` behave strangely and natural size information isn't accurate,
+          // CSS images have no natural size information at all.
+          // Try to get the actual size if we can.
+          const elementPromise =
+            (element.isPicture || element.isCss) && element.networkRecord
+              ? this.fetchElementWithSizeInformation(element)
+              : Promise.resolve(element);
 
-            return elementPromise.then(element => {
-              collector.push(element);
-              return collector;
-            });
+          return elementPromise.then(element => {
+            collector.push(element);
+            return collector;
           });
-        }, Promise.resolve([]));
-      });
+        });
+      }, Promise.resolve([]));
+    });
   }
 }
 

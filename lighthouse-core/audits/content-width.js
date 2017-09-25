@@ -17,9 +17,10 @@ class ContentWidth extends Audit {
       name: 'content-width',
       description: 'Content is sized correctly for the viewport',
       failureDescription: 'Content is not sized correctly for the viewport',
-      helpText: 'If the width of your app\'s content doesn\'t match the width ' +
-          'of the viewport, your app might not be optimized for mobile screens. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport).',
+      helpText:
+        "If the width of your app's content doesn't match the width " +
+        'of the viewport, your app might not be optimized for mobile screens. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport).',
       requiredArtifacts: ['ViewportDimensions'],
     };
   }
@@ -44,8 +45,14 @@ class ContentWidth extends Audit {
       return '';
     }
 
-    return 'The viewport size is ' + artifact.innerWidth + 'px, ' +
-        'whereas the window size is ' + artifact.outerWidth + 'px.';
+    return (
+      'The viewport size is ' +
+      artifact.innerWidth +
+      'px, ' +
+      'whereas the window size is ' +
+      artifact.outerWidth +
+      'px.'
+    );
   }
 }
 

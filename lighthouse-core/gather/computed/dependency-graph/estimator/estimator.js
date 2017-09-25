@@ -39,22 +39,22 @@ class Estimator {
   constructor(graph, options) {
     this._graph = graph;
     this._options = Object.assign(
-        {
-          rtt: DEFAULT_RTT,
-          throughput: DEFAULT_THROUGHPUT,
-          fallbackTTFB: DEFAULT_FALLBACK_TTFB,
-          maximumConcurrentRequests: DEFAULT_MAXIMUM_CONCURRENT_REQUESTS,
-          cpuMultiplier: DEFAULT_CPU_MULTIPLIER,
-        },
-        options
+      {
+        rtt: DEFAULT_RTT,
+        throughput: DEFAULT_THROUGHPUT,
+        fallbackTTFB: DEFAULT_FALLBACK_TTFB,
+        maximumConcurrentRequests: DEFAULT_MAXIMUM_CONCURRENT_REQUESTS,
+        cpuMultiplier: DEFAULT_CPU_MULTIPLIER,
+      },
+      options
     );
 
     this._rtt = this._options.rtt;
     this._throughput = this._options.throughput;
     this._fallbackTTFB = this._options.fallbackTTFB;
     this._maximumConcurrentRequests = Math.min(
-        TcpConnection.maximumSaturatedConnections(this._rtt, this._throughput),
-        this._options.maximumConcurrentRequests
+      TcpConnection.maximumSaturatedConnections(this._rtt, this._throughput),
+      this._options.maximumConcurrentRequests
     );
     this._cpuMultiplier = this._options.cpuMultiplier;
   }
@@ -106,10 +106,10 @@ class Estimator {
       }
 
       const connection = new TcpConnection(
-          this._rtt,
-          this._throughput,
-          estimatedResponseTime,
-          isTLS
+        this._rtt,
+        this._throughput,
+        estimatedResponseTime,
+        isTLS
       );
 
       connections.set(connectionId, connection);
@@ -259,8 +259,8 @@ class Estimator {
     const timingData = this._nodeTiming.get(node);
     const connection = this._connections.get(node.record.connectionId);
     const calculation = connection.simulateDownloadUntil(
-        node.record.transferSize - timingData.bytesDownloaded,
-        timingData.timeElapsed
+      node.record.transferSize - timingData.bytesDownloaded,
+      timingData.timeElapsed
     );
 
     const estimatedTimeElapsed = calculation.timeElapsed + timingData.timeElapsedOvershoot;
@@ -301,9 +301,9 @@ class Estimator {
 
     const connection = this._connections.get(node.record.connectionId);
     const calculation = connection.simulateDownloadUntil(
-        node.record.transferSize - timingData.bytesDownloaded,
-        timingData.timeElapsed,
-        timePeriodLength - timingData.timeElapsedOvershoot
+      node.record.transferSize - timingData.bytesDownloaded,
+      timingData.timeElapsed,
+      timePeriodLength - timingData.timeElapsedOvershoot
     );
 
     connection.setCongestionWindow(calculation.congestionWindow);

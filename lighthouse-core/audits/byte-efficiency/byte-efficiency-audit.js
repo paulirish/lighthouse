@@ -79,7 +79,7 @@ class UnusedBytes extends Audit {
     } else {
       // This was an asset that was inlined in a different resource type (e.g. HTML document).
       // Use the compression ratio of the resource to estimate the total transferred bytes.
-      const compressionRatio = (networkRecord._transferSize / networkRecord._resourceSize) || 1;
+      const compressionRatio = networkRecord._transferSize / networkRecord._resourceSize || 1;
       return Math.round(totalBytes * compressionRatio);
     }
   }
@@ -90,10 +90,12 @@ class UnusedBytes extends Audit {
    */
   static audit(artifacts) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    return artifacts.requestNetworkRecords(devtoolsLog)
+    return artifacts
+      .requestNetworkRecords(devtoolsLog)
       .then(networkRecords => this.audit_(artifacts, networkRecords))
       .then(result => {
-        return artifacts.requestNetworkThroughput(devtoolsLog)
+        return artifacts
+          .requestNetworkThroughput(devtoolsLog)
           .then(networkThroughput => this.createAuditResult(result, networkThroughput));
       });
   }

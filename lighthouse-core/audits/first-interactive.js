@@ -22,9 +22,10 @@ class FirstInteractiveMetric extends Audit {
       category: 'Performance',
       name: 'first-interactive',
       description: 'First Interactive (beta)',
-      helpText: 'First Interactive marks the time at which the page is ' +
-          'minimally interactive. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive).',
+      helpText:
+        'First Interactive marks the time at which the page is ' +
+        'minimally interactive. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
@@ -39,21 +40,20 @@ class FirstInteractiveMetric extends Audit {
    */
   static audit(artifacts) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    return artifacts.requestFirstInteractive(trace)
-      .then(firstInteractive => {
-        return {
-          score: Audit.computeLogNormalScore(
-              firstInteractive.timeInMs,
-              SCORING_POINT_OF_DIMINISHING_RETURNS,
-              SCORING_MEDIAN
-          ),
-          rawValue: firstInteractive.timeInMs,
-          displayValue: Util.formatMilliseconds(firstInteractive.timeInMs),
-          extendedInfo: {
-            value: firstInteractive,
-          },
-        };
-      });
+    return artifacts.requestFirstInteractive(trace).then(firstInteractive => {
+      return {
+        score: Audit.computeLogNormalScore(
+          firstInteractive.timeInMs,
+          SCORING_POINT_OF_DIMINISHING_RETURNS,
+          SCORING_MEDIAN
+        ),
+        rawValue: firstInteractive.timeInMs,
+        displayValue: Util.formatMilliseconds(firstInteractive.timeInMs),
+        extendedInfo: {
+          value: firstInteractive,
+        },
+      };
+    });
   }
 }
 

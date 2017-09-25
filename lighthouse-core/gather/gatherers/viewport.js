@@ -15,7 +15,8 @@ class Viewport extends Gatherer {
   afterPass(options) {
     const driver = options.driver;
 
-    return driver.querySelector('head meta[name="viewport"]')
+    return driver
+      .querySelector('head meta[name="viewport"]')
       .then(node => node && node.getAttribute('content'));
   }
 }

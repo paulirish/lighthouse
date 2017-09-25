@@ -19,11 +19,12 @@ class CriticalRequestChains extends Audit {
       description: 'Critical Request Chains',
       informative: true,
       optimalValue: 0,
-      helpText: 'The Critical Request Chains below show you what resources are ' +
-          'required for first render of this page. Improve page load by reducing ' +
-          'the length of chains, reducing the download size of resources, or ' +
-          'deferring the download of unnecessary resources. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains).',
+      helpText:
+        'The Critical Request Chains below show you what resources are ' +
+        'required for first render of this page. Improve page load by reducing ' +
+        'the length of chains, reducing the download size of resources, or ' +
+        'deferring the download of unnecessary resources. ' +
+        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains).',
       requiredArtifacts: ['devtoolsLogs'],
     };
   }
@@ -46,7 +47,7 @@ class CriticalRequestChains extends Audit {
           id,
           node: child,
           chainDuration: (child.request.endTime - startTime) * 1000,
-          chainTransferSize: (transferSize + child.request.transferSize),
+          chainTransferSize: transferSize + child.request.transferSize,
         });
 
         // Carry on walking.

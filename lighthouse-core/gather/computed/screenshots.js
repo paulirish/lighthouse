@@ -14,9 +14,7 @@ class ScreenshotFilmstrip extends ComputedArtifact {
   }
 
   fetchScreenshot(frame) {
-    return frame
-      .imageDataPromise()
-      .then(data => 'data:image/jpg;base64,' + data);
+    return frame.imageDataPromise().then(data => 'data:image/jpg;base64,' + data);
   }
 
   /**
