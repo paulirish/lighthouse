@@ -46,7 +46,8 @@
     "smokehouse": "node lighthouse-cli/test/smokehouse/smokehouse.js",
     "deploy-viewer": "cd lighthouse-viewer && gulp deploy",
     "bundlesize": "bundlesize",
-    "plots-smoke": "bash plots/test/smoke.sh"
+    "plots-smoke": "bash plots/test/smoke.sh",
+    "generate-docs": "jsdoc --configure .jsdoc.json --verbose"
   },
   "devDependencies": {
     "@types/node": "^6.0.45",
@@ -67,7 +68,9 @@
     "lcov-result-merger": "^1.2.0",
     "mocha": "^3.2.0",
     "npm-run-posix-or-windows": "^2.0.2",
-    "zone.js": "^0.7.3"
+    "zone.js": "^0.7.3",
+    "minami": "^1.2.3",
+    "jsdoc": "^3.5.5"
   },
   "dependencies": {
     "axe-core": "2.4.1",

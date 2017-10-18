@@ -1,0 +1,35 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "source": {
+        "include": [
+            "lighthouse-cli/commands",
+            "lighthouse-core/audits",
+            "lighthouse-core/closue",
+            "lighthouse-core/gather",
+            "lighthouse-logger",
+            "package.json",
+            "README.md"
+        ],
+        "includePattern": ".+\\.(js|ts)$",
+        "excludePattern": "(node_modules/|docs|test|types)"
+    },
+    "plugins": [
+      "plugins/markdown"
+    ],
+    "templates": {
+        "cleverLinks": true,
+        "monospaceLinks": true,
+        "useLongnameInNav": false,
+        "showInheritedInNav": true
+    },
+    "opts": {
+        "destination": "./docs/api/",
+        "encoding": "utf8",
+        "private": true,
+        "recurse": true,
+        "template": "./node_modules/minami"
+    }
+}
