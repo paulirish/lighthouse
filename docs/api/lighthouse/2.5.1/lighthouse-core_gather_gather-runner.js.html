@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lighthouse-core/gather/gather-runner.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lighthouse-core/gather/gather-runner.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+'use strict';
+
+const log = require('lighthouse-logger');
+const Audit = require('../audits/audit');
+const URL = require('../lib/url-shim');
+const NetworkRecorder = require('../lib/network-recorder.js');
+
+/**
+ * @typedef {!Object&lt;string, !Array&lt;!Promise&lt;*>>>}
+ */
+let GathererResults; // eslint-disable-line no-unused-vars
+
+/**
+ * Class that drives browser to load the page and runs gatherer lifecycle hooks.
+ * Execution sequence when GatherRunner.run() is called:
+ *
+ * 1. Setup
+ *   A. navigate to about:blank
+ *   B. driver.connect()
+ *   C. GatherRunner.setupDriver()
+ *     i. assertNoSameOriginServiceWorkerClients
+ *     ii. beginEmulation
+ *     iii. enableRuntimeEvents
+ *     iv. evaluateScriptOnLoad rescue native Promise from potential polyfill
+ *     v. register a performance observer
+ *     vi. register dialog dismisser
+ *     vii. clearDataForOrigin
+ *
+ * 2. For each pass in the config:
+ *   A. GatherRunner.beforePass()
+ *     i. navigate to about:blank
+ *     ii. Enable network request blocking for specified patterns
+ *     iii. all gatherers' beforePass()
+ *   B. GatherRunner.pass()
+ *     i. cleanBrowserCaches() (if it's a perf run)
+ *     ii. beginDevtoolsLog()
+ *     iii. beginTrace (if requested)
+ *     iv. GatherRunner.loadPage()
+ *       a. navigate to options.url (and wait for onload)
+ *     v. all gatherers' pass()
+ *   C. GatherRunner.afterPass()
+ *     i. endTrace (if requested) &amp; endDevtoolsLog &amp; endThrottling
+ *     ii. all gatherers' afterPass()
+ *
+ * 3. Teardown
+ *   A. GatherRunner.disposeDriver()
+ *   B. collect all artifacts and return them
+ *     i. collectArtifacts() from completed passes on each gatherer
+ *     ii. add trace data and computed artifact methods
+ */
+class GatherRunner {
+  /**
+   * Loads about:blank and waits there briefly. Since a Page.reload command does
+   * not let a service worker take over, we navigate away and then come back to
+   * reload. We do not `waitForLoad` on about:blank since a page load event is
+   * never fired on it.
+   * @param {!Driver} driver
+   * @param {url=} url
+   * @param {number=} duration
+   * @return {!Promise}
+   */
+  static loadBlank(driver, url = 'about:blank', duration = 300) {
+    return driver.gotoURL(url).then(_ => new Promise(resolve => setTimeout(resolve, duration)));
+  }
+
+  /**
+   * Loads options.url with specified options. If the main document URL
+   * redirects, options.url will be updated accordingly. As such, options.url
+   * will always represent the post-redirected URL. options.initialUrl is the
+   * pre-redirect starting URL.
+   * @param {!Driver} driver
+   * @param {!Object} options
+   * @return {!Promise}
+   */
+  static loadPage(driver, options) {
+    return driver.gotoURL(options.url, {
+      waitForLoad: true,
+      disableJavaScript: !!options.disableJavaScript,
+      flags: options.flags,
+      config: options.config,
+    }).then(finalUrl => {
+      options.url = finalUrl;
+    });
+  }
+
+  /**
+   * @param {!Driver} driver
+   * @param {!GathererResults} gathererResults
+   * @param {!Object} options
+   * @return {!Promise}
+   */
+  static setupDriver(driver, gathererResults, options) {
+    log.log('status', 'Initializing…');
+    const resetStorage = !options.flags.disableStorageReset;
+    // Enable emulation based on flags
+    return driver.assertNoSameOriginServiceWorkerClients(options.url)
+      .then(_ => gathererResults.UserAgent = [driver.getUserAgent()])
+      .then(_ => driver.beginEmulation(options.flags))
+      .then(_ => driver.enableRuntimeEvents())
+      .then(_ => driver.cacheNatives())
+      .then(_ => driver.registerPerformanceObserver())
+      .then(_ => driver.dismissJavaScriptDialogs())
+      .then(_ => resetStorage &amp;&amp; driver.clearDataForOrigin(options.url));
+  }
+
+  static disposeDriver(driver) {
+    log.log('status', 'Disconnecting from browser...');
+    return driver.disconnect().catch(err => {
+      // Ignore disconnecting error if browser was already closed.
+      // See https://github.com/GoogleChrome/lighthouse/issues/1583
+      if (!(/close\/.*status: 500$/.test(err.message))) {
+        log.error('GatherRunner disconnect', err.message);
+      }
+    });
+  }
+
+  /**
+   * Test any error output from the promise, absorbing non-fatal errors and
+   * throwing on fatal ones so that run is stopped.
+   * @param {!Promise&lt;*>} promise
+   * @return {!Promise&lt;*>}
+   */
+  static recoverOrThrow(promise) {
+    return promise.catch(err => {
+      if (err.fatal) {
+        throw err;
+      }
+    });
+  }
+
+  /**
+   * Throws an error if the original network request failed or wasn't found.
+   * @param {string} url The URL of the original requested page.
+   * @param {{online: boolean}} driver
+   * @param {!Array&lt;WebInspector.NetworkRequest>} networkRecords
+   */
+  static assertPageLoaded(url, driver, networkRecords) {
+    if (!driver.online) return;
+
+    const mainRecord = networkRecords.find(record => {
+      // record.url is actual request url, so needs to be compared without any URL fragment.
+      return URL.equalWithExcludedFragments(record.url, url);
+    });
+
+    let errorMessage;
+    if (!mainRecord) {
+      errorMessage = 'no document request found';
+    } else if (mainRecord.failed) {
+      errorMessage = `failed document request (${mainRecord.localizedFailDescription})`;
+    }
+
+    if (errorMessage) {
+      log.error('GatherRunner', errorMessage, url);
+      const error = new Error(`Unable to load page: ${errorMessage}`);
+      error.code = 'PAGE_LOAD_ERROR';
+      throw error;
+    }
+  }
+
+  /**
+   * Navigates to about:blank and calls beforePass() on gatherers before tracing
+   * has started and before navigation to the target page.
+   * @param {!Object} options
+   * @param {!GathererResults} gathererResults
+   * @return {!Promise}
+   */
+  static beforePass(options, gathererResults) {
+    const blockedUrls = (options.config.blockedUrlPatterns || [])
+      .concat(options.flags.blockedUrlPatterns || []);
+    const blankPage = options.config.blankPage;
+    const blankDuration = options.config.blankDuration;
+    const pass = GatherRunner.loadBlank(options.driver, blankPage, blankDuration)
+        // Set request blocking before any network activity
+        // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
+        // neccessary at the beginning of the next pass.
+        .then(() => options.driver.blockUrlPatterns(blockedUrls));
+
+    return options.config.gatherers.reduce((chain, gatherer) => {
+      return chain.then(_ => {
+        const artifactPromise = Promise.resolve().then(_ => gatherer.beforePass(options));
+        gathererResults[gatherer.name] = [artifactPromise];
+        return GatherRunner.recoverOrThrow(artifactPromise);
+      });
+    }, pass);
+  }
+
+  /**
+   * Navigates to requested URL and then runs pass() on gatherers while trace
+   * (if requested) is still being recorded.
+   * @param {!Object} options
+   * @param {!GathererResults} gathererResults
+   * @return {!Promise}
+   */
+  static pass(options, gathererResults) {
+    const driver = options.driver;
+    const config = options.config;
+    const gatherers = config.gatherers;
+
+    const recordTrace = config.recordTrace;
+    const isPerfRun = !options.flags.disableStorageReset &amp;&amp; recordTrace &amp;&amp; config.useThrottling;
+
+    const gatherernames = gatherers.map(g => g.name).join(', ');
+    const status = 'Loading page &amp; waiting for onload';
+    log.log('status', status, gatherernames);
+
+    const pass = Promise.resolve()
+      // Clear disk &amp; memory cache if it's a perf run
+      .then(_ => isPerfRun &amp;&amp; driver.cleanBrowserCaches())
+      // Always record devtoolsLog
+      .then(_ => driver.beginDevtoolsLog())
+      // Begin tracing if requested by config.
+      .then(_ => recordTrace &amp;&amp; driver.beginTrace(options.flags))
+      // Navigate.
+      .then(_ => GatherRunner.loadPage(driver, options))
+      .then(_ => log.log('statusEnd', status));
+
+    return gatherers.reduce((chain, gatherer) => {
+      return chain.then(_ => {
+        const artifactPromise = Promise.resolve().then(_ => gatherer.pass(options));
+        gathererResults[gatherer.name].push(artifactPromise);
+        return GatherRunner.recoverOrThrow(artifactPromise);
+      });
+    }, pass);
+  }
+
+  /**
+   * Ends tracing and collects trace data (if requested for this pass), and runs
+   * afterPass() on gatherers with trace data passed in. Promise resolves with
+   * object containing trace and network data.
+   * @param {!Object} options
+   * @param {!GathererResults} gathererResults
+   * @return {!Promise}
+   */
+  static afterPass(options, gathererResults) {
+    const driver = options.driver;
+    const config = options.config;
+    const gatherers = config.gatherers;
+    const passData = {};
+
+    let pass = Promise.resolve();
+
+    if (config.recordTrace) {
+      pass = pass.then(_ => {
+        log.log('status', 'Retrieving trace');
+        return driver.endTrace();
+      }).then(traceContents => {
+        // Before Chrome 54.0.2816 (codereview.chromium.org/2161583004),
+        // traceContents was an array of trace events; after, traceContents is
+        // an object with a traceEvents property. Normalize to object form.
+        passData.trace = Array.isArray(traceContents) ?
+            {traceEvents: traceContents} : traceContents;
+        log.verbose('statusEnd', 'Retrieving trace');
+      });
+    }
+
+    pass = pass.then(_ => {
+      const status = 'Retrieving devtoolsLog and network records';
+      log.log('status', status);
+      const devtoolsLog = driver.endDevtoolsLog();
+      const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+      GatherRunner.assertPageLoaded(options.url, driver, networkRecords);
+      log.verbose('statusEnd', status);
+
+      // Expose devtoolsLog and networkRecords to gatherers
+      passData.devtoolsLog = devtoolsLog;
+      passData.networkRecords = networkRecords;
+    });
+
+    // Disable throttling so the afterPass analysis isn't throttled
+    pass = pass.then(_ => driver.setThrottling(options.flags, {useThrottling: false}));
+
+    pass = gatherers.reduce((chain, gatherer) => {
+      const status = `Retrieving: ${gatherer.name}`;
+      return chain.then(_ => {
+        log.log('status', status);
+        const artifactPromise = Promise.resolve().then(_ => gatherer.afterPass(options, passData));
+        gathererResults[gatherer.name].push(artifactPromise);
+        return GatherRunner.recoverOrThrow(artifactPromise);
+      }).then(_ => {
+        log.verbose('statusEnd', status);
+      });
+    }, pass);
+
+    // Resolve on tracing data using passName from config.
+    return pass.then(_ => passData);
+  }
+
+  /**
+   * Takes the results of each gatherer phase for each gatherer and uses the
+   * last produced value (that's not undefined) as the artifact for that
+   * gatherer. If a non-fatal error was rejected from a gatherer phase,
+   * uses that error object as the artifact instead.
+   * @param {!GathererResults} gathererResults
+   * @return {!Promise&lt;!Artifacts>}
+   */
+  static collectArtifacts(gathererResults) {
+    const artifacts = {};
+
+    return Object.keys(gathererResults).reduce((chain, gathererName) => {
+      return chain.then(_ => {
+        const phaseResultsPromises = gathererResults[gathererName];
+        return Promise.all(phaseResultsPromises).then(phaseResults => {
+          // Take last defined pass result as artifact.
+          const definedResults = phaseResults.filter(element => element !== undefined);
+          const artifact = definedResults[definedResults.length - 1];
+          if (artifact === undefined) {
+            throw new Error(`${gathererName} failed to provide an artifact.`);
+          }
+          artifacts[gathererName] = artifact;
+        }, err => {
+          // To reach this point, all errors are non-fatal, so return err to
+          // runner to handle turning it into an error audit.
+          artifacts[gathererName] = err;
+        });
+      });
+    }, Promise.resolve()).then(_ => {
+      return artifacts;
+    });
+  }
+
+  static run(passes, options) {
+    const driver = options.driver;
+    const tracingData = {
+      traces: {},
+      devtoolsLogs: {},
+      networkRecords: {},
+    };
+
+    if (typeof options.url !== 'string' || options.url.length === 0) {
+      return Promise.reject(new Error('You must provide a url to the gather-runner'));
+    }
+
+    if (typeof options.flags === 'undefined') {
+      options.flags = {};
+    }
+
+    if (typeof options.config === 'undefined') {
+      return Promise.reject(new Error('You must provide a config'));
+    }
+
+    if (typeof options.flags.disableCpuThrottling === 'undefined') {
+      options.flags.disableCpuThrottling = false;
+    }
+
+    passes = this.instantiateGatherers(passes, options.config.configDir);
+
+    const gathererResults = {};
+
+    return driver.connect()
+      .then(_ => GatherRunner.loadBlank(driver))
+      .then(_ => GatherRunner.setupDriver(driver, gathererResults, options))
+
+      // Run each pass
+      .then(_ => {
+        // If the main document redirects, we'll update this to keep track
+        let urlAfterRedirects;
+        return passes.reduce((chain, config, passIndex) => {
+          const runOptions = Object.assign({}, options, {config});
+          return chain
+            .then(_ => driver.setThrottling(options.flags, config))
+            .then(_ => GatherRunner.beforePass(runOptions, gathererResults))
+            .then(_ => GatherRunner.pass(runOptions, gathererResults))
+            .then(_ => GatherRunner.afterPass(runOptions, gathererResults))
+            .then(passData => {
+              const passName = config.passName || Audit.DEFAULT_PASS;
+
+              // networkRecords are discarded and not added onto artifacts.
+              tracingData.devtoolsLogs[passName] = passData.devtoolsLog;
+
+              // If requested by config, add trace to pass's tracingData
+              if (config.recordTrace) {
+                tracingData.traces[passName] = passData.trace;
+              }
+
+              if (passIndex === 0) {
+                urlAfterRedirects = runOptions.url;
+              }
+            });
+        }, Promise.resolve()).then(_ => {
+          options.url = urlAfterRedirects;
+        });
+      })
+      .then(_ => GatherRunner.disposeDriver(driver))
+      .then(_ => GatherRunner.collectArtifacts(gathererResults))
+      .then(artifacts => {
+        // Add tracing data to the artifacts object.
+        return Object.assign(artifacts, tracingData);
+      })
+      // cleanup on error
+      .catch(err => {
+        GatherRunner.disposeDriver(driver);
+
+        throw err;
+      });
+  }
+
+  static getGathererClass(nameOrGathererClass, configPath) {
+    const Runner = require('../runner');
+    const coreList = Runner.getGathererList();
+
+    let GathererClass;
+    if (typeof nameOrGathererClass === 'string') {
+      const name = nameOrGathererClass;
+
+      // See if the gatherer is a Lighthouse core gatherer.
+      const coreGatherer = coreList.find(a => a === `${name}.js`);
+      let requirePath = `./gatherers/${name}`;
+      if (!coreGatherer) {
+        // Otherwise, attempt to find it elsewhere. This throws if not found.
+        requirePath = Runner.resolvePlugin(name, configPath, 'gatherer');
+      }
+
+      GathererClass = require(requirePath);
+
+      this.assertValidGatherer(GathererClass, name);
+    } else {
+      GathererClass = nameOrGathererClass;
+      this.assertValidGatherer(GathererClass);
+    }
+
+    return GathererClass;
+  }
+
+  static assertValidGatherer(GathererDefinition, gathererName) {
+    const gathererInstance = new GathererDefinition();
+    gathererName = gathererName || gathererInstance.name || 'gatherer';
+
+    if (typeof gathererInstance.beforePass !== 'function') {
+      throw new Error(`${gathererName} has no beforePass() method.`);
+    }
+
+    if (typeof gathererInstance.pass !== 'function') {
+      throw new Error(`${gathererName} has no pass() method.`);
+    }
+
+    if (typeof gathererInstance.afterPass !== 'function') {
+      throw new Error(`${gathererName} has no afterPass() method.`);
+    }
+  }
+
+  static instantiateGatherers(passes, rootPath) {
+    return passes.map(pass => {
+      pass.gatherers = pass.gatherers.map(gatherer => {
+        // If this is already instantiated, don't do anything else.
+        if (typeof gatherer !== 'string') {
+          return gatherer;
+        }
+
+        const GathererClass = GatherRunner.getGathererClass(gatherer, rootPath);
+        return new GathererClass();
+      });
+
+      return pass;
+    });
+  }
+}
+
+module.exports = GatherRunner;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

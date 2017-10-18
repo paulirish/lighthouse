@@ -1,0 +1,8083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>Lighthouse  <a href="https://travis-ci.org/GoogleChrome/lighthouse"><img src="https://img.shields.io/travis/GoogleChrome/lighthouse/master.svg" alt="Linux Build Status"></a> <a href="https://ci.appveyor.com/project/paulirish/lighthouse/branch/master"><img src="https://img.shields.io/appveyor/ci/paulirish/lighthouse/master.svg" alt="Windows Build Status"></a> <a href="https://coveralls.io/github/GoogleChrome/lighthouse?branch=master"><img src="https://img.shields.io/coveralls/GoogleChrome/lighthouse/master.svg" alt="Coverage Status"></a> <a href="https://npmjs.org/package/lighthouse"><img src="https://img.shields.io/npm/v/lighthouse.svg" alt="NPM lighthouse package"></a></h1><blockquote>
+<p>Lighthouse analyzes web apps and web pages, collecting modern performance metrics and insights on developer best practices.</p>
+</blockquote>
+<h2>Using Lighthouse in Chrome DevTools</h2><p>Lighthouse is integrated directly into the Chrome Developer Tools, under the &quot;Audits&quot; panel.</p>
+<p><strong>Installation</strong>: install <a href="https://www.google.com/chrome/browser">Chrome</a>.</p>
+<p><strong>Run it</strong>: open Chrome DevTools, select the Audits panel, and hit &quot;Perform an Audit...&quot;.</p>
+<p><img width="350px" alt="Lighthouse integration in Chrome DevTools" src="https://cloud.githubusercontent.com/assets/238208/26366636/ada298f8-3fa0-11e7-9da5-ede2c906d10c.png"></p>
+<h2>Using the Chrome extension</h2><p><strong>Installation</strong>: <a href="https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk">install the extension</a> from the Chrome Web Store.</p>
+<p><strong>Run it</strong>: follow the <a href="https://developers.google.com/web/tools/lighthouse/#extension">extension quick-start guide</a>.</p>
+<h2>Using the Node CLI</h2><p><em>Lighthouse requires Node 6 or later.</em></p>
+<p><strong>Installation</strong>:</p>
+<pre class="prettyprint source lang-sh"><code>npm install -g lighthouse
+# or use yarn:
+# yarn global add lighthouse</code></pre><p><strong>Run it</strong>: <code>lighthouse https://airhorner.com/</code></p>
+<p>By default, Lighthouse writes the report to an HTML file. You can control the output format by passing flags.</p>
+<h3>CLI options</h3><pre class="prettyprint source lang-sh"><code>$ lighthouse --help
+
+lighthouse &lt;url>
+
+Logging:
+  --verbose  Displays verbose logging                                                                                                      [boolean]
+  --quiet    Displays no progress, debug logs or errors                                                                                    [boolean]
+
+Configuration:
+  --save-assets                  Save the trace contents & screenshots to disk                                                             [boolean]
+  --save-artifacts               Save all gathered artifacts to disk                                                                       [boolean]
+  --list-all-audits              Prints a list of all available audits and exits                                                           [boolean]
+  --list-trace-categories        Prints a list of all required trace categories and exits                                                  [boolean]
+  --additional-trace-categories  Additional categories to capture with the trace (comma-delimited).
+  --config-path                  The path to the config JSON.
+  --chrome-flags                 Custom flags to pass to Chrome (space-delimited). For a full list of flags, see
+                                 http://peter.sh/experiments/chromium-command-line-switches/.
+
+                                 Environment variables:
+                                 CHROME_PATH: Explicit path of intended Chrome binary. If set must point to an executable of a build of
+                                 Chromium version 54.0 or later. By default, any detected Chrome Canary or Chrome (stable) will be launched.
+                                                                                                                                       [default: &quot;&quot;]
+  --perf                         Use a performance-test-only configuration                                                                 [boolean]
+  --port                         The port to use for the debugging protocol. Use 0 for a random port                                 [default: 9222]
+  --hostname                     The hostname to use for the debugging protocol.                                                [default: localhost]
+  --max-wait-for-load            The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue.
+                                 WARNING: Very high values can lead to large traces and instability                                 [default: 25000]
+
+Output:
+  --output       Reporter for the results, supports multiple values                           [choices: &quot;json&quot;, &quot;html&quot;, &quot;domhtml&quot;] [default: &quot;html&quot;]
+  --output-path  The file path to output the results. Use 'stdout' to write to stdout.
+                 If using JSON output, default is stdout.
+                 If using HTML output, default is a file in the working directory with a name based on the test URL and date.
+                 If using multiple outputs, --output-path is ignored.
+                 Example: --output-path=./lighthouse-results.html
+  --view         Open HTML report in your browser                                                                                          [boolean]
+
+Options:
+  --help                        Show help                                                                                                  [boolean]
+  --version                     Show version number                                                                                        [boolean]
+  --blocked-url-patterns        Block any network requests to the specified URL patterns                                                     [array]
+  --disable-storage-reset       Disable clearing the browser cache and other storage APIs before a run                                     [boolean]
+  --disable-device-emulation    Disable Nexus 5X emulation                                                                                 [boolean]
+  --disable-cpu-throttling      Disable CPU throttling                                                                    [boolean] [default: false]
+  --disable-network-throttling  Disable network throttling                                                                                 [boolean]
+
+Examples:
+  lighthouse &lt;url> --view                                                   Opens the HTML report in a browser after the run completes
+  lighthouse &lt;url> --config-path=./myconfig.js                              Runs Lighthouse with your own configuration: custom audits, report
+                                                                            generation, etc.
+  lighthouse &lt;url> --output=json --output-path=./report.json --save-assets  Save trace, screenshots, and named JSON report.
+  lighthouse &lt;url> --disable-device-emulation --disable-network-throttling  Disable device emulation
+  lighthouse &lt;url> --chrome-flags=&quot;--window-size=412,732&quot;                   Launch Chrome with a specific window size
+  lighthouse &lt;url> --quiet --chrome-flags=&quot;--headless&quot;                      Launch Headless Chrome, turn off logging
+
+For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.</code></pre><h5>Output Examples</h5><p><code>lighthouse</code> generates</p>
+<ul>
+<li><code>./&lt;HOST&gt;_&lt;DATE&gt;.report.html</code></li>
+</ul>
+<p><code>lighthouse --output json</code> generates</p>
+<ul>
+<li>json output on <code>stdout</code></li>
+</ul>
+<p><code>lighthouse --output html --output-path ./report.html</code> generates</p>
+<ul>
+<li><code>./report.html</code></li>
+</ul>
+<p>NOTE: specifying an output path with multiple formats ignores your specified extension for <em>ALL</em> formats</p>
+<p><code>lighthouse --output json --output html --output-path ./myfile.json</code> generates</p>
+<ul>
+<li><code>./myfile.report.json</code></li>
+<li><code>./myfile.report.html</code></li>
+</ul>
+<p><code>lighthouse --output json --output html</code> generates</p>
+<ul>
+<li><code>./&lt;HOST&gt;_&lt;DATE&gt;.report.json</code></li>
+<li><code>./&lt;HOST&gt;_&lt;DATE&gt;.report.html</code></li>
+</ul>
+<p><code>lighthouse --output-path=~/mydir/foo.out --save-assets</code> generates</p>
+<ul>
+<li><code>~/mydir/foo.report.html</code></li>
+<li><code>~/mydir/foo-0.trace.json</code></li>
+<li><code>~/mydir/foo-0.screenshots.html</code></li>
+</ul>
+<p><code>lighthouse --output-path=./report.json --output json --save-artifacts</code> generates</p>
+<ul>
+<li><code>./report.json</code></li>
+<li><code>./report.artifacts.log</code></li>
+</ul>
+<p><code>lighthouse --save-artifacts</code> generates</p>
+<ul>
+<li><code>./&lt;HOST&gt;_&lt;DATE&gt;.report.html</code></li>
+<li><code>./&lt;HOST&gt;_&lt;DATE&gt;.artifacts.log</code></li>
+</ul>
+<h2>Viewing a report</h2><p>Lighthouse can produce a report as JSON or HTML.</p>
+<p>HTML report:</p>
+<p><img src="https://cloud.githubusercontent.com/assets/238208/26369813/abea39e4-3faa-11e7-8d5c-e116696518b4.png" alt="Lighthouse report"></p>
+<h3>Online Viewer</h3><p>Running Lighthouse with the <code>--output=json</code> flag generates a json dump of the run.
+You can view this report online by visiting <https://googlechrome.github.io/lighthouse/viewer/>
+and dragging the file onto the app. You can also use the &quot;Export&quot; button from the
+top of any Lighthouse HTML report and open the report in the
+<a href="https://googlechrome.github.io/lighthouse/viewer/">Lighthouse Viewer</a>.</p>
+<p>In the Viewer, reports can be shared by clicking the share icon in the top
+right corner and signing in to GitHub.</p>
+<blockquote>
+<p><strong>Note</strong>: shared reports are stashed as a secret Gist in GitHub, under your account.</p>
+</blockquote>
+<h2>Docs &amp; Recipes</h2><p>Useful documentation, examples, and recipes to get you started.</p>
+<p><strong>Docs</strong></p>
+<ul>
+<li><a href="./docs/readme.md#using-programmatically">Using Lighthouse programmatically</a></li>
+<li><a href="./docs/readme.md#testing-on-a-site-with-authentication">Testing a site with authentication</a></li>
+<li><a href="./docs/readme.md#testing-on-a-mobile-device">Testing on a mobile device</a></li>
+<li><a href="./docs/architecture.md">Lighthouse Architecture</a></li>
+</ul>
+<p><strong>Recipes</strong></p>
+<ul>
+<li><a href="docs/recipes/gulp">gulp</a> - helpful for CI integration</li>
+<li><a href="./docs/recipes/custom-audit">Custom Audit example</a> - extend Lighthouse, run your own audits</li>
+</ul>
+<p><strong>Videos</strong></p>
+<p>The session from Google I/O 2017 covers architecture, writing custom audits,
+Github/Travis/CI integration, headless Chrome, and more:</p>
+<p><a href="https://www.youtube.com/watch?v=NoRYn6gOtVo"><img src="https://img.youtube.com/vi/NoRYn6gOtVo/0.jpg" alt="Lighthouse @ Google I/O"></a></p>
+<p><em>click to watch the video</em></p>
+<h2>Develop</h2><p>Read on for the basics of hacking on Lighthouse. Also see <a href="./CONTRIBUTING.md">Contributing</a>
+for detailed information.</p>
+<h3>Setup</h3><pre class="prettyprint source lang-sh"><code># yarn should be installed first
+
+git clone https://github.com/GoogleChrome/lighthouse
+
+cd lighthouse
+yarn
+yarn install-all
+yarn build-all
+
+# The CLI is authored in TypeScript and requires compilation.
+# If you need to make changes to the CLI, run the TS compiler in watch mode:
+# cd lighthouse-cli && yarn dev</code></pre><h3>Run</h3><pre class="prettyprint source lang-sh"><code>node lighthouse-cli http://example.com</code></pre><blockquote>
+<p><strong>Getting started tip</strong>: <code>node --inspect --debug-brk lighthouse-cli http://example.com</code> to open up Chrome DevTools and step
+through the entire app. See <a href="https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27#.59rma3ukm">Debugging Node.js with Chrome
+DevTools</a>
+for more info.</p>
+</blockquote>
+<h3>Tests</h3><pre class="prettyprint source lang-sh"><code># lint and test all files
+yarn test
+
+# watch for file changes and run tests
+#   Requires http://entrproject.org : brew install entr
+yarn watch
+
+## run linting, unit, and smoke tests separately
+yarn lint
+yarn unit
+yarn smoke
+
+## run closure compiler (on whitelisted files)
+yarn closure
+## import your report renderer into devtools-frontend and run devtools closure compiler
+yarn compile-devtools</code></pre><h2>Lighthouse Integrations</h2><p>This section details projects that have integrated Lighthouse. If you're working on a cool project integrating Lighthouse and would like to be featured here, file an issue to this repo or tweet at us <a href="https://twitter.com/____lighthouse?lang=en">@<strong>_</strong>lighthouse</a></p>
+<ul>
+<li><p><strong><a href="https://calibreapp.com">Calibre</a></strong> - Calibre is a web performance monitoring tool running Lighthouse continuously or on-demand via an API. Test using emulated devices and connection speeds from a number of geographical locations. Set budgets and improve performance with actionable guidelines. Note that Calibre is a paid product with a free 14-day trial.</p>
+</li>
+<li><p><strong><a href="http://httparchive.org/">HTTPArchive</a></strong> - HTTPArchive tracks how the web is built by crawling 500k pages with Web Page Test, including Lighthouse results, and stores the information in BigQuery where it is <a href="https://discuss.httparchive.org/t/quickstart-guide-to-exploring-the-http-archive/682">publicly available</a>.</p>
+</li>
+<li><p><strong><a href="https://treo.sh">Treo</a></strong> - Treo is Lighthouse as a Service. It provides regression testing, geographical regions, custom networks, and integrations with Github &amp; Slack. Treo is a paid product with plans for solo-developers and teams.</p>
+</li>
+<li><p><strong><a href="https://www.webpagetest.org">Web Page Test</a></strong> — An <a href="https://github.com/WPO-Foundation/webpagetest">open source</a> tool for measuring and analyzing the performance of web pages on real devices. Users can choose to produce a Lighthouse report alongside the analysis of WebPageTest results.</p>
+</li>
+</ul>
+<h2>Related Projects</h2><ul>
+<li><strong><a href="https://github.com/addyosmani/webpack-lighthouse-plugin">webpack-lighthouse-plugin</a></strong> - run Lighthouse from a Webpack build.</li>
+<li><strong><a href="https://github.com/justinribeiro/lighthouse-mocha-example">lighthouse-mocha-example</a></strong> - gather performance metrics via Lighthouse and tests them in Mocha</li>
+<li><strong><a href="https://github.com/paulirish/pwmetrics/">pwmetrics</a></strong> - gather performance metrics</li>
+<li><strong><a href="https://github.com/ebidel/lighthouse-hue">lighthouse-hue</a></strong> - set the color of Philips Hue lights based on a Lighthouse score</li>
+<li><strong><a href="https://www.npmjs.com/package/lighthouse-batch">lighthouse-batch</a></strong> - run Lighthouse over a number of sites and generate a summary of their metrics/scores.</li>
+<li><strong><a href="https://github.com/thearegee/lighthouse-cron">lighthouse-cron</a></strong> - Cron multiple batch Lighthouse audits and emit results for sending to remote server.</li>
+<li><strong><a href="https://github.com/github/lightcrawler">lightcrawler</a></strong> - Crawl a website and run each page found through Lighthouse.</li>
+</ul>
+<h2>FAQ</h2><h3>How does Lighthouse work?</h3><p>See <a href="./docs/architecture.md">Lighthouse Architecture</a>.</p>
+<h3>Can I configure the lighthouse run?</h3><p>Yes! Details in <a href="./docs/configuration.md">Lighthouse configuration</a>.</p>
+<h3>How does Lighthouse use network throttling, and how can I make it better?</h3><p>Good question. Network and CPU throttling are applied by default in a Lighthouse run. The network
+attempts to emulate 3G and the CPU is slowed down 4x from your machine's default speed. If you
+prefer to run Lighthouse without throttling, you'll have to use the CLI and disable it with the
+<code>--disable-*</code> flags mentioned above.</p>
+<p>Read more in our <a href="./docs/throttling.md">guide to network throttling</a>.</p>
+<h3>Are results sent to a remote server?</h3><p>Nope. Lighthouse runs locally, auditing a page using a local version of the Chrome browser installed the
+machine. Report results are never processed or beaconed to a remote server.</p>
+<h3>How do I author custom audits to extend Lighthouse?</h3><blockquote>
+<p><strong>Tip</strong>: see <a href="./docs/architecture.md">Lighthouse Architecture</a> for more information
+on terminology and architecture.</p>
+</blockquote>
+<p>Lighthouse can be extended to run custom audits and gatherers that you author.
+This is great if you're already tracking performance metrics in your site and
+want to surface those metrics within a Lighthouse report.</p>
+<p>If you're interested in running your own custom audits, check out our
+<a href="./docs/recipes/custom-audit">Custom Audit Example</a> over in recipes.</p>
+<h3>How do I contribute?</h3><p>We'd love help writing audits, fixing bugs, and making the tool more useful!
+See <a href="./CONTRIBUTING.md">Contributing</a> to get started.</p>
+<hr>
+<p align="center">
+  <img src="https://cloud.githubusercontent.com/assets/39191/22478294/23f662f6-e79e-11e6-8de3-ffd7be7bf628.png" alt="Lighthouse logo" height="150">
+  <br>
+  <b>Lighthouse</b>, ˈlītˌhous (n): a <s>tower or other structure</s> tool containing a beacon light
+  to warn or guide <s>ships at sea</s> developers.
+</p></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/accesskeys.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures every accesskey attribute value is unique.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_accesskeys.js.html">lighthouse-core/audits/accessibility/accesskeys.js</a>, <a href="lighthouse-core_audits_accessibility_accesskeys.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-allowed-attr.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures ARIA attributes are allowed for an element's role.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-allowed-attr.js.html">lighthouse-core/audits/accessibility/aria-allowed-attr.js</a>, <a href="lighthouse-core_audits_accessibility_aria-allowed-attr.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-required-attr.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures elements with ARIA roles have all required ARIA attributes.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-required-attr.js.html">lighthouse-core/audits/accessibility/aria-required-attr.js</a>, <a href="lighthouse-core_audits_accessibility_aria-required-attr.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-required-children.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures elements with an ARIA role contain any required children.
+e.g. A parent node with role=&quot;list&quot; should contain children with role=&quot;listitem&quot;.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-required-children.js.html">lighthouse-core/audits/accessibility/aria-required-children.js</a>, <a href="lighthouse-core_audits_accessibility_aria-required-children.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-required-parent.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures elements with an ARIA role are contained by their required parents.
+e.g. A child node with role=&quot;listitem&quot; should be contained by a parent with role=&quot;list&quot;.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-required-parent.js.html">lighthouse-core/audits/accessibility/aria-required-parent.js</a>, <a href="lighthouse-core_audits_accessibility_aria-required-parent.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-roles.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures all elements with a role attribute use a valid value.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-roles.js.html">lighthouse-core/audits/accessibility/aria-roles.js</a>, <a href="lighthouse-core_audits_accessibility_aria-roles.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-valid-attr.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures aria-* attributes are valid and not misspelled or non-existent.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-valid-attr.js.html">lighthouse-core/audits/accessibility/aria-valid-attr.js</a>, <a href="lighthouse-core_audits_accessibility_aria-valid-attr.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/aria-valid-attr-value.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures all ARIA attributes have valid values.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_aria-valid-attr-value.js.html">lighthouse-core/audits/accessibility/aria-valid-attr-value.js</a>, <a href="lighthouse-core_audits_accessibility_aria-valid-attr-value.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/audio-caption.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;audio&gt;</code> elements have captions.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_audio-caption.js.html">lighthouse-core/audits/accessibility/audio-caption.js</a>, <a href="lighthouse-core_audits_accessibility_audio-caption.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/axe-audit.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Base class for all aXe audits. Provides a consistent way to
+generate audit results using aXe rule names.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_axe-audit.js.html">lighthouse-core/audits/accessibility/axe-audit.js</a>, <a href="lighthouse-core_audits_accessibility_axe-audit.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/button-name.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures buttons have discernible text.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_button-name.js.html">lighthouse-core/audits/accessibility/button-name.js</a>, <a href="lighthouse-core_audits_accessibility_button-name.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/bypass.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures each page has at least one mechanism for a user to bypass navigation
+and jump straight to the content.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_bypass.js.html">lighthouse-core/audits/accessibility/bypass.js</a>, <a href="lighthouse-core_audits_accessibility_bypass.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/color-contrast.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures the contrast between foreground and background colors meets
+WCAG 2 AA contrast ratio thresholds.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_color-contrast.js.html">lighthouse-core/audits/accessibility/color-contrast.js</a>, <a href="lighthouse-core_audits_accessibility_color-contrast.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/definition-list.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;dl&gt;</code> elements are structured correctly.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_definition-list.js.html">lighthouse-core/audits/accessibility/definition-list.js</a>, <a href="lighthouse-core_audits_accessibility_definition-list.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/dlitem.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures that all child <dd> and <dt> elements have a <dl> as a parent.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_dlitem.js.html">lighthouse-core/audits/accessibility/dlitem.js</a>, <a href="lighthouse-core_audits_accessibility_dlitem.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/document-title.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures that each HTML document contains a <code>&lt;title&gt;</code>.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_document-title.js.html">lighthouse-core/audits/accessibility/document-title.js</a>, <a href="lighthouse-core_audits_accessibility_document-title.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/duplicate-id.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures every id attribute value is unique.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_duplicate-id.js.html">lighthouse-core/audits/accessibility/duplicate-id.js</a>, <a href="lighthouse-core_audits_accessibility_duplicate-id.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/frame-title.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;iframe&gt;</code> and <code>&lt;frame&gt;</code> elements contain a non-empty title attribute.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_frame-title.js.html">lighthouse-core/audits/accessibility/frame-title.js</a>, <a href="lighthouse-core_audits_accessibility_frame-title.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/html-has-lang.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures every HTML document has a <code>lang</code> attribute.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_html-has-lang.js.html">lighthouse-core/audits/accessibility/html-has-lang.js</a>, <a href="lighthouse-core_audits_accessibility_html-has-lang.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/html-lang-valid.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures the lang attribute of the <html> element has a valid value.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_html-lang-valid.js.html">lighthouse-core/audits/accessibility/html-lang-valid.js</a>, <a href="lighthouse-core_audits_accessibility_html-lang-valid.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/image-alt.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <img> elements have alternate text or a role of none or presentation.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_image-alt.js.html">lighthouse-core/audits/accessibility/image-alt.js</a>, <a href="lighthouse-core_audits_accessibility_image-alt.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/input-image-alt.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;input type=&quot;image&quot;&gt;</code> elements have alternate text.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_input-image-alt.js.html">lighthouse-core/audits/accessibility/input-image-alt.js</a>, <a href="lighthouse-core_audits_accessibility_input-image-alt.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/label.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures every form element has a label.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_label.js.html">lighthouse-core/audits/accessibility/label.js</a>, <a href="lighthouse-core_audits_accessibility_label.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/layout-table.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures presentational <code>&lt;table&gt;</code> elements do not use <code>&lt;th&gt;</code>, <code>&lt;caption&gt;</code> elements
+or the summary attribute.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_layout-table.js.html">lighthouse-core/audits/accessibility/layout-table.js</a>, <a href="lighthouse-core_audits_accessibility_layout-table.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/link-name.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures links have discernible text.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_link-name.js.html">lighthouse-core/audits/accessibility/link-name.js</a>, <a href="lighthouse-core_audits_accessibility_link-name.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/list.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures that lists are structured correctly.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_list.js.html">lighthouse-core/audits/accessibility/list.js</a>, <a href="lighthouse-core_audits_accessibility_list.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/listitem.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures every HTML document has a <code>lang</code> attribute.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_listitem.js.html">lighthouse-core/audits/accessibility/listitem.js</a>, <a href="lighthouse-core_audits_accessibility_listitem.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/meta-refresh.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;meta http-equiv=&quot;refresh&quot;&gt;</code> is not used.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_meta-refresh.js.html">lighthouse-core/audits/accessibility/meta-refresh.js</a>, <a href="lighthouse-core_audits_accessibility_meta-refresh.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/meta-viewport.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;meta name=&quot;viewport&quot;&gt;</code> does not disable text scaling and zooming.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_meta-viewport.js.html">lighthouse-core/audits/accessibility/meta-viewport.js</a>, <a href="lighthouse-core_audits_accessibility_meta-viewport.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/object-alt.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <object> elements have alternate text.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_object-alt.js.html">lighthouse-core/audits/accessibility/object-alt.js</a>, <a href="lighthouse-core_audits_accessibility_object-alt.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/tabindex.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures tabindex attribute values are not greater than 0.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_tabindex.js.html">lighthouse-core/audits/accessibility/tabindex.js</a>, <a href="lighthouse-core_audits_accessibility_tabindex.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/td-headers-attr.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensure that each cell in a table using the headers refers to another cell in
+that table
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_td-headers-attr.js.html">lighthouse-core/audits/accessibility/td-headers-attr.js</a>, <a href="lighthouse-core_audits_accessibility_td-headers-attr.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/th-has-data-cells.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensure that each table header in a data table refers to data cells.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_th-has-data-cells.js.html">lighthouse-core/audits/accessibility/th-has-data-cells.js</a>, <a href="lighthouse-core_audits_accessibility_th-has-data-cells.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/valid-lang.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures lang attributes have valid values.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_valid-lang.js.html">lighthouse-core/audits/accessibility/valid-lang.js</a>, <a href="lighthouse-core_audits_accessibility_valid-lang.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/video-caption.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;video&gt;</code> elements have closed captions.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_video-caption.js.html">lighthouse-core/audits/accessibility/video-caption.js</a>, <a href="lighthouse-core_audits_accessibility_video-caption.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/accessibility/video-description.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Ensures <code>&lt;video&gt;</code> elements have audio descriptions.
+See base class in axe-audit.js for audit() implementation.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_accessibility_video-description.js.html">lighthouse-core/audits/accessibility/video-description.js</a>, <a href="lighthouse-core_audits_accessibility_video-description.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/byte-efficiency/byte-efficiency-audit.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Used as the base for all byte efficiency audits. Computes total bytes
+   and estimated time saved. Subclass and override <code>audit_</code> to return results.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_byte-efficiency_byte-efficiency-audit.js.html">lighthouse-core/audits/byte-efficiency/byte-efficiency-audit.js</a>, <a href="lighthouse-core_audits_byte-efficiency_byte-efficiency-audit.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/byte-efficiency/offscreen-images.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Checks to see if images are displayed only outside of the viewport.
+    Images requested after TTI are not flagged as violations.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_byte-efficiency_offscreen-images.js.html">lighthouse-core/audits/byte-efficiency/offscreen-images.js</a>, <a href="lighthouse-core_audits_byte-efficiency_offscreen-images.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/byte-efficiency/uses-responsive-images.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Checks to see if the images used on the page are larger than
+  their display sizes. The audit will list all images that are larger than
+  their display size with DPR (a 1000px wide image displayed as a
+  500px high-res image on a Retina display is 100% used);
+  However, the audit will only fail pages that use images that have waste
+  beyond a particular byte threshold.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_byte-efficiency_uses-responsive-images.js.html">lighthouse-core/audits/byte-efficiency/uses-responsive-images.js</a>, <a href="lighthouse-core_audits_byte-efficiency_uses-responsive-images.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/consistently-interactive.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This audit identifies the time the page is &quot;consistently interactive&quot;.
+Looks for the first period of at least 5 seconds after FMP where both CPU and network were quiet,
+and returns the timestamp of the beginning of the CPU quiet period.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_consistently-interactive.js.html">lighthouse-core/audits/consistently-interactive.js</a>, <a href="lighthouse-core_audits_consistently-interactive.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://docs.google.com/document/d/1GGiI9-7KeY3TPqS3YT271upUVimo-XiL5mwWorDUD4c/edit#">https://docs.google.com/document/d/1GGiI9-7KeY3TPqS3YT271upUVimo-XiL5mwWorDUD4c/edit#</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/deprecations.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits a page to determine if it is calling deprecated APIs.
+This is done by collecting console log messages and filtering them by ones
+that contain deprecated API warnings sent by Chrome.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_deprecations.js.html">lighthouse-core/audits/deprecations.js</a>, <a href="lighthouse-core_audits_deprecations.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/appcache-manifest.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to ensure it is not using the Application Cache API.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_appcache-manifest.js.html">lighthouse-core/audits/dobetterweb/appcache-manifest.js</a>, <a href="lighthouse-core_audits_dobetterweb_appcache-manifest.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/dom-size.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits a page to see how the size of DOM it creates. Stats like
+tree depth, # children, and total nodes are returned. The score is calculated
+based solely on the total number of nodes found on the page.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_dom-size.js.html">lighthouse-core/audits/dobetterweb/dom-size.js</a>, <a href="lighthouse-core_audits_dobetterweb_dom-size.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/geolocation-on-start.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits a page to see if it is requesting the geolocation API on
+page load. This is often a sign of poor user experience because it lacks context.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_geolocation-on-start.js.html">lighthouse-core/audits/dobetterweb/geolocation-on-start.js</a>, <a href="lighthouse-core_audits_dobetterweb_geolocation-on-start.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/link-blocking-first-paint.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to see if it does not use <link> that block first paint.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_link-blocking-first-paint.js.html">lighthouse-core/audits/dobetterweb/link-blocking-first-paint.js</a>, <a href="lighthouse-core_audits_dobetterweb_link-blocking-first-paint.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/no-document-write.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to see if it's using document.write()</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_no-document-write.js.html">lighthouse-core/audits/dobetterweb/no-document-write.js</a>, <a href="lighthouse-core_audits_dobetterweb_no-document-write.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/no-mutation-events.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to see if it is using Mutation Events (and suggest
+    MutationObservers instead).</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_no-mutation-events.js.html">lighthouse-core/audits/dobetterweb/no-mutation-events.js</a>, <a href="lighthouse-core_audits_dobetterweb_no-mutation-events.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/no-old-flexbox.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to see if it is using the obsolete
+    <code>display: box</code> flexbox.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_no-old-flexbox.js.html">lighthouse-core/audits/dobetterweb/no-old-flexbox.js</a>, <a href="lighthouse-core_audits_dobetterweb_no-old-flexbox.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits a page to make sure there are no JS libraries with
+known vulnerabilities being used. Checks against a vulnerability db
+provided by Snyk.io and checked in locally as third-party/snyk/snapshot.json</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_no-vulnerable-libraries.js.html">lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js</a>, <a href="lighthouse-core_audits_dobetterweb_no-vulnerable-libraries.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/no-websql.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to ensure that it does not open a database using
+the WebSQL API.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_no-websql.js.html">lighthouse-core/audits/dobetterweb/no-websql.js</a>, <a href="lighthouse-core_audits_dobetterweb_no-websql.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/notification-on-start.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits a page to see if it is requesting usage of the notification API on
+page load. This is often a sign of poor user experience because it lacks context.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_notification-on-start.js.html">lighthouse-core/audits/dobetterweb/notification-on-start.js</a>, <a href="lighthouse-core_audits_dobetterweb_notification-on-start.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/script-blocking-first-paint.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to see if it does not use sync <script> in <head>.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_script-blocking-first-paint.js.html">lighthouse-core/audits/dobetterweb/script-blocking-first-paint.js</a>, <a href="lighthouse-core_audits_dobetterweb_script-blocking-first-paint.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/uses-http2.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to ensure that resource loaded over its own
+origin are over the http/2 protocol.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_uses-http2.js.html">lighthouse-core/audits/dobetterweb/uses-http2.js</a>, <a href="lighthouse-core_audits_dobetterweb_uses-http2.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audit a page to see if it is using passive event listeners on
+scroll-blocking touch and wheel event listeners.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_dobetterweb_uses-passive-event-listeners.js.html">lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js</a>, <a href="lighthouse-core_audits_dobetterweb_uses-passive-event-listeners.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/errors-in-console.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits a page to determine whether it contains console errors.
+This is done by collecting Chrome console log messages and filtering out the non-error ones.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_errors-in-console.js.html">lighthouse-core/audits/errors-in-console.js</a>, <a href="lighthouse-core_audits_errors-in-console.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/image-aspect-ratio.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Checks to see if the aspect ratio of the images used on
+  the page are equal to the aspect ratio of their display sizes. The
+  audit will list all images that don't match with their display size
+  aspect ratio.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_image-aspect-ratio.js.html">lighthouse-core/audits/image-aspect-ratio.js</a>, <a href="lighthouse-core_audits_image-aspect-ratio.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/load-fast-enough-for-pwa.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This audit evaluates if a page's load performance is fast enough for it to be considered a PWA.
+ We are doublechecking that the network requests were throttled (or slow on their own)
+ Afterwards, we report if the TTFI is less than 10 seconds.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_load-fast-enough-for-pwa.js.html">lighthouse-core/audits/load-fast-enough-for-pwa.js</a>, <a href="lighthouse-core_audits_load-fast-enough-for-pwa.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/manual/manual-audit.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Base class for audits that the user should verify manually on
+their site.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_manual_manual-audit.js.html">lighthouse-core/audits/manual/manual-audit.js</a>, <a href="lighthouse-core_audits_manual_manual-audit.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/manual/pwa-cross-browser.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Manual PWA audit for cross browser support.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_manual_pwa-cross-browser.js.html">lighthouse-core/audits/manual/pwa-cross-browser.js</a>, <a href="lighthouse-core_audits_manual_pwa-cross-browser.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/manual/pwa-each-page-has-url.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Manual PWA audit to ensure every page has a deep link.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_manual_pwa-each-page-has-url.js.html">lighthouse-core/audits/manual/pwa-each-page-has-url.js</a>, <a href="lighthouse-core_audits_manual_pwa-each-page-has-url.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/manual/pwa-page-transitions.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Manual PWA audit for janky-free page transitions.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_manual_pwa-page-transitions.js.html">lighthouse-core/audits/manual/pwa-page-transitions.js</a>, <a href="lighthouse-core_audits_manual_pwa-page-transitions.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/multi-check-audit.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Base class for boolean audits that can have multiple reasons for failure</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_multi-check-audit.js.html">lighthouse-core/audits/multi-check-audit.js</a>, <a href="lighthouse-core_audits_multi-check-audit.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/splash-screen.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits if a page is configured for a custom splash screen when launched
+https://github.com/GoogleChrome/lighthouse/issues/24</p>
+<p>Requirements:</p>
+<ul>
+<li>manifest is not empty</li>
+<li>manifest has a valid name</li>
+<li>manifest has a valid background_color</li>
+<li>manifest has a valid theme_color</li>
+<li>manifest contains icon that's a png and size &gt;= 512px</li>
+</ul></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_splash-screen.js.html">lighthouse-core/audits/splash-screen.js</a>, <a href="lighthouse-core_audits_splash-screen.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/themed-omnibox.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits if a page is configured for a themed address bar</p>
+<p>Requirements:</p>
+<ul>
+<li>manifest is not empty</li>
+<li>manifest has a valid theme_color</li>
+<li>HTML has a valid theme-color meta</li>
+</ul></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_themed-omnibox.js.html">lighthouse-core/audits/themed-omnibox.js</a>, <a href="lighthouse-core_audits_themed-omnibox.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/audits/webapp-install-banner.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Audits if a page is configured to prompt users with the webapp install banner.
+https://github.com/GoogleChrome/lighthouse/issues/23#issuecomment-270453303</p>
+<p>Requirements:</p>
+<ul>
+<li>manifest is not empty</li>
+<li>manifest has valid start url</li>
+<li>manifest has a valid name</li>
+<li>manifest has a valid shortname</li>
+<li>manifest display property is standalone, minimal-ui, or fullscreen</li>
+<li>manifest contains icon that's a png and size &gt;= 192px</li>
+<li>SW is registered, and it owns this page and the manifest's start url</li>
+<li>Site engagement score of 2 or higher
+This audit covers these requirements with the following exceptions:</li>
+<li>it doesn't consider SW controlling the starturl</li>
+<li>it doesn't consider the site engagement score (naturally)</li>
+</ul></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_audits_webapp-install-banner.js.html">lighthouse-core/audits/webapp-install-banner.js</a>, <a href="lighthouse-core_audits_webapp-install-banner.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/computed/first-interactive.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This artifact identifies the time the page is &quot;first interactive&quot; as defined below</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_computed_first-interactive.js.html">lighthouse-core/gather/computed/first-interactive.js</a>, <a href="lighthouse-core_gather_computed_first-interactive.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://docs.google.com/document/d/1GGiI9-7KeY3TPqS3YT271upUVimo-XiL5mwWorDUD4c/edit#%0A%0AFirst%20Interactive%20marks%20the%20first%20moment%20when%20a%20website%20is%20minimally%20interactive:%0A%20%20%20%3E%20Enough%20(but%20maybe%20not%20all)%20UI%20components%20shown%20on%20the%20screen%20are%20interactive%0A%20%20%20%20%20DISCLAIMER:%20This%20is%20assumed%20by%20virtue%20of%20the%20fact%20that%20the%20CPU%20is%20idle;%20actual%20event%0A%20%20%20%20%20listeners%20are%20not%20examined.%20Server-side%20rendering%20and%20extreme%20network%20latency%20can%20trick%20this%0A%20%20%20%20%20definition.%0A%20%20%20%3E%20The%20page%20responds%20to%20user%20input%20in%20a%20reasonable%20time%20on%20average,%20but%20it%E2%80%99s%20ok%20if%20this%0A%20%20%20%20%20response%20is%20not%20always%20immediate.%0A%0AFirst%20Interactive%20is%20defined%20as%20the%20first%20period%20after%20FMP%20of%20N-seconds%20that%20has%20no%20bad%20task%0Aclusters.%0A%0A%20%20%20%3E%20t%20=%20time%20in%20seconds%20since%20FMP%0A%20%20%20%3E%20N%20=%20f(t)%20=%204%20*%20e%5E(-0.045%20*%20t)%20+%201%0A%20%20%20%20%205%20=%20f(0)%20=%204%20+%201%0A%20%20%20%20%203%20~=%20f(15)%20~=%202%20+%201%0A%20%20%20%20%201%20~=%20f(%E2%88%9E)%20~=%200%20+%201%0A%20%20%20%3E%20a%20%22bad%20task%20cluster%22%20is%20a%20cluster%20of%201%20or%20more%20long%20tasks%20with%20less%20than%201s%20of%20idle%20time%0A%20%20%20%20%20between%20each%20task%20that%20does%20one%20of%20the%20following%0A%20%20%20%20%20%20%20%3E%20Starts%20within%20the%20first%205s%20after%20FMP.%0A%20%20%20%20%20%20%20%3E%20Spans%20more%20than%20250ms%20from%20the%20start%20of%20the%20earliest%20task%20in%20the%20cluster%20to%20the%20end%20of%20the%0A%20%20%20%20%20%20%20%20%20latest%20task%20in%20the%20cluster.%0A%0AIf%20this%20timestamp%20is%20earlier%20than%20DOMContentLoaded,%20use%20DOMContentLoaded%20as%20firstInteractive.">https://docs.google.com/document/d/1GGiI9-7KeY3TPqS3YT271upUVimo-XiL5mwWorDUD4c/edit#
+
+First Interactive marks the first moment when a website is minimally interactive:
+   > Enough (but maybe not all) UI components shown on the screen are interactive
+     DISCLAIMER: This is assumed by virtue of the fact that the CPU is idle; actual event
+     listeners are not examined. Server-side rendering and extreme network latency can trick this
+     definition.
+   > The page responds to user input in a reasonable time on average, but it’s ok if this
+     response is not always immediate.
+
+First Interactive is defined as the first period after FMP of N-seconds that has no bad task
+clusters.
+
+   > t = time in seconds since FMP
+   > N = f(t) = 4 * e^(-0.045 * t) + 1
+     5 = f(0) = 4 + 1
+     3 ~= f(15) ~= 2 + 1
+     1 ~= f(∞) ~= 0 + 1
+   > a "bad task cluster" is a cluster of 1 or more long tasks with less than 1s of idle time
+     between each task that does one of the following
+       > Starts within the first 5s after FMP.
+       > Spans more than 250ms from the start of the earliest task in the cluster to the end of the
+         latest task in the cluster.
+
+If this timestamp is earlier than DOMContentLoaded, use DOMContentLoaded as firstInteractive.</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/computed/main-resource.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This artifact identifies the main resource on the page. Current solution assumes
+that the main resource is the first non-rediected one.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_computed_main-resource.js.html">lighthouse-core/gather/computed/main-resource.js</a>, <a href="lighthouse-core_gather_computed_main-resource.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/computed/trace-of-tab.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Singluar helper to parse a raw trace and extract the most useful data for
+various tools. This artifact will take a trace and then:</p>
+<ol>
+<li>Find the TracingStartedInPage and navigationStart events of our intended tab &amp; frame.</li>
+<li>Find the firstContentfulPaint and marked firstMeaningfulPaint events</li>
+<li>Isolate only the trace events from the tab's process (including all threads like compositor)<ul>
+<li>Sort those trace events in chronological order (as order isn't guaranteed)</li>
+</ul>
+</li>
+<li>Return all those items in one handy bundle.</li>
+</ol></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_computed_trace-of-tab.js.html">lighthouse-core/gather/computed/trace-of-tab.js</a>, <a href="lighthouse-core_gather_computed_trace-of-tab.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/devtools-log.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This class saves all protocol messages whose method match a particular
+   regex filter. Used when saving assets for later analysis by another tool such as
+   Webpagetest.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_devtools-log.js.html">lighthouse-core/gather/devtools-log.js</a>, <a href="lighthouse-core_gather_devtools-log.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/chrome-console-messages.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Gathers console deprecation and intervention warnings logged by Chrome.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_chrome-console-messages.js.html">lighthouse-core/gather/gatherers/chrome-console-messages.js</a>, <a href="lighthouse-core_gather_gatherers_chrome-console-messages.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/css-usage.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Tracks unused CSS rules.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_css-usage.js.html">lighthouse-core/gather/gatherers/css-usage.js</a>, <a href="lighthouse-core_gather_gatherers_css-usage.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/dobetterweb/all-event-listeners.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Tests whether the page is using passive event listeners.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_dobetterweb_all-event-listeners.js.html">lighthouse-core/gather/gatherers/dobetterweb/all-event-listeners.js</a>, <a href="lighthouse-core_gather_gatherers_dobetterweb_all-event-listeners.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/dobetterweb/domstats.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Gathers stats about the max height and width of the DOM tree
+and total number of nodes used on the page.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_dobetterweb_domstats.js.html">lighthouse-core/gather/gatherers/dobetterweb/domstats.js</a>, <a href="lighthouse-core_gather_gatherers_dobetterweb_domstats.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/dobetterweb/js-libraries.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Gathers a list of detected JS libraries and their versions.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_dobetterweb_js-libraries.js.html">lighthouse-core/gather/gatherers/dobetterweb/js-libraries.js</a>, <a href="lighthouse-core_gather_gatherers_dobetterweb_js-libraries.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/dobetterweb/optimized-images.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Determines optimized jpeg/webp filesizes for all same-origin and dataURI images by
+  running the images through canvas in the browser context.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_dobetterweb_optimized-images.js.html">lighthouse-core/gather/gatherers/dobetterweb/optimized-images.js</a>, <a href="lighthouse-core_gather_gatherers_dobetterweb_optimized-images.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/dobetterweb/response-compression.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Determines optimized gzip/br/deflate filesizes for all responses by
+  checking the content-encoding header.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_dobetterweb_response-compression.js.html">lighthouse-core/gather/gatherers/dobetterweb/response-compression.js</a>, <a href="lighthouse-core_gather_gatherers_dobetterweb_response-compression.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/dobetterweb/tags-blocking-first-paint.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Identifies stylesheets, HTML Imports, and scripts that potentially block
+  the first paint of the page by running several scripts in the page context.
+  Candidate blocking tags are collected by querying for all script tags in
+  the head of the page and all link tags that are either matching media
+  stylesheets or non-async HTML imports. These are then compared to the
+  network requests to ensure they were initiated by the parser and not
+  injected with script. To avoid false positives from strategies like
+  (http://filamentgroup.github.io/loadCSS/test/preload.html), a separate
+  script is run to flag all links that at one point were rel=preload.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_dobetterweb_tags-blocking-first-paint.js.html">lighthouse-core/gather/gatherers/dobetterweb/tags-blocking-first-paint.js</a>, <a href="lighthouse-core_gather_gatherers_dobetterweb_tags-blocking-first-paint.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/html-without-javascript.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Returns the innerText of the <body> element while JavaScript is
+disabled.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_html-without-javascript.js.html">lighthouse-core/gather/gatherers/html-without-javascript.js</a>, <a href="lighthouse-core_gather_gatherers_html-without-javascript.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/image-usage.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Gathers all images used on the page with their src, size,
+  and attribute information. Executes script in the context of the page.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_image-usage.js.html">lighthouse-core/gather/gatherers/image-usage.js</a>, <a href="lighthouse-core_gather_gatherers_image-usage.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/js-usage.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Tracks unused JavaScript</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_js-usage.js.html">lighthouse-core/gather/gatherers/js-usage.js</a>, <a href="lighthouse-core_gather_gatherers_js-usage.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/runtime-exceptions.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Gathers runtime exceptions.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_runtime-exceptions.js.html">lighthouse-core/gather/gatherers/runtime-exceptions.js</a>, <a href="lighthouse-core_gather_gatherers_runtime-exceptions.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        lighthouse-core/gather/gatherers/styles.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Gathers the active style and stylesheets used on a page.
+&quot;Active&quot; means that if the stylesheet is removed at a later time
+(before endStylesCollect is called), this gatherer will not include it.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lighthouse-core_gather_gatherers_styles.js.html">lighthouse-core/gather/gatherers/styles.js</a>, <a href="lighthouse-core_gather_gatherers_styles.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

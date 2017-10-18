@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lighthouse-core/audits/consistently-interactive.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lighthouse-core/audits/consistently-interactive.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+'use strict';
+
+const Audit = require('./audit');
+const Util = require('../report/v2/renderer/util.js');
+const TracingProcessor = require('../lib/traces/tracing-processor');
+
+// Parameters (in ms) for log-normal CDF scoring. To see the curve:
+//   https://www.desmos.com/calculator/uti67afozh
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 1700;
+const SCORING_MEDIAN = 10000;
+
+const REQUIRED_QUIET_WINDOW = 5000;
+const ALLOWED_CONCURRENT_REQUESTS = 2;
+const IGNORED_NETWORK_SCHEMES = ['data', 'ws'];
+
+/**
+ * @fileoverview This audit identifies the time the page is "consistently interactive".
+ * Looks for the first period of at least 5 seconds after FMP where both CPU and network were quiet,
+ * and returns the timestamp of the beginning of the CPU quiet period.
+ * @see https://docs.google.com/document/d/1GGiI9-7KeY3TPqS3YT271upUVimo-XiL5mwWorDUD4c/edit#
+ */
+class ConsistentlyInteractiveMetric extends Audit {
+  /**
+   * @return {!AuditMeta}
+   */
+  static get meta() {
+    return {
+      name: 'consistently-interactive',
+      description: 'Consistently Interactive (beta)',
+      helpText: 'Consistently Interactive marks the time at which the page is ' +
+          'fully interactive. ' +
+          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive).',
+      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      requiredArtifacts: ['traces', 'devtoolsLogs'],
+    };
+  }
+
+  /**
+   * Finds all time periods where the number of inflight requests is less than or equal to the
+   * number of allowed concurrent requests (2).
+   * @param {!Array&lt;!WebInspector.NetworkRequest>} networkRecords
+   * @param {{timestamps: {traceEnd: number}}} traceOfTab
+   * @return {!Array&lt;!TimePeriod>}
+   */
+  static _findNetworkQuietPeriods(networkRecords, traceOfTab) {
+    const traceEndTsInMs = traceOfTab.timestamps.traceEnd / 1000;
+
+    // First collect the timestamps of when requests start and end
+    const timeBoundaries = [];
+    networkRecords.forEach(record => {
+      const scheme = record.parsedURL &amp;&amp; record.parsedURL.scheme;
+      if (IGNORED_NETWORK_SCHEMES.includes(scheme)) {
+        return;
+      }
+
+      // convert the network record timestamp to ms to line-up with traceOfTab
+      timeBoundaries.push({time: record.startTime * 1000, isStart: true});
+      if (record.finished) {
+        timeBoundaries.push({time: record.endTime * 1000, isStart: false});
+      }
+    });
+
+    timeBoundaries.sort((a, b) => a.time - b.time);
+
+    let numInflightRequests = 0;
+    let quietPeriodStart = 0;
+    const quietPeriods = [];
+    timeBoundaries.forEach(boundary => {
+      if (boundary.isStart) {
+        // we've just started a new request. are we exiting a quiet period?
+        if (numInflightRequests === ALLOWED_CONCURRENT_REQUESTS) {
+          quietPeriods.push({start: quietPeriodStart, end: boundary.time});
+        }
+        numInflightRequests++;
+      } else {
+        numInflightRequests--;
+        // we've just completed a request. are we entering a quiet period?
+        if (numInflightRequests === ALLOWED_CONCURRENT_REQUESTS) {
+          quietPeriodStart = boundary.time;
+        }
+      }
+    });
+
+    // Check if the trace ended in a quiet period
+    if (numInflightRequests &lt;= ALLOWED_CONCURRENT_REQUESTS) {
+      quietPeriods.push({start: quietPeriodStart, end: traceEndTsInMs});
+    }
+
+    return quietPeriods;
+  }
+
+  /**
+   * Finds all time periods where there are no long tasks.
+   * @param {!Array&lt;!TimePeriod>} longTasks
+   * @param {{timestamps: {navigationStart: number, traceEnd: number}}} traceOfTab
+   * @return {!Array&lt;!TimePeriod>}
+   */
+  static _findCPUQuietPeriods(longTasks, traceOfTab) {
+    const navStartTsInMs = traceOfTab.timestamps.navigationStart / 1000;
+    const traceEndTsInMs = traceOfTab.timestamps.traceEnd / 1000;
+    if (longTasks.length === 0) {
+      return [{start: 0, end: traceEndTsInMs}];
+    }
+
+    const quietPeriods = [];
+    longTasks.forEach((task, index) => {
+      if (index === 0) {
+        quietPeriods.push({
+          start: 0,
+          end: task.start + navStartTsInMs,
+        });
+      }
+
+      if (index === longTasks.length - 1) {
+        quietPeriods.push({
+          start: task.end + navStartTsInMs,
+          end: traceEndTsInMs,
+        });
+      } else {
+        quietPeriods.push({
+          start: task.end + navStartTsInMs,
+          end: longTasks[index + 1].start + navStartTsInMs,
+        });
+      }
+    });
+
+    return quietPeriods;
+  }
+
+  /**
+   * Finds the first time period where a network quiet period and a CPU quiet period overlap.
+   * @param {!Array&lt;!TimePeriod>} longTasks
+   * @param {!Array&lt;!WebInspector.NetworkRequest>} networkRecords
+   * @param {{timestamps: {navigationStart: number, firstMeaningfulPaint: number,
+   *    traceEnd: number}}} traceOfTab
+   * @return {{cpuQuietPeriod: !TimePeriod, networkQuietPeriod: !TimePeriod,
+   *    cpuQuietPeriods: !Array&lt;!TimePeriod>, networkQuietPeriods: !Array&lt;!TimePeriod>}}
+   */
+  static findOverlappingQuietPeriods(longTasks, networkRecords, traceOfTab) {
+    const FMPTsInMs = traceOfTab.timestamps.firstMeaningfulPaint / 1000;
+
+    const isLongEnoughQuietPeriod = period =>
+        period.end > FMPTsInMs + REQUIRED_QUIET_WINDOW &amp;&amp;
+        period.end - period.start >= REQUIRED_QUIET_WINDOW;
+    const networkQuietPeriods = this._findNetworkQuietPeriods(networkRecords, traceOfTab)
+        .filter(isLongEnoughQuietPeriod);
+    const cpuQuietPeriods = this._findCPUQuietPeriods(longTasks, traceOfTab)
+        .filter(isLongEnoughQuietPeriod);
+
+    const cpuQueue = cpuQuietPeriods.slice();
+    const networkQueue = networkQuietPeriods.slice();
+
+    // We will check for a CPU quiet period contained within a Network quiet period or vice-versa
+    let cpuCandidate = cpuQueue.shift();
+    let networkCandidate = networkQueue.shift();
+    while (cpuCandidate &amp;&amp; networkCandidate) {
+      if (cpuCandidate.start >= networkCandidate.start) {
+        // CPU starts later than network, window must be contained by network or we check the next
+        if (networkCandidate.end >= cpuCandidate.start + REQUIRED_QUIET_WINDOW) {
+          return {
+            cpuQuietPeriod: cpuCandidate,
+            networkQuietPeriod: networkCandidate,
+            cpuQuietPeriods,
+            networkQuietPeriods,
+          };
+        } else {
+          networkCandidate = networkQueue.shift();
+        }
+      } else {
+        // Network starts later than CPU, window must be contained by CPU or we check the next
+        if (cpuCandidate.end >= networkCandidate.start + REQUIRED_QUIET_WINDOW) {
+          return {
+            cpuQuietPeriod: cpuCandidate,
+            networkQuietPeriod: networkCandidate,
+            cpuQuietPeriods,
+            networkQuietPeriods,
+          };
+        } else {
+          cpuCandidate = cpuQueue.shift();
+        }
+      }
+    }
+
+    const culprit = cpuCandidate ? 'Network' : 'Main thread';
+    throw new Error(`${culprit} activity continued through the end of the trace recording. ` +
+      'Consistently Interactive requires a minimum of 5 seconds of both main thread idle and ' +
+      'network idle.');
+  }
+
+  /**
+   * @param {!Artifacts} artifacts
+   * @return {!Promise&lt;!AuditResult>}
+   */
+  static audit(artifacts) {
+    const trace = artifacts.traces[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const computedArtifacts = [
+      artifacts.requestNetworkRecords(devtoolsLog),
+      artifacts.requestTraceOfTab(trace),
+    ];
+
+    return Promise.all(computedArtifacts)
+      .then(([networkRecords, traceOfTab]) => {
+        if (!traceOfTab.timestamps.firstMeaningfulPaint) {
+          throw new Error('No firstMeaningfulPaint found in trace.');
+        }
+
+        if (!traceOfTab.timestamps.domContentLoaded) {
+          throw new Error('No domContentLoaded found in trace.');
+        }
+
+        const longTasks = TracingProcessor.getMainThreadTopLevelEvents(traceOfTab)
+            .filter(event => event.duration >= 50);
+        const quietPeriodInfo = this.findOverlappingQuietPeriods(longTasks, networkRecords,
+            traceOfTab);
+        const cpuQuietPeriod = quietPeriodInfo.cpuQuietPeriod;
+
+        const timestamp = Math.max(
+          cpuQuietPeriod.start,
+          traceOfTab.timestamps.firstMeaningfulPaint / 1000,
+          traceOfTab.timestamps.domContentLoaded / 1000
+        ) * 1000;
+        const timeInMs = (timestamp - traceOfTab.timestamps.navigationStart) / 1000;
+        const extendedInfo = Object.assign(quietPeriodInfo, {timestamp, timeInMs});
+
+        return {
+          score: Audit.computeLogNormalScore(
+            timeInMs,
+            SCORING_POINT_OF_DIMINISHING_RETURNS,
+            SCORING_MEDIAN
+          ),
+          rawValue: timeInMs,
+          displayValue: Util.formatMilliseconds(timeInMs),
+          optimalValue: this.meta.optimalValue,
+          extendedInfo: {
+            value: extendedInfo,
+          },
+        };
+      });
+  }
+}
+
+module.exports = ConsistentlyInteractiveMetric;
+
+/**
+ * @typedef {{
+ *     start: number,
+ *     end: number,
+ * }}
+ */
+let TimePeriod; // eslint-disable-line no-unused-vars
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

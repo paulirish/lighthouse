@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lighthouse-core/gather/computed/trace-of-tab.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lighthouse-core/gather/computed/trace-of-tab.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+'use strict';
+
+/**
+ * @fileoverview Singluar helper to parse a raw trace and extract the most useful data for
+ * various tools. This artifact will take a trace and then:
+ *
+ * 1. Find the TracingStartedInPage and navigationStart events of our intended tab &amp; frame.
+ * 2. Find the firstContentfulPaint and marked firstMeaningfulPaint events
+ * 3. Isolate only the trace events from the tab's process (including all threads like compositor)
+ *      * Sort those trace events in chronological order (as order isn't guaranteed)
+ * 4. Return all those items in one handy bundle.
+ */
+
+const ComputedArtifact = require('./computed-artifact');
+const log = require('lighthouse-logger');
+
+// Bring in web-inspector for side effect of adding [].stableSort
+// See https://github.com/GoogleChrome/lighthouse/pull/2415
+// eslint-disable-next-line no-unused-vars
+const WebInspector = require('../../lib/web-inspector');
+
+class TraceOfTab extends ComputedArtifact {
+  get name() {
+    return 'TraceOfTab';
+  }
+
+  /**
+   * Finds key trace events, identifies main process/thread, and returns timings of trace events
+   * in milliseconds since navigation start in addition to the standard microsecond monotonic timestamps.
+   * @param {{traceEvents: !Array}} trace
+   * @return {!TraceOfTabArtifact}
+  */
+  compute_(trace) {
+    // Parse the trace for our key events and sort them by timestamp. Note: sort
+    // *must* be stable to keep events correctly nested.
+    const keyEvents = trace.traceEvents
+      .filter(e => {
+        return e.cat.includes('blink.user_timing') ||
+          e.cat.includes('loading') ||
+          e.cat.includes('devtools.timeline') ||
+          e.name === 'TracingStartedInPage';
+      })
+      .stableSort((event0, event1) => event0.ts - event1.ts);
+
+    // The first TracingStartedInPage in the trace is definitely our renderer thread of interest
+    // Beware: the tracingStartedInPage event can appear slightly after a navigationStart
+    const startedInPageEvt = keyEvents.find(e => e.name === 'TracingStartedInPage');
+    // Filter to just events matching the frame ID for sanity
+    const frameEvents = keyEvents.filter(e => e.args.frame === startedInPageEvt.args.data.page);
+
+    // Our navStart will be the last frame navigation in the trace
+    const navigationStart = frameEvents.filter(e => e.name === 'navigationStart').pop();
+    if (!navigationStart) throw new Error('navigationStart was not found in the trace');
+
+    // Find our first paint of this frame
+    const firstPaint = frameEvents.find(e => e.name === 'firstPaint' &amp;&amp; e.ts > navigationStart.ts);
+
+    // FCP will follow at/after the FP
+    const firstContentfulPaint = frameEvents.find(
+      e => e.name === 'firstContentfulPaint' &amp;&amp; e.ts > navigationStart.ts
+    );
+
+    // fMP will follow at/after the FP
+    let firstMeaningfulPaint = frameEvents.find(
+      e => e.name === 'firstMeaningfulPaint' &amp;&amp; e.ts > navigationStart.ts
+    );
+    let fmpFellBack = false;
+
+    // If there was no firstMeaningfulPaint event found in the trace, the network idle detection
+    // may have not been triggered before Lighthouse finished tracing.
+    // In this case, we'll use the last firstMeaningfulPaintCandidate we can find.
+    // However, if no candidates were found (a bogus trace, likely), we fail.
+    if (!firstMeaningfulPaint) {
+      const fmpCand = 'firstMeaningfulPaintCandidate';
+      fmpFellBack = true;
+      log.verbose('trace-of-tab', `No firstMeaningfulPaint found, falling back to last ${fmpCand}`);
+      const lastCandidate = frameEvents.filter(e => e.name === fmpCand).pop();
+      if (!lastCandidate) {
+        log.verbose('trace-of-tab', 'No `firstMeaningfulPaintCandidate` events found in trace');
+      }
+      firstMeaningfulPaint = lastCandidate;
+    }
+
+    const onLoad = frameEvents.find(e => e.name === 'loadEventEnd' &amp;&amp; e.ts > navigationStart.ts);
+    const domContentLoaded = frameEvents.find(
+      e => e.name === 'domContentLoadedEventEnd' &amp;&amp; e.ts > navigationStart.ts
+    );
+
+    // subset all trace events to just our tab's process (incl threads other than main)
+    // stable-sort events to keep them correctly nested.
+    const processEvents = trace.traceEvents
+      .filter(e => e.pid === startedInPageEvt.pid)
+      .stableSort((event0, event1) => event0.ts - event1.ts);
+
+    const mainThreadEvents = processEvents
+      .filter(e => e.tid === startedInPageEvt.tid);
+
+    const traceEnd = trace.traceEvents.reduce((max, evt) => {
+      return max.ts > evt.ts ? max : evt;
+    });
+
+    const metrics = {
+      navigationStart,
+      firstPaint,
+      firstContentfulPaint,
+      firstMeaningfulPaint,
+      traceEnd: {ts: traceEnd.ts + (traceEnd.dur || 0)},
+      onLoad,
+      domContentLoaded,
+    };
+
+    const timings = {};
+    const timestamps = {};
+
+    Object.keys(metrics).forEach(metric => {
+      timestamps[metric] = metrics[metric] &amp;&amp; metrics[metric].ts;
+      timings[metric] = (timestamps[metric] - navigationStart.ts) / 1000;
+    });
+
+    return {
+      timings,
+      timestamps,
+      processEvents,
+      mainThreadEvents,
+      startedInPageEvt,
+      navigationStartEvt: navigationStart,
+      firstPaintEvt: firstPaint,
+      firstContentfulPaintEvt: firstContentfulPaint,
+      firstMeaningfulPaintEvt: firstMeaningfulPaint,
+      onLoadEvt: onLoad,
+      fmpFellBack,
+    };
+  }
+}
+
+module.exports = TraceOfTab;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

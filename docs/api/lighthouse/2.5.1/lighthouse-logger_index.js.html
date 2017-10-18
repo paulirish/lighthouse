@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lighthouse-logger/index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lighthouse-logger/index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+'use strict';
+
+const debug = require('debug');
+const EventEmitter = require('events').EventEmitter;
+const isWindows = process.platform === 'win32';
+
+// process.browser is set when browserify'd via the `process` npm module
+const isBrowser = process.browser;
+
+const colors = {
+  red: isBrowser ? 'crimson' : 1,
+  yellow: isBrowser ? 'gold' : 3,
+  cyan: isBrowser ? 'darkturquoise' : 6,
+  green: isBrowser ? 'forestgreen' : 2,
+  blue: isBrowser ? 'steelblue' : 4,
+  magenta: isBrowser ? 'palevioletred' : 5,
+};
+
+// whitelist non-red/yellow colors for debug()
+debug.colors = [colors.cyan, colors.green, colors.blue, colors.magenta];
+
+class Emitter extends EventEmitter {
+  /**
+   * Fires off all status updates. Listen with
+   * `require('lib/log').events.addListener('status', callback)`
+   * @param {string} title
+   * @param {!Array&lt;*>} argsArray
+   */
+  issueStatus(title, argsArray) {
+    if (title === 'status' || title === 'statusEnd') {
+      this.emit(title, [title, ...argsArray]);
+    }
+  }
+
+  /**
+   * Fires off all warnings. Listen with
+   * `require('lib/log').events.addListener('warning', callback)`
+   * @param {string} title
+   * @param {!Array&lt;*>} argsArray
+   */
+  issueWarning(title, argsArray) {
+    this.emit('warning', [title, ...argsArray]);
+  }
+}
+
+const loggersByTitle = {};
+const loggingBufferColumns = 25;
+
+class Log {
+  static _logToStdErr(title, argsArray) {
+    const log = Log.loggerfn(title);
+    log(...argsArray);
+  }
+
+  static loggerfn(title) {
+    let log = loggersByTitle[title];
+    if (!log) {
+      log = debug(title);
+      loggersByTitle[title] = log;
+      // errors with red, warnings with yellow.
+      if (title.endsWith('error')) {
+        log.color = colors.red;
+      } else if (title.endsWith('warn')) {
+        log.color = colors.yellow;
+      }
+    }
+    return log;
+  }
+
+  static setLevel(level) {
+    switch (level) {
+      case 'silent':
+        debug.enable('-*');
+        break;
+      case 'verbose':
+        debug.enable('*');
+        break;
+      case 'error':
+        debug.enable('-*, *:error');
+        break;
+      default:
+        debug.enable('*, -*:verbose');
+    }
+  }
+
+  /**
+   * A simple formatting utility for event logging.
+   * @param {string} prefix
+   * @param {!Object} data A JSON-serializable object of event data to log.
+   * @param {string=} level Optional logging level. Defaults to 'log'.
+   */
+  static formatProtocol(prefix, data, level) {
+    const columns = (!process || process.browser) ? Infinity : process.stdout.columns;
+    const method = data.method || '?????';
+    const maxLength = columns - method.length - prefix.length - loggingBufferColumns;
+    // IO.read blacklisted here to avoid logging megabytes of trace data
+    const snippet = (data.params &amp;&amp; method !== 'IO.read') ?
+      JSON.stringify(data.params).substr(0, maxLength) : '';
+    Log._logToStdErr(`${prefix}:${level || ''}`, [method, snippet]);
+  }
+
+  static log(title, ...args) {
+    Log.events.issueStatus(title, args);
+    return Log._logToStdErr(title, args);
+  }
+
+  static warn(title, ...args) {
+    Log.events.issueWarning(title, args);
+    return Log._logToStdErr(`${title}:warn`, args);
+  }
+
+  static error(title, ...args) {
+    return Log._logToStdErr(`${title}:error`, args);
+  }
+
+  static verbose(title, ...args) {
+    Log.events.issueStatus(title, args);
+    return Log._logToStdErr(`${title}:verbose`, args);
+  }
+
+  /**
+   * Add surrounding escape sequences to turn a string green when logged.
+   * @param {string} str
+   * @return {string}
+   */
+  static greenify(str) {
+    return `${Log.green}${str}${Log.reset}`;
+  }
+
+  /**
+   * Add surrounding escape sequences to turn a string red when logged.
+   * @param {string} str
+   * @return {string}
+   */
+  static redify(str) {
+    return `${Log.red}${str}${Log.reset}`;
+  }
+
+  static get green() {
+    return '\x1B[32m';
+  }
+
+  static get red() {
+    return '\x1B[31m';
+  }
+
+  static get yellow() {
+    return '\x1b[33m';
+  }
+
+  static get purple() {
+    return '\x1b[95m';
+  }
+
+  static get reset() {
+    return '\x1B[0m';
+  }
+
+  static get bold() {
+    return '\x1b[1m';
+  }
+
+  static get dim() {
+    return '\x1b[2m';
+  }
+
+  static get tick() {
+    return isWindows ? '\u221A' : '✓';
+  }
+
+  static get cross() {
+    return isWindows ? '\u00D7' : '✘';
+  }
+
+  static get whiteSmallSquare() {
+    return isWindows ? '\u0387' : '▫';
+  }
+
+  static get heavyHorizontal() {
+    return isWindows ? '\u2500' : '━';
+  }
+
+  static get heavyVertical() {
+    return isWindows ? '\u2502 ' : '┃ ';
+  }
+
+  static get heavyUpAndRight() {
+    return isWindows ? '\u2514' : '┗';
+  }
+
+  static get heavyVerticalAndRight() {
+    return isWindows ? '\u251C' : '┣';
+  }
+
+  static get heavyDownAndHorizontal() {
+    return isWindows ? '\u252C' : '┳';
+  }
+
+  static get doubleLightHorizontal() {
+    return '──';
+  }
+}
+
+Log.events = new Emitter();
+
+module.exports = Log;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

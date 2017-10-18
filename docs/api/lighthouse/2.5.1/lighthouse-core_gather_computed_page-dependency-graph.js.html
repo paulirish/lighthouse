@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lighthouse-core/gather/computed/page-dependency-graph.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lighthouse-core/gather/computed/page-dependency-graph.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+'use strict';
+
+const ComputedArtifact = require('./computed-artifact');
+const NetworkNode = require('../../lib/dependency-graph/network-node');
+const CPUNode = require('../../lib/dependency-graph/cpu-node');
+const TracingProcessor = require('../../lib/traces/tracing-processor');
+const WebInspector = require('../../lib/web-inspector');
+
+// Tasks smaller than 10 ms have minimal impact on simulation
+const MINIMUM_TASK_DURATION_OF_INTEREST = 10;
+// TODO: video files tend to be enormous and throw off all graph traversals, move this ignore
+//    into estimation logic when we use the dependency graph for other purposes.
+const IGNORED_MIME_TYPES_REGEX = /^video/;
+
+class PageDependencyGraphArtifact extends ComputedArtifact {
+  get name() {
+    return 'PageDependencyGraph';
+  }
+
+  get requiredNumberOfArtifacts() {
+    return 2;
+  }
+
+  /**
+   * @param {!WebInspector.NetworkRequest} record
+   * @return {!Array&lt;string>}
+   */
+  static getNetworkInitiators(record) {
+    if (!record._initiator) return [];
+    if (record._initiator.url) return [record._initiator.url];
+    if (record._initiator.type === 'script') {
+      const frames = record._initiator.stack.callFrames;
+      return Array.from(new Set(frames.map(frame => frame.url))).filter(Boolean);
+    }
+
+    return [];
+  }
+
+  /**
+   * @param {!Array&lt;!WebInspector.NetworkRequest>} networkRecords
+   * @return {!NetworkNodeOutput}
+   */
+  static getNetworkNodeOutput(networkRecords) {
+    const nodes = [];
+    const idToNodeMap = new Map();
+    const urlToNodeMap = new Map();
+
+    networkRecords.forEach(record => {
+      if (IGNORED_MIME_TYPES_REGEX.test(record.mimeType)) return;
+      const node = new NetworkNode(record);
+      nodes.push(node);
+
+      const list = urlToNodeMap.get(record.url) || [];
+      list.push(node);
+
+      idToNodeMap.set(record.requestId, node);
+      urlToNodeMap.set(record.url, list);
+    });
+
+    return {nodes, idToNodeMap, urlToNodeMap};
+  }
+
+  /**
+   * @param {!TraceOfTabArtifact} traceOfTab
+   * @return {!Array&lt;!CPUNode>}
+   */
+  static getCPUNodes(traceOfTab) {
+    const nodes = [];
+    let i = 0;
+
+    const minimumEvtDur = MINIMUM_TASK_DURATION_OF_INTEREST * 1000;
+    while (i &lt; traceOfTab.mainThreadEvents.length) {
+      const evt = traceOfTab.mainThreadEvents[i];
+
+      // Skip all trace events that aren't schedulable tasks with sizable duration
+      if (
+        evt.name !== TracingProcessor.SCHEDULABLE_TASK_TITLE ||
+        !evt.dur ||
+        evt.dur &lt; minimumEvtDur
+      ) {
+        i++;
+        continue;
+      }
+
+      // Capture all events that occurred within the task
+      const children = [];
+      i++; // Start examining events after this one
+      for (
+        const endTime = evt.ts + evt.dur;
+        i &lt; traceOfTab.mainThreadEvents.length &amp;&amp; traceOfTab.mainThreadEvents[i].ts &lt; endTime;
+        i++
+      ) {
+        children.push(traceOfTab.mainThreadEvents[i]);
+      }
+
+      nodes.push(new CPUNode(evt, children));
+    }
+
+    return nodes;
+  }
+
+  /**
+   * @param {!Node} rootNode
+   * @param {!NetworkNodeOutput} networkNodeOutput
+   */
+  static linkNetworkNodes(rootNode, networkNodeOutput) {
+    networkNodeOutput.nodes.forEach(node => {
+      const initiators = PageDependencyGraphArtifact.getNetworkInitiators(node.record);
+      if (initiators.length) {
+        initiators.forEach(initiator => {
+          const parentCandidates = networkNodeOutput.urlToNodeMap.get(initiator) || [rootNode];
+          // Only add the initiator relationship if the initiator is unambiguous
+          const parent = parentCandidates.length === 1 ? parentCandidates[0] : rootNode;
+          node.addDependency(parent);
+        });
+      } else if (node !== rootNode) {
+        rootNode.addDependent(node);
+      }
+    });
+  }
+
+  /**
+   * @param {!Node} rootNode
+   * @param {!NetworkNodeOutput} networkNodeOutput
+   * @param {!Array&lt;!CPUNode>} cpuNodes
+   */
+  static linkCPUNodes(rootNode, networkNodeOutput, cpuNodes) {
+    function addDependentNetworkRequest(cpuNode, reqId) {
+      const networkNode = networkNodeOutput.idToNodeMap.get(reqId);
+      if (!networkNode ||
+          networkNode.record._resourceType !== WebInspector.resourceTypes.XHR) return;
+      cpuNode.addDependent(networkNode);
+    }
+
+    function addDependencyOnUrl(cpuNode, url) {
+      if (!url) return;
+      const candidates = networkNodeOutput.urlToNodeMap.get(url) || [];
+
+      let minCandidate = null;
+      let minDistance = Infinity;
+      // Find the closest request that finished before this CPU task started
+      candidates.forEach(candidate => {
+        const distance = cpuNode.startTime - candidate.endTime;
+        if (distance > 0 &amp;&amp; distance &lt; minDistance) {
+          minCandidate = candidate;
+          minDistance = distance;
+        }
+      });
+
+      if (!minCandidate) return;
+      cpuNode.addDependency(minCandidate);
+    }
+
+    const timers = new Map();
+    for (const node of cpuNodes) {
+      for (const evt of node.childEvents) {
+        if (!evt.args.data) continue;
+
+        const url = evt.args.data.url;
+        const stackTraceUrls = (evt.args.data.stackTrace || []).map(l => l.url).filter(Boolean);
+
+        switch (evt.name) {
+          case 'TimerInstall':
+            timers.set(evt.args.data.timerId, node);
+            stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
+            break;
+          case 'TimerFire': {
+            const installer = timers.get(evt.args.data.timerId);
+            if (!installer) break;
+            installer.addDependent(node);
+            break;
+          }
+
+          case 'InvalidateLayout':
+          case 'ScheduleStyleRecalculation':
+            stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
+            break;
+
+          case 'EvaluateScript':
+            addDependencyOnUrl(node, url);
+            stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
+            break;
+
+          case 'XHRReadyStateChange':
+            // Only create the dependency if the request was completed
+            if (evt.args.data.readyState !== 4) break;
+
+            addDependencyOnUrl(node, url);
+            stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
+            break;
+
+          case 'FunctionCall':
+          case 'v8.compile':
+            addDependencyOnUrl(node, url);
+            break;
+
+          case 'ParseAuthorStyleSheet':
+            addDependencyOnUrl(node, evt.args.data.styleSheetUrl);
+            break;
+
+          case 'ResourceSendRequest':
+            addDependentNetworkRequest(node, evt.args.data.requestId, evt);
+            stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
+            break;
+        }
+      }
+
+      if (node.getNumberOfDependencies() === 0) {
+        node.addDependency(rootNode);
+      }
+    }
+  }
+
+  /**
+   * @param {!TraceOfTabArtifact} traceOfTab
+   * @param {!Array&lt;!WebInspector.NetworkRequest>} networkRecords
+   * @return {!Node}
+   */
+  static createGraph(traceOfTab, networkRecords) {
+    const networkNodeOutput = PageDependencyGraphArtifact.getNetworkNodeOutput(networkRecords);
+    const cpuNodes = PageDependencyGraphArtifact.getCPUNodes(traceOfTab);
+
+    const rootRequest = networkRecords.reduce((min, r) => (min.startTime &lt; r.startTime ? min : r));
+    const rootNode = networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
+
+    PageDependencyGraphArtifact.linkNetworkNodes(rootNode, networkNodeOutput, networkRecords);
+    PageDependencyGraphArtifact.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes);
+
+    return rootNode;
+  }
+
+  /**
+   *
+   * @param {!Node} rootNode
+   */
+  static printGraph(rootNode, widthInCharacters = 100) {
+    function padRight(str, target, padChar = ' ') {
+      return str + padChar.repeat(Math.max(target - str.length, 0));
+    }
+
+    const nodes = [];
+    rootNode.traverse(node => nodes.push(node));
+    nodes.sort((a, b) => a.startTime - b.startTime);
+
+    const min = nodes[0].startTime;
+    const max = nodes.reduce((max, node) => Math.max(max, node.endTime), 0);
+
+    const totalTime = max - min;
+    const timePerCharacter = totalTime / widthInCharacters;
+    nodes.forEach(node => {
+      const offset = Math.round((node.startTime - min) / timePerCharacter);
+      const length = Math.ceil((node.endTime - node.startTime) / timePerCharacter);
+      const bar = padRight('', offset) + padRight('', length, '=');
+
+      const displayName = node.record ? node.record._url : node.type;
+      // eslint-disable-next-line
+      console.log(padRight(bar, widthInCharacters), `| ${displayName.slice(0, 30)}`);
+    });
+  }
+
+  /**
+   * @param {!Trace} trace
+   * @param {!DevtoolsLog} devtoolsLog
+   * @param {!ComputedArtifacts} artifacts
+   * @return {!Promise&lt;!Node>}
+   */
+  compute_(trace, devtoolsLog, artifacts) {
+    const promises = [
+      artifacts.requestTraceOfTab(trace),
+      artifacts.requestNetworkRecords(devtoolsLog),
+    ];
+
+    return Promise.all(promises).then(([traceOfTab, networkRecords]) => {
+      return PageDependencyGraphArtifact.createGraph(traceOfTab, networkRecords);
+    });
+  }
+}
+
+module.exports = PageDependencyGraphArtifact;
+
+/**
+ * @typedef {{
+ *    nodes: !Array&lt;!NetworkNode>,
+ *    idToNodeMap: !Map&lt;string, !NetworkNode>,
+ *    urlToNodeMap: !Map&lt;string, !Array&lt;!NetworkNode>
+ * }}
+ */
+PageDependencyGraphArtifact.NetworkNodeOutput; // eslint-disable-line no-unused-expressions
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

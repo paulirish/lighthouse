@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>lighthouse-core/gather/gatherers/dobetterweb/optimized-images.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ComputedArtifact.html">ComputedArtifact</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_assertCorrectNumberOfArtifacts">_assertCorrectNumberOfArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheGet">_cacheGet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheHas">_cacheHas</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_cacheSet">_cacheSet</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#_performCacheOperation">_performCacheOperation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#compute_">compute_</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ComputedArtifact.html#request">request</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CriConnection.html">CriConnection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_connectToSocket">_connectToSocket</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#_runJsonCommand">_runJsonCommand</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#disconnect">disconnect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CriConnection.html#sendRawMessage">sendRawMessage</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="DevtoolsLog.html">DevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="DevtoolsLog.html#record">record</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Driver.html">Driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_beginNetworkStatusMonitoring">_beginNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_endNetworkStatusMonitoring">_endNetworkStatusMonitoring</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_evaluateInContext">_evaluateInContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_getOrCreateIsolatedContextId">_getOrCreateIsolatedContextId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_shouldToggleDomain">_shouldToggleDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForCPUIdle">_waitForCPUIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForFullyLoaded">_waitForFullyLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForLoadEvent">_waitForLoadEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#_waitForNetworkIdle">_waitForNetworkIdle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#assertNoSameOriginServiceWorkerClients">assertNoSameOriginServiceWorkerClients</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginDevtoolsLog">beginDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#beginTrace">beginTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#blockUrlPatterns">blockUrlPatterns</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#cacheNatives">cacheNatives</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#captureFunctionCallSites">captureFunctionCallSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#connect">connect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#dismissJavaScriptDialogs">dismissJavaScriptDialogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#endDevtoolsLog">endDevtoolsLog</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluateAsync">evaluateAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#evaluteScriptOnNewDocument">evaluteScriptOnNewDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getElementsInDocument">getElementsInDocument</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getObjectProperty">getObjectProperty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getRequestContent">getRequestContent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#getUserAgent">getUserAgent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOffline">goOffline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#goOnline">goOnline</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#gotoURL">gotoURL</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#isDomainEnabled">isDomainEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#queryPermissionState">queryPermissionState</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelector">querySelector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#querySelectorAll">querySelectorAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#registerPerformanceObserver">registerPerformanceObserver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Driver.html#sendCommand">sendCommand</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gatherer.html">Gatherer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gatherer.html#pass">pass</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GatherRunner.html">GatherRunner</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.afterPass">afterPass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.assertPageLoaded">assertPageLoaded</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.beforePass">beforePass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.collectArtifacts">collectArtifacts</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadBlank">loadBlank</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.loadPage">loadPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.pass">pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.recoverOrThrow">recoverOrThrow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GatherRunner.html#.setupDriver">setupDriver</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HTTPRedirect.html">HTTPRedirect</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Manifest.html">Manifest</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Manifest.html#afterPass">afterPass</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="Port.html">Port</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Port.html#send">send</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#captureJSCallUsage">captureJSCallUsage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#checkTimeSinceLastLongTask">checkTimeSinceLastLongTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCSSPropsInStyleSheet">getCSSPropsInStyleSheet</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#lighthouse">lighthouse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#registerPerformanceObserverInPage">registerPerformanceObserverInPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#wrapRuntimeEvalErrorInBrowser">wrapRuntimeEvalErrorInBrowser</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lighthouse-core/gather/gatherers/dobetterweb/optimized-images.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
+/**
+  * @fileoverview Determines optimized jpeg/webp filesizes for all same-origin and dataURI images by
+  *   running the images through canvas in the browser context.
+  */
+'use strict';
+
+const Gatherer = require('../gatherer');
+const URL = require('../../../lib/url-shim');
+
+const JPEG_QUALITY = 0.92;
+const WEBP_QUALITY = 0.85;
+
+const MINIMUM_IMAGE_SIZE = 4096; // savings of &lt;4 KB will be ignored in the audit anyway
+
+/* global document, Image, atob */
+
+/**
+ * Runs in the context of the browser
+ * @param {string} url
+ * @return {!Promise&lt;{jpeg: Object, webp: Object}>}
+ */
+/* istanbul ignore next */
+function getOptimizedNumBytes(url) {
+  return new Promise(function(resolve, reject) {
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    function getTypeStats(type, quality) {
+      const dataURI = canvas.toDataURL(type, quality);
+      const base64 = dataURI.slice(dataURI.indexOf(',') + 1);
+      return {base64: base64.length, binary: atob(base64).length};
+    }
+
+    img.addEventListener('error', reject);
+    img.addEventListener('load', () => {
+      try {
+        canvas.height = img.height;
+        canvas.width = img.width;
+        context.drawImage(img, 0, 0);
+
+        const jpeg = getTypeStats('image/jpeg', 0.92);
+        const webp = getTypeStats('image/webp', 0.85);
+
+        resolve({jpeg, webp});
+      } catch (err) {
+        reject(err);
+      }
+    }, false);
+
+    img.src = url;
+  });
+}
+
+class OptimizedImages extends Gatherer {
+  /**
+   * @param {string} pageUrl
+   * @param {!NetworkRecords} networkRecords
+   * @return {!Array&lt;{url: string, isBase64DataUri: boolean, mimeType: string, resourceSize: number}>}
+   */
+  static filterImageRequests(pageUrl, networkRecords) {
+    const seenUrls = new Set();
+    return networkRecords.reduce((prev, record) => {
+      if (seenUrls.has(record._url) || !record.finished) {
+        return prev;
+      }
+
+      seenUrls.add(record._url);
+      const isOptimizableImage = /image\/(png|bmp|jpeg)/.test(record._mimeType);
+      const isSameOrigin = URL.originsMatch(pageUrl, record._url);
+      const isBase64DataUri = /^data:.{2,40}base64\s*,/.test(record._url);
+
+      if (isOptimizableImage &amp;&amp; record._resourceSize > MINIMUM_IMAGE_SIZE) {
+        prev.push({
+          isSameOrigin,
+          isBase64DataUri,
+          requestId: record._requestId,
+          url: record._url,
+          mimeType: record._mimeType,
+          resourceSize: record._resourceSize,
+        });
+      }
+
+      return prev;
+    }, []);
+  }
+
+  /**
+   * @param {!Object} driver
+   * @param {string} requestId
+   * @param {string} encoding Either webp or jpeg.
+   * @return {!Promise&lt;{encodedSize: number}>}
+   */
+  _getEncodedResponse(driver, requestId, encoding) {
+    const quality = encoding === 'jpeg' ? JPEG_QUALITY : WEBP_QUALITY;
+    const params = {requestId, encoding, quality, sizeOnly: true};
+    return driver.sendCommand('Audits.getEncodedResponse', params);
+  }
+
+  /**
+   * @param {!Object} driver
+   * @param {{url: string, isBase64DataUri: boolean, resourceSize: number}} networkRecord
+   * @return {!Promise&lt;?{fromProtocol: boolean, originalSize: number, jpegSize: number, webpSize: number}>}
+   */
+  calculateImageStats(driver, networkRecord) {
+    // TODO(phulce): remove this dance of trying _getEncodedResponse with a fallback when Audits
+    // domain hits stable in Chrome 62
+    return Promise.resolve(networkRecord.requestId).then(requestId => {
+      if (this._getEncodedResponseUnsupported) return;
+      return this._getEncodedResponse(driver, requestId, 'jpeg').then(jpegData => {
+        return this._getEncodedResponse(driver, requestId, 'webp').then(webpData => {
+          return {
+            fromProtocol: true,
+            originalSize: networkRecord.resourceSize,
+            jpegSize: jpegData.encodedSize,
+            webpSize: webpData.encodedSize,
+          };
+        });
+      }).catch(err => {
+        if (/wasn't found/.test(err.message)) {
+          // Mark non-support so we don't keep attempting the protocol method over and over
+          this._getEncodedResponseUnsupported = true;
+        } else {
+          throw err;
+        }
+      });
+    }).then(result => {
+      if (result) return result;
+
+      // Take the slower fallback path if getEncodedResponse isn't available yet
+      // CORS canvas tainting doesn't support cross-origin images, so skip them early
+      if (!networkRecord.isSameOrigin &amp;&amp; !networkRecord.isBase64DataUri) return null;
+
+      const script = `(${getOptimizedNumBytes.toString()})(${JSON.stringify(networkRecord.url)})`;
+      return driver.evaluateAsync(script).then(stats => {
+        if (!stats) return null;
+        const isBase64DataUri = networkRecord.isBase64DataUri;
+        const base64Length = networkRecord.url.length - networkRecord.url.indexOf(',') - 1;
+        return {
+          fromProtocol: false,
+          originalSize: isBase64DataUri ? base64Length : networkRecord.resourceSize,
+          jpegSize: isBase64DataUri ? stats.jpeg.base64 : stats.jpeg.binary,
+          webpSize: isBase64DataUri ? stats.webp.base64 : stats.webp.binary,
+        };
+      });
+    });
+  }
+
+  /**
+   * @param {!Object} driver
+   * @param {!Array&lt;!Object>} imageRecords
+   * @return {!Promise&lt;!Array&lt;!Object>>}
+   */
+  computeOptimizedImages(driver, imageRecords) {
+    return imageRecords.reduce((promise, record) => {
+      return promise.then(results => {
+        return this.calculateImageStats(driver, record)
+          .catch(err => ({failed: true, err}))
+          .then(stats => {
+            if (!stats) {
+              return results;
+            }
+
+            return results.concat(Object.assign(stats, record));
+          });
+      });
+    }, Promise.resolve([]));
+  }
+
+  /**
+   * @param {!Object} options
+   * @param {{networkRecords: !Array&lt;!NetworRecord>}} traceData
+   * @return {!Promise&lt;!Array&lt;!Object>}
+   */
+  afterPass(options, traceData) {
+    const networkRecords = traceData.networkRecords;
+    const imageRecords = OptimizedImages.filterImageRequests(options.url, networkRecords);
+
+    return Promise.resolve()
+      .then(_ => this.computeOptimizedImages(options.driver, imageRecords))
+      .then(results => {
+        const successfulResults = results.filter(result => !result.failed);
+        if (results.length &amp;&amp; !successfulResults.length) {
+          throw new Error('All image optimizations failed');
+        }
+
+        return results;
+      });
+  }
+}
+
+module.exports = OptimizedImages;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 16:03:07 GMT-0700 (PDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
