@@ -1,0 +1,59 @@
+Arguments: 
+  /Users/paulirish/.homebrew/Cellar/node/8.1.2/bin/node /Users/paulirish/bin/yarn
+
+PATH: 
+  :/Users/paulirish/bin:/Users/paulirish/.homebrew/bin:/Users/paulirish/.homebrew/sbin:/Users/paulirish/code/depot_tools:/Applications/Xcode.app/Contents/Developer/usr/bin:/Users/paulirish/.go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/sbin:/Users/paulirish/.yarn/bin:/Users/paulirish/.config/yarn/global/node_modules/.bin:/Users/paulirish/.go/bin
+
+Yarn version: 
+  1.2.1
+
+Node version: 
+  8.1.2
+
+Platform: 
+  darwin x64
+
+npm manifest: 
+  {
+    "name": "lighthouse_machine_server",
+    "version": "1.0.0",
+    "description": "A server for the lighthouse machine",
+    "repository": "https://github.com/GoogleChrome/gulliver/lighthouse_machine",
+    "author": "Google Inc.",
+    "contributors": [
+      {
+        "name": "Cedric Bellet",
+        "email": "cbellet@google.com"
+      },
+      {
+        "name": "Julian Toledo",
+        "email": "jtoledo@google.com"
+      }
+    ],
+    "license": "Apache-2.0",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.13.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  0f232effecfb2248252fb32af217e31b7995fc1aa3147b26379ca21673106850
+
+Trace: 
+  SyntaxError: Unknown token: { line: 1, col: 0, type: 'NUMBER', value: 0 } 1:0 in /Users/paulirish/code/lighthouse/docker-image/yarn.lock
+      at Parser.unexpected (/Users/paulirish/.yarn/lib/cli.js:59616:11)
+      at Parser.parse (/Users/paulirish/.yarn/lib/cli.js:59721:14)
+      at parse (/Users/paulirish/.yarn/lib/cli.js:59790:17)
+      at module.exports.exports.default (/Users/paulirish/.yarn/lib/cli.js:59383:96)
+      at /Users/paulirish/.yarn/lib/cli.js:1976:63
+      at Generator.next (<anonymous>)
+      at step (/Users/paulirish/.yarn/lib/cli.js:92:30)
+      at /Users/paulirish/.yarn/lib/cli.js:103:13
+      at <anonymous>
