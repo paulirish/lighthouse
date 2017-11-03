@@ -111,8 +111,6 @@ function saveResults(results, artifacts, flags) {
   let promise = Promise.resolve(results);
   const cwd = process.cwd();
 
-  // If we ran in -G, then we have no report to save
-  if (flags.gatherMode || !flags.auditMode) return promise;
   // Use the output path as the prefix for all generated files.
   // If no output path is set, generate a file prefix using the URL and date.
   const configuredPath = !flags.outputPath || flags.outputPath === 'stdout' ?
@@ -165,35 +163,52 @@ function saveResults(results, artifacts, flags) {
 function runLighthouse(url, flags, config) {
   /** @type {!LH.LaunchedChrome} */
   let launchedChrome;
-  const shouldGather = !flags.auditMode;
+  const shouldGather = flags.gatherMode || flags.gatherMode == flags.auditMode;
+  const shouldSaveResults = flags.auditMode || flags.gatherMode == flags.auditMode;
   let promise = Promise.resolve();
 
   if (shouldGather) {
-    promise = promise.then(_ => getDebuggableChrome(flags).then(launchedChromeInstance => {
-      flags.port = launchedChrome.port;
-    });
+    promise = promise.then(_ =>
+      getDebuggableChrome(flags).then(launchedChrome => {
+        flags.port = launchedChrome.port;
+      })
+    );
   }
-  promise = promise.then(_ => lighthouse(url, flags, config));
+  promise = promise.then(_ => {
+    return lighthouse(url, flags, config).then(results => {
+      potentiallyKillChrome.then(_ => results);
+    });
+  });
 
-  return promise.then(results => {
+  if (shouldSaveResults) {
+    promise = promise.then(results => {
       const artifacts = results.artifacts;
       delete results.artifacts;
-
-      return saveResults(results, artifacts, flags)
-        .then(_ => launchedChrome.kill())
-        .then(_ => results);
-    })
-    .catch(err => {
-      return Promise.resolve()
-        .then(_ => {
-          if (launchedChrome !== undefined) {
-            return launchedChrome.kill()
-              // TODO: keeps tsc happy (erases return type) but is useless.
-              .then(_ => {});
-          }
-        })
-        .then(_ => handleError(err));
+      return saveResults(results, artifacts, flags).then(_ => results);
     });
+  } else {
+    promise = promise.then(results => {
+      delete results.artifacts;
+      return results;
+    });
+  }
+
+  return promise.catch(err => {
+    return Promise.resolve()
+      .then(_ => potentiallyKillChrome())
+      .then(_ => handleError(err));
+  });
+
+  /**
+ * @return {!Promise<{}>}
+ */
+  function potentiallyKillChrome() {
+    if (launchedChrome !== undefined) {
+      // TODO: keeps tsc happy (erases return type) but is useless.
+      return launchedChrome.kill().then(_ => {});
+    }
+    return Promise.resolve({});
+  }
 }
 
 module.exports = {
