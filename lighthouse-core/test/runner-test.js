@@ -20,12 +20,23 @@ const computedArtifacts = Runner.instantiateComputedArtifacts();
 /* eslint-env mocha */
 
 describe('Runner', () => {
-  describe('Gather Mode & Audit Mode', () => {
-    const saveArtifactsSpy = sinon.spy(assetSaver, 'saveArtifacts');
-    const loadArtifactsSpy = sinon.spy(assetSaver, 'loadArtifacts');
-    const gatherRunnerRunSpy = sinon.spy(GatherRunner, 'run');
-    const runAuditSpy = sinon.spy(Runner, '_runAudit');
+  const saveArtifactsSpy = sinon.spy(assetSaver, 'saveArtifacts');
+  const loadArtifactsSpy = sinon.spy(assetSaver, 'loadArtifacts');
+  const gatherRunnerRunSpy = sinon.spy(GatherRunner, 'run');
+  const runAuditSpy = sinon.spy(Runner, '_runAudit');
 
+  function resetSpies() {
+    saveArtifactsSpy.reset();
+    loadArtifactsSpy.reset();
+    gatherRunnerRunSpy.reset();
+    runAuditSpy.reset();
+  }
+
+  beforeEach(() => {
+    resetSpies();
+  });
+
+  describe('Gather Mode & Audit Mode', () => {
     const url = 'https://example.com';
     const generateConfig = _ => new Config({
       passes: [{
@@ -35,8 +46,6 @@ describe('Runner', () => {
     });
 
     it('-G gathers, quits, and doesn\'t run audits', () => {
-      saveArtifactsSpy.reset(); loadArtifactsSpy.reset(); gatherRunnerRunSpy.reset(); runAuditSpy.reset();
-
       const opts = {url, config: generateConfig(), driverMock, flags: {gatherMode: true}};
       return Runner.run(null, opts).then(_ => {
         assert.equal(loadArtifactsSpy.called, false, 'loadArtifacts was called');
@@ -53,9 +62,6 @@ describe('Runner', () => {
 
     // uses the files on disk from the -G test. ;)
     it('-A audits from saved artifacts and doesn\'t gather', () => {
-      saveArtifactsSpy.reset(); loadArtifactsSpy.reset(); gatherRunnerRunSpy.reset(); runAuditSpy.reset();
-
-
       const opts = {url, config: generateConfig(), driverMock, flags: {auditMode: true}};
       return Runner.run(null, opts).then(_ => {
         assert.equal(loadArtifactsSpy.called, true, 'loadArtifacts was not called');
@@ -66,8 +72,6 @@ describe('Runner', () => {
     });
 
     it('-GA is a normal run but it saves artifacts to disk', () => {
-      saveArtifactsSpy.reset(); loadArtifactsSpy.reset(); gatherRunnerRunSpy.reset(); runAuditSpy.reset();
-
       const opts = {url, config: generateConfig(), driverMock, flags: {auditMode: true, gatherMode: true}};
       return Runner.run(null, opts).then(_ => {
         assert.equal(loadArtifactsSpy.called, false, 'loadArtifacts was called');
@@ -90,6 +94,7 @@ describe('Runner', () => {
     });
 
     return Runner.run(null, {url, config, driverMock}).then(_ => {
+      assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
       assert.ok(typeof config.passes[0].gatherers[0] === 'object');
     });
   });
@@ -107,7 +112,7 @@ describe('Runner', () => {
       .then(_ => {
         assert.ok(false);
       }, err => {
-        assert.ok(/The config must provide passes/.test(err.message));
+        assert.ok(/You must require either gather passes or/.test(err.message));
       });
   });
 
@@ -327,79 +332,107 @@ describe('Runner', () => {
     });
   });
 
-  it('rejects when given neither audits nor auditResults', () => {
-    const url = 'https://example.com';
-    const config = new Config({
-      passes: [{
-        gatherers: ['viewport-dimensions'],
-      }],
-    });
-
-    return Runner.run(null, {url, config, driverMock})
-      .then(_ => {
-        assert.ok(false);
-      }, err => {
-        assert.ok(/The config must provide passes/.test(err.message));
+  describe.skip('auditResults', () => {
+    it('rejects when given neither audits nor auditResults', () => {
+      const url = 'https://example.com';
+      const config = new Config({
+        passes: [{
+          gatherers: ['viewport-dimensions'],
+        }],
       });
-  });
 
-  it('accepts existing auditResults', () => {
-    const url = 'https://example.com';
-    const config = new Config({
-      auditResults: [{
-        name: 'content-width',
-        rawValue: true,
-        score: true,
-        displayValue: '',
-      }],
+      return Runner.run(null, {url, config, driverMock})
+        .then(_ => {
+          assert.ok(false);
+        }, err => {
+          assert.ok(/The config must provide passes/.test(err.message));
+        });
+    });
 
-      categories: {
-        category: {
-          name: 'Category',
-          description: '',
-          audits: [
-            {id: 'content-width', weight: 1},
-          ],
+    it('accepts existing auditResults', () => {
+      const url = 'https://example.com';
+      const config = new Config({
+        auditResults: [{
+          name: 'content-width',
+          rawValue: true,
+          score: true,
+          displayValue: '',
+        }],
+
+        categories: {
+          category: {
+            name: 'Category',
+            description: '',
+            audits: [
+              {id: 'content-width', weight: 1},
+            ],
+          },
         },
-      },
+      });
+
+      return Runner.run(null, {url, config, driverMock}).then(results => {
+        // Mostly checking that this did not throw, but check representative values.
+        assert.equal(results.initialUrl, url);
+        assert.strictEqual(results.audits['content-width'].rawValue, true);
+      });
     });
 
-    return Runner.run(null, {url, config, driverMock}).then(results => {
-      // Mostly checking that this did not throw, but check representative values.
-      assert.equal(results.initialUrl, url);
-      assert.strictEqual(results.audits['content-width'].rawValue, true);
-    });
-  });
-
-  it('returns reportCategories', () => {
-    const url = 'https://example.com';
-    const config = new Config({
-      auditResults: [{
-        name: 'content-width',
-        rawValue: true,
-        score: true,
-        displayValue: 'display',
-      }],
-      categories: {
-        category: {
-          name: 'Category',
-          description: '',
-          audits: [
-            {id: 'content-width', weight: 1},
-          ],
+    it('returns reportCategories', () => {
+      const url = 'https://example.com';
+      const config = new Config({
+        auditResults: [{
+          name: 'content-width',
+          rawValue: true,
+          score: true,
+          displayValue: 'display',
+        }],
+        categories: {
+          category: {
+            name: 'Category',
+            description: '',
+            audits: [
+              {id: 'content-width', weight: 1},
+            ],
+          },
         },
-      },
+      });
+
+      return Runner.run(null, {url, config, driverMock}).then(results => {
+        assert.ok(results.lighthouseVersion);
+        assert.ok(results.generatedTime);
+        assert.equal(results.initialUrl, url);
+        assert.equal(results.audits['content-width'].name, 'content-width');
+        assert.equal(results.reportCategories[0].score, 100);
+        assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
+        assert.equal(results.reportCategories[0].audits[0].score, 100);
+        assert.equal(results.reportCategories[0].audits[0].result.displayValue, 'display');
+      });
     });
 
-    return Runner.run(null, {url, config, driverMock}).then(results => {
-      assert.ok(results.lighthouseVersion);
-      assert.ok(results.generatedTime);
-      assert.equal(results.initialUrl, url);
-      assert.equal(results.audits['content-width'].name, 'content-width');
-      assert.equal(results.reportCategories[0].score, 100);
-      assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
-      assert.equal(results.reportCategories[0].audits[0].score, 100);
-      assert.equal(results.reportCategories[0].audits[0].result.displayValue, 'display');
+    it('results include artifacts when given auditResults', () => {
+      const url = 'https://example.com';
+      const config = new Config({
+        auditResults: [{
+          name: 'is-on-https',
+          rawValue: true,
+          score: true,
+          displayValue: '',
+        }],
+
+        artifacts: {
+          HTTPS: {
+            value: true,
+          },
+        },
+      });
+
+      return Runner.run(null, {url, config, driverMock}).then(results => {
+        assert.strictEqual(results.artifacts.HTTPS.value, true);
+
+        for (const method of Object.keys(computedArtifacts)) {
+          assert.ok(results.artifacts.hasOwnProperty(method));
+        }
+      });
     });
   });
 
@@ -491,31 +524,7 @@ describe('Runner', () => {
     });
   });
 
-  it('results include artifacts when given auditResults', () => {
-    const url = 'https://example.com';
-    const config = new Config({
-      auditResults: [{
-        name: 'is-on-https',
-        rawValue: true,
-        score: true,
-        displayValue: '',
-      }],
 
-      artifacts: {
-        HTTPS: {
-          value: true,
-        },
-      },
-    });
-
-    return Runner.run(null, {url, config, driverMock}).then(results => {
-      assert.strictEqual(results.artifacts.HTTPS.value, true);
-
-      for (const method of Object.keys(computedArtifacts)) {
-        assert.ok(results.artifacts.hasOwnProperty(method));
-      }
-    });
-  });
 
   it('includes any LighthouseRunWarnings from artifacts in output', () => {
     const url = 'https://example.com';
