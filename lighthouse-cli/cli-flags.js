@@ -54,7 +54,7 @@ function getFlags(manualArgv) {
         [
           'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
           'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port',
-          'hostname', 'max-wait-for-load', 'enable-error-reporting',
+          'hostname', 'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
         ],
         'Configuration:')
       .describe({
@@ -66,6 +66,9 @@ function getFlags(manualArgv) {
         'disable-device-emulation': 'Disable Nexus 5X emulation',
         'disable-cpu-throttling': 'Disable CPU throttling',
         'disable-network-throttling': 'Disable network throttling',
+        'gather-mode':
+            'Collect artifacts from a connected browser, save, & quit. However, if audit-mode is also enabled, then the run will complete after saving artifacts to disk.',
+        'audit-mode': 'Process saved artifacts from disk',
         'save-assets': 'Save the trace contents & screenshots to disk',
         'save-artifacts': 'Save all gathered artifacts to disk',
         'list-all-audits': 'Prints a list of all available audits and exits',
@@ -85,6 +88,8 @@ function getFlags(manualArgv) {
         'max-wait-for-load':
             'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
       })
+      // set aliases
+      .alias({'gather-mode': 'G', 'audit-mode': 'A'})
 
       .group(['output', 'output-path', 'view'], 'Output:')
       .describe({
@@ -102,6 +107,7 @@ function getFlags(manualArgv) {
         'disable-storage-reset', 'disable-device-emulation', 'disable-cpu-throttling',
         'disable-network-throttling', 'save-assets', 'save-artifacts', 'list-all-audits',
         'list-trace-categories', 'perf', 'view', 'verbose', 'quiet', 'help',
+        'gather-mode', 'audit-mode',
       ])
       .choices('output', printer.getValidOutputOptions())
       // force as an array

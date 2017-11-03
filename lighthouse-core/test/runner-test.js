@@ -6,16 +6,78 @@
 'use strict';
 
 const Runner = require('../runner');
+const GatherRunner = require('../gather/gather-runner');
 const driverMock = require('./gather/fake-driver');
 const Config = require('../config/config');
 const Audit = require('../audits/audit');
+const assetSaver = require('../lib/asset-saver');
 const assert = require('assert');
 const path = require('path');
+const sinon = require('sinon');
+
 const computedArtifacts = Runner.instantiateComputedArtifacts();
 
 /* eslint-env mocha */
 
 describe('Runner', () => {
+  describe('Gather Mode & Audit Mode', () => {
+    const saveArtifactsSpy = sinon.spy(assetSaver, 'saveArtifacts');
+    const loadArtifactsSpy = sinon.spy(assetSaver, 'loadArtifacts');
+    const gatherRunnerRunSpy = sinon.spy(GatherRunner, 'run');
+    const runAuditSpy = sinon.spy(Runner, '_runAudit');
+
+    const url = 'https://example.com';
+    const generateConfig = _ => new Config({
+      passes: [{
+        gatherers: ['viewport-dimensions'],
+      }],
+      audits: ['content-width'],
+    });
+
+    it('-G gathers, quits, and doesn\'t run audits', () => {
+      saveArtifactsSpy.reset(); loadArtifactsSpy.reset(); gatherRunnerRunSpy.reset(); runAuditSpy.reset();
+
+      const opts = {url, config: generateConfig(), driverMock, flags: {gatherMode: true}};
+      return Runner.run(null, opts).then(_ => {
+        assert.equal(loadArtifactsSpy.called, false, 'loadArtifacts was called');
+
+        assert.equal(saveArtifactsSpy.called, true, 'saveArtifacts was not called');
+        const saveArtifactArg = saveArtifactsSpy.getCall(0).args[0];
+        assert.ok(saveArtifactArg.ViewportDimensions);
+        assert.ok(saveArtifactArg.devtoolsLogs.defaultPass.length > 100);
+
+        assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
+        assert.equal(runAuditSpy.called, false, '_runAudit was called');
+      });
+    });
+
+    // uses the files on disk from the -G test. ;)
+    it('-A audits from saved artifacts and doesn\'t gather', () => {
+      saveArtifactsSpy.reset(); loadArtifactsSpy.reset(); gatherRunnerRunSpy.reset(); runAuditSpy.reset();
+
+
+      const opts = {url, config: generateConfig(), driverMock, flags: {auditMode: true}};
+      return Runner.run(null, opts).then(_ => {
+        assert.equal(loadArtifactsSpy.called, true, 'loadArtifacts was not called');
+        assert.equal(gatherRunnerRunSpy.called, false, 'GatherRunner.run was called');
+        assert.equal(saveArtifactsSpy.called, false, 'saveArtifacts was called');
+        assert.equal(runAuditSpy.called, true, '_runAudit was not called');
+      });
+    });
+
+    it('-GA is a normal run but it saves artifacts to disk', () => {
+      saveArtifactsSpy.reset(); loadArtifactsSpy.reset(); gatherRunnerRunSpy.reset(); runAuditSpy.reset();
+
+      const opts = {url, config: generateConfig(), driverMock, flags: {auditMode: true, gatherMode: true}};
+      return Runner.run(null, opts).then(_ => {
+        assert.equal(loadArtifactsSpy.called, false, 'loadArtifacts was called');
+        assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
+        assert.equal(saveArtifactsSpy.called, true, 'saveArtifacts was not called');
+        assert.equal(runAuditSpy.called, true, '_runAudit was not called');
+      });
+    });
+  });
+
   it('expands gatherers', () => {
     const url = 'https://example.com';
     const config = new Config({
@@ -31,6 +93,7 @@ describe('Runner', () => {
       assert.ok(typeof config.passes[0].gatherers[0] === 'object');
     });
   });
+
 
   it('rejects when given neither passes nor artifacts', () => {
     const url = 'https://example.com';

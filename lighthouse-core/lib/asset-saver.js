@@ -7,10 +7,14 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const log = require('lighthouse-logger');
 const stream = require('stream');
 const stringifySafe = require('json-stringify-safe');
 const Metrics = require('./traces/pwmetrics-events');
+const TraceParser = require('./traces/trace-parser');
+const rimraf = require('rimraf');
+const assert = require('assert');
 
 /**
  * Generate basic HTML page of screenshot filmstrip
@@ -55,19 +59,58 @@ img {
   `;
 }
 
+function loadArtifacts(basePath) {
+  log.log('Reading artifacts from disk:', basePath);
+  const artifacts = JSON.parse(fs.readFileSync(path.join(basePath, 'artifacts.json'), 'utf8'));
+  artifacts.traces = {};
+
+  const filenames = fs.readdirSync(basePath);
+  const promises = filenames.filter(filename => filename.endsWith('-trace.json')).map(filename => {
+    return new Promise(resolve => {
+      const passName = filename.replace('-trace.json', '');
+      const readStream = fs.createReadStream(path.join(basePath, filename), {
+        encoding: 'utf-8',
+        // TODO benchmark to find the best buffer size here
+        highWaterMark: 4 * 1024 * 1024
+      });
+      const parser = new TraceParser();
+      readStream.on('data', chunk => parser.parseChunk(chunk));
+      readStream.on('end', _ => {
+        artifacts.traces[passName] = parser.getTrace();
+        resolve();
+      });
+    });
+  });
+  return Promise.all(promises).then(_ => artifacts);
+}
+
 /**
- * Save entire artifacts object to a single stringified file located at
- * pathWithBasename + .artifacts.log
+ * Save artifacts object mostly to single file located at basePath/artifacts.log.
+ * Also save the traces to their own files
  * @param {!Artifacts} artifacts
- * @param {string} pathWithBasename
+ * @param {string} basePath
  */
 // Set to ignore because testing it would imply testing fs, which isn't strictly necessary.
 /* istanbul ignore next */
-function saveArtifacts(artifacts, pathWithBasename) {
-  const fullPath = `${pathWithBasename}.artifacts.log`;
-  // The networkRecords artifacts have circular references
-  fs.writeFileSync(fullPath, stringifySafe(artifacts));
-  log.log('artifacts file saved to disk', fullPath);
+function saveArtifacts(artifacts, basePath) {
+  assert.notEqual(basePath, '/');
+  rimraf.sync(basePath);
+  fs.mkdirSync(basePath);
+
+  // do traces
+  const traces = artifacts.traces;
+  const savePromies = Object.keys(traces).map(passName => {
+    return saveTrace(traces[passName], `${basePath}/${passName}-trace.json`);
+  });
+
+  const p = Promise.all(savePromies).then(_ => {
+    // do everything else
+    delete artifacts.traces;
+    // The networkRecords artifacts have circular references
+    fs.writeFileSync(`${basePath}/artifacts.json`, stringifySafe(artifacts), 'utf8');
+  });
+  log.log('Artifacts saved to disk in folder:', basePath);
+  return p;
 }
 
 /**
@@ -221,6 +264,7 @@ function logAssets(artifacts, audits) {
 
 module.exports = {
   saveArtifacts,
+  loadArtifacts,
   saveAssets,
   prepareAssets,
   saveTrace,

@@ -110,6 +110,9 @@ function handleError(err) {
 function saveResults(results, artifacts, flags) {
   let promise = Promise.resolve(results);
   const cwd = process.cwd();
+
+  // If we ran in -G, then we have no report to save
+  if (flags.gatherMode || !flags.auditMode) return promise;
   // Use the output path as the prefix for all generated files.
   // If no output path is set, generate a file prefix using the URL and date.
   const configuredPath = !flags.outputPath || flags.outputPath === 'stdout' ?
@@ -162,14 +165,17 @@ function saveResults(results, artifacts, flags) {
 function runLighthouse(url, flags, config) {
   /** @type {!LH.LaunchedChrome} */
   let launchedChrome;
+  const shouldGather = !flags.auditMode;
+  let promise = Promise.resolve();
 
-  return getDebuggableChrome(flags)
-    .then(launchedChromeInstance => {
-      launchedChrome = launchedChromeInstance;
+  if (shouldGather) {
+    promise = promise.then(_ => getDebuggableChrome(flags).then(launchedChromeInstance => {
       flags.port = launchedChrome.port;
-      return lighthouse(url, flags, config);
-    })
-    .then(results => {
+    });
+  }
+  promise = promise.then(_ => lighthouse(url, flags, config));
+
+  return promise.then(results => {
       const artifacts = results.artifacts;
       delete results.artifacts;
 

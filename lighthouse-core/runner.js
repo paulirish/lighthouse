@@ -12,10 +12,13 @@ const ReportScoring = require('./scoring');
 const Audit = require('./audits/audit');
 const emulation = require('./lib/emulation');
 const log = require('lighthouse-logger');
+const assetSaver = require('./lib/asset-saver');
 const fs = require('fs');
 const path = require('path');
 const URL = require('./lib/url-shim');
 const Sentry = require('./lib/sentry');
+
+const basePath = path.join(process.cwd(), 'latest-run');
 
 class Runner {
   static run(connection, opts) {
@@ -57,83 +60,65 @@ class Runner {
     // canonicalize URL with any trailing slashes neccessary
     opts.url = parsedURL.href;
 
-    // Check that there are passes & audits...
-    const validPassesAndAudits = config.passes && config.audits;
-
-    // ... or that there are artifacts & audits.
-    const validArtifactsAndAudits = config.artifacts && config.audits;
-
     // Make a run, which can be .then()'d with whatever needs to run (based on the config).
     let run = Promise.resolve();
 
-    // If there are passes run the GatherRunner and gather the artifacts. If not, we will need
-    // to check that there are artifacts specified in the config, and throw if not.
-    if (validPassesAndAudits || validArtifactsAndAudits) {
-      if (validPassesAndAudits) {
-        // Set up the driver and run gatherers.
-        opts.driver = opts.driverMock || new Driver(connection);
-        run = run.then(_ => GatherRunner.run(config.passes, opts));
-      } else if (validArtifactsAndAudits) {
-        run = run.then(_ => config.artifacts);
-      }
+    // User can run -G solo, -A solo, or -GA together
+    const shouldGatherAndQuit = opts.flags.gatherMode && !opts.flags.auditMode;
+    const shouldOnlyAudit = opts.flags.auditMode && !opts.flags.gatherMode;
+    const shouldDefaultRunButSaveArtifacts = opts.flags.auditMode && opts.flags.gatherMode;
 
-      run = run.then(artifacts => {
-        // Bring in lighthouseRunWarnings from gathering stage.
-        if (artifacts.LighthouseRunWarnings) {
-          lighthouseRunWarnings.push(...artifacts.LighthouseRunWarnings);
-        }
+    const shouldSaveArtifactsToDisk = shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts;
+    const shouldLoadArtifactsFromDisk = shouldOnlyAudit;
+    const shouldGatherFromBrowser = config.passes && !config.artifacts && (shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts);
 
-        // And add computed artifacts.
-        return Object.assign({}, artifacts, Runner.instantiateComputedArtifacts());
-      });
-
-      // Basic check that the traces (gathered or loaded) are valid.
-      run = run.then(artifacts => {
-        for (const passName of Object.keys(artifacts.traces || {})) {
-          const trace = artifacts.traces[passName];
-          if (!Array.isArray(trace.traceEvents)) {
-            throw new Error(passName + ' trace was invalid. `traceEvents` was not an array.');
-          }
-        }
-
-        return artifacts;
-      });
-
-      run = run.then(artifacts => {
-        log.log('status', 'Analyzing and running audits...');
-        return artifacts;
-      });
-
-      // Run each audit sequentially, the auditResults array has all our fine work
-      const auditResults = [];
-      for (const audit of config.audits) {
-        run = run.then(artifacts => {
-          return Runner._runAudit(audit, artifacts)
-            .then(ret => auditResults.push(ret))
-            .then(_ => artifacts);
-        });
-      }
-      run = run.then(artifacts => {
-        return {artifacts, auditResults};
-      });
-    } else if (config.auditResults) {
-      // If there are existing audit results, surface those here.
-      // Instantiate and return artifacts for consistency.
-      const artifacts = Object.assign({}, config.artifacts || {},
-          Runner.instantiateComputedArtifacts());
+    if (shouldLoadArtifactsFromDisk) {
+      config.removePasses();
       run = run.then(_ => {
-        return {
-          artifacts,
-          auditResults: config.auditResults,
-        };
+        return assetSaver.loadArtifacts(basePath).then(artifacts => config._artifacts = artifacts);
       });
-    } else {
-      const err = Error(
-          'The config must provide passes and audits, artifacts and audits, or auditResults');
+    }
+
+    // Entering: Gather phase
+    if (!config.passes && !config.artifacts && !shouldLoadArtifactsFromDisk) {
+      const err = new Error('You must require either gather passes or provide saved artifacts.');
       return Promise.reject(err);
     }
 
-    // Format and generate JSON report before returning.
+    // If we're gathering, let's go collect artifacts from the browser
+    if (shouldGatherFromBrowser) {
+      opts.driver = opts.driverMock || new Driver(connection);
+      // Kick off the gather run
+      run = run.then(_ => GatherRunner.run(config.passes, opts));
+      // Potentially quit now if we ran -G (but not -GA)
+      if (shouldSaveArtifactsToDisk) {
+        run = run.then(artifacts => assetSaver.saveArtifacts(artifacts, basePath).then(_ => {}));
+      }
+      if (shouldGatherAndQuit) return run;
+    }
+
+    // Entering: Audit phase
+    if (!config.audits) {
+      const err = new Error(
+          'The run cannot continue as the config has defined no audits to evaluate.');
+      return Promise.reject(err);
+    }
+
+    // Run the audits
+    run = run.then(artifacts => {
+      log.log('status', 'Analyzing and running audits...');
+      artifacts = Object.assign(Runner.instantiateComputedArtifacts(), artifacts || config.artifacts);
+
+      // Bring in lighthouseRunWarnings from gathering stage.
+      if (artifacts.LighthouseRunWarnings) {
+        lighthouseRunWarnings.push(...artifacts.LighthouseRunWarnings);
+      }
+      // Run each audit sequentially
+      const promises = config.audits.map(audit => Runner._runAudit(audit, artifacts));
+      return Promise.all(promises).then(auditResults => ({artifacts, auditResults}));
+    });
+
+    // Entering: Conclusion of the lighthouse result object
     run = run
       .then(runResults => {
         log.log('status', 'Generating results...');
@@ -174,6 +159,7 @@ class Runner {
 
     return run;
   }
+
 
   /**
    * Checks that the audit's required artifacts exist and runs the audit if so.

@@ -73,7 +73,7 @@
     "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
     "npm-run-posix-or-windows": "^2.0.2",
-    "typescript": "^2.6.1",
+    "sinon": "^2.3.5",
     "zone.js": "^0.7.3"
   },
   "dependencies": {

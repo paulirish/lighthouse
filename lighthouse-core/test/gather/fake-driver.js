@@ -44,6 +44,9 @@ module.exports = {
   cacheNatives() {
     return Promise.resolve();
   },
+  evaluateAsync() {
+    return Promise.resolve({});
+  },
   registerPerformanceObserver() {
     return Promise.resolve();
   },
