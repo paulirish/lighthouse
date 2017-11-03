@@ -87,7 +87,7 @@ describe('Module Tests', function() {
       });
   });
 
-  it('should return formatted audit results when given no categories', function() {
+  it.skip('should return formatted audit results when given no categories', function() {
     const exampleUrl = 'https://example.com/';
     return lighthouse(exampleUrl, {
       output: 'json',

@@ -119,26 +119,6 @@ describe('Config', () => {
     assert.equal(configJSON.passes[0].gatherers.length, 2);
   });
 
-  it('contains new copies of auditResults', () => {
-    const configJSON = origConfig;
-    configJSON.auditResults = [{
-      value: 1,
-      rawValue: 1.0,
-      name: 'Test Audit',
-      details: {
-        items: {
-          a: 1,
-        },
-      },
-    }];
-
-    const config = new Config(configJSON);
-    assert.notEqual(config, configJSON, 'Objects are strictly different');
-    assert.ok(config.auditResults, 'Audits array exists');
-    assert.notEqual(config.auditResults, configJSON.auditResults, 'Audits not same object');
-    assert.deepStrictEqual(config.auditResults, configJSON.auditResults, 'Audits match');
-  });
-
   it('expands audits', () => {
     const config = new Config({
       audits: ['user-timings'],

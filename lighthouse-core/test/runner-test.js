@@ -332,109 +332,53 @@ describe('Runner', () => {
     });
   });
 
-  describe.skip('auditResults', () => {
-    it('rejects when given neither audits nor auditResults', () => {
-      const url = 'https://example.com';
-      const config = new Config({
-        passes: [{
-          gatherers: ['viewport-dimensions'],
-        }],
-      });
-
-      return Runner.run(null, {url, config, driverMock})
-        .then(_ => {
-          assert.ok(false);
-        }, err => {
-          assert.ok(/The config must provide passes/.test(err.message));
-        });
+  it('rejects when not given audits to run (and not -G)', () => {
+    const url = 'https://example.com';
+    const config = new Config({
+      passes: [{
+        gatherers: ['viewport-dimensions'],
+      }],
     });
 
-    it('accepts existing auditResults', () => {
-      const url = 'https://example.com';
-      const config = new Config({
-        auditResults: [{
-          name: 'content-width',
-          rawValue: true,
-          score: true,
-          displayValue: '',
-        }],
+    return Runner.run(null, {url, config, driverMock})
+      .then(_ => {
+        assert.ok(false);
+      }, err => {
+        assert.ok(/the config has defined no audits to evaluate/.test(err.message));
+      });
+  });
 
-        categories: {
-          category: {
-            name: 'Category',
-            description: '',
-            audits: [
-              {id: 'content-width', weight: 1},
-            ],
-          },
+  it('returns reportCategories', () => {
+    const url = 'https://example.com';
+    const config = new Config({
+      passes: [{
+        gatherers: ['viewport-dimensions'],
+      }],
+      audits: [
+        'content-width',
+      ],
+      categories: {
+        category: {
+          name: 'Category',
+          description: '',
+          audits: [
+            {id: 'content-width', weight: 1},
+          ],
         },
-      });
-
-      return Runner.run(null, {url, config, driverMock}).then(results => {
-        // Mostly checking that this did not throw, but check representative values.
-        assert.equal(results.initialUrl, url);
-        assert.strictEqual(results.audits['content-width'].rawValue, true);
-      });
+      },
     });
 
-    it('returns reportCategories', () => {
-      const url = 'https://example.com';
-      const config = new Config({
-        auditResults: [{
-          name: 'content-width',
-          rawValue: true,
-          score: true,
-          displayValue: 'display',
-        }],
-        categories: {
-          category: {
-            name: 'Category',
-            description: '',
-            audits: [
-              {id: 'content-width', weight: 1},
-            ],
-          },
-        },
-      });
-
-      return Runner.run(null, {url, config, driverMock}).then(results => {
-        assert.ok(results.lighthouseVersion);
-        assert.ok(results.generatedTime);
-        assert.equal(results.initialUrl, url);
-        assert.equal(results.audits['content-width'].name, 'content-width');
-        assert.equal(results.reportCategories[0].score, 100);
-        assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
-        assert.equal(results.reportCategories[0].audits[0].score, 100);
-        assert.equal(results.reportCategories[0].audits[0].result.displayValue, 'display');
-      });
-    });
-
-    it('results include artifacts when given auditResults', () => {
-      const url = 'https://example.com';
-      const config = new Config({
-        auditResults: [{
-          name: 'is-on-https',
-          rawValue: true,
-          score: true,
-          displayValue: '',
-        }],
-
-        artifacts: {
-          HTTPS: {
-            value: true,
-          },
-        },
-      });
-
-      return Runner.run(null, {url, config, driverMock}).then(results => {
-        assert.strictEqual(results.artifacts.HTTPS.value, true);
-
-        for (const method of Object.keys(computedArtifacts)) {
-          assert.ok(results.artifacts.hasOwnProperty(method));
-        }
-      });
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      assert.ok(results.lighthouseVersion);
+      assert.ok(results.generatedTime);
+      assert.equal(results.initialUrl, url);
+      assert.equal(results.audits['content-width'].name, 'content-width');
+      assert.equal(results.reportCategories[0].score, 100);
+      assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
+      assert.equal(results.reportCategories[0].audits[0].score, 100);
     });
   });
+
 
   it('rejects when not given a URL', () => {
     return Runner.run({}, {}).then(_ => assert.ok(false), _ => assert.ok(true));
@@ -523,8 +467,6 @@ describe('Runner', () => {
       });
     });
   });
-
-
 
   it('includes any LighthouseRunWarnings from artifacts in output', () => {
     const url = 'https://example.com';
