@@ -22,7 +22,6 @@ const basePath = path.join(process.cwd(), 'latest-run');
 
 class Runner {
   static run(connection, opts) {
-    debugger;
     // Clean opts input.
     opts.flags = opts.flags || {};
 
@@ -72,7 +71,8 @@ class Runner {
 
     const shouldSaveArtifactsToDisk = shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts;
     const shouldLoadArtifactsFromDisk = shouldOnlyAudit;
-    const shouldGatherFromBrowser = config.passes && !config.artifacts && (shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts || shouldDoTypicalRun);
+    const shouldGatherFromBrowser = config.passes && !config.artifacts &&
+        (shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts || shouldDoTypicalRun);
 
     if (shouldLoadArtifactsFromDisk) {
       config.removePasses();
@@ -109,7 +109,8 @@ class Runner {
     // Run the audits
     run = run.then(artifacts => {
       log.log('status', 'Analyzing and running audits...');
-      artifacts = Object.assign(Runner.instantiateComputedArtifacts(), artifacts || config.artifacts);
+      artifacts = Object.assign(Runner.instantiateComputedArtifacts(),
+          artifacts || config.artifacts);
 
       // Bring in lighthouseRunWarnings from gathering stage.
       if (artifacts.LighthouseRunWarnings) {

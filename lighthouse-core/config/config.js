@@ -268,8 +268,6 @@ class Config {
    * @param {string=} configPath The absolute path to the config file, if there is one.
    */
   constructor(configJSON, configPath) {
-    debugger;
-
     if (!configJSON) {
       configJSON = defaultConfig;
       configPath = path.resolve(__dirname, defaultConfigPath);
@@ -304,8 +302,6 @@ class Config {
     }
 
     // Generate a limited config if specified
-    debugger;
-
     if (configJSON.settings &&
         (Array.isArray(configJSON.settings.onlyCategories) ||
         Array.isArray(configJSON.settings.onlyAudits) ||
@@ -363,7 +359,6 @@ class Config {
    * @return {!Object} A new config
    */
   static generateNewFilteredConfig(oldConfig, categoryIds, auditIds, skipAuditIds) {
-    debugger;
     // 0. Clone config to avoid mutating it
     const config = deepClone(oldConfig);
     // 1. Filter to just the chosen categories
@@ -520,7 +515,6 @@ class Config {
    * @return {!Object} fresh passes object
    */
   static generatePassesNeededByGatherers(oldPasses, requiredGatherers) {
-    debugger;
     const auditsNeedTrace = requiredGatherers.has('traces');
     const passes = JSON.parse(JSON.stringify(oldPasses));
     const filteredPasses = passes.map(pass => {

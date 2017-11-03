@@ -72,7 +72,8 @@ describe('Runner', () => {
     });
 
     it('-GA is a normal run but it saves artifacts to disk', () => {
-      const opts = {url, config: generateConfig(), driverMock, flags: {auditMode: true, gatherMode: true}};
+      const opts = {url, config: generateConfig(), driverMock,
+        flags: {auditMode: true, gatherMode: true}};
       return Runner.run(null, opts).then(_ => {
         assert.equal(loadArtifactsSpy.called, false, 'loadArtifacts was called');
         assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');

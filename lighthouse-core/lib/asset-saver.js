@@ -71,7 +71,7 @@ function loadArtifacts(basePath) {
       const readStream = fs.createReadStream(path.join(basePath, filename), {
         encoding: 'utf-8',
         // TODO benchmark to find the best buffer size here
-        highWaterMark: 4 * 1024 * 1024
+        highWaterMark: 4 * 1024 * 1024,
       });
       const parser = new TraceParser();
       readStream.on('data', chunk => parser.parseChunk(chunk));
