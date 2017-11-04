@@ -87,7 +87,6 @@
     "inquirer": "^3.3.0",
     "jpeg-js": "0.1.2",
     "js-library-detector": "^4.3.1",
-    "json-stringify-safe": "5.0.1",
     "lighthouse-logger": "^1.0.0",
     "metaviewport-parser": "0.1.0",
     "mkdirp": "0.5.1",

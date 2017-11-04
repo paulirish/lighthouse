@@ -548,7 +548,6 @@ describe('GatherRunner', function() {
     return GatherRunner.run(passes, options)
       .then(artifacts => {
         assert.equal(artifacts.networkRecords, undefined);
-        assert.equal(artifacts.networkRecords, undefined);
       });
   });
 

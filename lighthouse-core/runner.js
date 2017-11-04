@@ -67,15 +67,14 @@ class Runner {
     const shouldGatherAndQuit = opts.flags.gatherMode && !opts.flags.auditMode;
     const shouldOnlyAudit = opts.flags.auditMode && !opts.flags.gatherMode;
     const shouldDefaultRunButSaveArtifacts = opts.flags.auditMode && opts.flags.gatherMode;
-    const shouldDoTypicalRun = !opts.flags.gatherMode && !opts.flags.auditMode;
+    const shouldDoDefaultRun = !opts.flags.gatherMode && !opts.flags.auditMode;
 
     const shouldSaveArtifactsToDisk = shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts;
     const shouldLoadArtifactsFromDisk = shouldOnlyAudit;
     const shouldGatherFromBrowser = config.passes && !config.artifacts &&
-        (shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts || shouldDoTypicalRun);
+        (shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts || shouldDoDefaultRun);
 
     if (shouldLoadArtifactsFromDisk) {
-      config.removePasses();
       run = run.then(_ => {
         return assetSaver.loadArtifacts(basePath).then(artifacts => config._artifacts = artifacts);
       });
