@@ -69,8 +69,20 @@ module.exports = {
       'http-redirect',
       'html-without-javascript',
     ],
+  },
+  {
+    passName: 'mixedContentPass',
+    recordTrace: true,
+    pauseAfterLoadMs: 5250,
+    networkQuietThresholdMs: 5250,
+    cpuQuietThresholdMs: 5250,
+    useThrottling: true,
+    gatherers: [
+      'mixed-content',
+    ],
   }],
   audits: [
+    'mixed-content',
     'is-on-https',
     'redirects-http',
     'service-worker',
@@ -366,6 +378,7 @@ module.exports = {
         {id: 'appcache-manifest', weight: 1},
         {id: 'no-websql', weight: 1},
         {id: 'is-on-https', weight: 1},
+        {id: 'mixed-content', weight: 1},
         {id: 'uses-http2', weight: 1},
         {id: 'uses-passive-event-listeners', weight: 1},
         {id: 'no-mutation-events', weight: 1},
