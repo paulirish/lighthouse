@@ -108,6 +108,9 @@ function handleError(err) {
  * @return {!Promise<void>}
  */
 function saveResults(results, artifacts, flags) {
+  const shouldSaveResults = flags.auditMode || (flags.gatherMode == flags.auditMode);
+  if (shouldSaveResults) return;
+
   let promise = Promise.resolve(results);
   const cwd = process.cwd();
 
