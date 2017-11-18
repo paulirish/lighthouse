@@ -113,7 +113,7 @@ describe('Runner', () => {
       .then(_ => {
         assert.ok(false);
       }, err => {
-        assert.ok(/You must require either gather passes or/.test(err.message));
+        assert.ok(/No browser artifacts are either/.test(err.message));
       });
   });
 
@@ -345,9 +345,31 @@ describe('Runner', () => {
       .then(_ => {
         assert.ok(false);
       }, err => {
-        assert.ok(/the config has defined no audits to evaluate/.test(err.message));
+        assert.ok(/No audits to evaluate/.test(err.message));
       });
   });
+
+  it('returns data even if no config categories are provided', () => {
+    const url = 'https://example.com';
+    const config = new Config({
+      passes: [{
+        gatherers: ['viewport-dimensions'],
+      }],
+      audits: [
+        'content-width',
+      ],
+    });
+
+    return Runner.run(null, {url, config, driverMock}).then(results => {
+      assert.ok(results.lighthouseVersion);
+      assert.ok(results.generatedTime);
+      assert.equal(results.initialUrl, url);
+      assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
+      assert.equal(results.audits['content-width'].name, 'content-width');
+      assert.equal(results.score, 0);
+    });
+  });
+
 
   it('returns reportCategories', () => {
     const url = 'https://example.com';
@@ -373,6 +395,7 @@ describe('Runner', () => {
       assert.ok(results.lighthouseVersion);
       assert.ok(results.generatedTime);
       assert.equal(results.initialUrl, url);
+      assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
       assert.equal(results.audits['content-width'].name, 'content-width');
       assert.equal(results.reportCategories[0].score, 100);
       assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
