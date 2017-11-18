@@ -13,6 +13,7 @@ const stream = require('stream');
 const Metrics = require('./traces/pwmetrics-events');
 const TraceParser = require('./traces/trace-parser');
 const rimraf = require('rimraf');
+const mkdirp = require('mkdirp');
 
 /**
  * Generate basic HTML page of screenshot filmstrip
@@ -71,6 +72,9 @@ const devtoolsLogSuffix = '.devtoolslog.json';
 /* istanbul ignore next */
 function loadArtifacts(basePath) {
   log.log('Reading artifacts from disk:', basePath);
+
+  if (!fs.existsSync(basePath)) return Promise.reject(new Error('No saved artifacts found'));
+
   // load artifacts.json
   const filenames = fs.readdirSync(basePath);
   const artifacts = JSON.parse(fs.readFileSync(path.join(basePath, artifactsFilename), 'utf8'));
@@ -112,9 +116,7 @@ function loadArtifacts(basePath) {
 // Set to ignore because testing it would imply testing fs, which isn't strictly necessary.
 /* istanbul ignore next */
 function saveArtifacts(artifacts, basePath) {
-  if (!fs.existsSync(basePath)) {
-    fs.mkdirSync(basePath);
-  }
+  mkdirp.sync(basePath);
   rimraf.sync(`${basePath}/*${traceSuffix}`);
   rimraf.sync(`${basePath}/${artifactsFilename}`);
 
