@@ -25,8 +25,6 @@ class Runner {
     // Clean opts input.
     opts.flags = opts.flags || {};
 
-    const config = opts.config;
-
     // List of top-level warnings for this Lighthouse run.
     const lighthouseRunWarnings = [];
 
@@ -64,104 +62,139 @@ class Runner {
     let run = Promise.resolve();
 
     // User can run -G solo, -A solo, or -GA together
-    const shouldGatherAndQuit = opts.flags.gatherMode && !opts.flags.auditMode;
-    const shouldOnlyAudit = opts.flags.auditMode && !opts.flags.gatherMode;
-    const shouldDefaultRunButSaveArtifacts = opts.flags.auditMode && opts.flags.gatherMode;
-    const shouldDoDefaultRun = !opts.flags.gatherMode && !opts.flags.auditMode;
+    // -G and -A will do run partial lighthouse pipelines,
+    // and -GA will run everything plus save artifacts to disk
 
-    const shouldSaveArtifactsToDisk = shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts;
-    const shouldLoadArtifactsFromDisk = shouldOnlyAudit;
-    const shouldGatherFromBrowser = config.passes && !config.artifacts &&
-        (shouldGatherAndQuit || shouldDefaultRunButSaveArtifacts || shouldDoDefaultRun);
+    // Gather phase
+    // Either load saved artifacts off disk, from config, or get from the browser
+    if (opts.flags.auditMode && !opts.flags.gatherMode) {
+      run = run.then(_ => Runner._loadArtifactsFromDisk());
+    } else if (opts.config.artifacts) {
+      run = run.then(_ => opts.config.artifacts);
+    } else {
+      run = run.then(_ => Runner._gatherArtifactsFromBrowser(opts, connection));
+    }
 
-    if (shouldLoadArtifactsFromDisk) {
-      run = run.then(_ => {
-        return assetSaver.loadArtifacts(basePath).then(artifacts => config._artifacts = artifacts);
+    // Potentially quit early
+    if (opts.flags.gatherMode && !opts.flags.auditMode) return run;
+
+    // Audit phase
+    run = run.then(artifacts => Runner._runAudits(opts, artifacts));
+
+    // LHR construction phase
+    run = run.then(runResults => {
+      log.log('status', 'Generating results...');
+
+      if (runResults.artifacts.LighthouseRunWarnings) {
+        lighthouseRunWarnings.push(...runResults.artifacts.LighthouseRunWarnings);
+      }
+
+      // Entering: Conclusion of the lighthouse result object
+      const resultsById = {};
+      for (const audit of runResults.auditResults) resultsById[audit.name] = audit;
+
+      let report;
+      if (opts.config.categories) {
+        report = Runner._scoreAndCategorize(opts, resultsById);
+      }
+
+      return {
+        userAgent: runResults.artifacts.UserAgent,
+        lighthouseVersion: require('../package').version,
+        generatedTime: (new Date()).toJSON(),
+        initialUrl: opts.initialUrl,
+        url: opts.url,
+        runWarnings: lighthouseRunWarnings,
+        audits: resultsById,
+        artifacts: runResults.artifacts,
+        runtimeConfig: Runner.getRuntimeConfig(opts.flags),
+        score: report ? report.score : 0,
+        reportCategories: report ? report.categories : [],
+        reportGroups: opts.config.groups,
+      };
+    }).catch(err => {
+      return Sentry.captureException(err, {level: 'fatal'}).then(() => {
+        throw err;
       });
-    }
-
-    // Entering: Gather phase
-    if (!config.passes && !config.artifacts && !shouldLoadArtifactsFromDisk) {
-      const err = new Error('You must require either gather passes or provide saved artifacts.');
-      return Promise.reject(err);
-    }
-
-    // If we're gathering, let's go collect artifacts from the browser
-    if (shouldGatherFromBrowser) {
-      opts.driver = opts.driverMock || new Driver(connection);
-      // Kick off the gather run
-      run = run.then(_ => GatherRunner.run(config.passes, opts));
-      // Potentially quit now if we ran -G (but not -GA)
-      if (shouldSaveArtifactsToDisk) {
-        run = run.then(artifacts => assetSaver.saveArtifacts(artifacts, basePath).then(_ => {}));
-      }
-      if (shouldGatherAndQuit) return run;
-    }
-
-    // Entering: Audit phase
-    if (!config.audits) {
-      const err = new Error(
-          'The run cannot continue as the config has defined no audits to evaluate.');
-      return Promise.reject(err);
-    }
-
-    // Run the audits
-    run = run.then(artifacts => {
-      log.log('status', 'Analyzing and running audits...');
-      artifacts = Object.assign(Runner.instantiateComputedArtifacts(),
-          artifacts || config.artifacts);
-
-      // Bring in lighthouseRunWarnings from gathering stage.
-      if (artifacts.LighthouseRunWarnings) {
-        lighthouseRunWarnings.push(...artifacts.LighthouseRunWarnings);
-      }
-      // Run each audit sequentially
-      const promises = config.audits.map(audit => Runner._runAudit(audit, artifacts));
-      return Promise.all(promises).then(auditResults => ({artifacts, auditResults}));
     });
-
-    // Entering: Conclusion of the lighthouse result object
-    run = run
-      .then(runResults => {
-        log.log('status', 'Generating results...');
-
-        const resultsById = runResults.auditResults.reduce((results, audit) => {
-          results[audit.name] = audit;
-          return results;
-        }, {});
-
-        let reportCategories = [];
-        let score = 0;
-        if (config.categories) {
-          const report = ReportScoring.scoreAllCategories(config, resultsById);
-          reportCategories = report.categories;
-          score = report.score;
-        }
-
-        return {
-          userAgent: runResults.artifacts.UserAgent,
-          lighthouseVersion: require('../package').version,
-          generatedTime: (new Date()).toJSON(),
-          initialUrl: opts.initialUrl,
-          url: opts.url,
-          runWarnings: lighthouseRunWarnings,
-          audits: resultsById,
-          artifacts: runResults.artifacts,
-          runtimeConfig: Runner.getRuntimeConfig(opts.flags),
-          score,
-          reportCategories,
-          reportGroups: config.groups,
-        };
-      })
-      .catch(err => {
-        return Sentry.captureException(err, {level: 'fatal'}).then(() => {
-          throw err;
-        });
-      });
 
     return run;
   }
 
+  /**
+   * No browser required, just load the artifacts from disk
+   * @return {!Promise<!Artifacts>}
+   */
+  static _loadArtifactsFromDisk() {
+    return assetSaver.loadArtifacts(basePath);
+  }
+
+  /**
+   * Establish connection, load page and collect all required artifacts
+   * @param {*} opts
+   * @param {*} connection
+   * @return {!Promise<!Artifacts>}
+   */
+  static _gatherArtifactsFromBrowser(opts, connection) {
+    if (!opts.config.passes) {
+      return Promise.reject(new Error('No browser artifacts are either provided or requested.'));
+    }
+
+    opts.driver = opts.driverMock || new Driver(connection);
+    return GatherRunner.run(opts.config.passes, opts).then(artifacts => {
+      const flags = opts.flags;
+      const shouldSave = flags.gatherMode || flags.gatherMode === flags.auditMode;
+      const p = shouldSave ? Runner._saveArtifacts(artifacts): Promise.resolve();
+      return p.then(_ => artifacts);
+    });
+  }
+
+  /**
+   * Save collected artifacts to disk
+   * @param {!Artifacts} artifacts
+   * @return {!Promise>}
+   */
+  static _saveArtifacts(artifacts) {
+    return assetSaver.saveArtifacts(artifacts, basePath);
+  }
+
+  /**
+   * Save collected artifacts to disk
+   * @param {*} opts
+   * @param {!Artifacts} artifacts
+   * @return {!Promise<{auditResults: AuditResults, artifacts: Artifacts}>>}
+   */
+  static _runAudits(opts, artifacts) {
+    if (!opts.config.audits) {
+      return Promise.reject(new Error('No audits to evaluate.'));
+    }
+
+    log.log('status', 'Analyzing and running audits...');
+    artifacts = Object.assign(Runner.instantiateComputedArtifacts(),
+        artifacts || opts.config.artifacts);
+
+    // Run each audit sequentially
+    const auditResults = [];
+    let promise = Promise.resolve();
+    for (const audit of opts.config.audits) {
+      promise = promise.then(_ => {
+        return Runner._runAudit(audit, artifacts).then(ret => auditResults.push(ret));
+      });
+    }
+    return promise.then(_ => {
+      const runResults = {artifacts, auditResults};
+      return runResults;
+    });
+  }
+
+  /**
+   * @param {{}} opts
+   * @param {{}} resultsById
+   */
+  static _scoreAndCategorize(opts, resultsById) {
+    const reportGenerator = new ReportGeneratorV2();
+    return reportGenerator.generateReportJson(opts.config, resultsById);
+  }
 
   /**
    * Checks that the audit's required artifacts exist and runs the audit if so.
