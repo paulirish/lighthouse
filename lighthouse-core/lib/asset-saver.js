@@ -137,7 +137,7 @@ function saveArtifacts(artifacts, basePath) {
       fs.writeFileSync(`${basePath}/${passName}${devtoolsLogSuffix}`, log, 'utf8');
     });
     delete artifacts.traces;
-    delete artifacts.devtoolsLog;
+    delete artifacts.devtoolsLogs;
   });
 
   // save everything else
