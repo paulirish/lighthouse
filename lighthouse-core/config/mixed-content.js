@@ -6,30 +6,28 @@
 'use strict';
 
 module.exports = {
-  // 1. Run your custom tests along with all the default Lighthouse tests.
-  //extends: 'lighthouse:default',
-
-  // 2. Add gatherer to the default Lighthouse load ('pass') of the page.
+  // We perform two passes:
+  // (1) Gather the default resources requested by the page, and
+  // (2) Re-load page but attempt to upgrade each request to HTTPS.
   passes: [{
     passName: 'defaultPass',
+    recordTrace: true,
     gatherers: ['url'],
   }, {
-    passName: 'mixedContent',
+    passName: 'mixedContentPass',
+    recordTrace: true,
     gatherers: ['mixed-content'],
   }],
 
-  // 3. Add custom audit to the list of audits 'lighthouse:default' will run.
   audits: [
     'mixed-content',
   ],
 
-  // 4. Create a new 'My site metrics' section in the default report for our results.
   categories: {
     mixedContent: {
       name: 'Mixed Content',
       description: 'Mixed',
       audits: [
-        // When we add more custom audits, `weight` controls how they're averaged together.
         {id: 'mixed-content', weight: 1},
       ],
     },
