@@ -6,8 +6,7 @@
 'use strict';
 
 const Gatherer = require('./gatherer');
-//const DOMHelpers = require('../../lib/dom-helpers.js');
-
+const URL = require('../../lib/url-shim');
 
 /**
  * This gatherer sets the Network requestInterceptor so that we can
@@ -22,37 +21,49 @@ const Gatherer = require('./gatherer');
 class MixedContent extends Gatherer {
   constructor() {
     super();
-    this._preRedirectUrl;
+    this._idsSeen = new Set();
     this._urlsSeen = new Set();
+    this._baseUrl;
   }
-  // TODO(cthomp): Current problem is that if a site re-directs back to HTTP, we will continue
-  // re-intercepting the request repeatedly (and often crash). Maybe we can track a list of 
-  // requests we've already seen so we can try at-most-once to upgrade each.
-  // The baseUrl is also very brittle under redirects of the page -- can we step through redirects
-  // at all here to avoid that? Will this be handled by the at-most-once check?
-  // (Other concern: We want the main page to be HTTP, so if an upgrade is possible, we then lose
-  // active-mixed-content upgrade checking.)
+
+  upgradeURL(url) {
+    let parsedURL = new URL(url);
+    parsedURL.protocol = 'https:';
+    console.log(`*UPGRADED: ${parsedURL.href}`);
+    return parsedURL.href;
+  }
+
+  // Track a list of requests we've already seen so we can try at-most-once to upgrade each.
+  // This avoids repeatedly intercepting a request if it gets downgraded back to HTTP.
   _onRequestIntercepted(driver, event) {
     if (!this._urlsSeen.has(event.request.url)) {
-    // if (event.request.url != baseUrl) {
-        console.log(`*Upgrading a request: ${event.request.url}`);
-        this._urlsSeen.add(event.request.url);
-        event.request.url = event.request.url.replace(/^http:\/\//, 'https://');
+    // if (event.request.url != this._baseUrl && !this._idsSeen.has(event.interceptionId)) {
+      console.log(`*Upgrading a request: ${event.request.url}`);
+      // this._idsSeen.add(event.interceptionId);
+      this._urlsSeen.add(event.request.url);
+      event.request.url = this.upgradeURL(event.request.url); //.replace(/^http:\/\//, 'https://');
+      driver.sendCommand('Network.continueInterceptedRequest', {
+        interceptionId: event.interceptionId, url: event.request.url
+      });
     } else {
-      console.log(`[Already seen url: ${event.request.url}]`);
-    }  // Don't upgrade main URL.
-    driver.sendCommand('Network.continueInterceptedRequest', {
-      interceptionId: event.interceptionId, url: event.request.url
-    });
+      console.log(`[Already handled: ${event.request.url}]`);
+      driver.sendCommand('Network.continueInterceptedRequest', {
+          interceptionId: event.interceptionId, 
+      });
+    }
+    
   }
 
   beforePass(options) {
     const driver = options.driver;
-    // const baseUrl = options.url;
+    // TODO(cthomp): The base URL is very brittle under redirects of the page. Can we step through
+    // redirects at all here to avoid that (find the final URL)? The worst case is we accidentally upgrade
+    // the final base URL to HTTPS and lose the ability to check upgrading active mixed content.
     this._urlsSeen.add(options.url);
+    // this._baseUrl = options.url;
     driver.sendCommand('Network.enable', {});
     driver.on('Network.requestIntercepted', this._onRequestIntercepted.bind(this, driver));
-    // driver.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
+    driver.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
     driver.sendCommand('Network.setRequestInterception', {patterns: [{urlPattern: "http://*/*"}]});
   }
 
@@ -60,10 +71,6 @@ class MixedContent extends Gatherer {
     // Get a list of successful and unsuccessful requests.
     // "Unsuccessful" is a heuristic for "not available on HTTPS".
     // "Successful" means it is available.
-    // We can then compare to the default-pass to determine:
-    // - Requests that were HTTP by default but succeeded as HTTPS
-    // ("UPGRADABLE")
-    // - Requests that were HTTP by default but failed as HTTPS ("BLOCKER")
     const driver = options.driver;
     const baseUrl = options.url;
     return Promise.resolve()
