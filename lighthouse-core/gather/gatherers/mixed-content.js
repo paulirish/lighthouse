@@ -8,15 +8,18 @@
 const Gatherer = require('./gatherer');
 const URL = require('../../lib/url-shim');
 
+const btoa = function (str) { return Buffer.from(str, 'utf8').toString('base64'); }
+
 /**
- * This gatherer sets the Network requestInterceptor so that we can
- * capture all requests, change them to HTTPS, and pass them along. In the audit
- * we try to determine what mixed content is able to switch to HTTPS and which
- * isn't.
+ * This gatherer sets the Network requestInterceptor so that we can intercept every
+ * HTTP request and send an HTTP 302 Found redirect back to redirect the request
+ * to HTTPS (this is done instead of upgrading the URL in place as that would be
+ * invisible to the client and the network records). In the audit we try to 
+ * determine what mixed content is able to switch to HTTPS and which is not.
  * 
  * The limitation of this approach is that it works best for testing HTTP pages.
  * For pages that are HTTPS, it will fail to test any active mixed content
- * (e.g. JavaScript).
+ * (e.g. JavaScript) as it will be blocked before it can be intercepted.
  */
 class MixedContent extends Gatherer {
   constructor() {
@@ -24,29 +27,45 @@ class MixedContent extends Gatherer {
     this._idsSeen = new Set();
     this._urlsSeen = new Set();
     this._baseUrl;
+    this._responses = new Map();
   }
 
+  /**
+   * @param {string} url 
+   */
   upgradeURL(url) {
     let parsedURL = new URL(url);
     parsedURL.protocol = 'https:';
-    console.log(`*UPGRADED: ${parsedURL.href}`);
     return parsedURL.href;
   }
 
-  // Track a list of requests we've already seen so we can try at-most-once to upgrade each.
-  // This avoids repeatedly intercepting a request if it gets downgraded back to HTTP.
+  /**
+   * @param {string} url 
+   */
+  downgradeURL(url) {
+    let parsedURL = new URL(url);
+    parsedURL.protocol = 'http:';
+    return parsedURL.href;
+  }
+
   _onRequestIntercepted(driver, event) {
-    if (!this._urlsSeen.has(event.request.url)) {
+    // Track a list of requests we've already seen so we can try at-most-once to upgrade each.
+    // This avoids repeatedly intercepting a request if it gets downgraded back to HTTP.
+    if (event.request.url != this._baseUrl) {
+    // if (!this._urlsSeen.has(event.request.url)) {
     // if (event.request.url != this._baseUrl && !this._idsSeen.has(event.interceptionId)) {
-      console.log(`*Upgrading a request: ${event.request.url}`);
+      // console.log(`*Upgrading a request: ${event.request.url}`);
       // this._idsSeen.add(event.interceptionId);
       this._urlsSeen.add(event.request.url);
       event.request.url = this.upgradeURL(event.request.url); //.replace(/^http:\/\//, 'https://');
+      // console.log("B64 REDIRECT: ", btoa(`HTTP/1.1 302 Found\r\nLocation: ${event.request.url}\r\n\r\n`));
       driver.sendCommand('Network.continueInterceptedRequest', {
-        interceptionId: event.interceptionId, url: event.request.url
+        // interceptionId: event.interceptionId, url: event.request.url
+        interceptionId: event.interceptionId,
+        rawResponse: btoa(`HTTP/1.1 302 Found\r\nLocation: ${event.request.url}\r\n\r\n`)
       });
     } else {
-      console.log(`[Already handled: ${event.request.url}]`);
+      // console.log(`[Already handled: ${event.request.url}]`);
       driver.sendCommand('Network.continueInterceptedRequest', {
           interceptionId: event.interceptionId, 
       });
@@ -59,26 +78,27 @@ class MixedContent extends Gatherer {
     // TODO(cthomp): The base URL is very brittle under redirects of the page. Can we step through
     // redirects at all here to avoid that (find the final URL)? The worst case is we accidentally upgrade
     // the final base URL to HTTPS and lose the ability to check upgrading active mixed content.
+    options.url = this.downgradeURL(options.url);
     this._urlsSeen.add(options.url);
-    // this._baseUrl = options.url;
+    this._baseUrl = options.url;
     driver.sendCommand('Network.enable', {});
     driver.on('Network.requestIntercepted', this._onRequestIntercepted.bind(this, driver));
+    // driver.on('Network.responseReceived', this._onResponseReceived.bind(this));
     driver.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
     driver.sendCommand('Network.setRequestInterception', {patterns: [{urlPattern: "http://*/*"}]});
   }
 
   afterPass(options, traceData) {
-    // Get a list of successful and unsuccessful requests.
-    // "Unsuccessful" is a heuristic for "not available on HTTPS".
-    // "Successful" means it is available.
     const driver = options.driver;
     const baseUrl = options.url;
     return Promise.resolve()
         .then(_ => driver.sendCommand('Network.setRequestInterception', {patterns: []}))
         .then(_ => driver.off('Network.requestIntercepted', this._onRequestIntercepted.bind(this, driver)))
+        // .then(_ => driver.off('Network.responseReceived', this._onResponseReceived.bind(this)))
         .then(_ => { return {
             'successfulRecords': traceData.networkRecords.filter(record => record.finished),
             'failedRecords': traceData.networkRecords.filter(record => !record.finished)
+            // 'responses': this._responses
           }
         });
   }
