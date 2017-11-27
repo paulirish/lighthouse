@@ -18,7 +18,6 @@
 const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const Util = require('../report/v2/renderer/util');
-const https = require('https');
 
 
 const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension'];
@@ -38,8 +37,8 @@ class MixedContent extends Audit {
       helpText: 'Resources loaded should use secure protocols (e.g., https). ' +
           'Insecure resources can cause mixed content warnings and fail to ' +
           'load if your site uses HTTPS. This shows whether any insecure ' +
-          'resources could be upgraded to HTTPS. ' +
-          '[Learn more](https://example.org)',
+          'resources could be upgraded to HTTPS. If a third-party resource is ' +
+          'not upgradeable, you may want to contact the site owner.',
       requiredArtifacts: ['MixedContent', 'devtoolsLogs']
     };
   }
@@ -77,12 +76,22 @@ class MixedContent extends Audit {
     parsedURL.hash = '';
     parsedURL.search = '';
     return parsedURL.href;
-    // return url.replace('?' + parsedURL.queryParams, '');
   }
-  // TODO: Would matching on hostname/file be a better solution?
-  // Might have different paths after redirects but be "available"? But this
-  // doesn't tell the dev exactly _how_ to upgrade the URLs used (to be fair,
-  // the current audit output doesn't either).
+
+  /**
+   * Simplifies a URL string for display.
+   * 
+   * @param {string} url 
+   * @return {string}
+   */
+  static displayURL(url) {
+    const displayOptions = {
+      numPathParts: 4,
+      preserveQuery: false,
+      preserveHost: true
+    }
+    return URL.getURLDisplayName(url, displayOptions);
+  }
 
   /**
    * @param {!Artifacts} artifacts
@@ -90,49 +99,45 @@ class MixedContent extends Audit {
    */
   static audit(artifacts) {
     const defaultLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const upgradeLogs = artifacts.devtoolsLogs['mixedContentPass'];
+    const mixedContentLogs = artifacts.devtoolsLogs['mixedContentPass'];
 
     const computedArtifacts = [
       artifacts.requestNetworkRecords(defaultLogs),
-      artifacts.requestNetworkRecords(upgradeLogs),
+      artifacts.requestNetworkRecords(mixedContentLogs),
     ];
 
     return Promise.all(computedArtifacts)
-        .then(([defaultRecords, upgradedRecords]) => {
+        .then(([defaultRecords, mixedContentRecords]) => {
 
       // Filter the default pass records into "insecure" and "secure".
       var insecureRecords = defaultRecords
-        .filter(record => !MixedContent.isSecureRecord(record));
+        .filter(record => !MixedContent.isSecureRecord(record)); // TODO: Also filter to only _successful_ records?
       var secureRecords = defaultRecords
         .filter(record => MixedContent.isSecureRecord(record));
 
-      // Extract the successful HTTPS upgrades and failed HTTPS upgrades.
-      // TODO: These are the _requests_ (which had been transparently upgraded by
-      // the interceptor!) rather than the results?
-      const successfulRecords = upgradedRecords.filter(record => record.finished);
-      const failedRecords = upgradedRecords.filter(record => !record.finished);
+      const successfulRecords = mixedContentRecords.filter(record => record.finished);
+      const failedRecords = mixedContentRecords.filter(record => !record.finished);
 
-      console.log(artifacts.MixedContent.successfulRecords);
-      console.log(artifacts.MixedContent.failedRecords);
+      // var secureHosts = new Set();
+      // var insecureHosts = new Set();
+      // for (let [id, response] of artifacts.MixedContent.responses) {
+      //   let responseUrl = new URL(response.url);
+      //   // console.log(response);
+      //   if (response.status >= 200 && response.status < 300 && response.securityState === 'secure') {
+      //     // console.log("SECURE");
+      //     secureHosts.add(responseUrl.host);
+      //   }
+      // }
 
-      // TODO: Just make a set of hosts we successfully upgraded on.
-      // TODO: Per-host is becoming less of a set, more of a hashtable.
-      var successfulSecureHostsSet = new Set();
+      var secureHosts = new Set();
       successfulRecords.filter(record => MixedContent.isSecureRecord(record))
         .forEach(secureRecord => {
-          successfulSecureHostsSet.add(new URL(secureRecord.url).hostname);
-        });
-      console.log('*UPGRADEABLE HOSTS:');
-      console.log(successfulSecureHostsSet);
-
-      var successfulSecureRecordsSet = new Set();
-      successfulRecords.filter(record => MixedContent.isSecureRecord(record))
-        .forEach(secureRecord => {
-          successfulSecureRecordsSet.add(this.simplifyURL(secureRecord.url));
+          secureHosts.add(new URL(secureRecord.url).hostname);
         });
 
       // "Upgradeable" is the intersection of insecure successfulSecure.
-      let numUpgradeable = 0;
+      // let debugMap = {};
+      // let numUpgradeable = 0;
       let resources = [];
       let upgradeableResources = [];
       var seen = new Set();
@@ -140,77 +145,71 @@ class MixedContent extends Audit {
         var url = this.simplifyURL(record.url);
         return seen.has(url) ? false : seen.add(url);
       });
-      // .map(record => this.simplifyURL(record.url));
 
-      const displayOptions = {
-        numPathParts: 4,
-        preserveQuery: false,
-        preserveHost: true
-      }
+      
       // TODO: Group requests by hostname and report # insecure requests to each host
       // and whether that host is upgradeable.
       insecureUrls.forEach(record => {
         var resource = {
           host: new URL(record.url).hostname,
-          url: URL.getURLDisplayName(record.url, displayOptions),
+          url: this.displayURL(record.url),
           full: record.url,
-          initiator: URL.getURLDisplayName(record._documentURL, displayOptions),
-          type: record._initiator.type,
-          // initiator: record._initiator.url ?
-          //   URL.getURLDisplayName(record._initiator.url, displayOptions) : record._initiator.type,
+          initiator: this.displayURL(record._documentURL),
+          // type: record._initiator.type,
           canUpgrade: 'No'
         };
-        const upgradedUrl = this.simplifyURL(this.upgradeURL(record.url)); //.replace(/^http:\/\//, 'https://'));
-        console.log(`UPGRADED URL: ${upgradedUrl}`);
-        if (successfulSecureHostsSet.has(resource.host)) {
-        // if (successfulSecureRecordsSet.has(upgradedUrl)) {
+        if (secureHosts.has(resource.host)) {
           resource.canUpgrade = 'Yes';
-          resource.replacement = upgradedUrl;
-          numUpgradeable += 1;
+          // numUpgradeable += 1;
           upgradeableResources.push(resource);
+          // debugMap[record.url] = true;
         } else {
           resources.push(resource);
+          // debugMap[record.url] = false;
         }
       });
 
-      // Concat resources to place upgradeable resources first in the list.
+      // Place upgradeable resources first in the list.
       resources = upgradeableResources.concat(resources);
 
-      // "Blockers" are everything remaining.
-      // We can then report the lists of both (with guidance):
-      // - You can upgrade x -> y
-      // - Z does not appear to provide a version of x over HTTPS.
-      //   You should contact Z or switch to a different provider.
+      let displayValue = `${Util.formatNumber(insecureUrls.length)} insecure `;
+      displayValue += insecureRecords.length === 1 ? 'request found,\n' : 'requests found,\n';
+      displayValue += `${Util.formatNumber(upgradeableResources.length)} upgradeable `;
+      displayValue += upgradeableResources.length === 1 ? 'request found' : 'requests found';
 
-      let displayValue = '';
-      if (insecureRecords.length > 1) {
-        displayValue = `${Util.formatNumber(insecureRecords.length)} insecure requests found,\n`;
-      } else if (insecureRecords.length === 1) {
-        displayValue = `${insecureRecords.length} insecure request found`;
-      }
-      if (numUpgradeable != 1) {
-        displayValue += `${Util.formatNumber(numUpgradeable)} upgradeable requests found`;
-      } else if (numUpgradeable === 1) {
-        displayValue += `${Util.formatNumber(numUpgradeable)} upgradeable request found`;
-      }
+      // if (insecureRecords.length > 1) {
+      //   displayValue = `${Util.formatNumber(insecureUrls.length)} insecure requests found,\n`;
+      // } else if (insecureRecords.length === 1) {
+      //   displayValue = `${Util.formatNumber(insecureUrls.length)} insecure request found,\n`;
+      // }
+      
+      // if (numUpgradeable != 1) {
+      //   displayValue += `${Util.formatNumber(upgradeableResources.length)} upgradeable requests found`;
+      // } else if (numUpgradeable === 1) {
+      //   displayValue += `${Util.formatNumber(upgradeableResources.length)} upgradeable request found`;
+      // }
 
       const headings = [
         {key: 'host', itemType: 'text', text: 'Hostname'},
         {key: 'full', itemType: 'url', text: 'Full URL'},
         {key: 'initiator', itemType: 'text', text: 'Initiator'},
-        {key: 'type', itemType: 'text', text: 'Type'},
+        // {key: 'type', itemType: 'text', text: 'Type'},
         {key: 'canUpgrade', itemType: 'text', text: 'Upgradeable?'}
       ];
       const details = Audit.makeTableDetails(headings, resources);
 
-      // Our "score" for mixed content is:
-      // - (# secure resources + 0.5 * # upgradeable resource) / # total resources * 100
       const totalRecords = insecureRecords.length + secureRecords.length;
-      const score = 100 * (secureRecords.length + 0.5 * numUpgradeable) / totalRecords;
+      const score = 100 * (secureRecords.length + 0.5 * upgradeableResources.length) / totalRecords;
+
+      // let debugString = '';
+      // Object.keys(debugMap).forEach(key => {
+      //   debugString += `${key}: ${debugMap[key]}\n`;
+      // });
+
       return {
         rawValue: score,
         displayValue: displayValue,
-        details,
+        details
       };
     });
   }

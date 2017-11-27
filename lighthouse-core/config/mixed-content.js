@@ -26,7 +26,8 @@ module.exports = {
   categories: {
     mixedContent: {
       name: 'Mixed Content',
-      description: 'Mixed',
+      description: 'These audits check which resources support HTTPS and ' +
+        'which are potentially blocking the page from switching to HTTPS.',
       audits: [
         {id: 'mixed-content', weight: 1},
       ],
