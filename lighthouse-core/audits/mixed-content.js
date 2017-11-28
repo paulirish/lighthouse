@@ -12,7 +12,7 @@ const Util = require('../report/v2/renderer/util');
 /**
  * This audit checks which resources a page currently loads over HTTP which it
  * could instead load over HTTPS, and which resources are still HTTP only.
- * This audit uses two passes: one to see the current state of requests, and 
+ * This audit uses two passes: one to see the current state of requests, and
  * one to attempt upgrading each request to HTTPS.
  */
 class MixedContent extends Audit {
@@ -39,7 +39,7 @@ class MixedContent extends Audit {
    * Checks whether the resource was securely loaded.
    * We special-case data: URLs, as they inherit the security state of their
    * initiator, and so are trivially "upgradeable" for mixed-content purposes.
-   * 
+   *
    * @param {{scheme: string, protocol: string, securityState: function}} record
    * @return {boolean}
    */
@@ -76,8 +76,8 @@ class MixedContent extends Audit {
 
   /**
    * Simplifies a URL string for display.
-   * 
-   * @param {string} url 
+   *
+   * @param {string} url
    * @return {string}
    */
   static displayURL(url) {

@@ -20,7 +20,7 @@ describe('Mixed Content audit', () => {
         } else {
           return Promise.resolve(mixedContentPassRecords);
         }
-      }
+      },
     };
   }
 
