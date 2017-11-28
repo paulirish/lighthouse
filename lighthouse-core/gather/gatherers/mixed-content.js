@@ -23,7 +23,7 @@ const btoa = function(str) {
  * would be invisible to the client and the network records). The corresponding
  * audit tries to determine what mixed content is able to switch to HTTPS and
  * which is not.
- * 
+ *
  * The limitation of this approach is that it works best for testing HTTP pages.
  * For pages that are HTTPS, it will fail to test any active mixed content
  * (e.g. JavaScript) as it will be blocked before it can be intercepted.
