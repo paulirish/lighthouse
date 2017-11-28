@@ -5,24 +5,16 @@
  */
 'use strict';
 
-/**
- * This audit is supposed to compare the default pass with the mixed content
- * pass and see which urls that aren't already over HTTPS are able to be
- * switched over and which ones are still HTTP only. We do this with the
- * network request Interceptor. However, in it's current state, it only prints
- * out the resources that ARE available over HTTPS.
- * TODO: compare resources from mixed content pass to default pass and identify
- * which ones are HTTP that can be updated to HTTP and which ones cant.
- */
-
 const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const Util = require('../report/v2/renderer/util');
 
-
-const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension'];
-const SECURE_DOMAINS = ['localhost', '127.0.0.1'];
-
+/**
+ * This audit checks which resources a page currently loads over HTTP which it
+ * could instead load over HTTPS, and which resources are still HTTP only.
+ * This audit uses two passes: one to see the current state of requests, and 
+ * one to attempt upgrading each request to HTTPS.
+ */
 class MixedContent extends Audit {
   /**
    * @return {!AuditMeta}
@@ -37,20 +29,24 @@ class MixedContent extends Audit {
       helpText: 'Resources loaded should use secure protocols (e.g., https). ' +
           'Insecure resources can cause mixed content warnings and fail to ' +
           'load if your site uses HTTPS. This shows whether any insecure ' +
-          'resources could be upgraded to HTTPS. If a third-party resource is ' +
-          'not upgradeable, you may want to contact the site owner.',
-      requiredArtifacts: ['MixedContent', 'devtoolsLogs']
+          'resources could be upgraded to HTTPS. If a third-party resource ' +
+          'is not upgradeable, you may want to contact the site owner.',
+      requiredArtifacts: ['devtoolsLogs'],
     };
   }
 
   /**
-   * @param {{scheme: string, protocol: string, domain: string}} record
+   * Checks whether the resource was securely loaded.
+   * We special-case data: URLs, as they inherit the security state of their
+   * initiator, and so are trivially "upgradeable" for mixed-content purposes.
+   * 
+   * @param {{scheme: string, protocol: string, securityState: function}} record
    * @return {boolean}
    */
   static isSecureRecord(record) {
-    return SECURE_SCHEMES.includes(record.scheme) ||
-           SECURE_SCHEMES.includes(record.protocol) ||
-           SECURE_DOMAINS.includes(record.domain);
+    return record.securityState() === 'secure' ||
+           record.scheme === 'data' ||
+           record.protocol === 'data';
   }
 
   /**
@@ -60,7 +56,7 @@ class MixedContent extends Audit {
    * @return {string}
    */
   static upgradeURL(url) {
-    let parsedURL = new URL(url);
+    const parsedURL = new URL(url);
     parsedURL.protocol = 'https:';
     return parsedURL.href;
   }
@@ -72,7 +68,7 @@ class MixedContent extends Audit {
    * @return {string}
    */
   static simplifyURL(url) {
-    let parsedURL = new URL(url);
+    const parsedURL = new URL(url);
     parsedURL.hash = '';
     parsedURL.search = '';
     return parsedURL.href;
@@ -88,8 +84,8 @@ class MixedContent extends Audit {
     const displayOptions = {
       numPathParts: 4,
       preserveQuery: false,
-      preserveHost: true
-    }
+      preserveHost: true,
+    };
     return URL.getURLDisplayName(url, displayOptions);
   }
 
@@ -106,110 +102,81 @@ class MixedContent extends Audit {
       artifacts.requestNetworkRecords(mixedContentLogs),
     ];
 
-    return Promise.all(computedArtifacts)
-        .then(([defaultRecords, mixedContentRecords]) => {
+    return Promise.all(computedArtifacts).then(([defaultRecords, mixedContentRecords]) => {
+      const insecureRecords = defaultRecords.filter(
+          record => !MixedContent.isSecureRecord(record));
+      const secureRecords = defaultRecords.filter(
+          record => MixedContent.isSecureRecord(record));
 
-      // Filter the default pass records into "insecure" and "secure".
-      var insecureRecords = defaultRecords
-        .filter(record => !MixedContent.isSecureRecord(record)); // TODO: Also filter to only _successful_ records?
-      var secureRecords = defaultRecords
-        .filter(record => MixedContent.isSecureRecord(record));
+      const successfulRecords = mixedContentRecords
+          .filter(record => record.finished);
+      const failedRecords = mixedContentRecords
+          .filter(record => !record.finished);
 
-      const successfulRecords = mixedContentRecords.filter(record => record.finished);
-      const failedRecords = mixedContentRecords.filter(record => !record.finished);
+      const newHosts = new Set();
+      successfulRecords.forEach(record =>
+          newHosts.add(new URL(record.url).hostname));
+      failedRecords.forEach(record =>
+          newHosts.add(new URL(record.url).hostname));
 
-      // var secureHosts = new Set();
-      // var insecureHosts = new Set();
-      // for (let [id, response] of artifacts.MixedContent.responses) {
-      //   let responseUrl = new URL(response.url);
-      //   // console.log(response);
-      //   if (response.status >= 200 && response.status < 300 && response.securityState === 'secure') {
-      //     // console.log("SECURE");
-      //     secureHosts.add(responseUrl.host);
-      //   }
-      // }
-
-      var secureHosts = new Set();
+      const secureHosts = new Set();
       successfulRecords.filter(record => MixedContent.isSecureRecord(record))
-        .forEach(secureRecord => {
-          secureHosts.add(new URL(secureRecord.url).hostname);
-        });
+          .forEach(secureRecord => {
+            secureHosts.add(new URL(secureRecord.url).hostname);
+          });
 
-      // "Upgradeable" is the intersection of insecure successfulSecure.
-      // let debugMap = {};
-      // let numUpgradeable = 0;
-      let resources = [];
-      let upgradeableResources = [];
-      var seen = new Set();
+      // De-duplicate records based on URL without fragment or query.
+      const seen = new Set();
       const insecureUrls = insecureRecords.filter(record => {
-        var url = this.simplifyURL(record.url);
+        const url = this.simplifyURL(record.url);
         return seen.has(url) ? false : seen.add(url);
       });
 
-      
-      // TODO: Group requests by hostname and report # insecure requests to each host
-      // and whether that host is upgradeable.
+      const upgradeableResources = [];
+      const nonUpgradeableResources = [];
       insecureUrls.forEach(record => {
-        var resource = {
+        const resource = {
           host: new URL(record.url).hostname,
           url: this.displayURL(record.url),
           full: record.url,
           initiator: this.displayURL(record._documentURL),
-          // type: record._initiator.type,
-          canUpgrade: 'No'
+          canUpgrade: 'No',
         };
         if (secureHosts.has(resource.host)) {
           resource.canUpgrade = 'Yes';
-          // numUpgradeable += 1;
           upgradeableResources.push(resource);
-          // debugMap[record.url] = true;
-        } else {
-          resources.push(resource);
-          // debugMap[record.url] = false;
+        } else if (newHosts.has(resource.host)) {
+          // We saw this host in the second pass (otherwise, we never had
+          // a chance to test whether we could upgrade it at all).
+          nonUpgradeableResources.push(resource);
         }
       });
 
       // Place upgradeable resources first in the list.
-      resources = upgradeableResources.concat(resources);
+      const resources = upgradeableResources.concat(nonUpgradeableResources);
 
-      let displayValue = `${Util.formatNumber(insecureUrls.length)} insecure `;
-      displayValue += insecureRecords.length === 1 ? 'request found,\n' : 'requests found,\n';
-      displayValue += `${Util.formatNumber(upgradeableResources.length)} upgradeable `;
-      displayValue += upgradeableResources.length === 1 ? 'request found' : 'requests found';
-
-      // if (insecureRecords.length > 1) {
-      //   displayValue = `${Util.formatNumber(insecureUrls.length)} insecure requests found,\n`;
-      // } else if (insecureRecords.length === 1) {
-      //   displayValue = `${Util.formatNumber(insecureUrls.length)} insecure request found,\n`;
-      // }
-      
-      // if (numUpgradeable != 1) {
-      //   displayValue += `${Util.formatNumber(upgradeableResources.length)} upgradeable requests found`;
-      // } else if (numUpgradeable === 1) {
-      //   displayValue += `${Util.formatNumber(upgradeableResources.length)} upgradeable request found`;
-      // }
+      const displayValue = `${Util.formatNumber(insecureUrls.length)} insecure 
+          ${insecureRecords.length === 1 ? 'request' : 'requests'} found,
+          ${Util.formatNumber(upgradeableResources.length)} upgradeable 
+          ${upgradeableResources.length === 1 ? 'request' : 'requests'} found`;
 
       const headings = [
         {key: 'host', itemType: 'text', text: 'Hostname'},
         {key: 'full', itemType: 'url', text: 'Full URL'},
         {key: 'initiator', itemType: 'text', text: 'Initiator'},
-        // {key: 'type', itemType: 'text', text: 'Type'},
-        {key: 'canUpgrade', itemType: 'text', text: 'Upgradeable?'}
+        {key: 'canUpgrade', itemType: 'text', text: 'Upgradeable?'},
       ];
       const details = Audit.makeTableDetails(headings, resources);
 
-      const totalRecords = insecureRecords.length + secureRecords.length;
-      const score = 100 * (secureRecords.length + 0.5 * upgradeableResources.length) / totalRecords;
-
-      // let debugString = '';
-      // Object.keys(debugMap).forEach(key => {
-      //   debugString += `${key}: ${debugMap[key]}\n`;
-      // });
+      const totalRecords = defaultRecords.length;
+      const score = 100 *
+          (secureRecords.length + 0.5 * upgradeableResources.length)
+          / totalRecords;
 
       return {
         rawValue: score,
         displayValue: displayValue,
-        details
+        details,
       };
     });
   }
