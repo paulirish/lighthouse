@@ -6,16 +6,18 @@
 'use strict';
 
 module.exports = {
-  // We perform two passes:
+  // This performs two passes:
   // (1) Gather the default resources requested by the page, and
   // (2) Re-load page but attempt to upgrade each request to HTTPS.
   passes: [{
     passName: 'defaultPass',
-    recordTrace: true,
+    recordTrace: false,
+    useThrottling: false,
     gatherers: ['url'],
   }, {
     passName: 'mixedContentPass',
-    recordTrace: true,
+    recordTrace: false,
+    useThrottling: false,
     gatherers: ['mixed-content'],
   }],
 
@@ -27,7 +29,8 @@ module.exports = {
     mixedContent: {
       name: 'Mixed Content',
       description: 'These audits check which resources support HTTPS and ' +
-        'which are potentially blocking the page from switching to HTTPS.',
+        'which are potentially blocking the page from switching to HTTPS due ' +
+        'to mixed-content warnings.',
       audits: [
         {id: 'mixed-content', weight: 1},
       ],
