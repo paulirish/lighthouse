@@ -44,9 +44,7 @@ class MixedContent extends Audit {
    * @return {boolean}
    */
   static isSecureRecord(record) {
-    return record.securityState() === 'secure' ||
-           record.scheme === 'data' ||
-           record.protocol === 'data';
+    return record.securityState() === 'secure' || record.protocol === 'data';
   }
 
   /**
@@ -95,37 +93,31 @@ class MixedContent extends Audit {
    */
   static audit(artifacts) {
     const defaultLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const mixedContentLogs = artifacts.devtoolsLogs['mixedContentPass'];
+    const upgradeLogs = artifacts.devtoolsLogs['mixedContentPass'];
 
     const computedArtifacts = [
       artifacts.requestNetworkRecords(defaultLogs),
-      artifacts.requestNetworkRecords(mixedContentLogs),
+      artifacts.requestNetworkRecords(upgradeLogs),
     ];
 
-    return Promise.all(computedArtifacts).then(([defaultRecords, mixedContentRecords]) => {
+    return Promise.all(computedArtifacts).then(([defaultRecords, upgradedRecords]) => {
       const insecureRecords = defaultRecords.filter(
           record => !MixedContent.isSecureRecord(record));
       const secureRecords = defaultRecords.filter(
           record => MixedContent.isSecureRecord(record));
 
-      const successfulRecords = mixedContentRecords
-          .filter(record => record.finished);
-      const failedRecords = mixedContentRecords
-          .filter(record => !record.finished);
-
-      const newHosts = new Set();
-      successfulRecords.forEach(record =>
-          newHosts.add(new URL(record.url).hostname));
-      failedRecords.forEach(record =>
-          newHosts.add(new URL(record.url).hostname));
-
-      const secureHosts = new Set();
-      successfulRecords.filter(record => MixedContent.isSecureRecord(record))
-          .forEach(secureRecord => {
-            secureHosts.add(new URL(secureRecord.url).hostname);
-          });
+      const upgradePassHosts = new Set();
+      const upgradePassSecureHosts = new Set();
+      upgradedRecords.forEach(record => {
+        upgradePassHosts.add(new URL(record.url).hostname);
+        if (MixedContent.isSecureRecord(record) && record.finished) {
+          upgradePassSecureHosts.add(new URL(record.url).hostname);
+        }
+      });
 
       // De-duplicate records based on URL without fragment or query.
+      // Some resources are requested multiple times with different parameters
+      // but we only want to show them to the user once.
       const seen = new Set();
       const insecureUrls = insecureRecords.filter(record => {
         const url = this.simplifyURL(record.url);
@@ -137,17 +129,17 @@ class MixedContent extends Audit {
       insecureUrls.forEach(record => {
         const resource = {
           host: new URL(record.url).hostname,
-          url: this.displayURL(record.url),
           full: record.url,
           initiator: this.displayURL(record._documentURL),
           canUpgrade: 'No',
         };
-        if (secureHosts.has(resource.host)) {
+        if (upgradePassSecureHosts.has(resource.host)) {
           resource.canUpgrade = 'Yes';
           upgradeableResources.push(resource);
-        } else if (newHosts.has(resource.host)) {
-          // We saw this host in the second pass (otherwise, we never had
-          // a chance to test whether we could upgrade it at all).
+        } else if (upgradePassHosts.has(resource.host)) {
+          // We were able to try upgrading this resource in the mixed
+          // content pass, so if it wasn't secure then we assume it is not
+          // upgradeable currently.
           nonUpgradeableResources.push(resource);
         }
       });
@@ -156,7 +148,7 @@ class MixedContent extends Audit {
       const resources = upgradeableResources.concat(nonUpgradeableResources);
 
       const displayValue = `${Util.formatNumber(insecureUrls.length)} insecure 
-          ${insecureRecords.length === 1 ? 'request' : 'requests'} found,
+          ${insecureUrls.length === 1 ? 'request' : 'requests'} found,
           ${Util.formatNumber(upgradeableResources.length)} upgradeable 
           ${upgradeableResources.length === 1 ? 'request' : 'requests'} found`;
 

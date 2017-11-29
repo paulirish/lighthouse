@@ -101,8 +101,8 @@ describe('MixedContent Gatherer', () => {
     mixedContentGather._onRequestIntercepted(driver, event);
   });
 
-  it('does not sent a redirect when intercepted the main URL', () => {
-    mixedContentGather._baseUrl = 'http://www.example.org/';
+  it('does not sent a redirect when intercepting the main URL', () => {
+    mixedContentGather.url = 'http://www.example.org/';
     const event = {
       interceptionId: 1,
       request: {

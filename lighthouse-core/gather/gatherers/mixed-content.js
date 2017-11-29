@@ -21,7 +21,7 @@ const btoa = function(str) {
  * every HTTP request and send an HTTP 302 Found redirect back to redirect the
  * request to HTTPS (this is done instead of upgrading the URL in place as that
  * would be invisible to the client and the network records). The corresponding
- * audit tries to determine what mixed content is able to switch to HTTPS and
+ * audit tries to determine which mixed content is able to switch to HTTPS and
  * which is not.
  *
  * The limitation of this approach is that it works best for testing HTTP pages.
@@ -31,8 +31,8 @@ const btoa = function(str) {
 class MixedContent extends Gatherer {
   constructor() {
     super();
-    this._idsSeen = new Set();
-    this._baseUrl = undefined;
+    this.ids = new Set();
+    this.url = undefined;
   }
 
   /**
@@ -59,9 +59,10 @@ class MixedContent extends Gatherer {
     // Track requests the gatherer has already seen so we can try at-most-once
     // to upgrade each. This avoids repeatedly intercepting a request if it gets
     // downgraded back to HTTP.
-    if (event.request.url !== this._baseUrl &&
-        !this._idsSeen.has(event.interceptionId)) {
-      this._idsSeen.add(event.interceptionId);
+    if (new URL(event.request.url).protocol === 'http:' &&
+        !URL.equalWithExcludedFragments(event.request.url, this.url) &&
+        !this.ids.has(event.interceptionId)) {
+      this.ids.add(event.interceptionId);
       event.request.url = this.upgradeURL(event.request.url);
       driver.sendCommand('Network.continueInterceptedRequest', {
         interceptionId: event.interceptionId,
@@ -78,20 +79,19 @@ class MixedContent extends Gatherer {
   beforePass(options) {
     const driver = options.driver;
 
+    // Attempt to load the HTTP version of the page.
     // The base URL can be brittle under redirects of the page, but the worst
     // case is the gatherer accidentally upgrades the final base URL to
     // HTTPS and loses the ability to check upgrading active mixed content.
     options.url = this.downgradeURL(options.url);
-    this._baseUrl = options.url;
+    this.url = options.url;
 
     driver.sendCommand('Network.enable', {});
-    driver.on(
-      'Network.requestIntercepted',
+    driver.on('Network.requestIntercepted',
       this._onRequestIntercepted.bind(this, driver));
     driver.sendCommand('Network.setCacheDisabled', {cacheDisabled: true});
-    driver.sendCommand(
-      'Network.setRequestInterception',
-      {patterns: [{urlPattern: 'http://*/*'}]});
+    driver.sendCommand('Network.setRequestInterception',
+      {patterns: [{urlPattern: '*'}]});
   }
 
   afterPass(options, _) {
