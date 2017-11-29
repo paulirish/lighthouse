@@ -9,7 +9,6 @@
 const statistics = require('../lib/statistics');
 
 const DEFAULT_PASS = 'defaultPass';
-// const MIXED_CONTENT_PASS = 'mixedContentPass';
 
 class Audit {
   /**
@@ -18,13 +17,6 @@ class Audit {
   static get DEFAULT_PASS() {
     return DEFAULT_PASS;
   }
-
-  // /**
-  //  * @return {!string}
-  //  */
-  // static get MIXED_CONTENT_PASS() {
-  //   return MIXED_CONTENT_PASS;
-  // }
 
   /**
    * @return {{NUMERIC: string, BINARY: string}}
