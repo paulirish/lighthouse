@@ -147,9 +147,9 @@ class MixedContent extends Audit {
       // Place upgradeable resources first in the list.
       const resources = upgradeableResources.concat(nonUpgradeableResources);
 
-      const displayValue = `${Util.formatNumber(insecureUrls.length)} insecure 
-          ${insecureUrls.length === 1 ? 'request' : 'requests'} found,
-          ${Util.formatNumber(upgradeableResources.length)} upgradeable 
+      const displayValue = `${Util.formatNumber(resources.length)} insecure
+          ${resources.length === 1 ? 'request' : 'requests'} found,
+          ${Util.formatNumber(upgradeableResources.length)} upgradeable
           ${upgradeableResources.length === 1 ? 'request' : 'requests'} found`;
 
       const headings = [
