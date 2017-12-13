@@ -104,7 +104,7 @@ class MixedContent extends Gatherer {
     ).then(driver.sendCommand(
         'Network.setCacheDisabled', {cacheDisabled: false})
     ).then(_ => {
-      return {};
+      return {baseurl: options.url};
     });
   }
 }

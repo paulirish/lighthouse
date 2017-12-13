@@ -26,11 +26,9 @@ class MixedContent extends Audit {
       description: 'All resources loaded are secure',
       informative: true,
       failureDescription: 'Some resources loaded are insecure',
-      helpText: 'Resources loaded should use secure protocols (e.g., https). ' +
-          'Insecure resources can cause mixed content warnings and fail to ' +
-          'load if your site uses HTTPS. This shows whether any insecure ' +
-          'resources could be upgraded to HTTPS. If a third-party resource ' +
-          'is not upgradeable, you may want to contact the site owner.',
+      helpText: `Mixed content warnings can prevent you from upgrading to HTTPS.
+      This audit shows which insecure resources you should currently be able to
+      upgrade to HTTPS. [Learn more]`,
       requiredArtifacts: ['devtoolsLogs'],
     };
   }
@@ -94,6 +92,7 @@ class MixedContent extends Audit {
   static audit(artifacts) {
     const defaultLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const upgradeLogs = artifacts.devtoolsLogs['mixedContentPass'];
+    const baseHostname = new URL(artifacts.MixedContent.baseurl).host;
 
     const computedArtifacts = [
       artifacts.requestNetworkRecords(defaultLogs),
@@ -155,10 +154,10 @@ class MixedContent extends Audit {
       const headings = [
         {key: 'host', itemType: 'text', text: 'Hostname'},
         {key: 'full', itemType: 'url', text: 'Full URL'},
-        {key: 'initiator', itemType: 'text', text: 'Initiator'},
-        {key: 'canUpgrade', itemType: 'text', text: 'Upgradeable?'},
       ];
-      const details = Audit.makeTableDetails(headings, resources);
+      const details = Audit.makeTableDetails(headings, upgradeableResources.filter(resource =>
+        resource.initiator.includes(baseHostname)
+      ));
 
       const totalRecords = defaultRecords.length;
       const score = 100 *
