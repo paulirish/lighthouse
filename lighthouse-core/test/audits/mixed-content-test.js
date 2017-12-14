@@ -11,8 +11,9 @@ const assert = require('assert');
 /* eslint-env mocha */
 
 describe('Mixed Content audit', () => {
-  function getArtifacts(defaultPassRecords, mixedContentPassRecords) {
+  function getArtifacts(baseUrl, defaultPassRecords, mixedContentPassRecords) {
     return {
+      MixedContent: {url: baseUrl},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: true, ['mixedContentPass']: false},
       requestNetworkRecords: (pass) => {
         if (pass) {
@@ -36,7 +37,7 @@ describe('Mixed Content audit', () => {
       {url: 'https://third-party.example.com/resource2.js', securityState: () => 'secure', finished: true, _documentURL: 'https://example.org'},
     ];
     return Audit.audit(
-      getArtifacts(defaultRecords, upgradeRecords)
+      getArtifacts('https://example.org', defaultRecords, upgradeRecords)
     ).then(result => {
       assert.strictEqual(result.rawValue, 100);
     });
@@ -56,7 +57,7 @@ describe('Mixed Content audit', () => {
       {url: 'https://fourth-party.example.com/resource3.js', securityState: () => 'none', finished: true, _documentURL: 'https://third-party.example.com'},
     ];
     return Audit.audit(
-      getArtifacts(defaultRecords, upgradeRecords)
+      getArtifacts('http://example.org', defaultRecords, upgradeRecords)
     ).then(result => {
       // Score for 3 upgradeable out of 4: 100 * (0 + 3*0.5) / 4
       assert.strictEqual(result.rawValue, 37.5);
