@@ -9,14 +9,6 @@ const Gatherer = require('./gatherer');
 const URL = require('../../lib/url-shim');
 
 /**
- * @param {string} str
- * @return {string}
- */
-const btoa = function(str) {
-  return Buffer.from(str, 'utf8').toString('base64');
-};
-
-/**
  * This gatherer sets the Network requestInterceptor so that it can intercept
  * every HTTP request and send an HTTP 302 Found redirect back to redirect the
  * request to HTTPS (this is done instead of upgrading the URL in place as that
@@ -66,8 +58,9 @@ class MixedContent extends Gatherer {
       event.request.url = this.upgradeURL(event.request.url);
       driver.sendCommand('Network.continueInterceptedRequest', {
         interceptionId: event.interceptionId,
-        rawResponse: btoa(
-            `HTTP/1.1 302 Found\r\nLocation: ${event.request.url}\r\n\r\n`),
+        rawResponse: Buffer.from(
+            `HTTP/1.1 302 Found\r\nLocation: ${event.request.url}\r\n\r\n`,
+            'utf8').toString('base64'),
       });
     } else {
       driver.sendCommand('Network.continueInterceptedRequest', {
@@ -104,7 +97,7 @@ class MixedContent extends Gatherer {
     ).then(driver.sendCommand(
         'Network.setCacheDisabled', {cacheDisabled: false})
     ).then(_ => {
-      return {baseurl: options.url};
+      return {url: options.url};
     });
   }
 }

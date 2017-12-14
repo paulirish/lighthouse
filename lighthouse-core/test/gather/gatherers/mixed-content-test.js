@@ -12,24 +12,6 @@ const assert = require('assert');
 let mixedContentGather;
 let driver;
 
-const btoa = function(str) {
-  return Buffer.from(str, 'utf8').toString('base64');
-};
-
-const atob = function(str) {
-  return Buffer.from(str, 'base64').toString('utf8');
-};
-
-describe('btoa', () =>{
-  it('converts to base64 correctly', () => {
-    const testString = 'HTTP/1.1 302 Found\r\nLocation: https://www.example.org/\r\n\r\n';
-    return assert.equal(
-        btoa(testString),
-        'SFRUUC8xLjEgMzAyIEZvdW5kDQpMb2NhdGlvbjogaHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcvDQoNCg=='
-    );
-  });
-});
-
 class MockDriver {
   constructor() {}
   on(_) {}
@@ -76,7 +58,8 @@ describe('MixedContent Gatherer', () => {
       },
     };
     driver.cb = (args) => {
-      assert.strictEqual(atob(args.rawResponse).includes('302 Found'), true);
+      assert.strictEqual(Buffer.from(args.rawResponse, 'base64')
+          .toString('utf8').includes('302 Found'), true);
     };
     mixedContentGather._onRequestIntercepted(driver, event);
   });
@@ -93,7 +76,8 @@ describe('MixedContent Gatherer', () => {
       if (driver.numInterceptions > 0) {
         assert.strictEqual(args.rawResponse, undefined);
       } else {
-        assert.strictEqual(atob(args.rawResponse).includes('302 Found'), true);
+        assert.strictEqual(Buffer.from(args.rawResponse, 'base64')
+            .toString('utf8').includes('302 Found'), true);
       }
       driver.numInterceptions += 1;
     };

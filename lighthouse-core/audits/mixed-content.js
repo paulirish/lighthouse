@@ -27,9 +27,9 @@ class MixedContent extends Audit {
       informative: true,
       failureDescription: 'Some resources loaded are insecure',
       helpText: `Mixed content warnings can prevent you from upgrading to HTTPS.
-      This audit shows which insecure resources you should currently be able to
-      upgrade to HTTPS. [Learn more]`,
-      requiredArtifacts: ['devtoolsLogs'],
+      This audit shows which insecure resources this page uses that can be
+      upgraded to HTTPS. [Learn more]`,
+      requiredArtifacts: ['devtoolsLogs', 'MixedContent'],
     };
   }
 
@@ -92,7 +92,7 @@ class MixedContent extends Audit {
   static audit(artifacts) {
     const defaultLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const upgradeLogs = artifacts.devtoolsLogs['mixedContentPass'];
-    const baseHostname = new URL(artifacts.MixedContent.baseurl).host;
+    const baseHostname = new URL(artifacts.MixedContent.url).host;
 
     const computedArtifacts = [
       artifacts.requestNetworkRecords(defaultLogs),
@@ -109,7 +109,7 @@ class MixedContent extends Audit {
       const upgradePassSecureHosts = new Set();
       upgradedRecords.forEach(record => {
         upgradePassHosts.add(new URL(record.url).hostname);
-        if (MixedContent.isSecureRecord(record) && record.finished) {
+        if (MixedContent.isSecureRecord(record) && record.finished && !record.failed) {
           upgradePassSecureHosts.add(new URL(record.url).hostname);
         }
       });
@@ -128,7 +128,7 @@ class MixedContent extends Audit {
       insecureUrls.forEach(record => {
         const resource = {
           host: new URL(record.url).hostname,
-          full: record.url,
+          fullUrl: record.url,
           initiator: this.displayURL(record._documentURL),
           canUpgrade: 'No',
         };
@@ -153,7 +153,7 @@ class MixedContent extends Audit {
 
       const headings = [
         {key: 'host', itemType: 'text', text: 'Hostname'},
-        {key: 'full', itemType: 'url', text: 'Full URL'},
+        {key: 'fullUrl', itemType: 'url', text: 'Full URL'},
       ];
       const details = Audit.makeTableDetails(headings, upgradeableResources.filter(resource =>
         resource.initiator.includes(baseHostname)
