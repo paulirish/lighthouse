@@ -124,7 +124,6 @@ class MixedContent extends Audit {
       });
 
       const upgradeableResources = [];
-      const nonUpgradeableResources = [];
       insecureUrls.forEach(record => {
         const resource = {
           host: new URL(record.url).hostname,
@@ -132,32 +131,22 @@ class MixedContent extends Audit {
           initiator: this.displayURL(record._documentURL),
           canUpgrade: 'No',
         };
-        if (upgradePassSecureHosts.has(resource.host)) {
+        if (upgradePassSecureHosts.has(resource.host) &&
+            resource.initiator.includes(baseHostname)) {
           resource.canUpgrade = 'Yes';
           upgradeableResources.push(resource);
-        } else if (upgradePassHosts.has(resource.host)) {
-          // We were able to try upgrading this resource in the mixed
-          // content pass, so if it wasn't secure then we assume it is not
-          // upgradeable currently.
-          nonUpgradeableResources.push(resource);
         }
       });
 
-      // Place upgradeable resources first in the list.
-      const resources = upgradeableResources.concat(nonUpgradeableResources);
-
-      const displayValue = `${Util.formatNumber(resources.length)} insecure
-          ${resources.length === 1 ? 'request' : 'requests'} found,
-          ${Util.formatNumber(upgradeableResources.length)} upgradeable
-          ${upgradeableResources.length === 1 ? 'request' : 'requests'} found`;
+      const displayValue = `${Util.formatNumber(upgradeableResources.length)}
+          ${upgradeableResources.length === 1 ? 'request' : 'requests'} can be
+          upgraded to HTTPS`;
 
       const headings = [
         {key: 'host', itemType: 'text', text: 'Hostname'},
         {key: 'fullUrl', itemType: 'url', text: 'Full URL'},
       ];
-      const details = Audit.makeTableDetails(headings, upgradeableResources.filter(resource =>
-        resource.initiator.includes(baseHostname)
-      ));
+      const details = Audit.makeTableDetails(headings, upgradeableResources);
 
       const totalRecords = defaultRecords.length;
       const score = 100 *
