@@ -109,7 +109,7 @@ function handleError(err) {
  */
 function saveResults(results, artifacts, flags) {
   const shouldSaveResults = flags.auditMode || (flags.gatherMode == flags.auditMode);
-  if (shouldSaveResults) return;
+  if (!shouldSaveResults) return Promise.resolve();
 
   let promise = Promise.resolve(results);
   const cwd = process.cwd();
@@ -120,10 +120,6 @@ function saveResults(results, artifacts, flags) {
       getFilenamePrefix(results) :
       flags.outputPath.replace(/\.\w{2,4}$/, '');
   const resolvedPath = path.resolve(cwd, configuredPath);
-
-  if (flags.saveArtifacts) {
-    assetSaver.saveArtifacts(artifacts, resolvedPath);
-  }
 
   if (flags.saveAssets) {
     promise = promise.then(_ => assetSaver.saveAssets(artifacts, results.audits, resolvedPath));
@@ -167,34 +163,27 @@ function runLighthouse(url, flags, config) {
   /** @type {!LH.LaunchedChrome} */
   let launchedChrome;
   const shouldGather = flags.gatherMode || flags.gatherMode == flags.auditMode;
-  const shouldSaveResults = flags.auditMode || flags.gatherMode == flags.auditMode;
   let promise = Promise.resolve();
 
   if (shouldGather) {
     promise = promise.then(_ =>
-      getDebuggableChrome(flags).then(launchedChrome => {
+      getDebuggableChrome(flags).then(launchedChromeInstance => {
+        launchedChrome = launchedChromeInstance;
         flags.port = launchedChrome.port;
       })
     );
   }
   promise = promise.then(_ => {
     return lighthouse(url, flags, config).then(results => {
-      potentiallyKillChrome.then(_ => results);
+      return potentiallyKillChrome().then(_ => results);
     });
   });
 
-  if (shouldSaveResults) {
-    promise = promise.then(results => {
-      const artifacts = results.artifacts;
-      delete results.artifacts;
-      return saveResults(results, artifacts, flags).then(_ => results);
-    });
-  } else {
-    promise = promise.then(results => {
-      delete results.artifacts;
-      return results;
-    });
-  }
+  promise = promise.then(results => {
+    const artifacts = results.artifacts;
+    delete results.artifacts;
+    return saveResults(results, artifacts, flags).then(_ => results);
+  });
 
   return promise.catch(err => {
     return Promise.resolve()
@@ -203,8 +192,8 @@ function runLighthouse(url, flags, config) {
   });
 
   /**
- * @return {!Promise<{}>}
- */
+   * @return {!Promise<{}>}
+   */
   function potentiallyKillChrome() {
     if (launchedChrome !== undefined) {
       // TODO: keeps tsc happy (erases return type) but is useless.

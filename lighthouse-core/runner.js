@@ -192,8 +192,7 @@ class Runner {
    * @param {{}} resultsById
    */
   static _scoreAndCategorize(opts, resultsById) {
-    const reportGenerator = new ReportGeneratorV2();
-    return reportGenerator.generateReportJson(opts.config, resultsById);
+    return ReportScoring.scoreAllCategories(opts.config, resultsById);
   }
 
   /**
