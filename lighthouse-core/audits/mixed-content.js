@@ -25,7 +25,7 @@ class MixedContent extends Audit {
       name: 'mixed-content',
       description: 'All resources loaded are secure',
       informative: true,
-      failureDescription: 'Some resources loaded are insecure',
+      failureDescription: 'Some insecure resources can be upgraded to HTTPS',
       helpText: `Mixed content warnings can prevent you from upgrading to HTTPS.
       This audit shows which insecure resources this page uses that can be
       upgraded to HTTPS. [Learn more]`,
@@ -36,7 +36,7 @@ class MixedContent extends Audit {
   /**
    * Checks whether the resource was securely loaded.
    * We special-case data: URLs, as they inherit the security state of their
-   * initiator, and so are trivially "upgradeable" for mixed-content purposes.
+   * referring document url, and so are trivially "upgradeable" for mixed-content purposes.
    *
    * @param {{scheme: string, protocol: string, securityState: function}} record
    * @return {boolean}
@@ -128,8 +128,7 @@ class MixedContent extends Audit {
         const resource = {
           host: new URL(record.url).hostname,
           fullUrl: record.url,
-          initiator: this.displayURL(record._documentURL),
-          canUpgrade: 'No',
+          referrerDocUrl: this.displayURL(record._documentURL),
         };
         // Exclude any records that aren't on an upgradeable secure host
         if (!upgradePassSecureHosts.has(resource.host)) continue;
@@ -144,8 +143,7 @@ class MixedContent extends Audit {
           upgraded to HTTPS`;
 
       const headings = [
-        {key: 'host', itemType: 'text', text: 'Hostname'},
-        {key: 'fullUrl', itemType: 'url', text: 'Full URL'},
+        {key: 'fullUrl', itemType: 'url', text: 'URL'},
       ];
       const details = Audit.makeTableDetails(headings, upgradeableResources);
 
