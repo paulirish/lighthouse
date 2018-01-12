@@ -139,8 +139,7 @@ class MixedContent extends Audit {
       }
 
       const displayValue = `${Util.formatNumber(upgradeableResources.length)}
-          ${upgradeableResources.length === 1 ? 'request' : 'requests'} can be
-          upgraded to HTTPS`;
+          ${upgradeableResources.length === 1 ? 'request' : 'requests'}`;
 
       const headings = [
         {key: 'fullUrl', itemType: 'url', text: 'URL'},
