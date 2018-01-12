@@ -23,6 +23,7 @@ module.exports = {
 
   audits: [
     'mixed-content',
+    'is-on-https',
   ],
 
   categories: {
@@ -32,6 +33,7 @@ module.exports = {
         'which are potentially blocking the page from switching to HTTPS due ' +
         'to mixed-content warnings.',
       audits: [
+        {id: 'is-on-https', weight: 1},
         {id: 'mixed-content', weight: 1},
       ],
     },
