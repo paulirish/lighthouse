@@ -118,25 +118,26 @@ class MixedContent extends Audit {
       // Some resources are requested multiple times with different parameters
       // but we only want to show them to the user once.
       const seen = new Set();
-      const insecureUrls = insecureRecords.filter(record => {
-        const url = this.simplifyURL(record.url);
-        return seen.has(url) ? false : seen.add(url);
-      });
-
       const upgradeableResources = [];
-      insecureUrls.forEach(record => {
+
+      for (const record of insecureRecords) {
+        const simpleUrl = this.simplifyURL(record.url);
+        if (seen.has(simpleUrl)) continue;
+        seen.add(simpleUrl);
+
         const resource = {
           host: new URL(record.url).hostname,
           fullUrl: record.url,
           initiator: this.displayURL(record._documentURL),
           canUpgrade: 'No',
         };
-        if (upgradePassSecureHosts.has(resource.host) &&
-            resource.initiator.includes(baseHostname)) {
-          resource.canUpgrade = 'Yes';
-          upgradeableResources.push(resource);
-        }
-      });
+        // Exclude any records that aren't on an upgradeable secure host
+        if (!upgradePassSecureHosts.has(resource.host)) continue;
+        // Exclude iframe subresources
+        if (!resource.referrerDocUrl.includes(baseHostname)) continue;
+
+        upgradeableResources.push(resource);
+      }
 
       const displayValue = `${Util.formatNumber(upgradeableResources.length)}
           ${upgradeableResources.length === 1 ? 'request' : 'requests'} can be
