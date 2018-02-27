@@ -23,6 +23,7 @@ install:
 before_script:
   - export DISPLAY=:99.0
   - export CHROME_PATH="$(pwd)/chrome-linux/chrome"
+  - export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
   - sh -e /etc/init.d/xvfb start
   - yarn build-all
 script:
