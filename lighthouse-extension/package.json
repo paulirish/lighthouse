@@ -6,7 +6,8 @@
   },
   "scripts": {
     "watch": "gulp watch",
-    "build": "gulp build:production"
+    "build": "gulp build:production",
+    "test:e2e": "node test/extension.js"
   },
   "devDependencies": {
     "brfs": "^1.5.0",
