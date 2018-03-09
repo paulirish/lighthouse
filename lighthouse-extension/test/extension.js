@@ -27,6 +27,24 @@ const assertAuditElements = async ({category, expected, selector}) => {
   assert.equal(expected, elementCount);
 };
 
+const assertReport = async () => {
+  const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
+  assert.equal(categories.length, lighthouseCategories.length);
+
+  await lighthouseCategories.forEach(async (category) => {
+    let selector = '.lh-audit';
+    if (category === 'performance') {
+      selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
+    }
+
+    await assertAuditElements({
+      category,
+      expected: config.categories[category].audits.length,
+      selector,
+    });
+  });
+};
+
 describe('Lighthouse chrome extension', () => {
   const manifestLocation = path.join(lighthouseExtensionPath, 'manifest.json');
   let originalManifest;
@@ -48,68 +66,59 @@ describe('Lighthouse chrome extension', () => {
   });
 
   it('completes an end-to-end run', async () => {
-    const browser = await puppeteer.launch({
-      headless: false,
-      executablePath: process.env.CHROME_PATH,
-      args: [
-        `--disable-extensions-except=${lighthouseExtensionPath}`,
-        `--load-extension=${lighthouseExtensionPath}`,
-      ],
-    });
+    let browser;
+    try {
+      browser = await puppeteer.launch({
+        headless: false,
+        executablePath: process.env.CHROME_PATH,
+        args: [
+          `--disable-extensions-except=${lighthouseExtensionPath}`,
+          `--load-extension=${lighthouseExtensionPath}`,
+        ],
+      });
 
-    const page = await browser.newPage();
-    await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
-    const targets = await browser.targets();
-    const extensionTarget = targets.find(({_targetInfo}) => {
-      return _targetInfo.title === 'Lighthouse' &&
-        _targetInfo.type === 'background_page';
-    });
+      const page = await browser.newPage();
+      await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
+      const targets = await browser.targets();
+      const extensionTarget = targets.find(({_targetInfo}) => {
+        return _targetInfo.title === 'Lighthouse' &&
+          _targetInfo.type === 'background_page';
+      });
 
-    if (extensionTarget) {
-      try {
-        const client = await extensionTarget.createCDPSession();
-        const lighthouseResult = await client.send(
-          'Runtime.evaluate',
-          {
-            expression: `runLighthouseInExtension({
-              restoreCleanState: true,
-            }, ${JSON.stringify(lighthouseCategories)})`,
-            awaitPromise: true,
-            returnByValue: true,
-          }
-        );
+      if (!extensionTarget) {
+        return await browser.close();
+      }
 
-        if (lighthouseResult.exceptionDetails) {
-          if (lighthouseResult.exceptionDetails.exception) {
-            throw new Error(lighthouseResult.exceptionDetails.exception.description);
-          }
+      const client = await extensionTarget.createCDPSession();
+      const lighthouseResult = await client.send(
+        'Runtime.evaluate',
+        {
+          expression: `runLighthouseInExtension({
+            restoreCleanState: true,
+          }, ${JSON.stringify(lighthouseCategories)})`,
+          awaitPromise: true,
+          returnByValue: true,
+        }
+      );
 
-          throw new Error(lighthouseResult.exceptionDetails.text);
+      if (lighthouseResult.exceptionDetails) {
+        if (lighthouseResult.exceptionDetails.exception) {
+          throw new Error(lighthouseResult.exceptionDetails.exception.description);
         }
 
-        extensionPage = (await browser.pages())
-          .find(page => page.url().includes('blob:chrome-extension://'));
-
-        const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
-        assert.equal(categories.length, lighthouseCategories.length);
-
-        await lighthouseCategories.forEach(async (category) => {
-          let selector = '.lh-audit';
-          if (category === 'performance') {
-            selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
-          }
-
-          await assertAuditElements({
-            category,
-            expected: config.categories[category].audits.length,
-            selector,
-          });
-        });
-      } catch (err) {
-        assert.ok(false, err.message);
+        throw new Error(lighthouseResult.exceptionDetails.text);
       }
+
+      extensionPage = (await browser.pages())
+        .find(page => page.url().includes('blob:chrome-extension://'));
+
+      await assertReport();
+    } catch (err) {
+      assert.ok(false, err.message);
     }
 
-    await browser.close();
-  }):
+    if (browser) {
+      await browser.close();
+    }
+  }).timeout(90000); // 90s
 });
