@@ -23,7 +23,6 @@
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
     "package-json-versionify": "^1.0.4",
-    "puppeteer": "^1.1.1",
     "run-sequence": "^1.1.5",
     "through2": "^2.0.1"
   },

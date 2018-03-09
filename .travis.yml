@@ -17,12 +17,16 @@ cache:
     - lighthouse-viewer/node_modules
     - /home/travis/.rvm/gems/
 install:
+  # if our e2e tests fail in the future it might be that we are not compatible
+  # with the latest puppeteer api so we probably need to run on chromimum
+  # @see https://github.com/GoogleChrome/lighthouse/pull/4640/files#r171425004
   - export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
   - yarn
   # travis can't handle the parallel install (without caches)
   - yarn run install-all:task:windows
 before_script:
   - export DISPLAY=:99.0
+  # see comment above about puppeteer
   - export CHROME_PATH="$(which google-chrome-stable)"
   - sh -e /etc/init.d/xvfb start
   - yarn build-all

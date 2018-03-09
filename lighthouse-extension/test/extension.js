@@ -5,6 +5,8 @@
  */
 'use strict';
 
+/* eslint-env mocha */
+
 const path = require('path');
 const assert = require('assert');
 const fs = require('fs');
@@ -13,15 +15,6 @@ const puppeteer = require('puppeteer');
 const lighthouseExtensionPath = path.resolve(__dirname, '../app');
 const config = require(path.resolve(__dirname, '../../lighthouse-core/config/default.js'));
 const lighthouseCategories = Object.keys(config.categories);
-
-const manifestLocation = path.join(lighthouseExtensionPath, 'manifest.json');
-// read original manifest
-const originalManifest = fs.readFileSync(manifestLocation);
-const manifest = JSON.parse(originalManifest);
-// add tabs permision to the manifest
-manifest.permissions.push('tabs');
-// write new file to document
-fs.writeFileSync(manifestLocation, JSON.stringify(manifest));
 
 let extensionPage;
 
@@ -34,71 +27,89 @@ const assertAuditElements = async ({category, expected, selector}) => {
   assert.equal(expected, elementCount);
 };
 
-(async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    executablePath: process.env.CHROME_PATH,
-    args: [
-      `--disable-extensions-except=${lighthouseExtensionPath}`,
-      `--load-extension=${lighthouseExtensionPath}`,
-    ],
+describe('Lighthouse chrome extension', () => {
+  const manifestLocation = path.join(lighthouseExtensionPath, 'manifest.json');
+  let originalManifest;
+
+  beforeEach(() => {
+    // read original manifest
+    originalManifest = fs.readFileSync(manifestLocation);
+
+    const manifest = JSON.parse(originalManifest);
+    // add tabs permision to the manifest
+    manifest.permissions.push('tabs');
+    // write new file to document
+    fs.writeFileSync(manifestLocation, JSON.stringify(manifest));
   });
 
-  const page = await browser.newPage();
-  await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
-  const targets = await browser.targets();
-  const extensionTarget = targets.find(({_targetInfo}) => {
-    return _targetInfo.title === 'Lighthouse' &&
-      _targetInfo.type === 'background_page';
+  afterEach(() => {
+    // put the default manifest back
+    fs.writeFileSync(manifestLocation, originalManifest);
   });
 
-  if (extensionTarget) {
-    try {
-      const client = await extensionTarget.createCDPSession();
-      const lighthouseResult = await client.send(
-        'Runtime.evaluate',
-        {
-          expression: `runLighthouseInExtension({
-            restoreCleanState: true,
-          }, ${JSON.stringify(lighthouseCategories)})`,
-          awaitPromise: true,
-          returnByValue: true,
+  it('completes an end-to-end run', async () => {
+    const browser = await puppeteer.launch({
+      headless: false,
+      executablePath: process.env.CHROME_PATH,
+      args: [
+        `--disable-extensions-except=${lighthouseExtensionPath}`,
+        `--load-extension=${lighthouseExtensionPath}`,
+      ],
+    });
+
+    const page = await browser.newPage();
+    await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
+    const targets = await browser.targets();
+    const extensionTarget = targets.find(({_targetInfo}) => {
+      return _targetInfo.title === 'Lighthouse' &&
+        _targetInfo.type === 'background_page';
+    });
+
+    if (extensionTarget) {
+      try {
+        const client = await extensionTarget.createCDPSession();
+        const lighthouseResult = await client.send(
+          'Runtime.evaluate',
+          {
+            expression: `runLighthouseInExtension({
+              restoreCleanState: true,
+            }, ${JSON.stringify(lighthouseCategories)})`,
+            awaitPromise: true,
+            returnByValue: true,
+          }
+        );
+
+        if (lighthouseResult.exceptionDetails) {
+          if (lighthouseResult.exceptionDetails.exception) {
+            throw new Error(lighthouseResult.exceptionDetails.exception.description);
+          }
+
+          throw new Error(lighthouseResult.exceptionDetails.text);
         }
-      );
 
-      if (lighthouseResult.exceptionDetails) {
-        if (lighthouseResult.exceptionDetails.exception) {
-          throw new Error(lighthouseResult.exceptionDetails.exception.description);
-        }
+        extensionPage = (await browser.pages())
+          .find(page => page.url().includes('blob:chrome-extension://'));
 
-        throw new Error(lighthouseResult.exceptionDetails.text);
-      }
+        const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
+        assert.equal(categories.length, lighthouseCategories.length);
 
-      extensionPage = (await browser.pages())
-        .find(page => page.url().includes('blob:chrome-extension://'));
+        await lighthouseCategories.forEach(async (category) => {
+          let selector = '.lh-audit';
+          if (category === 'performance') {
+            selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
+          }
 
-      const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
-      assert.equal(categories.length, lighthouseCategories.length);
-
-      await lighthouseCategories.forEach(async (category) => {
-        let selector = '.lh-audit';
-        if (category === 'performance') {
-          selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
-        }
-
-        await assertAuditElements({
-          category,
-          expected: config.categories[category].audits.length,
-          selector,
+          await assertAuditElements({
+            category,
+            expected: config.categories[category].audits.length,
+            selector,
+          });
         });
-      });
-    } catch (err) {
-      assert.ok(false, err.message);
+      } catch (err) {
+        assert.ok(false, err.message);
+      }
     }
-  }
 
-  await browser.close();
-
-  // put the default manifest back
-  fs.writeFileSync(manifestLocation, originalManifest);
-})();
+    await browser.close();
+  }):
+});

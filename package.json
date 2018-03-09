@@ -78,6 +78,7 @@
     "mocha": "^3.2.0",
     "npm-run-posix-or-windows": "^2.0.2",
     "postinstall-prepare": "^1.0.1",
+    "puppeteer": "^1.1.1",
     "sinon": "^2.3.5",
     "typescript": "^2.8.0-rc",
     "vscode-chrome-debug-core": "^3.23.8",
