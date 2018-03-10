@@ -31,7 +31,7 @@ const assertReport = async () => {
   const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
   assert.equal(categories.length, lighthouseCategories.length);
 
-  await lighthouseCategories.forEach(async (category) => {
+  for (const category of lighthouseCategories) {
     let selector = '.lh-audit';
     if (category === 'performance') {
       selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
@@ -42,14 +42,16 @@ const assertReport = async () => {
       expected: config.categories[category].audits.length,
       selector,
     });
-  });
+  }
+
+
 };
 
 describe('Lighthouse chrome extension', () => {
   const manifestLocation = path.join(lighthouseExtensionPath, 'manifest.json');
   let originalManifest;
 
-  beforeEach(() => {
+  before(() => {
     // read original manifest
     originalManifest = fs.readFileSync(manifestLocation);
 
@@ -60,7 +62,7 @@ describe('Lighthouse chrome extension', () => {
     fs.writeFileSync(manifestLocation, JSON.stringify(manifest));
   });
 
-  afterEach(() => {
+  after(() => {
     // put the default manifest back
     fs.writeFileSync(manifestLocation, originalManifest);
   });
@@ -119,5 +121,5 @@ describe('Lighthouse chrome extension', () => {
     if (browser) {
       await browser.close();
     }
-  }).timeout(90000); // 90s
+  }).timeout(90 * 1000);
 });
