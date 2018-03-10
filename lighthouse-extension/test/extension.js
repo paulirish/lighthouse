@@ -66,17 +66,16 @@ describe('Lighthouse chrome extension', () => {
   });
 
   it('completes an end-to-end run', async () => {
-    let browser;
-    try {
-      browser = await puppeteer.launch({
-        headless: false,
-        executablePath: process.env.CHROME_PATH,
-        args: [
-          `--disable-extensions-except=${lighthouseExtensionPath}`,
-          `--load-extension=${lighthouseExtensionPath}`,
-        ],
-      });
+    const browser = await puppeteer.launch({
+      headless: false,
+      executablePath: process.env.CHROME_PATH,
+      args: [
+        `--disable-extensions-except=${lighthouseExtensionPath}`,
+        `--load-extension=${lighthouseExtensionPath}`,
+      ],
+    });
 
+    try {
       const page = await browser.newPage();
       await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
       const targets = await browser.targets();
