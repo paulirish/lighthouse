@@ -18,10 +18,13 @@ elif [ "$flag" == '--cli' ]; then
   _runmocha 'lighthouse-cli'
 elif [ "$flag" == '--viewer' ]; then
   _runmocha 'lighthouse-viewer'
+elif [ "$flag" == '--extension' ]; then
+  _runmocha 'lighthouse-extension'
 elif [ "$flag" == '--core' ]; then
   _runmocha 'lighthouse-core'
 else
   echo "lighthouse-core tests" && _runmocha 'lighthouse-core' && \
   echo "lighthouse-cli tests" && _runmocha 'lighthouse-cli' && \
-  echo "lighthouse-viewer tests" && _runmocha 'lighthouse-viewer'
+  echo "lighthouse-viewer tests" && _runmocha 'lighthouse-viewer' && \
+  echo "lighthouse-extension tests" && _runmocha 'lighthouse-extension'
 fi

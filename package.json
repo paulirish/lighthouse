@@ -32,6 +32,7 @@
     "unit-core": "bash lighthouse-core/scripts/run-mocha.sh --core",
     "unit-cli": "bash lighthouse-core/scripts/run-mocha.sh --cli",
     "unit-viewer": "bash lighthouse-core/scripts/run-mocha.sh --viewer",
+    "unit-extension": "bash lighthouse-core/scripts/run-mocha.sh --extension",
     "unit": "bash lighthouse-core/scripts/run-mocha.sh --default",
     "core-unit": "yarn unit-core",
     "cli-unit": "yarn unit-cli",
