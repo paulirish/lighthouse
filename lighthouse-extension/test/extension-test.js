@@ -48,8 +48,6 @@ const assertReport = async () => {
       selector,
     });
   }
-
-
 };
 
 describe('Lighthouse chrome extension', () => {
@@ -118,7 +116,6 @@ describe('Lighthouse chrome extension', () => {
       extensionPage = (await browser.pages())
         .find(page => page.url().includes('blob:chrome-extension://'));
     } catch (err) {
-      console.log()
       assert.ok(false, err.message);
     }
 
