@@ -24,22 +24,27 @@ const assertAuditElements = async ({category, expected, selector}) => {
     {category, selector}
   );
 
-  assert.equal(expected, elementCount);
+  assert.equal(expected, elementCount,
+    `${category} does not have the correct amount of audits`);
 };
 
 const assertReport = async () => {
   const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
-  assert.equal(categories.length, lighthouseCategories.length);
+  assert.equal(categories.length, lighthouseCategories.length,
+    `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`);
 
   for (const category of lighthouseCategories) {
     let selector = '.lh-audit';
+    let expected = config.categories[category].audits.length;
     if (category === 'performance') {
       selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
+      // we deducted the expected by 1 because network-requests audit is not showing in the report
+      expected = expected - 1;
     }
 
     await assertAuditElements({
       category,
-      expected: config.categories[category].audits.length,
+      expected,
       selector,
     });
   }
@@ -59,7 +64,7 @@ describe('Lighthouse chrome extension', () => {
     // add tabs permision to the manifest
     manifest.permissions.push('tabs');
     // write new file to document
-    fs.writeFileSync(manifestLocation, JSON.stringify(manifest));
+    fs.writeFileSync(manifestLocation, JSON.stringify(manifest, null, 2));
   });
 
   after(() => {
@@ -112,10 +117,13 @@ describe('Lighthouse chrome extension', () => {
 
       extensionPage = (await browser.pages())
         .find(page => page.url().includes('blob:chrome-extension://'));
-
-      await assertReport();
     } catch (err) {
+      console.log()
       assert.ok(false, err.message);
+    }
+
+    if (extensionPage) {
+      await assertReport();
     }
 
     if (browser) {

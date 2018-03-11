@@ -7,7 +7,7 @@
   "scripts": {
     "watch": "gulp watch",
     "build": "gulp build:production",
-    "test": "../node_modules/.bin/_mocha test/extension.js"
+    "test": "../node_modules/.bin/_mocha test/extension-test.js"
   },
   "devDependencies": {
     "brfs": "^1.5.0",
