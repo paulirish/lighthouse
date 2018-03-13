@@ -32,16 +32,16 @@ module.exports = [
     url: BASE_URL + 'seo-tester.html',
     audits: {
       'viewport': {
-        score: true,
+        score: 1,
       },
       'document-title': {
-        score: true,
+        score: 1,
       },
       'meta-description': {
-        score: true,
+        score: 1,
       },
       'http-status-code': {
-        score: true,
+        score: 1,
       },
       'font-size': {
         rawValue: true,
@@ -52,19 +52,19 @@ module.exports = [
         },
       },
       'link-text': {
-        score: true,
+        score: 1,
       },
       'is-crawlable': {
-        score: true,
+        score: 1,
       },
       'hreflang': {
-        score: true,
+        score: 1,
       },
       'plugins': {
-        score: true,
+        score: 1,
       },
       'canonical': {
-        score: true,
+        score: 1,
       },
     },
   },
@@ -73,10 +73,10 @@ module.exports = [
     url: BASE_URL + 'seo-failure-cases.html?status_code=403&' + failureHeaders,
     audits: {
       'viewport': {
-        score: false,
+        score: 0,
       },
       'document-title': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             id: 'document-title',
@@ -84,10 +84,10 @@ module.exports = [
         },
       },
       'meta-description': {
-        score: false,
+        score: 0,
       },
       'http-status-code': {
-        score: false,
+        score: 0,
         displayValue: '403',
       },
       'font-size': {
@@ -95,7 +95,7 @@ module.exports = [
         debugString: 'Text is illegible because of a missing viewport config',
       },
       'link-text': {
-        score: false,
+        score: 0,
         displayValue: '3 links found',
         details: {
           items: {
@@ -104,7 +104,7 @@ module.exports = [
         },
       },
       'is-crawlable': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 2,
@@ -112,7 +112,7 @@ module.exports = [
         },
       },
       'hreflang': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 3,
@@ -120,7 +120,7 @@ module.exports = [
         },
       },
       'plugins': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 3,
@@ -128,7 +128,7 @@ module.exports = [
         },
       },
       'canonical': {
-        score: false,
+        score: 0,
         debugString: 'Multiple URLs (https://example.com, https://example.com/)',
       },
     },

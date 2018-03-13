@@ -239,7 +239,7 @@
       "helpText": "Time to Interactive identifies the time at which your app appears to be ready enough to interact with. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive)."
     },
     "user-timings": {
-      "score": true,
+      "score": 1,
       "displayValue": "0",
       "rawValue": true,
       "extendedInfo": {
@@ -253,7 +253,7 @@
       "helpText": "Consider instrumenting your app with the User Timing API to create custom, real-world measurements of key user experiences. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/user-timing)."
     },
     "critical-request-chains": {
-      "score": false,
+      "score": 0,
       "displayValue": "12",
       "rawValue": false,
       "optimalValue": 0,
@@ -2139,7 +2139,7 @@
           "weight": 0,
           "group": "perf-info",
           "result": {
-            "score": false,
+            "score": 0,
             "displayValue": "12",
             "rawValue": false,
             "optimalValue": 0,
@@ -2299,7 +2299,7 @@
           "weight": 0,
           "group": "perf-info",
           "result": {
-            "score": true,
+            "score": 1,
             "displayValue": "0",
             "rawValue": true,
             "extendedInfo": {

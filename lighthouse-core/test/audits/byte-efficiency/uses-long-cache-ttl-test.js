@@ -157,7 +157,7 @@ describe('Cache headers audit', () => {
 
     return CacheHeadersAudit.audit(artifacts).then(result => {
       const items = result.extendedInfo.value.results;
-      assert.equal(result.score, 100);
+      assert.equal(result.score, 1.00);
       assert.equal(items.length, 0);
     });
   });
@@ -171,7 +171,7 @@ describe('Cache headers audit', () => {
     ];
 
     return CacheHeadersAudit.audit(artifacts).then(result => {
-      assert.equal(result.score, 100);
+      assert.equal(result.score, 1.00);
       const items = result.extendedInfo.value.results;
       assert.equal(items.length, 1);
       assert.equal(result.extendedInfo.value.queryStringCount, 1);

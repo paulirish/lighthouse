@@ -42,7 +42,7 @@ class DOMSize extends Audit {
         'children/parent element. A large DOM can increase memory usage, cause longer ' +
         '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
         'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/).',
-      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['DOMStats'],
     };
   }
@@ -67,8 +67,8 @@ class DOMSize extends Audit {
         stats.width.pathToElement[stats.width.pathToElement.length - 1];
 
     // Use the CDF of a log-normal distribution for scoring.
-    //   <= 1500: score≈100
-    //   3000: score=50
+    //   <= 1500: score≈1.00
+    //   3000: score=0.50
     //   >= 5970: score≈0
     const score = Audit.computeLogNormalScore(
       stats.totalDOMNodes,

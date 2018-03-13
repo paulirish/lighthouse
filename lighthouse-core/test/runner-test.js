@@ -377,7 +377,7 @@ describe('Runner', () => {
 
     return Runner.run({}, {url, config}).then(results => {
       const audits = results.audits;
-      assert.equal(audits['critical-request-chains'].displayValue, 5);
+      assert.equal(audits['critical-request-chains'].displayValue, '5 chains found');
       assert.equal(audits['critical-request-chains'].rawValue, false);
     });
   });
@@ -445,8 +445,8 @@ describe('Runner', () => {
       assert.equal(results.initialUrl, url);
       assert.equal(gatherRunnerRunSpy.called, true, 'GatherRunner.run was not called');
       assert.equal(results.audits['content-width'].name, 'content-width');
-      assert.equal(results.audits['content-width'].score, true);
-      assert.equal(results.reportCategories[0].score, 100);
+      assert.equal(results.audits['content-width'].score, 1.00);
+      assert.equal(results.reportCategories[0].score, 1.00);
       assert.equal(results.reportCategories[0].audits[0].id, 'content-width');
     });
   });

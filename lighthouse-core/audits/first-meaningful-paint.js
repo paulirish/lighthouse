@@ -25,7 +25,7 @@ class FirstMeaningfulPaint extends Audit {
       description: 'First meaningful paint',
       helpText: 'First meaningful paint measures when the primary content of a page is visible. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint).',
-      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
   }
@@ -35,7 +35,7 @@ class FirstMeaningfulPaint extends Audit {
    * @see https://github.com/GoogleChrome/lighthouse/issues/26
    * @see https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/view
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
-   * @return {!Promise<!AuditResult>} The score from the audit, ranging from 0-100.
+   * @return {!Promise<!AuditResult>}
    */
   static audit(artifacts) {
     const trace = artifacts.traces[this.DEFAULT_PASS];
@@ -95,8 +95,8 @@ class FirstMeaningfulPaint extends Audit {
     });
 
     // Use the CDF of a log-normal distribution for scoring.
-    //   < 1100ms: score≈100
-    //   4000ms: score=50
+    //   < 1100ms: score≈1.00
+    //   4000ms: score=0.50
     //   >= 14000ms: score≈0
     const firstMeaningfulPaint = traceOfTab.timings.firstMeaningfulPaint;
     const score = Audit.computeLogNormalScore(

@@ -17,7 +17,7 @@ describe('Console error logs audit', () => {
       RuntimeExceptions: [],
     });
     assert.equal(auditResult.rawValue, 0);
-    assert.equal(auditResult.score, true);
+    assert.equal(auditResult.score, 1);
     assert.ok(!auditResult.displayValue, 0);
     assert.equal(auditResult.details.items.length, 0);
   });
@@ -36,7 +36,7 @@ describe('Console error logs audit', () => {
       RuntimeExceptions: [],
     });
     assert.equal(auditResult.rawValue, 0);
-    assert.equal(auditResult.score, true);
+    assert.equal(auditResult.score, 1);
     assert.equal(auditResult.details.items.length, 0);
   });
 
@@ -82,7 +82,7 @@ describe('Console error logs audit', () => {
     });
 
     assert.equal(auditResult.rawValue, 3);
-    assert.equal(auditResult.score, false);
+    assert.equal(auditResult.score, 0);
     assert.equal(auditResult.details.items.length, 3);
     assert.equal(auditResult.details.items[0].url, 'http://www.example.com/favicon.ico');
     assert.equal(auditResult.details.items[0].description,
@@ -108,7 +108,7 @@ describe('Console error logs audit', () => {
       RuntimeExceptions: [],
     });
     assert.equal(auditResult.rawValue, 1);
-    assert.equal(auditResult.score, false);
+    assert.equal(auditResult.score, 0);
     assert.equal(auditResult.details.items.length, 1);
     // url is undefined
     assert.strictEqual(auditResult.details.items[0].url, undefined);
@@ -139,7 +139,7 @@ describe('Console error logs audit', () => {
       }],
     });
     assert.equal(auditResult.rawValue, 1);
-    assert.equal(auditResult.score, false);
+    assert.equal(auditResult.score, 0);
     assert.equal(auditResult.details.items.length, 1);
     assert.strictEqual(auditResult.details.items[0].url, 'http://example.com/fancybox.js');
     assert.strictEqual(auditResult.details.items[0].description,

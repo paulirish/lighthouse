@@ -26,7 +26,7 @@ class AxeAudit extends Audit {
     const isNotApplicable = notApplicables.find(result => result.id === this.meta.name);
     if (isNotApplicable) {
       return {
-        rawValue: false,
+        rawValue: true,
         notApplicable: true,
       };
     }

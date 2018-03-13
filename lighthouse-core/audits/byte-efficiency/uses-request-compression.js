@@ -23,6 +23,7 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
     return {
       name: 'uses-request-compression',
       informative: true,
+      scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       description: 'Enable text compression',
       helpText: 'Text-based responses should be served with compression (gzip, deflate or brotli)' +
         ' to minimize total network bytes.' +

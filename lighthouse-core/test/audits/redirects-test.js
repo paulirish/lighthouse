@@ -82,7 +82,7 @@ describe('Performance: Redirects audit', () => {
   });
   it('fails when 2 redirects detected', () => {
     return Audit.audit(mockArtifacts(FAILING_TWO_REDIRECTS)).then(output => {
-      assert.equal(output.score, 65);
+      assert.equal(output.score, .65);
       assert.equal(output.details.items.length, 3);
       assert.equal(Math.round(output.rawValue), 638);
     });
@@ -91,7 +91,7 @@ describe('Performance: Redirects audit', () => {
   it('passes when one redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_ONE_REDIRECT)).then(output => {
       // If === 1 redirect, perfect score is expected, regardless of latency
-      assert.equal(output.score, 100);
+      assert.equal(output.score, 1.00);
       // We will still generate a table and show wasted time
       assert.equal(output.details.items.length, 2);
       assert.equal(Math.round(output.rawValue), 510);
@@ -100,7 +100,7 @@ describe('Performance: Redirects audit', () => {
 
   it('passes when no redirect detected', () => {
     return Audit.audit(mockArtifacts(SUCCESS_NOREDIRECT)).then(output => {
-      assert.equal(output.score, 100);
+      assert.equal(output.score, 1.00);
       assert.equal(output.details.items.length, 0);
       assert.equal(output.rawValue, 0);
     });

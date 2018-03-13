@@ -24,7 +24,7 @@ describe('Performance: time-to-first-byte audit', () => {
 
     return TimeToFirstByte.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, 630);
-      assert.strictEqual(result.score, false);
+      assert.strictEqual(result.score, 0);
     });
   });
 
@@ -42,7 +42,7 @@ describe('Performance: time-to-first-byte audit', () => {
 
     return TimeToFirstByte.audit(artifacts).then(result => {
       assert.strictEqual(result.rawValue, 200);
-      assert.strictEqual(result.score, true);
+      assert.strictEqual(result.score, 1);
     });
   });
 });

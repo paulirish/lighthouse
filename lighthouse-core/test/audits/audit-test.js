@@ -37,7 +37,58 @@ describe('Audit', () => {
     assert.doesNotThrow(_ => B.audit());
   });
 
-  it('throws if an audit does return a result with a rawValue', () => {
-    assert.throws(_ => Audit.generateAuditResult(A, {}));
+  describe('_normalizeAuditScore', () => {
+    it('returns a score that is always 0-1', () => {
+      const auditResult = Audit._normalizeAuditScore(B, {rawValue: true});
+      assert.equal(Number.isFinite(auditResult.score), true);
+      assert.equal(auditResult.score, 1);
+      assert.equal(auditResult.score <= 1, true);
+
+      const auditResultFail = Audit._normalizeAuditScore(B, {rawValue: false});
+      assert.equal(Number.isFinite(auditResultFail.score), true);
+      assert.equal(auditResultFail.score, 0);
+      assert.equal(auditResultFail.score <= 1, true);
+      assert.equal(auditResultFail.score >= 0, true);
+    });
+
+    it('throws if an audit returns a score >1', () => {
+      assert.throws(_ => Audit._normalizeAuditScore(B, {rawValue: true, score: 100}), /is > 1/);
+      assert.throws(_ => Audit._normalizeAuditScore(B, {rawValue: true, score: 2}), /is > 1/);
+    });
+
+    it('throws if an audit returns a score that\'s not a number', () => {
+      const re = /Invalid score/;
+      assert.throws(_ => Audit._normalizeAuditScore(B, {rawValue: true, score: NaN}), re);
+      assert.throws(_ => Audit._normalizeAuditScore(B, {rawValue: true, score: '50'}), /is > 1/);
+    });
+  });
+
+  describe('generateAuditResult', () => {
+    it('throws if an audit does return a result with a rawValue', () => {
+      assert.throws(_ => Audit.generateAuditResult(B, {}), /requires a rawValue/);
+    });
+
+    it('chooses the failureDescription if score is failing', () => {
+      class FailingAudit extends Audit {
+        static get meta() {
+          return {
+            description: 'Passing',
+            failureDescription: 'Failing',
+          };
+        }
+      }
+
+      const auditResult = Audit.generateAuditResult(FailingAudit, {rawValue: false});
+      assert.ok(Number.isFinite(auditResult.score));
+      assert.equal(auditResult.score, 0);
+      assert.equal(auditResult.description, 'Failing');
+    });
+  });
+
+  it('sets state of non-applicable audits', () => {
+    const providedResult = {rawValue: true, notApplicable: true};
+    const result = Audit.generateAuditResult(B, providedResult);
+    assert.equal(result.score, 1);
+    assert.equal(result.informative, true);
   });
 });

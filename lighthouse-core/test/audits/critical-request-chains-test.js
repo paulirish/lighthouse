@@ -86,7 +86,7 @@ const mockArtifacts = (mockChain) => {
 describe('Performance: critical-request-chains audit', () => {
   it('calculates the correct chain result for failing example', () => {
     return CriticalRequestChains.audit(mockArtifacts(FAILING_REQUEST_CHAIN)).then(output => {
-      assert.equal(output.displayValue, 2);
+      assert.equal(output.displayValue, '2 chains found');
       assert.equal(output.rawValue, false);
       assert.ok(output.details);
     });
@@ -95,21 +95,21 @@ describe('Performance: critical-request-chains audit', () => {
   it('calculates the correct chain result for passing example', () => {
     return CriticalRequestChains.audit(mockArtifacts(PASSING_REQUEST_CHAIN)).then(output => {
       assert.equal(output.details.longestChain.duration, 1000);
-      assert.equal(output.displayValue, 0);
+      assert.equal(output.displayValue, '');
       assert.equal(output.rawValue, true);
     });
   });
 
   it('calculates the correct chain result for passing example (no 2.)', () => {
     return CriticalRequestChains.audit(mockArtifacts(PASSING_REQUEST_CHAIN_2)).then(output => {
-      assert.equal(output.displayValue, 0);
+      assert.equal(output.displayValue, '');
       assert.equal(output.rawValue, true);
     });
   });
 
   it('calculates the correct chain result for empty example', () => {
     return CriticalRequestChains.audit(mockArtifacts(EMPTY_REQUEST_CHAIN)).then(output => {
-      assert.equal(output.displayValue, 0);
+      assert.equal(output.displayValue, '');
       assert.equal(output.rawValue, true);
     });
   });

@@ -147,12 +147,11 @@ class MixedContent extends Audit {
       const details = Audit.makeTableDetails(headings, upgradeableResources);
 
       const totalRecords = defaultRecords.length;
-      const score = 100 *
-          (secureRecords.length + 0.5 * upgradeableResources.length)
-          / totalRecords;
+      const score = (secureRecords.length + 0.5 * upgradeableResources.length) / totalRecords;
 
       return {
-        rawValue: score,
+        rawValue: upgradeableResources.length === 0,
+        score,
         displayValue: displayValue,
         details,
       };

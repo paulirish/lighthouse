@@ -93,7 +93,7 @@ describe('Module Tests', function() {
       output: 'json',
     }, {
       auditResults: [{
-        score: true,
+        score: 0,
         displayValue: '',
         rawValue: true,
         name: 'viewport',

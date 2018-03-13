@@ -60,18 +60,19 @@ describe('CategoryRenderer', () => {
     assert.ok(description.querySelector('a'), 'audit help text contains coverted markdown links');
     assert.equal(score.textContent, '0');
     assert.ok(score.classList.contains('lh-score__value--fail'));
-    assert.ok(score.classList.contains(`lh-score__value--${audit.result.scoringMode}`));
+    assert.ok(score.classList.contains(`lh-score__value--${audit.result.scoreDisplayMode}`));
   });
 
   it('renders an audit debug str when appropriate', () => {
     const audit1 = renderer.renderAudit({
-      scoringMode: 'binary', score: 0,
+      scoreDisplayMode: 'binary', score: 0,
       result: {helpText: 'help text', debugString: 'Debug string', description: 'Audit title'},
     });
     assert.ok(audit1.querySelector('.lh-debug'));
 
     const audit2 = renderer.renderAudit({
-      scoringMode: 'binary', score: 0, result: {helpText: 'help text', description: 'Audit title'},
+      scoreDisplayMode: 'binary', score: 0,
+      result: {helpText: 'help text', description: 'Audit title'},
     });
     assert.ok(!audit2.querySelector('.lh-debug'));
   });
@@ -119,10 +120,10 @@ describe('CategoryRenderer', () => {
       description: 'Audit',
       helpText: 'Learn more',
       debugString: 'It may not have worked!',
-      score: 100,
+      score: 1.00,
     };
-    const audit = {result: auditResult, score: 100};
-    const category = {name: 'Fake', description: '', score: 100, audits: [audit]};
+    const audit = {result: auditResult, score: 1.00};
+    const category = {name: 'Fake', description: '', score: 1.00, audits: [audit]};
     const categoryDOM = renderer.render(category, sampleResults.reportGroups);
     assert.ok(categoryDOM.querySelector(
         '.lh-category > .lh-audit-group:not(.lh-passed-audits) > .lh-audit'),
@@ -165,6 +166,11 @@ describe('CategoryRenderer', () => {
 
     it('renders the category header', () => {
       const categoryDOM = renderer.render(category, sampleResults.reportGroups);
+
+      const gauge = categoryDOM.querySelector('.lh-gauge');
+      assert.equal(gauge.textContent.trim(), '35', 'score is 0-100');
+      assert.equal(gauge.getAttribute('data-progress'), '35', 'score gauge is visually 0-100');
+
       const score = categoryDOM.querySelector('.lh-score');
       const value = categoryDOM.querySelector('.lh-score  > .lh-score__value');
       const title = score.querySelector('.lh-score__title');
@@ -182,7 +188,7 @@ describe('CategoryRenderer', () => {
     it.skip('renders the failed audits grouped by group', () => {
       const categoryDOM = renderer.render(category, sampleResults.reportGroups);
       const failedAudits = category.audits.filter(audit => {
-        return audit.result.score !== 100 && !audit.result.notApplicable;
+        return audit.result.score !== 1.00 && !audit.result.notApplicable;
       });
       const failedAuditTags = new Set(failedAudits.map(audit => audit.group));
 
@@ -193,7 +199,7 @@ describe('CategoryRenderer', () => {
     it('renders the passed audits grouped by group', () => {
       const categoryDOM = renderer.render(category, sampleResults.reportGroups);
       const passedAudits = category.audits.filter(audit =>
-          !audit.result.notApplicable && audit.result.score === 100);
+          !audit.result.notApplicable && audit.result.score === 1);
       const passedAuditTags = new Set(passedAudits.map(audit => audit.group));
 
       const passedAuditGroups = categoryDOM.querySelectorAll('.lh-passed-audits .lh-audit-group');

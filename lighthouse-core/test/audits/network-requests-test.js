@@ -21,7 +21,7 @@ describe('Network requests audit', () => {
     }, Runner.instantiateComputedArtifacts());
 
     return NetworkRequests.audit(artifacts).then(output => {
-      assert.equal(output.score, 100);
+      assert.equal(output.score, 1.00);
       assert.equal(output.rawValue, 66);
       assert.equal(output.details.items.length, 66);
       assert.equal(output.extendedInfo.value[0].url, 'https://pwa.rocks/');

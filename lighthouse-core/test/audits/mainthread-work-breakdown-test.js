@@ -71,7 +71,7 @@ describe('Performance: page execution timings audit', () => {
       const valueOf = name => Math.round(output.extendedInfo.value[name]);
 
       assert.equal(output.details.items.length, 12);
-      assert.equal(output.score, true);
+      assert.equal(output.score, 1);
       assert.equal(Math.round(output.rawValue), 611);
 
       for (const category in output.extendedInfo.value) {
@@ -92,7 +92,7 @@ describe('Performance: page execution timings audit', () => {
     return PageExecutionTimings.audit(artifacts).then(output => {
       const valueOf = name => Math.round(output.extendedInfo.value[name]);
       assert.equal(output.details.items.length, 13);
-      assert.equal(output.score, true);
+      assert.equal(output.score, 1);
       assert.equal(Math.round(output.rawValue), 596);
 
       for (const category in output.extendedInfo.value) {
@@ -113,7 +113,7 @@ describe('Performance: page execution timings audit', () => {
     return PageExecutionTimings.audit(artifacts).then(output => {
       const valueOf = name => Math.round(output.extendedInfo.value[name]);
       assert.equal(output.details.items.length, 12);
-      assert.equal(output.score, true);
+      assert.equal(output.score, 1);
       assert.equal(Math.round(output.rawValue), 524);
 
       for (const category in output.extendedInfo.value) {
@@ -133,7 +133,7 @@ describe('Performance: page execution timings audit', () => {
 
     return PageExecutionTimings.audit(artifacts).then(output => {
       assert.equal(output.details.items.length, 0);
-      assert.equal(output.score, true);
+      assert.equal(output.score, 1);
       assert.equal(Math.round(output.rawValue), 0);
     });
   });

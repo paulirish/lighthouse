@@ -39,7 +39,8 @@ describe('Mixed Content audit', () => {
     return Audit.audit(
       getArtifacts('https://example.org', defaultRecords, upgradeRecords)
     ).then(result => {
-      assert.strictEqual(result.rawValue, 100);
+      assert.strictEqual(result.rawValue, true);
+      assert.strictEqual(result.score, 1.00);
     });
   });
 
@@ -60,7 +61,8 @@ describe('Mixed Content audit', () => {
       getArtifacts('http://example.org', defaultRecords, upgradeRecords)
     ).then(result => {
       // Score for 3 upgradeable out of 4: 100 * (0 + 3*0.5) / 4
-      assert.strictEqual(result.rawValue, 37.5);
+      assert.strictEqual(result.rawValue, false);
+      assert.strictEqual(result.score, 0.375);
     });
   });
 });

@@ -117,7 +117,7 @@ class CriticalRequestChains extends Audit {
   /**
    * Audits the page to give a score for First Meaningful Paint.
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
-   * @return {!AuditResult} The score from the audit, ranging from 0-100.
+   * @return {!AuditResult}
    */
   static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
@@ -151,7 +151,7 @@ class CriticalRequestChains extends Audit {
 
       return {
         rawValue: chainCount === 0,
-        displayValue: Util.formatNumber(chainCount),
+        displayValue: chainCount ? `${Util.formatNumber(chainCount)} chains found`: '',
         extendedInfo: {
           value: {
             chains: flattenedChains,

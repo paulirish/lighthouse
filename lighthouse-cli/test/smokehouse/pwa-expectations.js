@@ -15,28 +15,28 @@ module.exports = [
     url: 'https://airhorner.com/',
     audits: {
       'is-on-https': {
-        score: true,
+        score: 1,
       },
       'redirects-http': {
-        score: true,
+        score: 1,
       },
       'service-worker': {
-        score: true,
+        score: 1,
       },
       'works-offline': {
-        score: true,
+        score: 1,
       },
       'viewport': {
-        score: true,
+        score: 1,
       },
       'without-javascript': {
-        score: true,
+        score: 1,
       },
       'load-fast-enough-for-pwa': {
         // Ignore speed test; just verify that it ran.
       },
       'webapp-install-banner': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -56,7 +56,7 @@ module.exports = [
         },
       },
       'splash-screen': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -76,7 +76,7 @@ module.exports = [
         },
       },
       'themed-omnibox': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -96,20 +96,20 @@ module.exports = [
         },
       },
       'content-width': {
-        score: true,
+        score: 1,
       },
 
       // "manual" audits. Just verify in the results.
       'pwa-cross-browser': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-page-transitions': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-each-page-has-url': {
-        score: false,
+        score: 0,
         manual: true,
       },
     },
@@ -120,28 +120,28 @@ module.exports = [
     url: 'https://www.chromestatus.com/features',
     audits: {
       'is-on-https': {
-        score: true,
+        score: 1,
       },
       'redirects-http': {
-        score: true,
+        score: 1,
       },
       'service-worker': {
-        score: true,
+        score: 1,
       },
       'works-offline': {
-        score: false,
+        score: 0,
       },
       'viewport': {
-        score: true,
+        score: 1,
       },
       'without-javascript': {
-        score: true,
+        score: 1,
       },
       'load-fast-enough-for-pwa': {
         // Ignore speed test; just verify that it ran.
       },
       'webapp-install-banner': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -161,7 +161,7 @@ module.exports = [
         },
       },
       'splash-screen': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -181,7 +181,7 @@ module.exports = [
         },
       },
       'themed-omnibox': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -201,20 +201,20 @@ module.exports = [
         },
       },
       'content-width': {
-        score: true,
+        score: 1,
       },
 
       // "manual" audits. Just verify in the results.
       'pwa-cross-browser': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-page-transitions': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-each-page-has-url': {
-        score: false,
+        score: 0,
         manual: true,
       },
     },
@@ -225,30 +225,30 @@ module.exports = [
     url: 'https://jakearchibald.github.io/svgomg/',
     audits: {
       'is-on-https': {
-        score: true,
+        score: 1,
       },
       'redirects-http': {
         // Note: relies on JS redirect.
         // see https://github.com/GoogleChrome/lighthouse/issues/2383
-        score: false,
+        score: 0,
       },
       'service-worker': {
-        score: true,
+        score: 1,
       },
       'works-offline': {
-        score: true,
+        score: 1,
       },
       'viewport': {
-        score: true,
+        score: 1,
       },
       'without-javascript': {
-        score: true,
+        score: 1,
       },
       'load-fast-enough-for-pwa': {
         // Ignore speed test; just verify that it ran.
       },
       'webapp-install-banner': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -268,7 +268,7 @@ module.exports = [
         },
       },
       'splash-screen': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -288,7 +288,7 @@ module.exports = [
         },
       },
       'themed-omnibox': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -308,20 +308,20 @@ module.exports = [
         },
       },
       'content-width': {
-        score: true,
+        score: 1,
       },
 
       // "manual" audits. Just verify in the results.
       'pwa-cross-browser': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-page-transitions': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-each-page-has-url': {
-        score: false,
+        score: 0,
         manual: true,
       },
     },
@@ -334,28 +334,28 @@ module.exports = [
   //   url: 'https://shop.polymer-project.org/',
   //   audits: {
   //     'is-on-https': {
-  //       score: true
+  //       score: 1
   //     },
   //     'redirects-http': {
-  //       score: true
+  //       score: 1
   //     },
   //     'service-worker': {
-  //       score: true
+  //       score: 1
   //     },
   //     'works-offline': {
-  //       score: true
+  //       score: 1
   //     },
   //     'viewport': {
-  //       score: true
+  //       score: 1
   //     },
   //     'without-javascript': {
-  //       score: true
+  //       score: 1
   //     },
   //     'load-fast-enough-for-pwa': {
   //       // Ignore speed test; just verify that it ran.
   //     },
   //     'webapp-install-banner': {
-  //       score: true,
+  //       score: 1,
   //       extendedInfo: {
   //         value: {
   //           manifestValues: {
@@ -375,7 +375,7 @@ module.exports = [
   //       }
   //     },
   //     'splash-screen': {
-  //       score: true,
+  //       score: 1,
   //       extendedInfo: {
   //         value: {
   //           manifestValues: {
@@ -395,7 +395,7 @@ module.exports = [
   //       }
   //     },
   //     'themed-omnibox': {
-  //       score: true,
+  //       score: 1,
   //       extendedInfo: {
   //         value: {
   //           manifestValues: {
@@ -415,20 +415,20 @@ module.exports = [
   //       }
   //     },
   //     'content-width': {
-  //       score: true
+  //       score: 1
   //     },
 
   //     // "manual" audits. Just verify in the results.
   //     'pwa-cross-browser': {
-  //       score: false,
+  //       score: 0,
   //       manual: true
   //     },
   //     'pwa-page-transitions': {
-  //       score: false,
+  //       score: 0,
   //       manual: true
   //     },
   //     'pwa-each-page-has-url': {
-  //       score: false,
+  //       score: 0,
   //       manual: true
   //     }
   //   }
@@ -439,28 +439,28 @@ module.exports = [
     url: 'https://pwa.rocks/',
     audits: {
       'is-on-https': {
-        score: true,
+        score: 1,
       },
       'redirects-http': {
-        score: true,
+        score: 1,
       },
       'service-worker': {
-        score: true,
+        score: 1,
       },
       'works-offline': {
-        score: true,
+        score: 1,
       },
       'viewport': {
-        score: true,
+        score: 1,
       },
       'without-javascript': {
-        score: true,
+        score: 1,
       },
       'load-fast-enough-for-pwa': {
         // Ignore speed test; just verify that it ran .
       },
       'webapp-install-banner': {
-        score: true,
+        score: 1,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -480,7 +480,7 @@ module.exports = [
         },
       },
       'splash-screen': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -500,7 +500,7 @@ module.exports = [
         },
       },
       'themed-omnibox': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             manifestValues: {
@@ -520,20 +520,20 @@ module.exports = [
         },
       },
       'content-width': {
-        score: true,
+        score: 1,
       },
 
       // "manual" audits. Just verify in the results.
       'pwa-cross-browser': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-page-transitions': {
-        score: false,
+        score: 0,
         manual: true,
       },
       'pwa-each-page-has-url': {
-        score: false,
+        score: 0,
         manual: true,
       },
     },

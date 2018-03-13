@@ -117,10 +117,10 @@ describe('Byte efficiency base audit', () => {
       results: [{url: 'http://example.com/', wastedBytes: 400 * 1000}],
     }, graph);
 
-    assert.equal(perfectResult.score, 100, 'scores perfect wastedMs');
-    assert.ok(goodResult.score > 75 && goodResult.score < 100, 'scores good wastedMs');
-    assert.ok(averageResult.score > 50 && averageResult.score < 75, 'scores average wastedMs');
-    assert.ok(failingResult.score < 50, 'scores failing wastedMs');
+    assert.equal(perfectResult.score, 1.00, 'scores perfect wastedMs');
+    assert.ok(goodResult.score > .75 && goodResult.score < 1.00, 'scores good wastedMs');
+    assert.ok(averageResult.score > .50 && averageResult.score < .75, 'scores average wastedMs');
+    assert.ok(failingResult.score < .50, 'scores failing wastedMs');
   });
 
   it('should throw on invalid graph', () => {

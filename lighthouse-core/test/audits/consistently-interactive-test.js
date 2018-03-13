@@ -39,7 +39,7 @@ describe('Performance: consistently-interactive audit', () => {
     }, Runner.instantiateComputedArtifacts());
 
     return ConsistentlyInteractive.audit(artifacts).then(output => {
-      assert.equal(output.score, 99);
+      assert.equal(output.score, .99);
       assert.equal(Math.round(output.rawValue), 1582);
       assert.equal(output.displayValue, '1,580\xa0ms');
     });
@@ -56,7 +56,7 @@ describe('Performance: consistently-interactive audit', () => {
     }, Runner.instantiateComputedArtifacts());
 
     return ConsistentlyInteractive.audit(artifacts).then(output => {
-      assert.equal(output.score, 95);
+      assert.equal(output.score, .95);
       assert.equal(Math.round(output.rawValue), 2712);
       assert.equal(output.displayValue, '2,710\xa0ms');
     });

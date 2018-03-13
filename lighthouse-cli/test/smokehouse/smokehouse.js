@@ -18,7 +18,7 @@ const DEFAULT_EXPECTATIONS_PATH = 'pwa-expectations';
 
 const PROTOCOL_TIMEOUT_EXIT_CODE = 67;
 const RETRIES = 3;
-const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)(\d+)$/;
+const NUMERICAL_EXPECTATION_REGEXP = /^(<=?|>=?)((\d|\.)+)$/;
 
 
 /**
@@ -97,7 +97,7 @@ function matchesExpectation(actual, expected) {
   if (typeof actual === 'number' && NUMERICAL_EXPECTATION_REGEXP.test(expected)) {
     const parts = expected.match(NUMERICAL_EXPECTATION_REGEXP);
     const operator = parts[1];
-    const number = parseInt(parts[2]);
+    const number = parseFloat(parts[2]);
     switch (operator) {
       case '>':
         return actual > number;

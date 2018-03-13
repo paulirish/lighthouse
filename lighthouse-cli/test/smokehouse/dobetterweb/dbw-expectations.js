@@ -14,7 +14,7 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
     audits: {
       'errors-in-console': {
-        score: false,
+        score: 0,
         rawValue: '>3',
         details: {
           items: {
@@ -23,7 +23,7 @@ module.exports = [
         },
       },
       'is-on-https': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             length: 1,
@@ -31,7 +31,7 @@ module.exports = [
         },
       },
       'uses-http2': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             results: {
@@ -46,7 +46,7 @@ module.exports = [
         },
       },
       'external-anchors-use-rel-noopener': {
-        score: false,
+        score: 0,
         debugString: 'Lighthouse was unable to determine the destination of some anchor tags. ' +
                      'If they are not used as hyperlinks, consider removing the _blank target.',
         extendedInfo: {
@@ -61,11 +61,11 @@ module.exports = [
         },
       },
       'appcache-manifest': {
-        score: false,
+        score: 0,
         debugString: 'Found <html manifest="clock.appcache">.',
       },
       'geolocation-on-start': {
-        score: false,
+        score: 0,
       },
       'link-blocking-first-paint': {
         score: 0,
@@ -84,7 +84,7 @@ module.exports = [
         },
       },
       'no-document-write': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             length: 3,
@@ -97,7 +97,7 @@ module.exports = [
         },
       },
       'no-mutation-events': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             results: {
@@ -112,7 +112,7 @@ module.exports = [
         },
       },
       'no-vulnerable-libraries': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -120,14 +120,14 @@ module.exports = [
         },
       },
       'no-websql': {
-        score: false,
+        score: 0,
         debugString: 'Found database "mydb", version: 1.0.',
       },
       'notification-on-start': {
-        score: false,
+        score: 0,
       },
       'script-blocking-first-paint': {
-        score: '<100',
+        score: '<1.00',
         extendedInfo: {
           value: {
             results: {
@@ -142,7 +142,7 @@ module.exports = [
         },
       },
       'uses-passive-event-listeners': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             // Note: Originally this was 7 but M56 defaults document-level
@@ -154,7 +154,7 @@ module.exports = [
         },
       },
       'deprecations': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             length: 3,
@@ -167,7 +167,7 @@ module.exports = [
         },
       },
       'password-inputs-can-be-pasted-into': {
-        score: false,
+        score: 0,
         extendedInfo: {
           value: {
             length: 2,
@@ -175,7 +175,7 @@ module.exports = [
         },
       },
       'image-aspect-ratio': {
-        score: false,
+        score: 0,
         details: {
           items: {
             0: {
@@ -191,7 +191,7 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?smallDOM',
     audits: {
       'dom-size': {
-        score: 100,
+        score: 1,
         extendedInfo: {
           value: {
             0: {value: '1,324'},
@@ -235,7 +235,7 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?withShadowDOM',
     audits: {
       'dom-size': {
-        score: 100,
+        score: 1,
         extendedInfo: {
           value: {
             0: {value: '37'},
@@ -257,7 +257,7 @@ module.exports = [
     url: 'http://localhost:10200/dobetterweb/domtester.html?ShadowRootWithManyChildren',
     audits: {
       'dom-size': {
-        score: 100,
+        score: 1,
         extendedInfo: {
           value: {
             0: {value: '33'},
@@ -279,40 +279,40 @@ module.exports = [
     url: 'http://localhost:10200/online-only.html',
     audits: {
       'is-on-https': {
-        score: true,
+        score: 1,
       },
       'uses-http2': {
-        score: false,
+        score: 0,
       },
       'external-anchors-use-rel-noopener': {
-        score: true,
+        score: 1,
       },
       'appcache-manifest': {
-        score: true,
+        score: 1,
       },
       'geolocation-on-start': {
-        score: true,
+        score: 1,
       },
       'link-blocking-first-paint': {
-        score: 100,
+        score: 1.00,
       },
       'no-document-write': {
-        score: true,
+        score: 1,
       },
       'no-mutation-events': {
-        score: true,
+        score: 1,
       },
       'no-websql': {
-        score: true,
+        score: 1,
       },
       'script-blocking-first-paint': {
-        score: 100,
+        score: 1.00,
       },
       'uses-passive-event-listeners': {
-        score: true,
+        score: 1,
       },
       'password-inputs-can-be-pasted-into': {
-        score: true,
+        score: 1,
       },
     },
   },

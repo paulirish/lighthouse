@@ -14,7 +14,7 @@ module.exports = [
     url: 'http://localhost:10200/a11y/a11y_tester.html',
     audits: {
       'accesskeys': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -22,7 +22,7 @@ module.exports = [
         },
       },
       'aria-allowed-attr': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -30,7 +30,7 @@ module.exports = [
         },
       },
       'aria-required-children': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -38,7 +38,7 @@ module.exports = [
         },
       },
       'aria-required-parent': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -46,7 +46,7 @@ module.exports = [
         },
       },
       'aria-roles': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -54,7 +54,7 @@ module.exports = [
         },
       },
       'aria-valid-attr-value': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -62,7 +62,7 @@ module.exports = [
         },
       },
       'aria-valid-attr': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -70,7 +70,7 @@ module.exports = [
         },
       },
       'button-name': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -78,7 +78,7 @@ module.exports = [
         },
       },
       'bypass': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -86,7 +86,7 @@ module.exports = [
         },
       },
       'color-contrast': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -94,7 +94,7 @@ module.exports = [
         },
       },
       'definition-list': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -102,7 +102,7 @@ module.exports = [
         },
       },
       'dlitem': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -110,7 +110,7 @@ module.exports = [
         },
       },
       'document-title': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -118,7 +118,7 @@ module.exports = [
         },
       },
       'duplicate-id': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -126,7 +126,7 @@ module.exports = [
         },
       },
       'frame-title': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -134,7 +134,7 @@ module.exports = [
         },
       },
       'html-has-lang': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -142,7 +142,7 @@ module.exports = [
         },
       },
       'image-alt': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -150,7 +150,7 @@ module.exports = [
         },
       },
       'input-image-alt': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -158,7 +158,7 @@ module.exports = [
         },
       },
       'label': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -166,7 +166,7 @@ module.exports = [
         },
       },
       'layout-table': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -174,7 +174,7 @@ module.exports = [
         },
       },
       'link-name': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -182,7 +182,7 @@ module.exports = [
         },
       },
       'list': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -190,7 +190,7 @@ module.exports = [
         },
       },
       'listitem': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -198,7 +198,7 @@ module.exports = [
         },
       },
       'meta-viewport': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -206,7 +206,7 @@ module.exports = [
         },
       },
       'object-alt': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -214,7 +214,7 @@ module.exports = [
         },
       },
       'tabindex': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -222,7 +222,7 @@ module.exports = [
         },
       },
       'td-headers-attr': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,
@@ -230,7 +230,7 @@ module.exports = [
         },
       },
       'valid-lang': {
-        score: false,
+        score: 0,
         details: {
           items: {
             length: 1,

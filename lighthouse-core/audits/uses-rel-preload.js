@@ -24,7 +24,7 @@ class UsesRelPreloadAudit extends Audit {
       helpText: 'Consider using <link rel=preload> to prioritize fetching late-discovered ' +
         'resources sooner [Learn more](https://developers.google.com/web/updates/2016/03/link-rel-preload).',
       requiredArtifacts: ['devtoolsLogs', 'traces'],
-      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
     };
   }
 

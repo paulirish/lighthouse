@@ -24,7 +24,7 @@ class FirstInteractiveMetric extends Audit {
       helpText: 'First Interactive marks the time at which the page is ' +
           'minimally interactive. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive).',
-      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
   }

@@ -24,7 +24,7 @@ class SpeedIndexMetric extends Audit {
       description: 'Perceptual Speed Index',
       helpText: 'Speed Index shows how quickly the contents of a page are visibly populated. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index).',
-      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };
   }
@@ -33,7 +33,7 @@ class SpeedIndexMetric extends Audit {
    * Audits the page to give a score for the Speed Index.
    * @see  https://github.com/GoogleChrome/lighthouse/issues/197
    * @param {!Artifacts} artifacts The artifacts from the gather phase.
-   * @return {!Promise<!AuditResult>} The score from the audit, ranging from 0-100.
+   * @return {!Promise<!AuditResult>}
    */
   static audit(artifacts) {
     const trace = artifacts.traces[this.DEFAULT_PASS];

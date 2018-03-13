@@ -15,7 +15,6 @@ The top-level Lighthouse Results object (LHR) is what the lighthouse node module
 | userAgent | The user agent string of the version of Chrome that was used by Lighthouse. |
 | initialUrl | The URL that was supplied to Lighthouse and initially navigated to. |
 | url | The URL that Lighthouse ended up auditing after redirects were followed. |
-| score | The overall score `0-100`, a weighted average of all category scores. *NOTE: Only the PWA category has a weight by default* |
 | [audits](#audits) | An object containing the results of the audits. |
 | [runtimeConfig](#runtime-config) | An object containing information about the configuration used by Lighthouse. |
 | [timing](#timing) | An object containing information about how long Lighthouse spent auditing. |
@@ -56,8 +55,8 @@ An object containing the results of the audits, keyed by their name.
 | error | `boolean` | Set to true if there was an an exception thrown within the audit. The error message will be in `debugString`.
 | rawValue | <code>boolean&#124;number</code> | The unscored value determined by the audit. Typically this will match the score if there's no additional information to impart. For performance audits, this value is typically a number indicating the metric value. |
 | displayValue | `string` | The string to display in the report alongside audit results. If empty, nothing additional is shown. This is typically used to explain additional information such as the number and nature of failing items. |
-| score | <code>boolean&#124;number</code> | The scored value determined by the audit as either boolean or a number `0-100`. If the audit is a boolean, the implication is `score ? 100 : 0`. |
-| scoringMode | <code>"binary"&#124;"numeric"</code> | A string identifying how granular the score is meant to be indicating, i.e. is the audit pass/fail or are there shades of gray 0-100. *NOTE: This does not necessarily mean `typeof audit.score === audit.scoringMode`, an audit can have a score of 40 with a scoringMode of `"binary"` meant to indicate display should be failure.* |
+| score | <code>boolean&#124;number</code> | The scored value determined by the audit as a number `0-1`, representing displayed scores of 0-100. |
+| scoreDisplayMode | <code>"binary"&#124;"numeric"</code> | A string identifying how granular the score is meant to be indicating, i.e. is the audit pass/fail (score of 1 or 0), or are there shades of gray (scores between 0-1 exclusive). |
 | details | `Object` | Extra information found by the audit necessary for display. The structure of this object varies from audit to audit. The structure of this object is somewhat stable between minor version bumps as this object is used to render the HTML report.
 | extendedInfo | `Object` | Extra information found by the audit. The structure of this object varies from audit to audit and is generally for programmatic consumption and debugging, though there is typically overlap with `details`. *WARNING: The structure of this object is not stable and cannot be trusted to follow semver* |
 | manual | `boolean` | Indicator used for display that the audit does not have results and is a placeholder for the user to conduct manual testing. |
@@ -74,10 +73,10 @@ An object containing the results of the audits, keyed by their name.
     "description": "Uses HTTPS",
     "failureDescription": "Does not use HTTPS",
     "helpText": "HTTPS is the best. [Learn more](https://learn-more)",
-    "score": false,
+    "score": 0,
     "rawValue": false,
     "displayValue": "2 insecure requests found",
-    "scoringMode": "binary",
+    "scoreDisplayMode": "binary",
     "details": {
       "type": "list",
       "header": {
@@ -185,7 +184,6 @@ An array containing the different categories, their scores, and the results of t
 | Name | Type | Description |
 | -- | -- | -- |
 | id | `string` | The string identifier of the category. |
-| score | `number` | The numeric score `0-100` of the audit. Audits with a boolean score result are converted with `score ? 100 : 0`. |
 | weight | `number` | The weight of the audit's score in the overall category score. |
 | result | `Object` | The actual audit result, a copy of the audit object found in [audits](#audits). *NOTE: this property will likely be removed in upcoming releases; use the `id` property to lookup the result in the `audits` property.* |
 
@@ -205,7 +203,7 @@ An array containing the different categories, their scores, and the results of t
         "weight": 1,
         "result": {
           "name": "is-on-https",
-          "score": false,
+          "score": 0,
           ...
         }
       }

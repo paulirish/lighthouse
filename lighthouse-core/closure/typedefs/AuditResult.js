@@ -52,7 +52,7 @@ function AuditFullResult() {}
 AuditFullResult.prototype.score;
 
 /** @type {string} */
-AuditFullResult.prototype.scoringMode;
+AuditFullResult.prototype.scoreDisplayMode;
 
 /** @type {string} */
 AuditFullResult.prototype.displayValue;

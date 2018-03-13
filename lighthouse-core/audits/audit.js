@@ -10,6 +10,13 @@ const statistics = require('../lib/statistics');
 
 const DEFAULT_PASS = 'defaultPass';
 
+/**
+ * Clamp figure to 2 decimal places
+ * @param {number} val
+ * @return {number}
+ */
+const clampTo2Decimals = val => Math.round(val * 100) / 100;
+
 class Audit {
   /**
    * @return {!string}
@@ -51,10 +58,10 @@ class Audit {
       diminishingReturnsValue
     );
 
-    let score = 100 * distribution.computeComplementaryPercentile(measuredValue);
-    score = Math.min(100, score);
+    let score = distribution.computeComplementaryPercentile(measuredValue);
+    score = Math.min(1, score);
     score = Math.max(0, score);
-    return Math.round(score);
+    return Math.round(score * 100) / 100;
   }
 
   /**
@@ -97,6 +104,42 @@ class Audit {
   /**
    * @param {!Audit} audit
    * @param {!AuditResult} result
+   * @return {{score: number, scoreDisplayMode: string, informative: boolean, rawValue: boolean}}
+   */
+  static _normalizeAuditScore(audit, result) {
+    let score = typeof result.score === 'undefined' ? result.rawValue : result.score;
+    let informative;
+    let rawValue;
+
+    if (typeof score === 'boolean' || score === null) {
+      score = score ? 1 : 0;
+    } else {
+      score = clampTo2Decimals(score);
+    }
+
+    // If the audit was determined to not apply to the page, we'll reset it as informative only
+    if (result.notApplicable) {
+      score = 1;
+      rawValue = true;
+      informative = true;
+    }
+
+    if (!Number.isFinite(score)) throw new Error(`Invalid score: ${score}`);
+    if (score > 1) throw new Error(`Audit score for ${audit.meta.name} is > 1`);
+
+    const scoreDisplayMode = audit.meta.scoreDisplayMode || Audit.SCORING_MODES.BINARY;
+
+    return {
+      score,
+      scoreDisplayMode,
+      informative,
+      rawValue,
+    };
+  }
+
+  /**
+   * @param {!Audit} audit
+   * @param {!AuditResult} result
    * @return {!AuditFullResult}
    */
   static generateAuditResult(audit, result) {
@@ -104,31 +147,27 @@ class Audit {
       throw new Error('generateAuditResult requires a rawValue');
     }
 
-    const score = typeof result.score === 'undefined' ? result.rawValue : result.score;
-    let displayValue = result.displayValue;
-    if (typeof displayValue === 'undefined') {
-      displayValue = result.rawValue ? result.rawValue : '';
-    }
+    const {score, scoreDisplayMode, informative, rawValue} = Audit._normalizeAuditScore(audit,
+        result);
 
-    // The same value or true should be '' it doesn't add value to the report
-    if (displayValue === score) {
-      displayValue = '';
-    }
+    const displayValue = result.displayValue ? `${result.displayValue}` : '';
+
     let auditDescription = audit.meta.description;
     if (audit.meta.failureDescription) {
-      if (!score || (typeof score === 'number' && score < 100)) {
+      if (score < 1) {
         auditDescription = audit.meta.failureDescription;
       }
     }
+
     return {
       score,
-      displayValue: `${displayValue}`,
-      rawValue: result.rawValue,
+      displayValue,
+      rawValue: rawValue || result.rawValue,
       error: result.error,
       debugString: result.debugString,
       extendedInfo: result.extendedInfo,
-      scoringMode: audit.meta.scoringMode || Audit.SCORING_MODES.BINARY,
-      informative: audit.meta.informative,
+      scoreDisplayMode,
+      informative: audit.meta.informative || informative,
       manual: audit.meta.manual,
       notApplicable: result.notApplicable,
       name: audit.meta.name,

@@ -37,7 +37,7 @@ export interface AuditResult {
   rawValue: boolean | number;
   displayValue?: string;
   debugString?: string;
-  score?: boolean | number;
+  score?: number;
   optimalValue: number | string;
   extendedInfo?: {value: string};
 }
@@ -50,8 +50,8 @@ export interface AuditFullResult {
   rawValue: boolean | number;
   displayValue: string;
   debugString?: string;
-  score: boolean | number;
-  scoringMode: string;
+  score: number;
+  scoreDisplayMode: string;
   error?: boolean;
   description: string;
   name: string;

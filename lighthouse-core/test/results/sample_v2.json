@@ -1,7 +1,7 @@
 {
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3358.0 Safari/537.36",
   "lighthouseVersion": "2.9.1",
-  "generatedTime": "2018-03-09T02:53:06.836Z",
+  "generatedTime": "2018-03-13T00:55:45.840Z",
   "initialUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "runWarnings": [],
@@ -17,7 +17,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "is-on-https",
       "description": "Does not use HTTPS",
       "helpText": "All sites should be protected with HTTPS, even ones that don't handle sensitive data. HTTPS prevents intruders from tampering with or passively listening in on the communications between your app and your users, and is a prerequisite for HTTP/2 and many new web platform APIs. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/https).",
@@ -39,7 +39,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "redirects-http",
       "description": "Does not redirect HTTP traffic to HTTPS",
       "helpText": "If you've already set up HTTPS, make sure that you redirect all HTTP traffic to HTTPS. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-redirects-to-https)."
@@ -48,7 +48,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "service-worker",
       "description": "Does not register a service worker",
       "helpText": "The service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/registered-service-worker)."
@@ -57,32 +57,32 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "works-offline",
       "description": "Does not respond with a 200 when offline",
       "helpText": "If you're building a Progressive Web App, consider using a service worker so that your app can work offline. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http-200-when-offline)."
     },
     "viewport": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "debugString": "",
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "viewport",
       "description": "Has a `<meta name=\"viewport\">` tag with `width` or `initial-scale`",
       "helpText": "Add a viewport meta tag to optimize your app for mobile screens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag)."
     },
     "without-javascript": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "without-javascript",
       "description": "Contains some content when JavaScript is not available",
       "helpText": "Your app should display some content when JavaScript is disabled, even if it's just a warning to the user that JavaScript is required to use the app. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/no-js)."
     },
     "first-meaningful-paint": {
-      "score": 51,
+      "score": 0.51,
       "displayValue": "3,970 ms",
       "rawValue": 3969.1,
       "extendedInfo": {
@@ -104,13 +104,13 @@
           "fmpFellBack": false
         }
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "first-meaningful-paint",
       "description": "First meaningful paint",
       "helpText": "First meaningful paint measures when the primary content of a page is visible. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint)."
     },
     "load-fast-enough-for-pwa": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "extendedInfo": {
@@ -130,13 +130,13 @@
           "timeToFirstInteractive": 4927.278
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "load-fast-enough-for-pwa",
       "description": "Page load is fast enough on 3G",
       "helpText": "A fast page load over a 3G network ensures a good mobile user experience. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g)."
     },
     "speed-index-metric": {
-      "score": 60,
+      "score": 0.6,
       "displayValue": "4,565",
       "rawValue": 4565,
       "extendedInfo": {
@@ -173,16 +173,16 @@
           ]
         }
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "speed-index-metric",
       "description": "Perceptual Speed Index",
       "helpText": "Speed Index shows how quickly the contents of a page are visibly populated. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/speed-index)."
     },
     "screenshot-thumbnails": {
-      "score": 100,
-      "displayValue": "true",
+      "score": 1,
+      "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "name": "screenshot-thumbnails",
       "description": "Screenshot Thumbnails",
@@ -245,7 +245,7 @@
       }
     },
     "estimated-input-latency": {
-      "score": 100,
+      "score": 1,
       "displayValue": "16 ms",
       "rawValue": 16,
       "extendedInfo": {
@@ -272,16 +272,16 @@
           }
         ]
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "estimated-input-latency",
       "description": "Estimated Input Latency",
       "helpText": "The score above is an estimate of how long your app takes to respond to user input, in milliseconds. There is a 90% probability that a user encounters this amount of latency, or less. 10% of the time a user can expect additional latency. If your latency is higher than 50 ms, users may perceive your app as laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency)."
     },
     "errors-in-console": {
       "score": 0,
-      "displayValue": "5",
+      "displayValue": "",
       "rawValue": 5,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "errors-in-console",
       "description": "Browser errors were logged to the console",
       "helpText": "Errors logged to the console indicate unresolved problems. They can come from network request failures and other browser concerns.",
@@ -329,7 +329,7 @@
       }
     },
     "time-to-first-byte": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": 570.5630000000001,
       "extendedInfo": {
@@ -337,7 +337,7 @@
           "wastedMs": -29.436999999999898
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "name": "time-to-first-byte",
       "description": "Keep server response times low (TTFB)",
@@ -349,7 +349,7 @@
       }
     },
     "first-interactive": {
-      "score": 82,
+      "score": 0.82,
       "displayValue": "4,930 ms",
       "rawValue": 4927.278,
       "extendedInfo": {
@@ -358,13 +358,13 @@
           "timestamp": 185608247190
         }
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "first-interactive",
       "description": "First Interactive (beta)",
       "helpText": "First Interactive marks the time at which the page is minimally interactive. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
     },
     "consistently-interactive": {
-      "score": 82,
+      "score": 0.82,
       "displayValue": "4,930 ms",
       "rawValue": 4927.278,
       "extendedInfo": {
@@ -393,19 +393,19 @@
           "timeInMs": 4927.278
         }
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "consistently-interactive",
       "description": "Consistently Interactive (beta)",
       "helpText": "Consistently Interactive marks the time at which the page is fully interactive. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive)."
     },
     "user-timings": {
-      "score": 100,
-      "displayValue": "0",
+      "score": 1,
+      "displayValue": "",
       "rawValue": true,
       "extendedInfo": {
         "value": []
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "name": "user-timings",
       "description": "User Timing marks and measures",
@@ -418,7 +418,7 @@
     },
     "critical-request-chains": {
       "score": 0,
-      "displayValue": "13",
+      "displayValue": "13 chains found",
       "rawValue": false,
       "extendedInfo": {
         "value": {
@@ -582,7 +582,7 @@
           }
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "name": "critical-request-chains",
       "description": "Critical Request Chains",
@@ -754,7 +754,7 @@
       }
     },
     "redirects": {
-      "score": 100,
+      "score": 1,
       "displayValue": "0 ms",
       "rawValue": 0,
       "extendedInfo": {
@@ -762,7 +762,7 @@
           "wastedMs": 0
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "name": "redirects",
       "description": "Avoids page redirects",
       "helpText": "Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).",
@@ -798,7 +798,7 @@
           }
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "webapp-install-banner",
       "description": "User will not be prompted to Install the Web App",
       "helpText": "Browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/install-prompt)."
@@ -820,7 +820,7 @@
           }
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "splash-screen",
       "description": "Is not configured for a custom splash screen",
       "helpText": "A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen)."
@@ -844,7 +844,7 @@
           "themeColor": null
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "themed-omnibox",
       "description": "Address bar does not match brand colors",
       "helpText": "The browser address bar can be themed to match your site. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/address-bar)."
@@ -853,17 +853,17 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "manifest-short-name-length",
       "description": "Manifest's `short_name` will be truncated when displayed on homescreen",
       "helpText": "Make your app's `short_name` fewer than 12 characters to ensure that it's not truncated on homescreens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/manifest-short_name-is-not-truncated)."
     },
     "content-width": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "debugString": "",
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "content-width",
       "description": "Content is sized correctly for the viewport",
       "helpText": "If the width of your app's content doesn't match the width of the viewport, your app might not be optimized for mobile screens. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport)."
@@ -872,7 +872,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "image-aspect-ratio",
       "description": "Displays images with incorrect aspect ratio",
       "helpText": "Image display dimensions should match natural aspect ratio.",
@@ -935,7 +935,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "deprecations",
       "description": "Uses deprecated API's",
       "helpText": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://www.chromestatus.com/features#deprecated).",
@@ -980,7 +980,7 @@
       }
     },
     "mainthread-work-breakdown": {
-      "score": 100,
+      "score": 1,
       "displayValue": "1,360 ms",
       "rawValue": 1359.7759999930859,
       "extendedInfo": {
@@ -1001,7 +1001,7 @@
           "XHR Load": 0.011000007390975952
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "name": "mainthread-work-breakdown",
       "description": "Main thread work breakdown",
@@ -1100,7 +1100,7 @@
       }
     },
     "bootup-time": {
-      "score": 100,
+      "score": 1,
       "displayValue": "1,300 ms",
       "rawValue": 1302.3579999804497,
       "extendedInfo": {
@@ -1126,7 +1126,7 @@
           }
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "bootup-time",
       "description": "JavaScript boot-up time",
       "helpText": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn more](https://developers.google.com/web/lighthouse/audits/bootup).",
@@ -1175,13 +1175,13 @@
       }
     },
     "uses-rel-preload": {
-      "score": 100,
+      "score": 1,
       "displayValue": "0 ms",
       "rawValue": 0,
       "extendedInfo": {
         "value": []
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "uses-rel-preload",
       "description": "Preload key requests",
@@ -1196,10 +1196,10 @@
       }
     },
     "font-display": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "font-display",
       "description": "All text remains visible during webfont loads",
       "helpText": "Leverage the font-display CSS feature to ensure text is user-visible while webfonts are loading. [Learn more](https://developers.google.com/web/updates/2016/02/font-display).",
@@ -1210,8 +1210,8 @@
       }
     },
     "network-requests": {
-      "score": 100,
-      "displayValue": "18",
+      "score": 1,
+      "displayValue": "",
       "rawValue": 18,
       "extendedInfo": {
         "value": [
@@ -1343,7 +1343,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "name": "network-requests",
       "description": "Network Requests",
@@ -1515,7 +1515,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "pwa-cross-browser",
@@ -1526,7 +1526,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "pwa-page-transitions",
@@ -1537,7 +1537,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "pwa-each-page-has-url",
@@ -1545,121 +1545,121 @@
       "helpText": "Ensure individual pages are deep linkable via the URLs and that URLs are unique for the purpose of shareability on social media. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist#each-page-has-a-url)."
     },
     "accesskeys": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "accesskeys",
-      "description": "`[accesskey]` values are not unique",
+      "description": "`[accesskey]` values are unique",
       "helpText": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse)."
     },
     "aria-allowed-attr": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-allowed-attr",
-      "description": "`[aria-*]` attributes do not match their roles",
+      "description": "`[aria-*]` attributes match their roles",
       "helpText": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-allowed-attr?application=lighthouse)."
     },
     "aria-required-attr": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-required-attr",
-      "description": "`[role]`s do not have all required `[aria-*]` attributes",
+      "description": "`[role]`s have all required `[aria-*]` attributes",
       "helpText": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-required-attr?application=lighthouse)."
     },
     "aria-required-children": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-required-children",
-      "description": "Elements with `[role]` that require specific children `[role]`s, are missing.",
+      "description": "Elements with `[role]` that require specific children `[role]`s, are present",
       "helpText": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-required-children?application=lighthouse)."
     },
     "aria-required-parent": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-required-parent",
-      "description": "`[role]`s are not contained by their required parent element",
+      "description": "`[role]`s are contained by their required parent element",
       "helpText": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-required-parent?application=lighthouse)."
     },
     "aria-roles": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-roles",
-      "description": "`[role]` values are not valid",
+      "description": "`[role]` values are valid",
       "helpText": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-roles?application=lighthouse)."
     },
     "aria-valid-attr-value": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-valid-attr-value",
-      "description": "`[aria-*]` attributes do not have valid values",
+      "description": "`[aria-*]` attributes have valid values",
       "helpText": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr-value?application=lighthouse)."
     },
     "aria-valid-attr": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "aria-valid-attr",
-      "description": "`[aria-*]` attributes are not valid or misspelled",
+      "description": "`[aria-*]` attributes are valid and not misspelled",
       "helpText": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more](https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr?application=lighthouse)."
     },
     "audio-caption": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "audio-caption",
-      "description": "`<audio>` elements are missing a `<track>` element with `[kind=\"captions\"]`.",
+      "description": "`<audio>` elements contain a `<track>` element with `[kind=\"captions\"]`",
       "helpText": "Captions make audio elements usable for deaf or hearing-impaired users, providing critical information such as who is talking, what they're saying, and other non-speech information. [Learn more](https://dequeuniversity.com/rules/axe/2.2/audio-caption?application=lighthouse)."
     },
     "button-name": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "button-name",
-      "description": "Buttons do not have an accessible name",
+      "description": "Buttons have an accessible name",
       "helpText": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn more](https://dequeuniversity.com/rules/axe/2.2/button-name?application=lighthouse)."
     },
     "bypass": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "extendedInfo": {},
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "bypass",
       "description": "The page contains a heading, skip link, or landmark region",
       "helpText": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more](https://dequeuniversity.com/rules/axe/2.2/bypass?application=lighthouse).",
@@ -1712,7 +1712,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "color-contrast",
       "description": "Background and foreground colors do not have a sufficient contrast ratio.",
       "helpText": "Low-contrast text is difficult or impossible for many users to read. [Learn more](https://dequeuniversity.com/rules/axe/2.2/color-contrast?application=lighthouse).",
@@ -1739,33 +1739,33 @@
       }
     },
     "definition-list": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "definition-list",
-      "description": "`<dl>`'s do not contain only properly-ordered `<dt>` and `<dd>` groups, `<script>` or `<template>` elements.",
+      "description": "`<dl>`'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>` or `<template>` elements.",
       "helpText": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn more](https://dequeuniversity.com/rules/axe/2.2/definition-list?application=lighthouse)."
     },
     "dlitem": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "dlitem",
-      "description": "Definition list items are not wrapped in `<dl>` elements",
+      "description": "Definition list items are wrapped in `<dl>` elements",
       "helpText": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn more](https://dequeuniversity.com/rules/axe/2.2/dlitem?application=lighthouse)."
     },
     "document-title": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "extendedInfo": {},
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "document-title",
       "description": "Document has a `<title>` element",
       "helpText": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/title).",
@@ -1779,11 +1779,11 @@
       }
     },
     "duplicate-id": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "extendedInfo": {},
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "duplicate-id",
       "description": "`[id]` attributes on the page are unique",
       "helpText": "The value of an id attribute must be unique to prevent other instances from being overlooked by assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/2.2/duplicate-id?application=lighthouse).",
@@ -1797,14 +1797,14 @@
       }
     },
     "frame-title": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "frame-title",
-      "description": "`<frame>` or `<iframe>` elements do not have a title",
+      "description": "`<frame>` or `<iframe>` elements have a title",
       "helpText": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more](https://dequeuniversity.com/rules/axe/2.2/frame-title?application=lighthouse)."
     },
     "html-has-lang": {
@@ -1837,7 +1837,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "html-has-lang",
       "description": "`<html>` element does not have a `[lang]` attribute",
       "helpText": "If a page doesn't specify a lang attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more](https://dequeuniversity.com/rules/axe/2.2/html-lang?application=lighthouse).",
@@ -1858,14 +1858,14 @@
       }
     },
     "html-lang-valid": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "html-lang-valid",
-      "description": "`<html>` element does not have a valid value for its `[lang]` attribute.",
+      "description": "`<html>` element has a valid value for its `[lang]` attribute",
       "helpText": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn more](https://dequeuniversity.com/rules/axe/2.2/valid-lang?application=lighthouse)."
     },
     "image-alt": {
@@ -1920,7 +1920,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "image-alt",
       "description": "Image elements do not have `[alt]` attributes",
       "helpText": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute.[Learn more](https://dequeuniversity.com/rules/axe/2.2/image-alt?application=lighthouse).",
@@ -1953,14 +1953,14 @@
       }
     },
     "input-image-alt": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "input-image-alt",
-      "description": "`<input type=\"image\">` elements do not have `[alt]` text",
+      "description": "`<input type=\"image\">` elements have `[alt]` text",
       "helpText": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn more](https://dequeuniversity.com/rules/axe/2.2/input-image-alt?application=lighthouse)."
     },
     "label": {
@@ -2016,7 +2016,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "label",
       "description": "Form elements do not have associated labels",
       "helpText": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more](https://dequeuniversity.com/rules/axe/2.2/label?application=lighthouse).",
@@ -2049,14 +2049,14 @@
       }
     },
     "layout-table": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "layout-table",
-      "description": "Presentational `<table>` elements do not avoid using `<th>`, `<caption>` or the `[summary]` attribute.",
+      "description": "Presentational `<table>` elements avoid using `<th>`, `<caption>` or the `[summary]` attribute.",
       "helpText": "A table being used for layout purposes should not include data elements, such as the th or caption elements or the summary attribute, because this can create a confusing experience for screen reader users. [Learn more](https://dequeuniversity.com/rules/axe/2.2/layout-table?application=lighthouse)."
     },
     "link-name": {
@@ -2103,7 +2103,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "link-name",
       "description": "Links do not have a discernible name",
       "helpText": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn more](https://dequeuniversity.com/rules/axe/2.2/link-name?application=lighthouse).",
@@ -2130,44 +2130,44 @@
       }
     },
     "list": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "list",
-      "description": "Lists do not contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
+      "description": "Lists contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
       "helpText": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more](https://dequeuniversity.com/rules/axe/2.2/list?application=lighthouse)."
     },
     "listitem": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "listitem",
-      "description": "List items (`<li>`) are not contained within `<ul>` or `<ol>` parent elements.",
+      "description": "List items (`<li>`) are contained within `<ul>` or `<ol>` parent elements",
       "helpText": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>` or `<ol>` to be announced properly. [Learn more](https://dequeuniversity.com/rules/axe/2.2/listitem?application=lighthouse)."
     },
     "meta-refresh": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "meta-refresh",
-      "description": "The document uses `<meta http-equiv=\"refresh\">`",
+      "description": "The document does not use `<meta http-equiv=\"refresh\">`",
       "helpText": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more](https://dequeuniversity.com/rules/axe/2.2/meta-refresh?application=lighthouse)."
     },
     "meta-viewport": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
       "extendedInfo": {},
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "meta-viewport",
       "description": "`[user-scalable=\"no\"]` is not used in the `<meta name=\"viewport\">` element and the `[maximum-scale]` attribute is not less than 5.",
       "helpText": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more](https://dequeuniversity.com/rules/axe/2.2/meta-viewport?application=lighthouse).",
@@ -2181,87 +2181,87 @@
       }
     },
     "object-alt": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "object-alt",
-      "description": "`<object>` elements do not have `[alt]` text",
+      "description": "`<object>` elements have `[alt]` text",
       "helpText": "Screen readers cannot translate non-text content. Adding alt text to `<object>` elements helps screen readers convey meaning to users. [Learn more](https://dequeuniversity.com/rules/axe/2.2/object-alt?application=lighthouse)."
     },
     "tabindex": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "tabindex",
-      "description": "Some elements have a `[tabindex]` value greater than 0",
+      "description": "No element has a `[tabindex]` value greater than 0",
       "helpText": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more](https://dequeuniversity.com/rules/axe/2.2/tabindex?application=lighthouse)."
     },
     "td-headers-attr": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "td-headers-attr",
-      "description": "Cells in a `<table>` element that use the `[headers]` attribute refers to other cells of that same table.",
+      "description": "Cells in a `<table>` element that use the `[headers]` attribute only refer to other cells of that same table.",
       "helpText": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more](https://dequeuniversity.com/rules/axe/2.2/td-headers-attr?application=lighthouse)."
     },
     "th-has-data-cells": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "th-has-data-cells",
-      "description": "`<th>` elements and elements with `[role=\"columnheader\"/\"rowheader\"]` do not have data cells they describe.",
+      "description": "`<th>` elements and elements with `[role=\"columnheader\"/\"rowheader\"]` have data cells they describe.",
       "helpText": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more](https://dequeuniversity.com/rules/axe/2.2/th-has-data-cells?application=lighthouse)."
     },
     "valid-lang": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "valid-lang",
-      "description": "`[lang]` attributes do not have a valid value",
+      "description": "`[lang]` attributes have a valid value",
       "helpText": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn more](https://dequeuniversity.com/rules/axe/2.2/valid-lang?application=lighthouse)."
     },
     "video-caption": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "video-caption",
-      "description": "`<video>` elements do not contain a `<track>` element with `[kind=\"captions\"]`.",
+      "description": "`<video>` elements contain a `<track>` element with `[kind=\"captions\"]`",
       "helpText": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more](https://dequeuniversity.com/rules/axe/2.2/video-caption?application=lighthouse)."
     },
     "video-description": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
-      "rawValue": false,
-      "scoringMode": "binary",
+      "rawValue": true,
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "video-description",
-      "description": "`<video>` elements do not contain a `<track>` element with `[kind=\"description\"]`.",
+      "description": "`<video>` elements contain a `<track>` element with `[kind=\"description\"]`",
       "helpText": "Audio descriptions provide relevant information for videos that dialogue cannot, such as facial expressions and scenes. [Learn more](https://dequeuniversity.com/rules/axe/2.2/video-description?application=lighthouse)."
     },
     "custom-controls-labels": {
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "custom-controls-labels",
@@ -2272,7 +2272,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "custom-controls-roles",
@@ -2283,7 +2283,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "focus-traps",
@@ -2294,7 +2294,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "focusable-controls",
@@ -2305,7 +2305,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "heading-levels",
@@ -2316,7 +2316,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "logical-tab-order",
@@ -2327,7 +2327,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "managed-focus",
@@ -2338,7 +2338,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "offscreen-content-hidden",
@@ -2349,7 +2349,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "use-landmarks",
@@ -2360,7 +2360,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "visual-order-follows-dom",
@@ -2368,7 +2368,7 @@
       "helpText": "DOM order matches the visual order, improving navigation for assistive technology. [Learn more](https://developers.google.com/web/fundamentals/accessibility/how-to-review#try_it_with_a_screen_reader)."
     },
     "uses-long-cache-ttl": {
-      "score": 91,
+      "score": 0.91,
       "displayValue": "11 assets found",
       "rawValue": 103455,
       "extendedInfo": {
@@ -2466,7 +2466,7 @@
           "queryStringCount": 7
         }
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "uses-long-cache-ttl",
       "description": "Uses inefficient cache policy on static assets",
       "helpText": "A long cache lifetime can speed up repeat visits to your page. [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control).",
@@ -2588,7 +2588,7 @@
       }
     },
     "total-byte-weight": {
-      "score": 100,
+      "score": 1,
       "displayValue": "Total size was 157 KB",
       "rawValue": 160738,
       "extendedInfo": {
@@ -2648,7 +2648,7 @@
           "totalCompletedRequests": 18
         }
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "total-byte-weight",
       "description": "Avoids enormous network payloads",
       "helpText": "Large network payloads cost users real money and are highly correlated with long load times. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/network-payloads).",
@@ -2728,7 +2728,7 @@
       }
     },
     "offscreen-images": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": 0,
       "extendedInfo": {
@@ -2738,7 +2738,7 @@
           "results": []
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "offscreen-images",
       "description": "Offscreen images",
@@ -2754,7 +2754,7 @@
       }
     },
     "unminified-css": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": 0,
       "extendedInfo": {
@@ -2764,7 +2764,7 @@
           "results": []
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "unminified-css",
       "description": "Minify CSS",
@@ -2780,26 +2780,24 @@
       }
     },
     "unminified-javascript": {
-      "score": 90,
+      "score": 1,
       "displayValue": "Potential savings of 30470 bytes",
-      "rawValue": 170,
+      "rawValue": 0,
       "extendedInfo": {
         "value": {
-          "wastedMs": 170,
+          "wastedMs": 0,
           "wastedKb": 30,
           "results": [
             {
               "url": "http://localhost:10200/zone.js",
               "totalBytes": 71654,
               "wastedBytes": 30470,
-              "wastedPercent": 42.52388078488413,
-              "wastedMs": 174.32104767345731,
-              "totalMs": 409.9376550703614
+              "wastedPercent": 42.52388078488413
             }
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "unminified-javascript",
       "description": "Minify JavaScript",
@@ -2832,19 +2830,17 @@
             "url": "http://localhost:10200/zone.js",
             "totalBytes": 71654,
             "wastedBytes": 30470,
-            "wastedPercent": 42.52388078488413,
-            "wastedMs": 174.32104767345731,
-            "totalMs": 409.9376550703614
+            "wastedPercent": 42.52388078488413
           }
         ],
         "summary": {
-          "wastedMs": 170,
+          "wastedMs": 0,
           "wastedBytes": 30470
         }
       }
     },
     "unused-css-rules": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": 0,
       "extendedInfo": {
@@ -2854,7 +2850,7 @@
           "results": []
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "unused-css-rules",
       "description": "Unused CSS rules",
@@ -2870,12 +2866,12 @@
       }
     },
     "uses-webp-images": {
-      "score": 90,
+      "score": 1,
       "displayValue": "Potential savings of 8526 bytes",
-      "rawValue": 50,
+      "rawValue": 0,
       "extendedInfo": {
         "value": {
-          "wastedMs": 50,
+          "wastedMs": 0,
           "wastedKb": 8,
           "results": [
             {
@@ -2883,14 +2879,12 @@
               "fromProtocol": true,
               "isCrossOrigin": false,
               "totalBytes": 24620,
-              "wastedBytes": 8526,
-              "wastedMs": 48.777855348339266,
-              "totalMs": 140.8527795773062
+              "wastedBytes": 8526
             }
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "uses-webp-images",
       "description": "Serve images in next-gen formats",
@@ -2929,19 +2923,17 @@
             "fromProtocol": true,
             "isCrossOrigin": false,
             "totalBytes": 24620,
-            "wastedBytes": 8526,
-            "wastedMs": 48.777855348339266,
-            "totalMs": 140.8527795773062
+            "wastedBytes": 8526
           }
         ],
         "summary": {
-          "wastedMs": 50,
+          "wastedMs": 0,
           "wastedBytes": 8526
         }
       }
     },
     "uses-optimized-images": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": 0,
       "extendedInfo": {
@@ -2951,7 +2943,7 @@
           "results": []
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "uses-optimized-images",
       "description": "Optimize images",
@@ -2967,32 +2959,28 @@
       }
     },
     "uses-request-compression": {
-      "score": 65,
+      "score": 0.9,
       "displayValue": "Potential savings of 64646 bytes",
-      "rawValue": 370,
+      "rawValue": 150,
       "extendedInfo": {
         "value": {
-          "wastedMs": 370,
+          "wastedMs": 150,
           "wastedKb": 63,
           "results": [
             {
               "url": "http://localhost:10200/zone.js",
               "totalBytes": 71501,
-              "wastedBytes": 56204,
-              "wastedMs": 321.5471008677058,
-              "totalMs": 409.06233113553895
+              "wastedBytes": 56204
             },
             {
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "totalBytes": 12519,
-              "wastedBytes": 8442,
-              "wastedMs": 48.29728534490735,
-              "totalMs": 71.62209372576345
+              "wastedBytes": 8442
             }
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "uses-request-compression",
       "description": "Enable text compression",
@@ -3024,26 +3012,22 @@
           {
             "url": "http://localhost:10200/zone.js",
             "totalBytes": 71501,
-            "wastedBytes": 56204,
-            "wastedMs": 321.5471008677058,
-            "totalMs": 409.06233113553895
+            "wastedBytes": 56204
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "totalBytes": 12519,
-            "wastedBytes": 8442,
-            "wastedMs": 48.29728534490735,
-            "totalMs": 71.62209372576345
+            "wastedBytes": 8442
           }
         ],
         "summary": {
-          "wastedMs": 370,
+          "wastedMs": 150,
           "wastedBytes": 64646
         }
       }
     },
     "uses-responsive-images": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": 0,
       "extendedInfo": {
@@ -3053,7 +3037,7 @@
           "results": []
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "uses-responsive-images",
       "description": "Properly size images",
@@ -3073,13 +3057,13 @@
       "displayValue": "",
       "rawValue": false,
       "debugString": "Found <html manifest=\"clock.appcache\">.",
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "appcache-manifest",
       "description": "Uses Application Cache",
       "helpText": "Application Cache is deprecated. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/appcache)."
     },
     "dom-size": {
-      "score": 100,
+      "score": 1,
       "displayValue": "53 nodes",
       "rawValue": 53,
       "extendedInfo": {
@@ -3103,7 +3087,7 @@
           }
         ]
       },
-      "scoringMode": "numeric",
+      "scoreDisplayMode": "numeric",
       "name": "dom-size",
       "description": "Avoids an excessive DOM size",
       "helpText": "Browser engineers recommend pages contain fewer than ~1,500 DOM nodes. The sweet spot is a tree depth < 32 elements and fewer than 60 children/parent element. A large DOM can increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/).",
@@ -3161,7 +3145,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "external-anchors-use-rel-noopener",
       "description": "Does not open external anchors using `rel=\"noopener\"`",
       "helpText": "Open new tabs using `rel=\"noopener\"` to improve performance and prevent security vulnerabilities. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).",
@@ -3268,7 +3252,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "geolocation-on-start",
       "description": "Requests the geolocation permission on page load",
       "helpText": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to user gestures instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/geolocation-on-load).",
@@ -3374,7 +3358,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "link-blocking-first-paint",
       "description": "Reduce render-blocking stylesheets",
@@ -3517,7 +3501,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "no-document-write",
       "description": "Uses `document.write()`",
       "helpText": "For users on slow connections, external scripts dynamically injected via `document.write()` can delay page load by tens of seconds. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/document-write).",
@@ -3678,7 +3662,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "no-mutation-events",
       "description": "Uses Mutation Events in its own scripts",
       "helpText": "Mutation Events are deprecated and harm performance. Consider using Mutation Observers instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/mutation-events).",
@@ -3827,7 +3811,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "no-vulnerable-libraries",
       "description": "Includes front-end JavaScript libraries with known security vulnerabilities",
       "helpText": "Some third-party scripts may contain known security vulnerabilities  that are easily identified and exploited by attackers.",
@@ -3887,7 +3871,7 @@
       "displayValue": "",
       "rawValue": false,
       "debugString": "Found database \"mydb\", version: 1.0.",
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "no-websql",
       "description": "Uses WebSQL DB",
       "helpText": "Web SQL is deprecated. Consider using IndexedDB instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/web-sql)."
@@ -3927,7 +3911,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "notification-on-start",
       "description": "Requests the notification permission on page load",
       "helpText": "Users are mistrustful of or confused by sites that request to send notifications without context. Consider tying the request to user gestures instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/notifications-on-load).",
@@ -3990,7 +3974,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "password-inputs-can-be-pasted-into",
       "description": "Prevents users to paste into password fields",
       "helpText": "Preventing password pasting undermines good security policy. [Learn more](https://www.ncsc.gov.uk/blog-post/let-them-paste-passwords)",
@@ -4027,7 +4011,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "numeric",
       "informative": true,
       "name": "script-blocking-first-paint",
       "description": "Reduce render-blocking scripts",
@@ -4140,7 +4124,7 @@
           ]
         }
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "uses-http2",
       "description": "Does not use HTTP/2 for all of its resources",
       "helpText": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers, multiplexing, and server push. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/http2).",
@@ -4315,7 +4299,7 @@
           }
         ]
       },
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "uses-passive-event-listeners",
       "description": "Does not use passive listeners to improve scrolling performance",
       "helpText": "Consider marking your touch and wheel event listeners as `passive` to improve your page's scroll performance. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners).",
@@ -4422,25 +4406,25 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "meta-description",
       "description": "Document does not have a meta description",
       "helpText": "Meta descriptions may be included in search results to concisely summarize page content. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/description)."
     },
     "http-status-code": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "http-status-code",
       "description": "Page has successful HTTP status code",
       "helpText": "Pages with unsuccessful HTTP status codes may not be indexed properly. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/successful-http-code)."
     },
     "font-size": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "font-size",
       "description": "Document uses legible font sizes",
       "helpText": "Font sizes less than 12px are too small to be legible and require mobile visitors to “pinch to zoom” in order to read. Strive to have >60% of page text ≥12px. [Learn more](https://developers.google.com/web/fundamentals/design-and-ux/responsive/#optimize_text_for_reading).",
@@ -4479,10 +4463,10 @@
       }
     },
     "link-text": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "link-text",
       "description": "Links have descriptive text",
       "helpText": "Descriptive link text helps search engines understand your content. [Learn more](https://webmasters.googleblog.com/2008/10/importance-of-link-architecture.html).",
@@ -4499,16 +4483,16 @@
       "rawValue": null,
       "error": true,
       "debugString": "Audit error: Required RobotsTxt gatherer did not run.",
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "is-crawlable",
       "description": "Page is blocked from indexing",
       "helpText": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more](https://developers.google.com/lighthouse/audits/indexing)."
     },
     "hreflang": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "hreflang",
       "description": "Document has a valid `hreflang`",
       "helpText": "hreflang allows crawlers to discover alternate translations of the page content. [Learn more](https://support.google.com/webmasters/answer/189077).",
@@ -4519,10 +4503,10 @@
       }
     },
     "plugins": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "name": "plugins",
       "description": "Document avoids plugins",
       "helpText": "Most mobile devices do not support plugins, and many desktop browsers restrict them.",
@@ -4533,10 +4517,10 @@
       }
     },
     "canonical": {
-      "score": 100,
+      "score": 1,
       "displayValue": "",
       "rawValue": true,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "notApplicable": true,
       "name": "canonical",
@@ -4547,7 +4531,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "mobile-friendly",
@@ -4558,7 +4542,7 @@
       "score": 0,
       "displayValue": "",
       "rawValue": false,
-      "scoringMode": "binary",
+      "scoreDisplayMode": "binary",
       "informative": true,
       "manual": true,
       "name": "structured-data",
@@ -4732,7 +4716,7 @@
         }
       ],
       "id": "performance",
-      "score": 72.6470588235294
+      "score": 0.73
     },
     {
       "name": "Progressive Web App",
@@ -4799,7 +4783,7 @@
         }
       ],
       "id": "pwa",
-      "score": 36.36363636363637
+      "score": 0.36
     },
     {
       "name": "Accessibility",
@@ -5032,7 +5016,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 35.08771929824562
+      "score": 0.35
     },
     {
       "name": "Best Practices",
@@ -5172,7 +5156,7 @@
         }
       ],
       "id": "seo",
-      "score": 77.77777777777777
+      "score": 0.78
     }
   ],
   "reportGroups": {
@@ -5246,6 +5230,6 @@
     }
   },
   "timing": {
-    "total": 1112
+    "total": 1117
   }
 }

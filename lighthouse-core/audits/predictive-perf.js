@@ -49,7 +49,7 @@ class PredictivePerf extends Audit {
       helpText:
         'Predicted performance evaluates how your site will perform under ' +
         'a 3G connection on a mobile device.',
-      scoringMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
   }

@@ -25,7 +25,7 @@ describe('Performance: predictive performance audit', () => {
     }, Runner.instantiateComputedArtifacts());
 
     return PredictivePerf.audit(artifacts).then(output => {
-      assert.equal(output.score, 79);
+      assert.equal(output.score, .79);
       assert.equal(Math.round(output.rawValue), 5308);
       assert.equal(output.displayValue, '5,310\xa0ms');
 

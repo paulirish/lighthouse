@@ -57,7 +57,7 @@ describe('Performance: first-meaningful-paint audit', () => {
     });
 
     it('scores the fMP correctly', () => {
-      assert.equal(fmpResult.score, 99);
+      assert.equal(fmpResult.score, 0.99);
     });
 
     it('did not fall back to an FMP candidate event', () => {

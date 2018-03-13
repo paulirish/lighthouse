@@ -28,6 +28,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
       name: 'offscreen-images',
       description: 'Offscreen images',
       informative: true,
+      scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       helpText:
         'Consider lazy-loading offscreen and hidden images to improve page load speed ' +
         'and time to interactive. ' +

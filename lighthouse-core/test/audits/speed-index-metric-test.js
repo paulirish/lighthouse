@@ -42,7 +42,7 @@ describe('Performance: speed-index-metric audit', () => {
     });
 
     return Audit.audit(artifacts).then(result => {
-      assert.equal(result.score, 100);
+      assert.equal(result.score, 1.00);
       assert.equal(result.rawValue, 609);
       assert.equal(Math.round(result.extendedInfo.value.timings.firstVisualChange), 475);
       assert.equal(Math.round(result.extendedInfo.value.timings.visuallyReady), 700);

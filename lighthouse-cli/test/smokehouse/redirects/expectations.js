@@ -16,7 +16,7 @@ module.exports = [
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
-        score: '<100',
+        score: '<1.00',
         rawValue: '>=500',
         details: {
           items: {
@@ -31,7 +31,7 @@ module.exports = [
     url: 'http://localhost:10200/redirects-final.html',
     audits: {
       'redirects': {
-        score: 100,
+        score: 1,
         rawValue: '>=250',
         details: {
           items: {

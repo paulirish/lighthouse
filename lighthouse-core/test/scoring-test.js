@@ -17,38 +17,38 @@ describe('ReportScoring', () => {
 
     it('should work for equal weights', () => {
       assert.equal(ReportScoring.arithmeticMean([
-        {score: 10, weight: 1},
-        {score: 20, weight: 1},
-        {score: 3, weight: 1},
-      ]), 11);
+        {score: .10, weight: 1},
+        {score: .20, weight: 1},
+        {score: .03, weight: 1},
+      ]), .11);
     });
 
     it('should work for varying weights', () => {
       assert.equal(ReportScoring.arithmeticMean([
-        {score: 10, weight: 2},
-        {score: 0, weight: 7},
-        {score: 20, weight: 1},
-      ]), 4);
+        {score: .10, weight: 2},
+        {score: .00, weight: 7},
+        {score: .20, weight: 1},
+      ]), .04);
     });
 
     it('should work for missing values', () => {
       assert.equal(ReportScoring.arithmeticMean([
         {weight: 1},
-        {score: 30, weight: 1},
+        {score: .30, weight: 1},
         {weight: 1},
-        {score: 100},
-      ]), 10);
+        {score: 1.00},
+      ]), .10);
     });
   });
 
   describe('#scoreAllCategories', () => {
     it('should score the categories', () => {
       const resultsByAuditId = {
-        'my-audit': {rawValue: 'you passed'},
-        'my-boolean-audit': {score: true, extendedInfo: {}},
-        'my-scored-audit': {score: 100},
-        'my-failed-audit': {score: 20},
-        'my-boolean-failed-audit': {score: false},
+        'my-audit': {rawValue: 'you passed', score: 0},
+        'my-boolean-audit': {score: 1.00, extendedInfo: {}},
+        'my-scored-audit': {score: 1.00},
+        'my-failed-audit': {score: .20},
+        'my-boolean-failed-audit': {score: 0},
       };
 
       const result = {
@@ -68,7 +68,7 @@ describe('ReportScoring', () => {
       ReportScoring.scoreAllCategories(result, resultsByAuditId);
 
       assert.equal(result.categories.categoryA.score, 0);
-      assert.equal(result.categories.categoryB.score, 55);
+      assert.equal(result.categories.categoryB.score, .55);
     });
   });
 });
