@@ -10,51 +10,31 @@
 const path = require('path');
 const assert = require('assert');
 const fs = require('fs');
-const puppeteer = require('puppeteer');
+const puppeteer = require('../../node_modules/puppeteer/index.js');
 
 const lighthouseExtensionPath = path.resolve(__dirname, '../app');
 const config = require(path.resolve(__dirname, '../../lighthouse-core/config/default.js'));
-const lighthouseCategories = Object.keys(config.categories);
 
-let extensionPage;
+const getAuditsOfCategory = category => config.categories[category].audits;
 
-const assertAuditElements = async ({category, expected, selector}) => {
-  const elementCount = await extensionPage.evaluate(({category, selector}) =>
-    document.querySelector(`#${category}`).parentNode.querySelectorAll(selector).length,
-    {category, selector}
-  );
-
-  assert.equal(expected, elementCount,
-    `${category} does not have the correct amount of audits`);
-};
-
-const assertReport = async () => {
-  const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
-  assert.equal(categories.length, lighthouseCategories.length,
-    `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`);
-
-  for (const category of lighthouseCategories) {
-    let selector = '.lh-audit';
-    let expected = config.categories[category].audits.length;
-    if (category === 'performance') {
-      selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint,.lh-filmstrip';
-      // we deducted the expected by 1 because network-requests audit is not showing in the report
-      expected = expected - 1;
-    }
-
-    await assertAuditElements({
-      category,
-      expected,
-      selector,
-    });
-  }
-};
-
-describe('Lighthouse chrome extension', () => {
+describe('Lighthouse chrome extension', function() {
   const manifestLocation = path.join(lighthouseExtensionPath, 'manifest.json');
+  const lighthouseCategories = Object.keys(config.categories);
+  let browser;
+  let extensionPage;
   let originalManifest;
 
-  before(() => {
+  function getAuditElementsCount({category, selector}) {
+    return extensionPage.evaluate(({category, selector}) =>
+      document.querySelector(`#${category}`).parentNode.querySelectorAll(selector).length,
+      {category, selector}
+    );
+  }
+
+  before(async function() {
+    // eslint-disable-next-line
+    this.timeout(90 * 1000);
+
     // read original manifest
     originalManifest = fs.readFileSync(manifestLocation);
 
@@ -63,15 +43,9 @@ describe('Lighthouse chrome extension', () => {
     manifest.permissions.push('tabs');
     // write new file to document
     fs.writeFileSync(manifestLocation, JSON.stringify(manifest, null, 2));
-  });
 
-  after(() => {
-    // put the default manifest back
-    fs.writeFileSync(manifestLocation, originalManifest);
-  });
-
-  it('completes an end-to-end run', async () => {
-    const browser = await puppeteer.launch({
+    // start puppeteer
+    browser = await puppeteer.launch({
       headless: false,
       executablePath: process.env.CHROME_PATH,
       args: [
@@ -80,51 +54,77 @@ describe('Lighthouse chrome extension', () => {
       ],
     });
 
-    try {
-      const page = await browser.newPage();
-      await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
-      const targets = await browser.targets();
-      const extensionTarget = targets.find(({_targetInfo}) => {
-        return _targetInfo.title === 'Lighthouse' &&
-          _targetInfo.type === 'background_page';
-      });
+    const page = await browser.newPage();
+    await page.goto('https://www.paulirish.com', {waitUntil: 'networkidle2'});
+    const targets = await browser.targets();
+    const extensionTarget = targets.find(({_targetInfo}) => {
+      return _targetInfo.title === 'Lighthouse' &&
+        _targetInfo.type === 'background_page';
+    });
 
-      if (!extensionTarget) {
-        return await browser.close();
-      }
-
-      const client = await extensionTarget.createCDPSession();
-      const lighthouseResult = await client.send(
-        'Runtime.evaluate',
-        {
-          expression: `runLighthouseInExtension({
-            restoreCleanState: true,
-          }, ${JSON.stringify(lighthouseCategories)})`,
-          awaitPromise: true,
-          returnByValue: true,
-        }
-      );
-
-      if (lighthouseResult.exceptionDetails) {
-        if (lighthouseResult.exceptionDetails.exception) {
-          throw new Error(lighthouseResult.exceptionDetails.exception.description);
-        }
-
-        throw new Error(lighthouseResult.exceptionDetails.text);
-      }
-
-      extensionPage = (await browser.pages())
-        .find(page => page.url().includes('blob:chrome-extension://'));
-    } catch (err) {
-      assert.ok(false, err.message);
+    if (!extensionTarget) {
+      return await browser.close();
     }
 
-    if (extensionPage) {
-      await assertReport();
+    const client = await extensionTarget.createCDPSession();
+    const lighthouseResult = await client.send(
+      'Runtime.evaluate',
+      {
+        expression: `runLighthouseInExtension({
+          restoreCleanState: true,
+        }, ${JSON.stringify(lighthouseCategories)})`,
+        awaitPromise: true,
+        returnByValue: true,
+      }
+    );
+
+    if (lighthouseResult.exceptionDetails) {
+      if (lighthouseResult.exceptionDetails.exception) {
+        throw new Error(lighthouseResult.exceptionDetails.exception.description);
+      }
+
+      throw new Error(lighthouseResult.exceptionDetails.text);
     }
+
+    extensionPage = (await browser.pages())
+      .find(page => page.url().includes('blob:chrome-extension://'));
+  });
+
+  after(async () => {
+    // put the default manifest back
+    fs.writeFileSync(manifestLocation, originalManifest);
 
     if (browser) {
       await browser.close();
     }
-  }).timeout(90 * 1000);
+  });
+
+  it('should contain all categories', async () => {
+    const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
+    assert.equal(categories.length, lighthouseCategories.length,
+      `${categories.join(' ')} does not match ${lighthouseCategories.join(' ')}`);
+  });
+
+  it('should contain audits of all categories', async () => {
+    for (const category of lighthouseCategories) {
+      let selector = '.lh-audit';
+      let expected = getAuditsOfCategory(category).length;
+      if (category === 'performance') {
+        selector = '.lh-audit,.lh-timeline-metric,.lh-perf-hint';
+        expected = getAuditsOfCategory(category).filter(a => !!a.group).length;
+      }
+
+      const elementCount = await getAuditElementsCount({category, selector});
+
+      assert.equal(expected, elementCount,
+        `${category} does not have the correct amount of audits`);
+    }
+  });
+
+  it('should contain a filmstrip', async () => {
+    const filmstrip = await extensionPage.$('lh-filmstrip');
+
+    assert.equal(null, filmstrip,
+      `filmstrip is not available`);
+  });
 });

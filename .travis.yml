@@ -38,6 +38,7 @@ script:
   - yarn closure
   - yarn smoke
   - yarn smokehouse
+  - yarn test-extension
   # _JAVA_OPTIONS is breaking parsing of compiler output. See #3338.
   - unset _JAVA_OPTIONS
   - yarn compile-devtools
