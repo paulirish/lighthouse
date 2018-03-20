@@ -131,11 +131,10 @@ describe('Lighthouse chrome extension', function() {
     function getDebugStrings(elems) {
       return elems.map(el => {
         const auditContainer = el.closest('.lh-audit,.lh-timeline-metric,.lh-perf-hint');
+        const auditTitle = auditContainer && auditContainer.querySelector('.lh-score__title');
         return {
           debugString: el.textContent,
-          title: auditContainer
-            ? auditContainer.querySelector('.lh-score__title').textContent
-            : 'Audit title unvailable',
+          title: auditTitle ? auditTitle.textContent : 'Audit title unvailable',
         };
       });
     }
