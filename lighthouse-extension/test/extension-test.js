@@ -99,8 +99,10 @@ describe('Lighthouse chrome extension', function() {
     }
   });
 
-  const auditSelectors = '.lh-audit,.lh-timeline-metric,.lh-perf-hint';
-  const titleSelectors = '.lh-score__title, .lh-perf-hint__title, .lh-timeline-metric__title';
+  const selectors = {
+    audits: '.lh-audit,.lh-timeline-metric,.lh-perf-hint',
+    titles: '.lh-score__title, .lh-perf-hint__title, .lh-timeline-metric__title'
+  };
 
   it('should contain all categories', async () => {
     const categories = await extensionPage.$$(`#${lighthouseCategories.join(',#')}`);
@@ -115,7 +117,7 @@ describe('Lighthouse chrome extension', function() {
         expected = getAuditsOfCategory(category).filter(a => !!a.group).length;
       }
 
-      const elementCount = await getAuditElementsCount({category, selector: auditSelectors});
+      const elementCount = await getAuditElementsCount({category, selector: selectors.audits});
 
       assert.equal(expected, elementCount,
         `${category} does not have the correct amount of audits`);
@@ -129,10 +131,10 @@ describe('Lighthouse chrome extension', function() {
   });
 
   it('should not have any audit errors', async () => {
-    function getDebugStrings(elems, auditSelectors, titleSelectors) {
+    function getDebugStrings(elems, selectors) {
       return elems.map(el => {
-        const audit = el.closest(auditSelectors);
-        const auditTitle = audit && audit.querySelector(titleSelectors);
+        const audit = el.closest(selectors.audits);
+        const auditTitle = audit && audit.querySelector(selectors.titles);
         return {
           debugString: el.textContent,
           title: auditTitle ? auditTitle.textContent : 'Audit title unvailable',
@@ -140,7 +142,7 @@ describe('Lighthouse chrome extension', function() {
       });
     }
 
-    const auditErrors = await extensionPage.$$eval('.lh-debug', getDebugStrings, auditSelectors, titleSelectors);
+    const auditErrors = await extensionPage.$$eval('.lh-debug', getDebugStrings, selectors);
     console.log(auditErrors);
     const errors = auditErrors.filter(item => item.debugString.includes('Audit error:'));
     assert.deepStrictEqual(errors, [], 'Audit errors found within the report');
