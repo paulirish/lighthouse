@@ -129,7 +129,7 @@ describe('Lighthouse chrome extension', function() {
   });
 
   it('should not have any audit errors', async () => {
-    function getDebugStrings(elems) {
+    function getDebugStrings(elems, auditSelectors, titleSelectors) {
       return elems.map(el => {
         const audit = el.closest(auditSelectors);
         const auditTitle = audit && audit.querySelector(titleSelectors);
@@ -140,7 +140,7 @@ describe('Lighthouse chrome extension', function() {
       });
     }
 
-    const auditErrors = await extensionPage.$$eval('.lh-debug', getDebugStrings);
+    const auditErrors = await extensionPage.$$eval('.lh-debug', getDebugStrings, auditSelectors, titleSelectors);
     console.log(auditErrors);
     const errors = auditErrors.filter(item => item.debugString.includes('Audit error:'));
     assert.deepStrictEqual(errors, [], 'Audit errors found within the report');
