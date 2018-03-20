@@ -23,6 +23,5 @@ elif [ "$flag" == '--core' ]; then
 else
   echo "lighthouse-core tests" && _runmocha 'lighthouse-core' && \
   echo "lighthouse-cli tests" && _runmocha 'lighthouse-cli' && \
-  echo "lighthouse-viewer tests" && _runmocha 'lighthouse-viewer' && \
-  echo "lighthouse-extension tests" && _runmocha 'lighthouse-extension'
+  echo "lighthouse-viewer tests" && _runmocha 'lighthouse-viewer'
 fi
