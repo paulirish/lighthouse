@@ -122,17 +122,21 @@ describe('Lighthouse chrome extension', function() {
   });
 
   it('should contain a filmstrip', async () => {
-    const filmstrip = await extensionPage.$('lh-filmstrip');
+    const filmstrip = await extensionPage.$('.lh-filmstrip');
 
-    assert.equal(null, filmstrip,
-      `filmstrip is not available`);
+    assert.ok(!!filmstrip, `filmstrip is not available`);
   });
 
-  it('should contain no failed audits', async () => {
-    const auditErrors = await extensionPage.$$('.lh-debug');
-    const failedAudits = auditErrors.filter(error =>
-      error.textContent.includes('Audit error')).length;
+  it('should not have any audit errors', async () => {
+    function getDebugStrings(elems) {
+      return elems.map(el => ({
+        debugString: el.textContent,
+        title: el.closest('.lh-audit').querySelector('.lh-score__title').textContent,
+      }));
+    }
 
-    assert.ok(!failedAudits, `${failedAudits.length} audits failed to run`);
+    const auditErrors = await extensionPage.$$eval('.lh-debug', getDebugStrings);
+    const errors = auditErrors.filter(item => item.debugString.includes('Audit error:'));
+    assert.deepStrictEqual(errors, [], 'Audit errors found within the report');
   });
 });
