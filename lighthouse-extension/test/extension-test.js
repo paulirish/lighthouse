@@ -127,4 +127,12 @@ describe('Lighthouse chrome extension', function() {
     assert.equal(null, filmstrip,
       `filmstrip is not available`);
   });
+
+  it('should contain no failed audits', async () => {
+    const auditErrors = await extensionPage.$$('.lh-debug');
+    const failedAudits = auditErrors.filter(error =>
+      error.textContent.includes('Audit error')).length;
+
+    assert.ok(!failedAudits, `${failedAudits.length} audits failed to run`);
+  });
 });
