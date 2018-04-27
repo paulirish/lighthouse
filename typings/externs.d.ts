@@ -152,8 +152,9 @@ declare global {
       pid: number;
       tid: number;
       ts: number;
-      dur: number;
+      dur?: number;
       ph: 'B'|'b'|'D'|'E'|'e'|'F'|'I'|'M'|'N'|'n'|'O'|'R'|'S'|'T'|'X';
+      s?: 't';
     }
 
     export interface DevToolsJsonTarget {

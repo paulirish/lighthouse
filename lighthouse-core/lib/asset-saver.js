@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const log = require('lighthouse-logger');
 const stream = require('stream');
+const Simulator = require('./dependency-graph/simulator/simulator');
 const Metrics = require('./traces/pwmetrics-events');
 const TraceParser = require('./traces/trace-parser');
 const rimraf = require('rimraf');
@@ -17,6 +18,8 @@ const mkdirp = require('mkdirp');
 const artifactsFilename = 'artifacts.json';
 const traceSuffix = '.trace.json';
 const devtoolsLogSuffix = '.devtoolslog.json';
+
+const LANTERN_TRACES_TO_SAVE = ['optimisticFirstContentfulPaint', 'pessimisticInteractive'];
 
 /** @typedef {{timestamp: number, datauri: string}} Screenshot */
 /**
@@ -230,6 +233,155 @@ function* traceJsonGenerator(traceData) {
 }
 
 /**
+ * @param {LH.Gatherer.Simulation.Result['nodeTimings']} nodeTimings
+ * @return {LH.Trace}
+ */
+function convertNodeTimingsToTrace(nodeTimings) {
+  /** @type {LH.TraceEvent[]} */
+  const traceEvents = [];
+  const baseTs = 1e9;
+  const baseEvent = {pid: 1, tid: 1, cat: 'devtools.timeline'};
+  const frame = 'A00001';
+  /** @param {number} ms */
+  const ts = ms => baseTs + ms * 1000;
+
+  traceEvents.push(createFakeTracingStarted());
+  traceEvents.push({...createFakeTracingStarted(), name: 'TracingStartedInBrowser'});
+
+  // Create a fake requestId counter
+  let requestId = 1;
+  let lastEventEndTime = 0;
+  for (const [node, timing] of nodeTimings.entries()) {
+    lastEventEndTime = Math.max(lastEventEndTime, timing.endTime);
+    if (node.type === 'cpu') {
+      // EvaluateScript
+      const cpuNode = /** @type {LH.Gatherer.Simulation.GraphCPUNode} */ (node);
+      traceEvents.push(createFakeEvaluateScript(cpuNode, timing));
+    } else {
+      const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
+      // Ignore data URIs as they don't really add much value
+      if (/^data/.test(networkNode.record.url)) continue;
+      traceEvents.push(...createFakeNetwork(networkNode.record, timing));
+    }
+  }
+
+  traceEvents.push(createFakeEvaluateScript({childEvents: []}, {
+    startTime: lastEventEndTime + 1000,
+    endTime: lastEventEndTime + 1001,
+  }));
+
+  return {traceEvents};
+
+  /**
+   * @return {LH.TraceEvent}
+   */
+  function createFakeTracingStarted() {
+    const data = {
+      frameTreeNodeId: 1,
+      sessionId: '1.1',
+      page: frame,
+      persistentIds: true,
+      frames: [{frame, url: 'about:blank', name: '', processId: 1}],
+    };
+
+    return {
+      ...baseEvent,
+      ts: baseTs - 1e5,
+      ph: 'I',
+      s: 't',
+      cat: 'disabled-by-default-devtools.timeline',
+      name: 'TracingStartedInPage',
+      args: {data},
+    };
+  }
+
+  /**
+   * @param {{childEvents: LH.TraceEvent[]}} cpuNode
+   * @param {{startTime: number, endTime: number}} timing
+   * @return {LH.TraceEvent}
+   */
+  function createFakeEvaluateScript(cpuNode, timing) {
+    const realEvaluateScriptEvent = cpuNode.childEvents.find(e => e.name === 'EvaluateScript' &&
+      !!e.args.data && !!e.args.data.url);
+    // @ts-ignore
+    const scriptUrl = realEvaluateScriptEvent && realEvaluateScriptEvent.args.data.url;
+    const data = {
+      url: scriptUrl || '',
+      frame,
+      lineNumber: 0,
+      columnNumber: 0,
+    };
+
+    return {
+      ...baseEvent,
+      ph: 'X',
+      name: 'EvaluateScript',
+      ts: ts(timing.startTime),
+      dur: (timing.endTime - timing.startTime) * 1000,
+      args: {data},
+    };
+  }
+
+  /**
+   * @param {LH.WebInspector.NetworkRequest} record
+   * @param {LH.Gatherer.Simulation.NodeTiming} timing
+   * @return {LH.TraceEvent[]}
+   */
+  function createFakeNetwork(record, timing) {
+    requestId++;
+
+    // 0ms requests get super-messed up rendering, make it look like they took 20ms
+    let {startTime, endTime} = timing; // eslint-disable-line prefer-const
+    if (startTime === endTime) endTime += 20;
+
+    const requestData = {requestId: requestId.toString(), frame};
+    /** @type {Omit<LH.TraceEvent, 'name'|'ts'|'args'>} */
+    const baseRequestEvent = {...baseEvent, ph: 'I', s: 't'}; // s: 't'
+
+    const sendRequestData = {
+      ...requestData,
+      requestMethod: record.requestMethod,
+      url: record.url,
+      priority: record.priority(),
+    };
+
+    const receiveResponseData = {
+      ...requestData,
+      statusCode: record.statusCode,
+      mimeType: record._mimeType,
+      encodedDataLength: record._transferSize,
+      fromCache: false,
+      fromServiceWorker: false,
+    };
+
+    const resourceFinishData = {
+      ...requestData,
+    };
+
+    return [
+      {
+        ...baseRequestEvent,
+        name: 'ResourceSendRequest',
+        ts: ts(startTime),
+        args: {data: sendRequestData},
+      },
+      {
+        ...baseRequestEvent,
+        name: 'ResourceReceiveResponse',
+        ts: ts(endTime),
+        args: {data: receiveResponseData},
+      },
+      {
+        ...baseRequestEvent,
+        name: 'ResourceFinish',
+        ts: ts(endTime),
+        args: {data: resourceFinishData},
+      },
+    ];
+  }
+}
+
+/**
  * Save a trace as JSON by streaming to disk at traceFilename.
  * @param {LH.Trace} traceData
  * @param {string} traceFilename
@@ -282,6 +434,13 @@ async function saveAssets(artifacts, audits, pathWithBasename) {
     await saveTrace(passAssets.traceData, streamTraceFilename);
     log.log('saveAssets', 'trace file streamed to disk: ' + streamTraceFilename);
   });
+
+  for (const [label, nodeTimings] of Simulator.COMPUTED_NODE_TIMINGS) {
+    if (!LANTERN_TRACES_TO_SAVE.includes(label) && !process.env.LANTERN_DEBUG) continue;
+    const traceFilename = `${pathWithBasename}-${label}${traceSuffix}`;
+    await saveTrace(convertNodeTimingsToTrace(nodeTimings), traceFilename);
+    log.log('saveAssets', `${label} lantern trace file streamed to disk: ${traceFilename}`);
+  }
 
   await Promise.all(saveAll);
 }

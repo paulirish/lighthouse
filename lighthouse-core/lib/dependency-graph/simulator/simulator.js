@@ -26,6 +26,8 @@ const NodeState = {
   Complete: 3,
 };
 
+const GLOBAL_COMPUTED_NODE_TIMINGS = new Map();
+
 class Simulator {
   /**
    * @param {LH.Gatherer.Simulation.Options} [options]
@@ -242,8 +244,10 @@ class Simulator {
     const multiplier = cpuNode.didPerformLayout()
       ? this._layoutTaskMultiplier
       : this._cpuSlowdownMultiplier;
+    // toplevel tasks always have an evt.dur
+    const observedDuration = /** @type {number} */ (cpuNode.event.dur);
     const totalDuration = Math.min(
-      Math.round(cpuNode.event.dur / 1000 * multiplier),
+      Math.round(observedDuration / 1000 * multiplier),
       DEFAULT_MAXIMUM_CPU_TASK_DURATION
     );
     const estimatedTimeElapsed = totalDuration - timingData.timeElapsed;
@@ -369,7 +373,7 @@ class Simulator {
    * connection).
    *
    * @param {Node} graph
-   * @param {{flexibleOrdering?: boolean}=} options
+   * @param {{flexibleOrdering?: boolean, label?: string}=} options
    * @return {LH.Gatherer.Simulation.Result}
    */
   simulate(graph, options) {
@@ -377,7 +381,11 @@ class Simulator {
       throw new Error('Cannot simulate graph with cycle');
     }
 
-    options = Object.assign({flexibleOrdering: false}, options);
+    options = Object.assign({
+      label: 'unlabeled',
+      flexibleOrdering: false,
+    }, options);
+
     // initialize the necessary data containers
     this._flexibleOrdering = !!options.flexibleOrdering;
     this._initializeConnectionPool(graph);
@@ -429,10 +437,18 @@ class Simulator {
       }
     }
 
+    const nodeTimings = this._computeFinalNodeTimings();
+    GLOBAL_COMPUTED_NODE_TIMINGS.set(options.label, nodeTimings);
+
     return {
       timeInMs: totalElapsedTime,
-      nodeTimings: this._computeFinalNodeTimings(),
+      nodeTimings,
     };
+  }
+
+  /** @return {Map<string, LH.Gatherer.Simulation.Result['nodeTimings']>} */
+  static get COMPUTED_NODE_TIMINGS() {
+    return GLOBAL_COMPUTED_NODE_TIMINGS;
   }
 }
 
