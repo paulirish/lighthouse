@@ -175,6 +175,10 @@ function convertNodeTimingsToTrace(nodeTimings) {
 module.exports = {
   simulationNamesToIgnore: [
     'unlabeled',
+    // These node timings should be nearly identical to the ones produced for Interactive
+    'optimisticFirstCPUIdle',
+    'optimisticFlexFirstCPUIdle',
+    'pessimisticFirstCPUIdle',
     'optimisticSpeedIndex',
     'optimisticFlexSpeedIndex',
     'pessimisticSpeedIndex',
