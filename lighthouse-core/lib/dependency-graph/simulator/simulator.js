@@ -26,7 +26,8 @@ const NodeState = {
   Complete: 3,
 };
 
-const GLOBAL_COMPUTED_NODE_TIMINGS = new Map();
+/** @type {Map<string, LH.Gatherer.Simulation.Result['nodeTimings']>} */
+const ALL_SIMULATION_NODE_TIMINGS = new Map();
 
 class Simulator {
   /**
@@ -382,7 +383,7 @@ class Simulator {
     }
 
     options = Object.assign({
-      label: 'unlabeled',
+      label: undefined,
       flexibleOrdering: false,
     }, options);
 
@@ -438,7 +439,7 @@ class Simulator {
     }
 
     const nodeTimings = this._computeFinalNodeTimings();
-    GLOBAL_COMPUTED_NODE_TIMINGS.set(options.label, nodeTimings);
+    ALL_SIMULATION_NODE_TIMINGS.set(options.label || 'unlabeled', nodeTimings);
 
     return {
       timeInMs: totalElapsedTime,
@@ -447,8 +448,8 @@ class Simulator {
   }
 
   /** @return {Map<string, LH.Gatherer.Simulation.Result['nodeTimings']>} */
-  static get COMPUTED_NODE_TIMINGS() {
-    return GLOBAL_COMPUTED_NODE_TIMINGS;
+  static get ALL_NODE_TIMINGS() {
+    return ALL_SIMULATION_NODE_TIMINGS;
   }
 }
 
