@@ -292,6 +292,7 @@ function convertNodeTimingsToTrace(nodeTimings) {
       cat: 'disabled-by-default-devtools.timeline',
       name: 'TracingStartedInPage',
       args: {data},
+      dur: 0,
     };
   }
 
@@ -336,7 +337,7 @@ function convertNodeTimingsToTrace(nodeTimings) {
 
     const requestData = {requestId: requestId.toString(), frame};
     /** @type {Omit<LH.TraceEvent, 'name'|'ts'|'args'>} */
-    const baseRequestEvent = {...baseEvent, ph: 'I', s: 't'}; // s: 't'
+    const baseRequestEvent = {...baseEvent, ph: 'I', s: 't', dur: 0};
 
     const sendRequestData = {
       ...requestData,
