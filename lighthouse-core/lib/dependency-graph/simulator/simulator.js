@@ -245,10 +245,8 @@ class Simulator {
     const multiplier = cpuNode.didPerformLayout()
       ? this._layoutTaskMultiplier
       : this._cpuSlowdownMultiplier;
-    // toplevel tasks always have an evt.dur
-    const observedDuration = /** @type {number} */ (cpuNode.event.dur);
     const totalDuration = Math.min(
-      Math.round(observedDuration / 1000 * multiplier),
+      Math.round(cpuNode.event.dur  / 1000 * multiplier),
       DEFAULT_MAXIMUM_CPU_TASK_DURATION
     );
     const estimatedTimeElapsed = totalDuration - timingData.timeElapsed;
