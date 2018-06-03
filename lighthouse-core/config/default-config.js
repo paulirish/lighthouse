@@ -92,6 +92,7 @@ module.exports = {
     'themed-omnibox',
     'manifest-short-name-length',
     'content-width',
+    'generate-har',
     'image-aspect-ratio',
     'deprecations',
     'mainthread-work-breakdown',
