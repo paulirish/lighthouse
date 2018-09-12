@@ -3,55 +3,43 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+jobs:
+- job: macOS
+  pool:
+    vmImage: 'xcode9-macos10.13'
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_9_x:
+        node_version: 9.x
+  steps:
+  - template: build/azure-steps.yml
 
-# this shit doesnt work https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/javascript?view=vsts&tabs=yaml#use-multiple-node-versions
-strategy:
-  matrix:
-    node_8_x:
-      node_version: 8.x
-    node_9_x:
-      node_version: 9.x
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_9_x:
+        node_version: 9.x
+  steps:
+  - template: build/azure-steps.yml
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: $(node_version)
-  displayName: 'Install Node.js'
-
-- task: CmdLine@2
-  inputs:
-    displayName: 'install yarn'
-    script: 'npm install -g yarn'
-- task: CmdLine@2
-  inputs:
-    displayName: 'install deps'
-    script: 'yarn install && yarn run install-all'
-- task: CmdLine@2
-  inputs:
-    displayName: 'build all'
-    script: 'yarn build-all'
-- task: CmdLine@2
-  inputs:
-    displayName: 'lint'
-    script: 'yarn lint'
-- task: CmdLine@2
-  inputs:
-    displayName: 'unit'
-    script: 'yarn unit'
-- task: CmdLine@2
-  inputs:
-    displayName: 'type check'
-    script: 'yarn type-check'
-- task: CmdLine@2
-  inputs:
-    displayName: 'diff goldens'
-    script: 'yarn diff:sample-json'
-- task: CmdLine@2
-  inputs:
-    displayName: 'smoke'
-    script: 'yarn smoke'
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_9_x:
+        node_version: 9.x
+  steps:
+  - template: build/azure-steps.yml
+  - script: bash ./lighthouse-core/scripts/download-chrome.sh
 
 
 # how bou dat?
