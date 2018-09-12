@@ -24,7 +24,7 @@ steps:
 - task: CmdLine@2
   inputs:
     displayName: 'unit'
-    script: 'yarn unit'
+    script: 'yarn unit-core'
 - task: CmdLine@2
   inputs:
     displayName: 'type check'
@@ -35,5 +35,5 @@ steps:
     script: 'yarn diff:sample-json'
 - task: CmdLine@2
   inputs:
-    displayName: 'smoke'
-    script: 'yarn smoke'
+    displayName: 'i18n'
+    script: 'yarn i18n:checks'
