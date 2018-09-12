@@ -17,17 +17,41 @@ strategy:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: 8.x
+    versionSpec: $(node_version)
   displayName: 'Install Node.js'
 
-- script: npm install -g yarn
-- script: yarn install
-- script: yarn run install-all:task:windows
-- script: yarn build-all
-- script: yarn lint
-- script: yarn unit:silentcoverage
-- script: yarn type-check
-- script: yarn diff:sample-json
-- script: yarn smoke:silentcoverage
+- task: CmdLine@2
+  inputs:
+    displayName: 'install yarn'
+    script: 'npm install -g yarn'
+- task: CmdLine@2
+  inputs:
+    displayName: 'install deps'
+    script: 'yarn install && yarn run install-all'
+- task: CmdLine@2
+  inputs:
+    displayName: 'build all'
+    script: 'yarn build-all'
+- task: CmdLine@2
+  inputs:
+    displayName: 'lint'
+    script: 'yarn lint'
+- task: CmdLine@2
+  inputs:
+    displayName: 'unit'
+    script: 'yarn unit'
+- task: CmdLine@2
+  inputs:
+    displayName: 'type check'
+    script: 'yarn type-check'
+- task: CmdLine@2
+  inputs:
+    displayName: 'diff goldens'
+    script: 'yarn diff:sample-json'
+- task: CmdLine@2
+  inputs:
+    displayName: 'smoke'
+    script: 'yarn smoke'
+
 
 # how bou dat?
