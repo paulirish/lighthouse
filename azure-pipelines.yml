@@ -6,6 +6,7 @@
 pool:
   vmImage: 'Ubuntu 16.04'
 
+# this shit doesnt work https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/javascript?view=vsts&tabs=yaml#use-multiple-node-versions
 strategy:
   matrix:
     node_8_x:
@@ -13,12 +14,10 @@ strategy:
     node_9_x:
       node_version: 9.x
 
-
-
 steps:
 - task: NodeTool@0
   inputs:
-    version: $(node_version)
+    version: 8.x
   displayName: 'Install Node.js'
 
 - script: npm install -g yarn
