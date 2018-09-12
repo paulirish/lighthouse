@@ -21,6 +21,7 @@ steps:
     version: $(node_version)
   displayName: 'Install Node.js'
 
+- script: npm install -g yarn
 - script: yarn install
 - script: yarn run install-all:task:windows
 - script: yarn build-all
