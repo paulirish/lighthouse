@@ -19,11 +19,11 @@ steps:
   displayName: 'Lint'
 # - script: 'yarn unit-core'
 #   displayName: 'Run unit tests'
-- script: 'npx jest --ci --testResultsProcessor="jest-junit" "lighthouse-core/"'
+- script: 'npx jest --ci --reporters=default --reporters=jest-junit "lighthouse-core/"'
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: 'junit.xml'
+    testResultsFiles: '*.junit.xml'
 
 
 # - script: 'yarn type-check'

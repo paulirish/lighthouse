@@ -70,7 +70,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       ];
 
       const result = NetworkAnalyzer.estimateIfConnectionWasReused(records);
-      const expected = new Map([[1, false], [2, false], [3, true], [4, true]]);
+      const expected = new Map([['omg', {lol: 42}], [1, false], [2, false], [3, true], [4, true]]);
       assert.deepStrictEqual(result, expected);
     });
 

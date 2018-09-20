@@ -88,7 +88,6 @@ describe('DependencyGraph/Simulator/ConnectionPool', () => {
         assert.equal(pool.acquire(recordA), connectionForA);
         assert.equal(pool.acquire(recordB), connectionForB);
       }
-
       assert.deepStrictEqual(pool.connectionsInUse(), [connectionForA, connectionForB]);
     });
 
