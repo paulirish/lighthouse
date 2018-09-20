@@ -38,9 +38,8 @@ jobs:
       node_9_x:
         node_version: 9.x
   steps:
-  - script: choco install wget
-  - script: pwd
-  - script: ls
+  - script: choco install --limit-output wget
+    displayName: 'Install wget (for Download Chrome)'
   - script: bash ./lighthouse-core/scripts/download-chrome.sh
     displayName: 'Download Chrome'
     env:
