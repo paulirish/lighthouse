@@ -17,9 +17,9 @@ steps:
 #   displayName: 'Smoketests'
 - script: 'yarn lint'
   displayName: 'Lint'
-# - script: 'yarn unit-core'
-#   displayName: 'Run unit tests'
-- script: 'npx jest --ci --reporters=default --reporters=jest-junit "lighthouse-core/"'
+- script: 'yarn unit-core:ci'
+  displayName: 'Run unit tests'
+# - script: 'npx jest --ci --reporters=default --reporters=jest-junit "lighthouse-core/"'
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
