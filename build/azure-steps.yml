@@ -7,7 +7,7 @@ steps:
 
 - script: 'npm install -g yarn'
   displayName: 'install yarn'
-- script: 'yarn install && yarn run install-all'
+- script: 'yarn install && yarn run install-all:task:windows'
   displayName: 'install deps'
 - script: 'yarn build-all'
   displayName: 'build all'
