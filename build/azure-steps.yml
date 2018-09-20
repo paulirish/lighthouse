@@ -5,35 +5,19 @@ steps:
     versionSpec: $(node_version)
   displayName: 'Install Node.js'
 
-- task: CmdLine@2
-  inputs:
-    displayName: 'install yarn'
-    script: 'npm install -g yarn'
-- task: CmdLine@2
-  inputs:
-    displayName: 'install deps'
-    script: 'yarn install && yarn run install-all'
-- task: CmdLine@2
-  inputs:
-    displayName: 'build all'
-    script: 'yarn build-all'
-- task: CmdLine@2
-  inputs:
-    displayName: 'lint'
-    script: 'yarn lint'
-- task: CmdLine@2
-  inputs:
-    displayName: 'unit'
-    script: 'yarn unit-core'
-- task: CmdLine@2
-  inputs:
-    displayName: 'type check'
-    script: 'yarn type-check'
-- task: CmdLine@2
-  inputs:
-    displayName: 'diff goldens'
-    script: 'yarn diff:sample-json'
-- task: CmdLine@2
-  inputs:
-    displayName: 'i18n'
-    script: 'yarn i18n:checks'
+- script: 'npm install -g yarn'
+  displayName: 'install yarn'
+- script: 'yarn install && yarn run install-all'
+  displayName: 'install deps'
+- script: 'yarn build-all'
+  displayName: 'build all'
+- script: 'yarn lint'
+  displayName: 'lint'
+- script: 'yarn unit-core'
+  displayName: 'unit'
+- script: 'yarn type-check'
+  displayName: 'type check'
+- script: 'yarn diff:sample-json'
+  displayName: 'diff goldens'
+- script: 'yarn i18n:checks'
+  displayName: 'i18n'
