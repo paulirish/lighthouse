@@ -11,7 +11,7 @@ steps:
   displayName: 'Install deps'
 - script: 'yarn build-all'
   displayName: 'Build all'
-- script: 'lighthouse http://example.com'
+- script: 'node lighthouse-cli http://example.com'
   displayName: 'Just run the damn thang'
 - script: 'yarn smoke'
   displayName: 'Smoketests'
