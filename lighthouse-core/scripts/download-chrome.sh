@@ -8,8 +8,6 @@
 
 # Download chrome inside of our CI env.
 
-echo "wassat $AGENT_OS"
-
 if [ "$APPVEYOR" == "True"  ] || [ "$AGENT_OS" == "Windows_NT" ]; then
   url="https://download-chromium.appspot.com/dl/Win?type=snapshots"
 else

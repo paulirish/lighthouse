@@ -4,29 +4,29 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
 
 jobs:
-# - job: macOS
-#   pool:
-#     vmImage: 'xcode9-macos10.13'
-#   strategy:
-#     matrix:
-#       node_8_x:
-#         node_version: 8.x
-#       node_9_x:
-#         node_version: 9.x
-#   steps:
-#   - template: build/azure-steps.yml
+- job: macOS
+  pool:
+    vmImage: 'xcode9-macos10.13'
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_9_x:
+        node_version: 9.x
+  steps:
+  - template: build/azure-steps.yml
 
-# - job: Linux
-#   pool:
-#     vmImage: 'ubuntu-16.04'
-#   strategy:
-#     matrix:
-#       node_8_x:
-#         node_version: 8.x
-#       node_9_x:
-#         node_version: 9.x
-#   steps:
-#   - template: build/azure-steps.yml
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_9_x:
+        node_version: 9.x
+  steps:
+  - template: build/azure-steps.yml
 
 - job: Windows
   pool:
@@ -38,13 +38,14 @@ jobs:
       node_9_x:
         node_version: 9.x
   steps:
-  - script: choco install --limit-output wget
-    displayName: 'Install wget (for Download Chrome)'
-  - script: bash ./lighthouse-core/scripts/download-chrome.sh
-    displayName: 'Download Chrome'
-    env:
-      LIGHTHOUSE_CHROMIUM_PATH: $(agent.homeDirectory)\chrome-win32\chrome.exe
-  # - template: build/azure-steps.yml
+  # apparently Chrome is already there: https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2017-Server2016-Readme.md#google-chrome
+  # - script: choco install wget --no-progress --limit-output
+  #   displayName: 'Install wget (to Download Chrome)'
+  # - script: bash ./lighthouse-core/scripts/download-chrome.sh
+  #   displayName: 'Download Chrome'
+  #   env:
+  #     LIGHTHOUSE_CHROMIUM_PATH: $(agent.homeDirectory)\chrome-win32\chrome.exe
+  - template: build/azure-steps.yml
 
 
 # how bou dat?
