@@ -1,8 +1,5 @@
 sudo: required
 language: node_js
-branches:
-  only:
-  - master
 matrix:
   include:
     - os: windows
