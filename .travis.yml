@@ -1,12 +1,13 @@
 sudo: required
 language: node_js
-branches:
-  only:
-  - master
 matrix:
   include:
-    - node_js: "8"
-    - node_js: "9"
+    - os: windows
+      node_js: "8"
+    - os: linux
+      node_js: "8"
+    - os: linux
+      node_js: "9"
       if: head_branch IS blank AND branch = master
 dist: trusty
 cache:
@@ -28,8 +29,7 @@ install:
 before_script:
   - export DISPLAY=:99.0
   # see comment above about puppeteer
-  - export CHROME_PATH="$(which google-chrome-stable)"
-  - sh -e /etc/init.d/xvfb start
+  - export CHROME_PATH="$(which chrome.exe)"
   - yarn build-all
 script:
   - yarn bundlesize
