@@ -29,8 +29,7 @@ install:
 before_script:
   - export DISPLAY=:99.0
   # see comment above about puppeteer
-  - export CHROME_PATH="$(which google-chrome-stable)"
-  - sh -e /etc/init.d/xvfb start
+  - export CHROME_PATH="$(which chrome.exe)"
   - yarn build-all
 script:
   - yarn bundlesize
