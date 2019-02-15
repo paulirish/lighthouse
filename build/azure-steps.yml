@@ -15,6 +15,12 @@ steps:
 #   displayName: 'Just run the damn thang'
 # - script: 'yarn smoke'
 #   displayName: 'Smoketests'
+
+
+- script: 'yarn unit-cli'
+  displayName: 'Test CLI'
+  continueOnError: true
+
 - script: 'yarn lint'
   displayName: 'Lint'
   continueOnError: true
