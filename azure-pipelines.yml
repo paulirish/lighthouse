@@ -11,8 +11,8 @@ jobs:
     matrix:
       node_8_x:
         node_version: 8.x
-      node_9_x:
-        node_version: 9.x
+      node_10_x:
+        node_version: 10.x
   steps:
   - template: build/azure-steps.yml
 
@@ -23,8 +23,8 @@ jobs:
     matrix:
       node_8_x:
         node_version: 8.x
-      node_9_x:
-        node_version: 9.x
+      node_10_x:
+        node_version: 10.x
   steps:
   - template: build/azure-steps.yml
 
@@ -35,8 +35,8 @@ jobs:
     matrix:
       node_8_x:
         node_version: 8.x
-      node_9_x:
-        node_version: 9.x
+      node_10_x:
+        node_version: 10.x
   steps:
   # apparently Chrome is already there: https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2017-Server2016-Readme.md#google-chrome
   # - script: choco install wget --no-progress --limit-output
