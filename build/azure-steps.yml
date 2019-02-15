@@ -18,6 +18,15 @@ steps:
 - script: 'yarn lint'
   displayName: 'Lint'
   continueOnError: true
+- script: 'yarn type-check'
+  displayName: 'Typechecking'
+  continueOnError: true
+- script: 'yarn test-lantern'
+  displayName: 'Test lantern'
+  continueOnError: true
+- script: 'yarn i18n:checks'
+  displayName: 'Test i18n'
+  continueOnError: true
 - script: 'yarn unit-core:ci'
   displayName: 'Run unit tests'
   continueOnError: true
