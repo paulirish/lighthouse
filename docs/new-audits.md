@@ -12,19 +12,26 @@ Lighthouse audits that surface in the report should be:
 - Measurable (especially for performance audits) or have clear pass/fail states. 
 - Not use 3rd party APIs for completing the audit check. 
 
-*Note: it's possible to submit a new audit proposal for something that you as a contributor feel very passionate about, but the Lighthouse team feels that it wouldn't add value to a significant portion of the Lighthouse users. In this case, we'd be open to having your audit be a part of the report when run with the full config on the Command Line.* 
 
 ## Process for creating a new audit
 1. Briefly scan the criteria we’ve laid out above. If you think the principles match with your proposed new audit, then proceed! 
 2. Next step is to create an issue on GitHub with answers to the following questions: 
-   - Description of audit and audit category (please include pass/fail states, and how it might be measured)
-   - Explanation of how it’s different from other audits
-   - What % of developers/pages will this impact (estimates OK, data points preferred) 
-   - How is the new audit making a better web for end users? (data points preferred)
-   - What is the resourcing situation (who will create the audits, maintain the audits, and write/maintain the documentation)
-   - Do you envision this audit in the Lighthouse report or the full config in the CLI? If in the report, which section? 
-   - How much support is needed from the Lighthouse team?
-   - Any other links or documentation that we should check out?
+```
+#### Provide a basic description of the audit
+#### How would the audit appear in the report? 
+<!-- How would the test look when passing? Would there be additional details available?
+     How would the test look when failing? What additional details are available? 
+     If the details are tabular, what are the columns?
+     If not obvious, how would passing/failing be defined? -->
+#### How is this audit different from existing ones?
+#### What % of developers/pages will this impact? 
+<!-- (Estimates OK, data points preferred) -->
+#### How is the new audit making a better web for end users?
+<!-- (Data points preferred) -->
+#### What is the resourcing situation? 
+<!-- Who will create the audits, write the documentation, and maintain both? -->
+#### Any other links or documentation that we should check out?
+```
 3. Once the proposal is submitted, then Lighthouse team will take a look and followup. We will discuss possible implementation approaches, and associated runtime overhead.
 With this new information we can better understand the impl cost and effort required and prioritize the audit into our sprint/roadmap. 
 4. Depending on the prioritization, we'll then work with you to figure out the necessary engineering/UX/product details. 

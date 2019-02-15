@@ -7,6 +7,7 @@
 
 const HTTPStatusCodeAudit = require('../../../audits/seo/http-status-code.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
 
 /* eslint-env jest */
 
@@ -15,16 +16,19 @@ describe('SEO: HTTP code audit', () => {
     const statusCodes = [403, 404, 500];
 
     const allRuns = statusCodes.map(statusCode => {
+      const finalUrl = 'https://example.com';
       const mainResource = {
+        url: finalUrl,
         statusCode,
       };
+      const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
+
       const artifacts = {
-        devtoolsLogs: {[HTTPStatusCodeAudit.DEFAULT_PASS]: []},
-        requestNetworkRecords: () => Promise.resolve(),
-        requestMainResource: () => Promise.resolve(mainResource),
+        devtoolsLogs: {[HTTPStatusCodeAudit.DEFAULT_PASS]: devtoolsLog},
+        URL: {finalUrl},
       };
 
-      return HTTPStatusCodeAudit.audit(artifacts).then(auditResult => {
+      return HTTPStatusCodeAudit.audit(artifacts, {computedCache: new Map()}).then(auditResult => {
         assert.equal(auditResult.rawValue, false);
         assert.ok(auditResult.displayValue.includes(statusCode), false);
       });
@@ -34,17 +38,19 @@ describe('SEO: HTTP code audit', () => {
   });
 
   it('passes when status code is successful', () => {
+    const finalUrl = 'https://example.com';
     const mainResource = {
+      url: finalUrl,
       statusCode: 200,
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
 
     const artifacts = {
-      devtoolsLogs: {[HTTPStatusCodeAudit.DEFAULT_PASS]: []},
-      requestNetworkRecords: () => Promise.resolve(),
-      requestMainResource: () => Promise.resolve(mainResource),
+      devtoolsLogs: {[HTTPStatusCodeAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
     };
 
-    return HTTPStatusCodeAudit.audit(artifacts).then(auditResult => {
+    return HTTPStatusCodeAudit.audit(artifacts, {computedCache: new Map()}).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
     });
   });

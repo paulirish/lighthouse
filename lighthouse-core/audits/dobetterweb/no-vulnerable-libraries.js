@@ -15,7 +15,6 @@
 const Audit = require('../audit');
 const Sentry = require('../../lib/sentry');
 const semver = require('semver');
-// @ts-ignore - json require
 const snykDatabase = require('../../../third-party/snyk/snapshot.json');
 
 const SEMVER_REGEX = /^(\d+\.\d+\.\d+)[^-0-9]+/;
@@ -93,7 +92,6 @@ class NoVulnerableLibrariesAudit extends Audit {
     } catch (err) {
       err.pkgName = lib.npmPkgName;
       // Report the failure and skip this library if the version was ill-specified
-      // @ts-ignore TODO(bckenny): Sentry type checking
       Sentry.captureException(err, {level: 'warning'});
       return [];
     }
@@ -137,7 +135,7 @@ class NoVulnerableLibrariesAudit extends Audit {
     }
 
     let totalVulns = 0;
-    /** @type {Array<{highestSeverity: string, vulnCount: number, detectedLib: LH.Audit.DetailsRendererLinkDetailsJSON}>} */
+    /** @type {Array<{highestSeverity: string, vulnCount: number, detectedLib: LH.Audit.Details.LinkValue}>} */
     const vulnerabilityResults = [];
 
     const libraryVulns = foundLibraries.map(lib => {
@@ -155,7 +153,7 @@ class NoVulnerableLibrariesAudit extends Audit {
           vulnCount,
           detectedLib: {
             text: lib.name + '@' + version,
-            url: `https://snyk.io/vuln/npm:${lib.npmPkgName}?lh@${version}`,
+            url: `https://snyk.io/vuln/npm:${lib.npmPkgName}?lh=${version}&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit`,
             type: 'link',
           },
         });
@@ -177,6 +175,7 @@ class NoVulnerableLibrariesAudit extends Audit {
       displayValue = `${totalVulns} vulnerability detected`;
     }
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'detectedLib', itemType: 'link', text: 'Library Version'},
       {key: 'vulnCount', itemType: 'text', text: 'Vulnerability Count'},

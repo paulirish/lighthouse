@@ -31,8 +31,7 @@ const taskGroups = {
     label: 'Style & Layout',
     traceEventNames: [
       'ScheduleStyleRecalculation',
-      'RecalculateStyles',
-      'UpdateLayoutTree',
+      'UpdateLayoutTree', // previously RecalculateStyles
       'InvalidateLayout',
       'Layout',
     ],
@@ -42,15 +41,11 @@ const taskGroups = {
     label: 'Rendering',
     traceEventNames: [
       'Animation',
-      'RequestMainThreadFrame',
-      'ActivateLayerTree',
-      'DrawFrame',
       'HitTest',
       'PaintSetup',
       'Paint',
       'PaintImage',
-      'Rasterize',
-      'RasterTask',
+      'RasterTask', // Previously Rasterize
       'ScrollLayer',
       'UpdateLayer',
       'UpdateLayerTree',
@@ -81,9 +76,11 @@ const taskGroups = {
     id: 'garbageCollection',
     label: 'Garbage Collection',
     traceEventNames: [
-      'GCEvent',
-      'MinorGC',
+      'MinorGC', // Previously GCEvent
       'MajorGC',
+      'BlinkGC.AtomicPhase', // Previously ThreadState::performIdleLazySweep, ThreadState::completeSweep, BlinkGCMarking
+
+      // Kept for compatibility on older traces
       'ThreadState::performIdleLazySweep',
       'ThreadState::completeSweep',
       'BlinkGCMarking',

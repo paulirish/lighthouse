@@ -9,6 +9,7 @@ const NetworkNode = require('../../../../lib/dependency-graph/network-node');
 const CpuNode = require('../../../../lib/dependency-graph/cpu-node');
 const Simulator = require('../../../../lib/dependency-graph/simulator/simulator');
 const DNSCache = require('../../../../lib/dependency-graph/simulator/dns-cache');
+const PageDependencyGraph = require('../../../../computed/page-dependency-graph.js');
 
 const assert = require('assert');
 let nextRequestId = 1;
@@ -30,7 +31,7 @@ function request(opts) {
 function cpuTask({tid, ts, duration}) {
   tid = tid || nextTid++;
   ts = ts || 0;
-  const dur = (duration || 0) * 1000 / 5;
+  const dur = ((duration || 0) * 1000) / 5;
   return {tid, ts, dur};
 }
 
@@ -254,6 +255,33 @@ describe('DependencyGraph/Simulator', () => {
 
       const simulator = new Simulator({serverResponseTimeByOrigin});
       assert.throws(() => simulator.simulate(rootNode), /cycle/);
+    });
+
+    describe('on a real trace', () => {
+      const trace = require('../../../fixtures/traces/progressive-app-m60.json');
+      const devtoolsLog = require('../../../fixtures/traces/progressive-app-m60.devtools.log.json');
+      let result;
+
+      beforeAll(async () => {
+        const computedCache = new Map();
+        const graph = await PageDependencyGraph.request({trace, devtoolsLog}, {computedCache});
+        const simulator = new Simulator({serverResponseTimeByOrigin});
+        result = simulator.simulate(graph);
+      });
+
+      it('should compute a timeInMs', () => {
+        expect(result.timeInMs).toBeGreaterThan(100);
+      });
+
+      it('should sort the task event times', () => {
+        const nodeTimings = Array.from(result.nodeTimings.entries());
+
+        for (let i = 1; i < nodeTimings.length; i++) {
+          const startTime = nodeTimings[i][1].startTime;
+          const previousStartTime = nodeTimings[i - 1][1].startTime;
+          expect(startTime).toBeGreaterThanOrEqual(previousStartTime);
+        }
+      });
     });
   });
 });

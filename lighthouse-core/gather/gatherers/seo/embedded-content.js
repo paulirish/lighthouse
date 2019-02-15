@@ -15,7 +15,7 @@ class EmbeddedContent extends Gatherer {
    */
   afterPass(passContext) {
     const expression = `(function() {
-      ${pageFunctions.getElementsInDocument.toString()}; // define function on page
+      ${pageFunctions.getElementsInDocumentString}; // define function on page
       const selector = 'object, embed, applet';
       const elements = getElementsInDocument(selector);
       return elements

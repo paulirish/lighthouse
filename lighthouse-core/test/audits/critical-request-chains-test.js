@@ -9,83 +9,78 @@
 
 const CriticalRequestChains = require('../../audits/critical-request-chains.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
-const FAILING_REQUEST_CHAIN = {
-  0: {
-    request: {
-      endTime: 1,
-      responseReceivedTime: 5,
-      startTime: 0,
+const FAILING_CHAIN_RECORDS = [
+  {
+    endTime: 5,
+    responseReceivedTime: 5,
+    startTime: 0,
+    url: 'https://example.com/',
+    priority: 'VeryHigh',
+  }, {
+    endTime: 16,
+    responseReceivedTime: 14,
+    startTime: 11,
+    url: 'https://example.com/b.js',
+    priority: 'VeryHigh',
+    initiator: {
+      type: 'parser',
       url: 'https://example.com/',
     },
-    children: {
-      1: {
-        request: {
-          endTime: 16,
-          responseReceivedTime: 14,
-          startTime: 11,
-          url: 'https://example.com/b.js',
-        },
-        children: {
-        },
-      },
-      2: {
-        request: {
-          endTime: 17,
-          responseReceivedTime: 15,
-          startTime: 12,
-          url: 'https://example.com/c.js',
-        },
-        children: {},
-      },
-    },
-  },
-};
-
-const PASSING_REQUEST_CHAIN = {
-  0: {
-    request: {
-      endTime: 1,
-      responseReceivedTime: 5,
-      startTime: 0,
+  }, {
+    endTime: 17,
+    responseReceivedTime: 15,
+    startTime: 12,
+    url: 'https://example.com/c.js',
+    priority: 'VeryHigh',
+    initiator: {
+      type: 'parser',
       url: 'https://example.com/',
     },
-    children: {},
   },
-};
+];
 
-const PASSING_REQUEST_CHAIN_2 = {
-  13653.1: {
-    request: {
-      url: 'http://localhost:10503/offline-ready.html',
-      startTime: 33552.036878,
-      endTime: 33552.285438,
-      responseReceivedTime: 33552.275677,
-      transferSize: 1849,
-    },
-    children: {},
+const PASSING_CHAIN_RECORDS = [
+  {
+    endTime: 1,
+    responseReceivedTime: 1,
+    startTime: 0,
+    url: 'https://example.com/',
+    priority: 'VeryHigh',
   },
-};
+];
 
-const EMPTY_REQUEST_CHAIN = {};
+const PASSING_CHAIN_RECORDS_2 = [
+  {
+    url: 'http://localhost:10503/offline-ready.html',
+    startTime: 33552.036878,
+    endTime: 33552.285438,
+    responseReceivedTime: 33552.275677,
+    transferSize: 1849,
+    priority: 'VeryHigh',
+  },
+];
 
-const mockArtifacts = (mockChain) => {
+const EMPTY_CHAIN_RECORDS = [];
+
+const mockArtifacts = (chainNetworkRecords) => {
+  const devtoolsLog = networkRecordsToDevtoolsLog(chainNetworkRecords);
+  const finalUrl = chainNetworkRecords[0] ? chainNetworkRecords[0].url : 'https://example.com';
+
   return {
     devtoolsLogs: {
-      [CriticalRequestChains.DEFAULT_PASS]: [],
+      [CriticalRequestChains.DEFAULT_PASS]: devtoolsLog,
     },
-    requestNetworkRecords: () => {
-      return Promise.resolve([]);
-    },
-    requestCriticalRequestChains: function() {
-      return Promise.resolve(mockChain);
-    },
+    URL: {finalUrl},
   };
 };
 
 describe('Performance: critical-request-chains audit', () => {
   it('calculates the correct chain result for failing example', () => {
-    return CriticalRequestChains.audit(mockArtifacts(FAILING_REQUEST_CHAIN)).then(output => {
+    const artifacts = mockArtifacts(FAILING_CHAIN_RECORDS);
+    const context = {computedCache: new Map()};
+    return CriticalRequestChains.audit(artifacts, context).then(output => {
       expect(output.displayValue).toBeDisplayString('2 chains found');
       assert.equal(output.rawValue, false);
       assert.ok(output.details);
@@ -93,7 +88,9 @@ describe('Performance: critical-request-chains audit', () => {
   });
 
   it('calculates the correct chain result for passing example', () => {
-    return CriticalRequestChains.audit(mockArtifacts(PASSING_REQUEST_CHAIN)).then(output => {
+    const artifacts = mockArtifacts(PASSING_CHAIN_RECORDS);
+    const context = {computedCache: new Map()};
+    return CriticalRequestChains.audit(artifacts, context).then(output => {
       assert.equal(output.details.longestChain.duration, 1000);
       assert.equal(output.displayValue, '');
       assert.equal(output.rawValue, true);
@@ -101,16 +98,21 @@ describe('Performance: critical-request-chains audit', () => {
   });
 
   it('calculates the correct chain result for passing example (no 2.)', () => {
-    return CriticalRequestChains.audit(mockArtifacts(PASSING_REQUEST_CHAIN_2)).then(output => {
+    const artifacts = mockArtifacts(PASSING_CHAIN_RECORDS_2);
+    const context = {computedCache: new Map()};
+    return CriticalRequestChains.audit(artifacts, context).then(output => {
       assert.equal(output.displayValue, '');
       assert.equal(output.rawValue, true);
     });
   });
 
-  it('calculates the correct chain result for empty example', () => {
-    return CriticalRequestChains.audit(mockArtifacts(EMPTY_REQUEST_CHAIN)).then(output => {
-      assert.equal(output.displayValue, '');
-      assert.equal(output.rawValue, true);
+  it('throws an error for no main resource found for empty example', () => {
+    const artifacts = mockArtifacts(EMPTY_CHAIN_RECORDS);
+    const context = {computedCache: new Map()};
+    return CriticalRequestChains.audit(artifacts, context).then(_ => {
+      throw new Error('should have failed');
+    }).catch(err => {
+      assert.ok(err.message.includes('Unable to identify the main resource'));
     });
   });
 });

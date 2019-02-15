@@ -30,7 +30,7 @@ describe('Default Config', () => {
 
     // And that they have the correct shape.
     opportunityResults.forEach(auditResult => {
-      assert.strictEqual(auditResult.details.type, 'opportunity');
+      expect(auditResult).toMatchObject({details: {type: 'opportunity'}});
       assert.ok(!auditResult.errorMessage, `${auditResult.id}: ${auditResult.errorMessage}`);
       assert.ok(auditResult.details.overallSavingsMs !== undefined,
           `${auditResult.id} has an undefined overallSavingsMs`);

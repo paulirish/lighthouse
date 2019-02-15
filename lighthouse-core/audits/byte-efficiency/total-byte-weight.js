@@ -6,7 +6,8 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
+const NetworkRecords = require('../../computed/network-records.js');
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on large network resources required during page load. 'Payloads' is roughly equivalent to 'resources'. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -57,16 +58,13 @@ class TotalByteWeight extends ByteEfficiencyAudit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const devtoolsLogs = artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS];
-    const [networkRecords, networkThroughput] = await Promise.all([
-      artifacts.requestNetworkRecords(devtoolsLogs),
-      artifacts.requestNetworkThroughput(devtoolsLogs),
-    ]);
+    const devtoolsLog = artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS];
+    const records = await NetworkRecords.request(devtoolsLog, context);
 
     let totalBytes = 0;
-    /** @type {Array<{url: string, totalBytes: number, totalMs: number}>} */
+    /** @type {Array<{url: string, totalBytes: number}>} */
     let results = [];
-    networkRecords.forEach(record => {
+    records.forEach(record => {
       // exclude data URIs since their size is reflected in other resources
       // exclude unfinished requests since they won't have transfer size information
       if (record.parsedURL.scheme === 'data' || !record.finished) return;
@@ -74,14 +72,16 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       const result = {
         url: record.url,
         totalBytes: record.transferSize,
-        totalMs: ByteEfficiencyAudit.bytesToMs(record.transferSize, networkThroughput),
       };
 
       totalBytes += result.totalBytes;
       results.push(result);
     });
     const totalCompletedRequests = results.length;
-    results = results.sort((itemA, itemB) => itemB.totalBytes - itemA.totalBytes).slice(0, 10);
+    results = results.sort((itemA, itemB) => {
+      return itemB.totalBytes - itemA.totalBytes ||
+        itemA.url.localeCompare(itemB.url);
+    }).slice(0, 10);
 
     const score = ByteEfficiencyAudit.computeLogNormalScore(
       totalBytes,
@@ -89,6 +89,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       context.options.scoreMedian
     );
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
       {key: 'totalBytes', itemType: 'bytes', text: str_(i18n.UIStrings.columnSize)},

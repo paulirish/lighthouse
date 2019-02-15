@@ -31,6 +31,20 @@ const SOURCE_PARAMS = new Set([
   'source',
   'src',
 ]);
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of a Lighthouse audit that provides detail on the browser plugins used by the page. This descriptive title is shown when there is no plugin content on the page that would restrict search indexing. */
+  title: 'Document avoids plugins',
+  /** Descriptive title of a Lighthouse audit that provides detail on the browser plugins used by the page. This title is shown when there is plugin content on the page. */
+  failureTitle: 'Document uses plugins',
+  /** Description of a Lighthouse audit that tells the user *why* they need to avoid using browser plugins in their content. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Search engines can\'t index plugin content, and ' +
+    'many devices restrict plugins or don\'t support them. ' +
+    '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/plugins).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * Verifies if given MIME type matches any known plugin MIME type
@@ -73,11 +87,9 @@ class Plugins extends Audit {
   static get meta() {
     return {
       id: 'plugins',
-      title: 'Document avoids plugins',
-      failureTitle: 'Document uses plugins',
-      description: 'Search engines can\'t index plugin content, and ' +
-        'many devices restrict plugins or don\'t support them. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/plugins).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['EmbeddedContent'],
     };
   }
@@ -140,6 +152,7 @@ class Plugins extends Audit {
         };
       });
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'source', itemType: 'code', text: 'Element source'},
     ];
@@ -154,3 +167,4 @@ class Plugins extends Audit {
 }
 
 module.exports = Plugins;
+module.exports.UIStrings = UIStrings;

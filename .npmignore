@@ -6,47 +6,39 @@
 assets/
 build/
 coverage/
+dist/
 
-lighthouse-core/scripts/
+lighthouse-core/scripts/*
 lighthouse-core/test/
 lighthouse-core/third_party/src/
 lighthouse-viewer/
-lighthouse-extension/
+clients/
 lighthouse-cli/results/
 lighthouse-logger/
 
-# keep the chrome launcher script
+# keep a few scripts useful for CI
 !lighthouse-core/scripts/manual-chrome-launcher.js
+!lighthouse-core/scripts/download-chrome.sh
 
-# excluding cli/test minus smokehouse
-lighthouse-cli/test
-!lighthouse-cli/test/smokehouse
-!lighthouse-cli/test/fixtures/
-
-!lighthouse-cli/index.js
-lighthouse-cli/*.map
-lighthouse-cli/commands/*.map
-lighthouse-cli/types/*.js
-lighthouse-cli/types/*.map
+# keep smokehouse tests, etc
+!lighthouse-cli/test
 
 node_modules/
 results/
 lantern-data/
-
-plots/
+latest-run/
 
 # generated files
 **/pages/scripts/lighthouse-report.js
 *.report.html
 *.dom.html
-*.screenshots.html
-*.screenshots.json
 *.devtoolslog.json
 *.trace.json
 closure-error.log
 last-run-results.html
 latest.artifacts.log
 npm-debug.log
+yarn-error.log
 results.html
 
 # dev files

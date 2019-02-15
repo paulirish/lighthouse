@@ -12,17 +12,14 @@ const options = FMPAudit.defaultOptions;
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLogs = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
-const Runner = require('../../../runner.js');
-const computedArtifacts = Runner.instantiateComputedArtifacts();
-
 /* eslint-env jest */
 describe('Performance: first-meaningful-paint audit', () => {
   it('computes FMP correctly for valid trace', async () => {
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {[Audit.DEFAULT_PASS]: trace},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
-    }, computedArtifacts);
-    const context = {options, settings: {throttlingMethod: 'provided'}};
+    };
+    const context = {options, settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
     assert.equal(fmpResult.score, 1);
@@ -31,11 +28,11 @@ describe('Performance: first-meaningful-paint audit', () => {
   });
 
   it('computes FMP correctly for simulated', async () => {
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {[Audit.DEFAULT_PASS]: trace},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
-    }, computedArtifacts);
-    const context = {options, settings: {throttlingMethod: 'simulate'}};
+    };
+    const context = {options, settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
     expect({

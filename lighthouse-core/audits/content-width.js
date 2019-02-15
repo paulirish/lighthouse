@@ -19,23 +19,36 @@ class ContentWidth extends Audit {
       description: 'If the width of your app\'s content doesn\'t match the width ' +
           'of the viewport, your app might not be optimized for mobile screens. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/content-sized-correctly-for-viewport).',
-      requiredArtifacts: ['ViewportDimensions'],
+      requiredArtifacts: ['ViewportDimensions', 'HostUserAgent'],
     };
   }
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    * @return {LH.Audit.Product}
    */
-  static audit(artifacts) {
+  static audit(artifacts, context) {
+    const userAgent = artifacts.HostUserAgent;
     const viewportWidth = artifacts.ViewportDimensions.innerWidth;
     const windowWidth = artifacts.ViewportDimensions.outerWidth;
     const widthsMatch = viewportWidth === windowWidth;
 
-    return {
-      rawValue: widthsMatch,
-      explanation: this.createExplanation(widthsMatch, artifacts.ViewportDimensions),
-    };
+    const isMobileHost = userAgent.includes('Android') || userAgent.includes('Mobile');
+    const isMobile = context.settings.emulatedFormFactor === 'mobile' ||
+      (context.settings.emulatedFormFactor !== 'desktop' && isMobileHost);
+
+    if (isMobile) {
+      return {
+        rawValue: widthsMatch,
+        explanation: this.createExplanation(widthsMatch, artifacts.ViewportDimensions),
+      };
+    } else {
+      return {
+        rawValue: true,
+        notApplicable: true,
+      };
+    }
   }
 
   /**

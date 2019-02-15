@@ -4,22 +4,19 @@ Online at https://googlechrome.github.io/lighthouse/viewer/
 
 ## Development
 
-* `npm i`
-* Build: `gulp`, Watch: `gulp watch`
+Run the following in the root folder of a Lighthouse checkout:
 
-For development, `gulp watch` will browserify `dist/src/main.js` and create a
-runnable script in all modern browsers. Use this for quick iterations when developing.
+* `yarn`
+* `yarn build-viewer`
 
-For production, run `gulp`. This compiles and minifies `dist/src/main.js` using Closure.
+This compiles and minifies `app/src/main.js` using uglify-es. Results are written to `dist/viewer/`.
 
 ## Deploy
 
-Deploys should be done as part of the Lighthouse release process. To update GitHub pages,
-run the following in the root folder of a Lighthouse checkout:
+Deploys should be done as part of the Lighthouse release process. To push the viewer to the `gh-pages` branch under `viewer/`, run the following in the root folder of a Lighthouse checkout:
 
 ```sh
-npm run deploy-viewer
+yarn deploy-viewer
 ```
 
-This builds `lighthouse-viewer/dist/src/main.js` and pushes the contents of `dist` folder
-to the `gh-pages` branch.
+For more information on deployment, see `releasing.md`.

@@ -9,7 +9,6 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-const Runner = require('../../runner.js');
 const ScreenshotThumbnailsAudit = require('../../audits/screenshot-thumbnails');
 const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 const pwaDevtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
@@ -17,21 +16,16 @@ const pwaDevtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.
 /* eslint-env jest */
 
 describe('Screenshot thumbnails', () => {
-  let computedArtifacts;
-
-  beforeAll(() => {
-    computedArtifacts = Runner.instantiateComputedArtifacts();
-  });
-
   it('should extract thumbnails from a trace', () => {
     const options = {minimumTimelineDuration: 500};
     const settings = {throttlingMethod: 'provided'};
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {defaultPass: pwaTrace},
       devtoolsLogs: {}, // empty devtools logs to test just thumbnails without TTI behavior
-    }, computedArtifacts);
+    };
 
-    return ScreenshotThumbnailsAudit.audit(artifacts, {settings, options}).then(results => {
+    const context = {settings, options, computedCache: new Map()};
+    return ScreenshotThumbnailsAudit.audit(artifacts, context).then(results => {
       results.details.items.forEach((result, index) => {
         const framePath = path.join(__dirname,
             `../fixtures/traces/screenshots/progressive-app-frame-${index}.jpg`);
@@ -50,12 +44,13 @@ describe('Screenshot thumbnails', () => {
   it('should scale the timeline to TTI when observed', () => {
     const options = {minimumTimelineDuration: 500};
     const settings = {throttlingMethod: 'devtools'};
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {defaultPass: pwaTrace},
       devtoolsLogs: {defaultPass: pwaDevtoolsLog},
-    }, computedArtifacts);
+    };
 
-    return ScreenshotThumbnailsAudit.audit(artifacts, {settings, options}).then(results => {
+    const context = {settings, options, computedCache: new Map()};
+    return ScreenshotThumbnailsAudit.audit(artifacts, context).then(results => {
       assert.equal(results.details.items[0].timing, 158);
       assert.equal(results.details.items[9].timing, 1582);
 
@@ -69,12 +64,12 @@ describe('Screenshot thumbnails', () => {
   it('should not scale the timeline to TTI when simulate', () => {
     const options = {minimumTimelineDuration: 500};
     const settings = {throttlingMethod: 'simulate'};
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {defaultPass: pwaTrace},
-    }, computedArtifacts);
-    computedArtifacts.requestInteractive = () => ({timing: 20000});
+    };
 
-    return ScreenshotThumbnailsAudit.audit(artifacts, {settings, options}).then(results => {
+    const context = {settings, options, computedCache: new Map()};
+    return ScreenshotThumbnailsAudit.audit(artifacts, context).then(results => {
       assert.equal(results.details.items[0].timing, 82);
       assert.equal(results.details.items[9].timing, 818);
     });
@@ -82,26 +77,33 @@ describe('Screenshot thumbnails', () => {
 
   it('should scale the timeline to minimumTimelineDuration', () => {
     const settings = {throttlingMethod: 'simulate'};
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {defaultPass: pwaTrace},
-    }, computedArtifacts);
+    };
 
-    return ScreenshotThumbnailsAudit.audit(artifacts, {settings, options: {}}).then(results => {
+    const context = {settings, options: {}, computedCache: new Map()};
+    return ScreenshotThumbnailsAudit.audit(artifacts, context).then(results => {
       assert.equal(results.details.items[0].timing, 300);
       assert.equal(results.details.items[9].timing, 3000);
     });
   });
 
   it('should handle nonsense times', async () => {
+    const infiniteTrace = JSON.parse(JSON.stringify(pwaTrace));
+    infiniteTrace.traceEvents.forEach(event => {
+      if (event.name === 'Screenshot') {
+        event.ts = Infinity;
+      }
+    });
+
     const settings = {throttlingMethod: 'simulate'};
     const artifacts = {
-      traces: {},
-      requestSpeedline: () => ({frames: [], complete: false, beginning: -1}),
-      requestInteractive: () => ({timing: NaN}),
+      traces: {defaultPass: infiniteTrace},
     };
+    const context = {settings, options: {}, computedCache: new Map()};
 
     try {
-      await ScreenshotThumbnailsAudit.audit(artifacts, {settings, options: {}});
+      await ScreenshotThumbnailsAudit.audit(artifacts, context);
       assert.fail('should have thrown');
     } catch (err) {
       assert.equal(err.message, 'INVALID_SPEEDLINE');

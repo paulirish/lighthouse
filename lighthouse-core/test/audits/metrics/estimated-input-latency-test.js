@@ -6,19 +6,16 @@
 'use strict';
 
 const Audit = require('../../../audits/metrics/estimated-input-latency.js');
-const Runner = require('../../../runner');
 const assert = require('assert');
 const options = Audit.defaultOptions;
 
 const pwaTrace = require('../../fixtures/traces/progressive-app-m60.json');
 
-const computedArtifacts = Runner.instantiateComputedArtifacts();
-
 function generateArtifactsWithTrace(trace) {
-  return Object.assign({
+  return {
     traces: {[Audit.DEFAULT_PASS]: trace},
     devtoolsLogs: {[Audit.DEFAULT_PASS]: []},
-  }, computedArtifacts);
+  };
 }
 /* eslint-env jest */
 
@@ -26,7 +23,8 @@ describe('Performance: estimated-input-latency audit', () => {
   it('evaluates valid input correctly', () => {
     const artifacts = generateArtifactsWithTrace(pwaTrace);
     const settings = {throttlingMethod: 'provided'};
-    return Audit.audit(artifacts, {options, settings}).then(output => {
+    const context = {options, settings, computedCache: new Map()};
+    return Audit.audit(artifacts, context).then(output => {
       assert.equal(Math.round(output.rawValue * 10) / 10, 17.1);
       assert.equal(output.score, 1);
       expect(output.displayValue).toBeDisplayString('20\xa0ms');

@@ -18,7 +18,7 @@ module.exports = {
     {value: 'deps',       name: 'deps:      Dependency bumps only'},
     {value: 'report',     name: 'report:    Report, UI, renderers'},
     {value: 'cli',        name: 'cli:       CLI stuff'},
-    {value: 'extension',  name: 'extension: Chrome extension stuff'},
+    {value: 'clients',    name: 'clients:   Extension, DevTools, or LR stuff'},
     {value: 'misc',       name: 'misc:      Something else entirely'}
   ]
 };

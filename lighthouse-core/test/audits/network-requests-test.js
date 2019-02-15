@@ -6,21 +6,21 @@
 'use strict';
 
 const NetworkRequests = require('../../audits/network-requests');
-const Runner = require('../../runner.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 const acceptableDevToolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 
 /* eslint-env jest */
 describe('Network requests audit', () => {
   it('should return network requests', () => {
-    const artifacts = Object.assign({
+    const artifacts = {
       devtoolsLogs: {
         [NetworkRequests.DEFAULT_PASS]: acceptableDevToolsLog,
       },
-    }, Runner.instantiateComputedArtifacts());
+    };
 
-    return NetworkRequests.audit(artifacts).then(output => {
+    return NetworkRequests.audit(artifacts, {computedCache: new Map()}).then(output => {
       assert.equal(output.score, 1);
       assert.equal(output.rawValue, 66);
       assert.equal(output.details.items.length, 66);
@@ -38,8 +38,12 @@ describe('Network requests audit', () => {
       {url: 'https://example.com/1', startTime: 15.5, endTime: -1},
     ];
 
-    const artifacts = {devtoolsLogs: {}, requestNetworkRecords: () => Promise.resolve(records)};
-    const output = await NetworkRequests.audit(artifacts);
+    const artifacts = {
+      devtoolsLogs: {
+        [NetworkRequests.DEFAULT_PASS]: networkRecordsToDevtoolsLog(records),
+      },
+    };
+    const output = await NetworkRequests.audit(artifacts, {computedCache: new Map()});
     assert.equal(output.details.items[0].startTime, 0);
     assert.equal(output.details.items[0].endTime, 500);
     assert.equal(output.details.items[1].startTime, 500);

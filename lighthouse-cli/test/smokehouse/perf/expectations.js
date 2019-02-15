@@ -39,6 +39,10 @@ module.exports = [
       'uses-rel-preload': {
         score: '<1',
         rawValue: '>500',
+        warnings: {
+          0: /level-2.*warning/,
+          length: 1,
+        },
         details: {
           items: {
             length: 1,
@@ -47,6 +51,10 @@ module.exports = [
       },
       'uses-rel-preconnect': {
         score: '<1',
+        warnings: {
+          0: /fonts.googleapis/,
+          length: 1,
+        },
         details: {
           items: {
             length: 1,

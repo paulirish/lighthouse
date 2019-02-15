@@ -37,6 +37,7 @@ class GeolocationOnStart extends ViolationAudit {
     // 'Only request geolocation information in response to a user gesture.'
     const results = ViolationAudit.getViolationResults(artifacts, /geolocation/);
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
       {key: 'label', itemType: 'text', text: 'Location'},

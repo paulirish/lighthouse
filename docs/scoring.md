@@ -13,11 +13,11 @@ Note 2: receiving a **score of ?** in any Lighthouse category indicates an error
 ### What performance metrics does Lighthouse measure?
 Lighthouse measures the following performance metrics:
 
-- [First Contentful Paint](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#first_paint_and_first_contentful_paint): first contentful paint is the first time the browser paints any content (text, image, canvas, etc) on the screen. 
+- [First Contentful Paint](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics#first_paint_and_first_contentful_paint): first contentful paint is the first time the browser paints any content (text, image, canvas, etc) on the screen.
 - [First Meaningful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint): first meaningful paint is defined as when the browser first puts any “meaningful” element/set of “meaningful” elements on the screen. What is meaningful is determined from a series of heuristics.
 - [First CPU Idle](https://developers.google.com/web/tools/lighthouse/audits/first-interactive): first CPU idle is defined as the first point at which the page could respond quickly to input. It doesn't consider any point in time before first meaningful paint. The way this is implemented is primarily based on heuristics.
 *Note: this metric is currently in beta, which means that the underlying definition of this metric is in progress.*
-- [Time to Interactive](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive): defined as the first point at which everything is loaded such that the page will quickly respond to any user input throughout the page.
+- [Time to Interactive](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive): defined as the first point at which everything is loaded such that the page will quickly respond to any user input throughout the page.
 *Note: this metric is currently in beta, which means that the underlying definition of this metric is in progress.*
 - [Speed Index](https://developers.google.com/web/tools/lighthouse/audits/speed-index): Speed Index measures how quickly all above-the-fold content is painted on screen. The earlier the pixels are painted, the better you score on metric. Users want an experience where most of the content is shown on the screen during the first few moments of initiating the page load. Loading more content earlier makes your end user feel like the website is loading quickly, which contributes to a positive user experience. Therefore, the lower your Speed Index, the better.
 - [Estimated Input Latency](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency): this audit measures how fast your app is in responding to user input. Our benchmark is that the estimated input latency should be under 50 ms (see documentation [here](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency) as to why).
@@ -33,8 +33,8 @@ The metric results are not weighted equally. Currently the weights are:
 
 * 3X - first contentful paint
 * 1X - first meaningful paint
-* 3X - first cpu idle
-* 5X - consistently interactive
+* 2X - first cpu idle
+* 5X - time to interactive
 * 4X - speed index
 * 0X - estimated input latency
 
@@ -44,9 +44,9 @@ These weights are heuristics, and the Lighthouse team is working on formalizing 
 Once Lighthouse is done gathering the raw performance metrics for your website (metrics reported in miliseconds), it converts them into a score by mapping the raw performance number to a number between 0-100 by looking where your raw performance metric falls on the Lighthouse scoring distribution. The Lighthouse scoring distribution is a log normal distribution that is derived from the performance metrics of real website performance data (see sample distribution [here](https://www.desmos.com/calculator/zrjq6v1ihi)).
 
 Once we finish computing the percentile equivalent of your raw performance score, we take the weighted average of all the performance metrics (per the weighting above). Finally, we apply a coloring to the score (green, orange, and red) depending on what "bucket" your score falls in. This maps to:
-- Red (poor score): 0-44.
-- Orange (average): 45-74
-- Green (good): 75-100.
+- Red (poor score): 0-49
+- Orange (average): 50-89
+- Green (good): 90-100
 
 ### What can developers do to improve their performance score?
 *Note: we've built [a little calculator](https://docs.google.com/spreadsheets/d/1Cxzhy5ecqJCucdf1M0iOzM8mIxNc7mmx107o5nj38Eo/edit#gid=283330180) that can help you understand what thresholds you should be aiming for achieving a certain Lighthouse performance score. *
@@ -57,6 +57,8 @@ Lighthouse has a whole section in the report on improving your performance score
 # PWA
 ### How is the PWA score calculated?
 The PWA score is calculated based on the [Baseline PWA checklist](https://developers.google.com/web/progressive-web-apps/checklist#baseline), which lists 14 requirements. Lighthouse tests for 11 out of the 14 requirements automatically, with the other 3 being manual checks. Each of the 11 audits for the PWA section of the report is weighted equally, so implementing any of the audits correctly will increase your overall score by ~9 points.
+
+*Note on https redirects*: some metrics in this category have issues with https redirects because of TLS-handshake errors. More specifically you will run into this when using the ```simplehttp2server``` npm package. Subsequent metrics will fail after the https redirects (see #1217, #5910)
 
 # Accessibility
 ### How is the accessibility score calculated?

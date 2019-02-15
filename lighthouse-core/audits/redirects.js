@@ -7,7 +7,11 @@
 
 const Audit = require('./audit');
 const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
-const i18n = require('../lib/i18n');
+const i18n = require('../lib/i18n/i18n.js');
+const TraceOfTab = require('../computed/trace-of-tab.js');
+const NetworkRecords = require('../computed/network-records.js');
+const MainResource = require('../computed/main-resource.js');
+const LanternInteractive = require('../computed/metrics/lantern-interactive.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to eliminate the redirects taken through multiple URLs to load the page. This is shown in a list of audits that Lighthouse generates. */
@@ -42,12 +46,12 @@ class Redirects extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
 
-    const traceOfTab = await artifacts.requestTraceOfTab(trace);
-    const networkRecords = await artifacts.requestNetworkRecords(devtoolsLog);
-    const mainResource = await artifacts.requestMainResource({URL: artifacts.URL, devtoolsLog});
+    const traceOfTab = await TraceOfTab.request(trace, context);
+    const networkRecords = await NetworkRecords.request(devtoolsLog, context);
+    const mainResource = await MainResource.request({URL: artifacts.URL, devtoolsLog}, context);
 
     const metricComputationData = {trace, devtoolsLog, traceOfTab, networkRecords, settings};
-    const metricResult = await artifacts.requestLanternInteractive(metricComputationData);
+    const metricResult = await LanternInteractive.request(metricComputationData, context);
 
     /** @type {Map<string, LH.Gatherer.Simulation.NodeTiming>} */
     const nodeTimingsByUrl = new Map();
@@ -94,7 +98,7 @@ class Redirects extends Audit {
       });
     }
 
-    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'wastedMs', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnTimeSpent)},

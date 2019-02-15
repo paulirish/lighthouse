@@ -30,6 +30,9 @@ module.exports = [
       'works-offline': {
         score: 1,
       },
+      'offline-start-url': {
+        score: 1,
+      },
       'viewport': {
         score: 1,
       },
@@ -39,7 +42,7 @@ module.exports = [
       'load-fast-enough-for-pwa': {
         // Ignore speed test; just verify that it ran .
       },
-      'webapp-install-banner': {
+      'installable-manifest': {
         score: 1,
         details: {items: [pwaRocksExpectations]},
       },

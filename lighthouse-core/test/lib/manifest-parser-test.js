@@ -190,7 +190,7 @@ describe('Manifest Parser', function() {
   describe('start_url parsing', () => {
     /* eslint-disable camelcase */
     // 8.10(3)
-    it('falls back to document URL and issues a warning for an invalid value', () => {
+    it('falls back to document URL and issues a warning for a non-string', () => {
       const manifestSrc = JSON.stringify({
         start_url: {},
       });
@@ -203,7 +203,7 @@ describe('Manifest Parser', function() {
       assert.equal(parsedUrl.value, docUrl);
     });
 
-    it('falls back to document URL and issues a warning for an invalid value', () => {
+    it('falls back to document URL and issues a warning for a non-string', () => {
       const manifestSrc = JSON.stringify({
         start_url: 6,
       });

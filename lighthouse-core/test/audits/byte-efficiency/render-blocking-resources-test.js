@@ -7,8 +7,7 @@
 
 const RenderBlockingResourcesAudit = require('../../../audits/byte-efficiency/render-blocking-resources.js'); // eslint-disable-line max-len
 
-const mobile3G = require('../../../config/constants').throttling.mobile3G;
-const Runner = require('../../../runner');
+const mobileSlow4G = require('../../../config/constants').throttling.mobileSlow4G;
 const NetworkNode = require('../../../lib/dependency-graph/network-node');
 const CPUNode = require('../../../lib/dependency-graph/cpu-node');
 const Simulator = require('../../../lib/dependency-graph/simulator/simulator');
@@ -22,22 +21,20 @@ const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.
 
 describe('Render blocking resources audit', () => {
   it('evaluates http2 input correctly', async () => {
-    const artifacts = Object.assign(
-      {
-        traces: {defaultPass: trace},
-        devtoolsLogs: {defaultPass: devtoolsLog},
-        TagsBlockingFirstPaint: [
-          {
-            tag: {url: 'https://pwa.rocks/script.js'},
-            transferSize: 621,
-          },
-        ],
-      },
-      Runner.instantiateComputedArtifacts()
-    );
+    const artifacts = {
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+      TagsBlockingFirstPaint: [
+        {
+          tag: {url: 'https://pwa.rocks/script.js'},
+          transferSize: 621,
+        },
+      ],
+    };
 
-    const settings = {throttlingMethod: 'simulate', throttling: mobile3G};
-    const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings});
+    const settings = {throttlingMethod: 'simulate', throttling: mobileSlow4G};
+    const computedCache = new Map();
+    const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
     assert.equal(result.score, 1);
     assert.equal(result.rawValue, 0);
   });

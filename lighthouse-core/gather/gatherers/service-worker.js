@@ -14,8 +14,11 @@ class ServiceWorker extends Gatherer {
    */
   async beforePass(passContext) {
     const {versions} = await passContext.driver.getServiceWorkerVersions();
+    const {registrations} = await passContext.driver.getServiceWorkerRegistrations();
+
     return {
       versions,
+      registrations,
     };
   }
 }

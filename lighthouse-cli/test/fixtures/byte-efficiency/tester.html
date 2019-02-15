@@ -23,7 +23,7 @@ function generateInlineStyleWithSize(sizeInBytes, firstContent = '', used = fals
       div.classList.add(className);
       document.body.appendChild(div);
     }
-    sizeInBytes -= rule.length / 3; // 1 byte per character, GZip estimate is 3x
+    sizeInBytes -= rule.length * 0.2; // 1 byte per character, GZip estimate is 20% for Stylesheets
   }
 
   const style = document.createElement('style');
@@ -157,11 +157,11 @@ setTimeout(() => {
 // PASS: unused but too small savings
 generateInlineStyleWithSize(512, '.too-small { background: none; }\n');
 // PASS: used
-generateInlineStyleWithSize(4000, '.mostly-used { background: none; }\n', true);
-// PASSWARN: unused and a bit of savings
-generateInlineStyleWithSize(2000, '.kinda-unused { background: none; }\n');
+generateInlineStyleWithSize(5000, '.mostly-used { background: none; }\n', true);
+// FAIL: unused and a bit of savings
+generateInlineStyleWithSize(5000, '.kinda-unused { background: none; }\n');
 // FAIL: unused and lots of savings
-generateInlineStyleWithSize(24000, '.definitely-unused { background: none; }\n');
+generateInlineStyleWithSize(30000, '.definitely-unused { background: none; }\n');
 </script>
 
 <!-- Ensure the page takes at least 7 seconds and we don't exit before the lazily loaded image -->

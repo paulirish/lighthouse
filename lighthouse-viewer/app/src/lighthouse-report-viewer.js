@@ -56,7 +56,6 @@ class LighthouseReportViewer {
    * @private
    */
   _addEventListeners() {
-    // @ts-ignore - tsc thinks document can't listen for `paste`
     document.addEventListener('paste', this._onPaste);
 
     const gistUrlInput = find('.js-gist-url', document);
@@ -107,7 +106,7 @@ class LighthouseReportViewer {
 
   /**
    * Basic Lighthouse report JSON validation.
-   * @param {LH.ReportResult} reportJson
+   * @param {LH.Result} reportJson
    * @private
    */
   _validateReportJson(reportJson) {
@@ -133,13 +132,21 @@ class LighthouseReportViewer {
   }
 
   /**
-   * @param {LH.ReportResult} json
+   * @param {LH.Result} json
    * @private
    */
+  // TODO: Really, `json` should really have type `unknown` and
+  // we can have _validateReportJson verify that it's an LH.Result
   _replaceReportHtml(json) {
+    // Allow users to view the runnerResult
+    if ('lhr' in json) {
+      json = /** @type {LH.RunnerResult} */ (json).lhr;
+    }
+
     this._validateReportJson(json);
 
-    if (!json.lighthouseVersion.startsWith('3')) {
+    // Redirect to old viewer if a v2 report. v3 and v4 both handled by v4 viewer.
+    if (json.lighthouseVersion.startsWith('2')) {
       this._loadInLegacyViewerVersion(json);
       return;
     }
@@ -201,14 +208,15 @@ class LighthouseReportViewer {
   }
 
   /**
-   * Stores v2.x report in IDB, then navigates to legacy viewer in current tab
-   * @param {LH.ReportResult} reportJson
+   * Stores v2.x report in IDB, then navigates to legacy viewer in current tab.
+   * @param {LH.Result} reportJson
    * @private
    */
   _loadInLegacyViewerVersion(reportJson) {
     const warnMsg = `Version mismatch between viewer and JSON. Opening compatible viewer...`;
     logger.log(warnMsg, false);
 
+    // TODO: Handle 4x reports if we break viewer compat moving to v5.
     // Place report in IDB, then navigate current tab to the legacy viewer
     const viewerPath = new URL('../viewer2x/', location.href);
     idbKeyval.set('2xreport', reportJson).then(_ => {
@@ -241,7 +249,7 @@ class LighthouseReportViewer {
 
   /**
    * Saves the current report by creating a gist on GitHub.
-   * @param {LH.ReportResult} reportJson
+   * @param {LH.Result} reportJson
    * @return {Promise<string|void>} id of the created gist.
    * @private
    */
@@ -369,7 +377,7 @@ class LighthouseReportViewer {
   }
 }
 
-// @ts-ignore - node export for testing.
+// node export for testing.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = LighthouseReportViewer;
 }

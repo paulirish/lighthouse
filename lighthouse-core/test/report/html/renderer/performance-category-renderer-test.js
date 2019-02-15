@@ -36,7 +36,7 @@ describe('PerfCategoryRenderer', () => {
     const PerformanceCategoryRenderer =
         require('../../../../report/html/renderer/performance-category-renderer.js');
 
-    const document = jsdom.jsdom(TEMPLATE_FILE);
+    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     renderer = new PerformanceCategoryRenderer(dom, detailsRenderer);
@@ -140,18 +140,17 @@ describe('PerfCategoryRenderer', () => {
     const diagnosticSection = categoryDOM.querySelectorAll('.lh-category > .lh-audit-group')[2];
 
     const diagnosticAudits = category.auditRefs.filter(audit => audit.group === 'diagnostics' &&
-        audit.result.score !== 1 && audit.result.scoreDisplayMode !== 'not-applicable');
+        !Util.showAsPassed(audit.result));
     const diagnosticElements = diagnosticSection.querySelectorAll('.lh-audit');
     assert.equal(diagnosticElements.length, diagnosticAudits.length);
   });
 
   it('renders the passed audits', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
-    const passedSection = categoryDOM.querySelector('.lh-category > .lh-passed-audits');
+    const passedSection = categoryDOM.querySelector('.lh-category > .lh-clump--passed');
 
     const passedAudits = category.auditRefs.filter(audit =>
-        audit.group && audit.group !== 'metrics' &&
-        (audit.result.score === 1 || audit.result.scoreDisplayMode === 'not-applicable'));
+        audit.group && audit.group !== 'metrics' && Util.showAsPassed(audit.result));
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);
   });

@@ -6,68 +6,110 @@
 'use strict';
 
 const FastPWAAudit = require('../../audits/load-fast-enough-for-pwa');
-const Runner = require('../../runner.js');
-const Audit = require('../../audits/audit.js');
-const mobile3GThrottling = require('../../config/constants').throttling.mobile3G;
+const mobileSlow4GThrottling = require('../../config/constants').throttling.mobileSlow4G;
 const assert = require('assert');
+const createTestTrace = require('../create-test-trace.js');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 const trace = require('../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 
-function generateArtifacts(ttiValue) {
-  return {
-    devtoolsLogs: {
-      [Audit.DEFAULT_PASS]: [],
-    },
-    traces: {
-      [Audit.DEFAULT_PASS]: {traceEvents: []},
-    },
-    requestInteractive: () => Promise.resolve({
-      timing: ttiValue,
-    }),
-  };
-}
 
 /* eslint-env jest */
 describe('PWA: load-fast-enough-for-pwa audit', () => {
   it('returns boolean based on TTI value', () => {
-    const settings = {throttlingMethod: 'devtools', throttling: mobile3GThrottling};
-    return FastPWAAudit.audit(generateArtifacts(5000), {settings}).then(result => {
+    const artifacts = {
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+    };
+
+    const settings = {throttlingMethod: 'devtools', throttling: mobileSlow4GThrottling};
+    return FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()}).then(result => {
       assert.equal(result.score, true, 'fixture trace is not passing audit');
-      assert.equal(result.rawValue, 5000);
+      assert.equal(result.rawValue, 1582.189);
     });
   });
 
-  it('fails a bad TTI value', () => {
-    const settings = {throttlingMethod: 'devtools', throttling: mobile3GThrottling};
-    return FastPWAAudit.audit(generateArtifacts(15000), {settings}).then(result => {
+  it('fails a bad TTI value', async () => {
+    const topLevelTasks = [
+      {ts: 1000, duration: 100},
+      {ts: 3000, duration: 100},
+      {ts: 5000, duration: 100},
+      {ts: 9000, duration: 100},
+      {ts: 12000, duration: 100},
+      {ts: 14900, duration: 100},
+    ];
+    const longTrace = createTestTrace({navigationStart: 0, traceEnd: 20000, topLevelTasks});
+    const devtoolsLog = networkRecordsToDevtoolsLog([{url: 'https://example.com'}]);
+
+    const artifacts = {
+      traces: {defaultPass: longTrace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+    };
+
+    const settings = {throttlingMethod: 'devtools', throttling: mobileSlow4GThrottling};
+    return FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()}).then(result => {
       assert.equal(result.score, false, 'not failing a long TTI value');
       assert.equal(result.rawValue, 15000);
-      assert.deepEqual(result.displayValue, ['Interactive at %d\xa0s', 15]);
+      expect(result.displayValue).toBeDisplayString('Interactive at 15.0\xa0s');
       assert.ok(result.explanation);
     });
   });
 
   it('respects the observed result when throttling is preset', async () => {
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {defaultPass: trace},
       devtoolsLogs: {defaultPass: devtoolsLog},
-    }, Runner.instantiateComputedArtifacts());
+    };
 
-    const settings = {throttlingMethod: 'devtools', throttling: mobile3GThrottling};
-    const result = await FastPWAAudit.audit(artifacts, {settings});
+    const settings = {throttlingMethod: 'devtools', throttling: mobileSlow4GThrottling};
+    const result = await FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()});
     assert.equal(Math.round(result.rawValue), 1582);
   });
 
   it('overrides with simulated result when throttling is modified', async () => {
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {defaultPass: trace},
       devtoolsLogs: {defaultPass: devtoolsLog},
-    }, Runner.instantiateComputedArtifacts());
+    };
 
     const settings = {throttlingMethod: 'provided', throttling: {rttMs: 40, throughput: 100000}};
-    const result = await FastPWAAudit.audit(artifacts, {settings});
-    expect(result.rawValue).toBeGreaterThan(2000);
+    const result = await FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()});
+    expect(result.rawValue).toBeGreaterThan(2000); // If not overridden this would be 1582
     expect(Math.round(result.rawValue)).toMatchSnapshot();
+  });
+
+  it('overrides when throttling is modified but method is not "provided"', async () => {
+    const artifacts = {
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+    };
+
+    const settings = {throttlingMethod: 'devtools', throttling: {rttMs: 40, throughput: 100000}};
+    const result = await FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()});
+    expect(result.rawValue).toBeGreaterThan(2000); // If not overridden this would be 1582
+  });
+
+  it('overrides when throttling is "provided" and fails the simulated TTI value', async () => {
+    const topLevelTasks = [
+      {ts: 1000, duration: 1000},
+      {ts: 3000, duration: 1000},
+      {ts: 5000, duration: 1000},
+      {ts: 9000, duration: 1000},
+      {ts: 12000, duration: 1000},
+      {ts: 14900, duration: 1000},
+    ];
+    const longTrace = createTestTrace({navigationStart: 0, traceEnd: 20000, topLevelTasks});
+
+    const artifacts = {
+      traces: {defaultPass: longTrace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+    };
+
+    const settings = {throttlingMethod: 'provided', throttling: {rttMs: 40, throughput: 100000}};
+    const result = await FastPWAAudit.audit(artifacts, {settings, computedCache: new Map()});
+    expect(result.displayValue)
+      .toBeDisplayString('Interactive on simulated mobile network at 24.9\xa0s');
+    expect(result.rawValue).toBeGreaterThan(10000);
   });
 });

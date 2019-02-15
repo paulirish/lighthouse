@@ -16,7 +16,7 @@ const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const THRESHOLD_PX = 2;
 
-/** @typedef {Required<LH.Artifacts.SingleImageUsage>} WellDefinedImage */
+/** @typedef {Required<LH.Artifacts.ImageElement>} WellDefinedImage */
 
 class ImageAspectRatio extends Audit {
   /**
@@ -29,7 +29,7 @@ class ImageAspectRatio extends Audit {
       failureTitle: 'Displays images with incorrect aspect ratio',
       description: 'Image display dimensions should match natural aspect ratio. ' +
         '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/aspect-ratio).',
-      requiredArtifacts: ['ImageUsage'],
+      requiredArtifacts: ['ImageElements'],
     };
   }
 
@@ -40,10 +40,10 @@ class ImageAspectRatio extends Audit {
   static computeAspectRatios(image) {
     const url = URL.elideDataURI(image.src);
     const actualAspectRatio = image.naturalWidth / image.naturalHeight;
-    const displayedAspectRatio = image.width / image.height;
+    const displayedAspectRatio = image.displayedWidth / image.displayedHeight;
 
-    const targetDisplayHeight = image.width / actualAspectRatio;
-    const doRatiosMatch = Math.abs(targetDisplayHeight - image.height) < THRESHOLD_PX;
+    const targetDisplayHeight = image.displayedWidth / actualAspectRatio;
+    const doRatiosMatch = Math.abs(targetDisplayHeight - image.displayedHeight) < THRESHOLD_PX;
 
     if (!Number.isFinite(actualAspectRatio) ||
       !Number.isFinite(displayedAspectRatio)) {
@@ -52,7 +52,7 @@ class ImageAspectRatio extends Audit {
 
     return {
       url,
-      displayedAspectRatio: `${image.width} x ${image.height}
+      displayedAspectRatio: `${image.displayedWidth} x ${image.displayedHeight}
         (${displayedAspectRatio.toFixed(2)})`,
       actualAspectRatio: `${image.naturalWidth} x ${image.naturalHeight}
         (${actualAspectRatio.toFixed(2)})`,
@@ -65,7 +65,7 @@ class ImageAspectRatio extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    const images = artifacts.ImageUsage;
+    const images = artifacts.ImageElements;
 
     /** @type {string[]} */
     const warnings = [];
@@ -75,10 +75,12 @@ class ImageAspectRatio extends Audit {
       // - filter out images that don't have following properties:
       //   networkRecord, width, height, images that use `object-fit`: `cover` or `contain`
       // - filter all svgs as they have no natural dimensions to audit
-      return image.networkRecord &&
-        image.networkRecord.mimeType !== 'image/svg+xml' &&
-        image.width &&
-        image.height &&
+      return image.mimeType &&
+        image.mimeType !== 'image/svg+xml' &&
+        image.naturalHeight > 5 &&
+        image.naturalWidth > 5 &&
+        image.displayedWidth &&
+        image.displayedHeight &&
         !image.usesObjectFit;
     }).forEach(image => {
       const wellDefinedImage = /** @type {WellDefinedImage} */ (image);
@@ -91,6 +93,7 @@ class ImageAspectRatio extends Audit {
       if (!processed.doRatiosMatch) results.push(processed);
     });
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'thumbnail', text: ''},
       {key: 'url', itemType: 'url', text: 'URL'},

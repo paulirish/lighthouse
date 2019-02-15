@@ -7,24 +7,17 @@
 
 const assert = require('assert');
 
-const Runner = require('../../runner.js');
 const FinalScreenshotAudit = require('../../audits/final-screenshot');
 const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 
 /* eslint-env jest */
 
 describe('Final screenshot', () => {
-  let computedArtifacts;
-
-  beforeAll(() => {
-    computedArtifacts = Runner.instantiateComputedArtifacts();
-  });
-
   it('should extract a final screenshot from a trace', async () => {
     const artifacts = Object.assign({
       traces: {defaultPass: pwaTrace},
-    }, computedArtifacts);
-    const results = await FinalScreenshotAudit.audit(artifacts);
+    });
+    const results = await FinalScreenshotAudit.audit(artifacts, {computedCache: new Map()});
 
     assert.ok(results.rawValue);
     assert.equal(results.details.timestamp, 225414990.064);

@@ -7,10 +7,13 @@
 
 const IsCrawlableAudit = require('../../../audits/seo/is-crawlable.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
 
 /* eslint-env jest */
 
 describe('SEO: Is page crawlable audit', () => {
+  const makeMetaElements = content => [{name: 'robots', content}];
+
   it('fails when page is blocked from indexing with a robots metatag', () => {
     const robotsValues = [
       'noindex',
@@ -23,17 +26,21 @@ describe('SEO: Is page crawlable audit', () => {
     ];
 
     const allRuns = robotsValues.map(robotsValue => {
+      const finalUrl = 'https://example.com/';
       const mainResource = {
+        url: finalUrl,
         responseHeaders: [],
       };
+      const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
       const artifacts = {
-        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-        requestMainResource: () => Promise.resolve(mainResource),
-        MetaRobots: robotsValue,
+        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+        URL: {finalUrl},
+        MetaElements: makeMetaElements(robotsValue),
         RobotsTxt: {},
       };
 
-      return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+      const context = {computedCache: new Map()};
+      return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
         assert.equal(auditResult.rawValue, false);
         assert.equal(auditResult.details.items.length, 1);
       });
@@ -43,33 +50,42 @@ describe('SEO: Is page crawlable audit', () => {
   });
 
   it('succeeds when there are no blocking directives in the metatag', () => {
+    const finalUrl = 'https://example.com/';
     const mainResource = {
+      url: finalUrl,
       responseHeaders: [],
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
     const artifacts = {
-      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
       requestMainResource: () => Promise.resolve(mainResource),
-      MetaRobots: 'all, noarchive',
+      MetaElements: makeMetaElements('all, noarchive'),
       RobotsTxt: {},
     };
 
-    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+    const context = {computedCache: new Map()};
+    return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
     });
   });
 
   it('succeeds when there is no robots metatag', () => {
+    const finalUrl = 'https://example.com/';
     const mainResource = {
+      url: finalUrl,
       responseHeaders: [],
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
     const artifacts = {
-      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-      requestMainResource: () => Promise.resolve(mainResource),
-      MetaRobots: null,
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
+      MetaElements: [],
       RobotsTxt: {},
     };
 
-    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+    const context = {computedCache: new Map()};
+    return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
     });
   });
@@ -98,17 +114,21 @@ describe('SEO: Is page crawlable audit', () => {
     ];
 
     const allRuns = robotsHeaders.map(headers => {
+      const finalUrl = 'https://example.com/';
       const mainResource = {
+        url: finalUrl,
         responseHeaders: headers,
       };
+      const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
       const artifacts = {
-        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-        requestMainResource: () => Promise.resolve(mainResource),
-        MetaRobots: null,
+        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+        URL: {finalUrl},
+        MetaElements: [],
         RobotsTxt: {},
       };
 
-      return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+      const context = {computedCache: new Map()};
+      return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
         assert.equal(auditResult.rawValue, false);
         assert.equal(auditResult.details.items.length, 1);
       });
@@ -118,55 +138,67 @@ describe('SEO: Is page crawlable audit', () => {
   });
 
   it('succeeds when there are no blocking directives in the robots header', () => {
+    const finalUrl = 'https://example.com/';
     const mainResource = {
+      url: finalUrl,
       responseHeaders: [
         {name: 'X-Robots-Tag', value: 'all, nofollow'},
         {name: 'X-Robots-Tag', value: 'unavailable_after: 25 Jun 2045 15:00:00 PST'},
       ],
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
     const artifacts = {
-      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-      requestMainResource: () => Promise.resolve(mainResource),
-      MetaRobots: null,
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
+      MetaElements: [],
       RobotsTxt: {},
     };
 
-    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+    const context = {computedCache: new Map()};
+    return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
     });
   });
 
   it('succeeds when there is no robots header and robots.txt is unavailable', () => {
+    const finalUrl = 'https://example.com/';
     const mainResource = {
+      url: finalUrl,
       responseHeaders: [],
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
     const artifacts = {
-      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-      requestMainResource: () => Promise.resolve(mainResource),
-      MetaRobots: null,
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
+      MetaElements: [],
       RobotsTxt: {},
     };
 
-    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+    const context = {computedCache: new Map()};
+    return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
     });
   });
 
   it('ignores UA specific directives', () => {
+    const finalUrl = 'https://example.com/';
     const mainResource = {
+      url: finalUrl,
       responseHeaders: [
         {name: 'x-robots-tag', value: 'googlebot: unavailable_after: 25 Jun 2007 15:00:00 PST'},
         {name: 'x-robots-tag', value: 'unavailable_after: 25 Jun 2045 15:00:00 PST'},
       ],
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
     const artifacts = {
-      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-      requestMainResource: () => Promise.resolve(mainResource),
-      MetaRobots: null,
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
+      MetaElements: [],
       RobotsTxt: {},
     };
 
-    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+    const context = {computedCache: new Map()};
+    return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
       assert.equal(auditResult.rawValue, true);
     });
   });
@@ -200,18 +232,21 @@ describe('SEO: Is page crawlable audit', () => {
     ];
 
     const allRuns = robotsTxts.map(robotsTxt => {
+      const finalUrl = 'http://example.com/test/page.html';
       const mainResource = {
-        url: 'http://example.com/test/page.html',
+        url: finalUrl,
         responseHeaders: [],
       };
+      const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
       const artifacts = {
-        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-        requestMainResource: () => Promise.resolve(mainResource),
-        MetaRobots: null,
+        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+        URL: {finalUrl},
+        MetaElements: [],
         RobotsTxt: robotsTxt,
       };
 
-      return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+      const context = {computedCache: new Map()};
+      return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
         assert.equal(auditResult.rawValue, false);
         assert.equal(auditResult.details.items.length, 1);
       });
@@ -236,18 +271,21 @@ describe('SEO: Is page crawlable audit', () => {
     ];
 
     const allRuns = robotsTxts.map(robotsTxt => {
+      const finalUrl = 'http://example.com/test/page.html';
       const mainResource = {
-        url: 'http://example.com/test/page.html',
+        url: finalUrl,
         responseHeaders: [],
       };
+      const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
       const artifacts = {
-        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-        requestMainResource: () => Promise.resolve(mainResource),
-        MetaRobots: null,
+        devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+        URL: {finalUrl},
+        MetaElements: [],
         RobotsTxt: robotsTxt,
       };
 
-      return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+      const context = {computedCache: new Map()};
+      return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
         assert.equal(auditResult.rawValue, true);
       });
     });
@@ -256,8 +294,9 @@ describe('SEO: Is page crawlable audit', () => {
   });
 
   it('returns all failing items', () => {
+    const finalUrl = 'http://example.com/test/page.html';
     const mainResource = {
-      url: 'http://example.com/test/page.html',
+      url: finalUrl,
       responseHeaders: [
         {name: 'x-robots-tag', value: 'none'},
         {name: 'x-robots-tag', value: 'noindex'},
@@ -267,14 +306,16 @@ describe('SEO: Is page crawlable audit', () => {
       content: `User-agent: *
       Disallow: /`,
     };
+    const devtoolsLog = networkRecordsToDevtoolsLog([mainResource]);
     const artifacts = {
-      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: []},
-      requestMainResource: () => Promise.resolve(mainResource),
-      MetaRobots: 'noindex',
+      devtoolsLogs: {[IsCrawlableAudit.DEFAULT_PASS]: devtoolsLog},
+      URL: {finalUrl},
+      MetaElements: makeMetaElements('noindex'),
       RobotsTxt: robotsTxt,
     };
 
-    return IsCrawlableAudit.audit(artifacts).then(auditResult => {
+    const context = {computedCache: new Map()};
+    return IsCrawlableAudit.audit(artifacts, context).then(auditResult => {
       assert.equal(auditResult.rawValue, false);
       assert.equal(auditResult.details.items.length, 4);
     });

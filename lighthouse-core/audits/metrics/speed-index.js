@@ -6,7 +6,8 @@
 'use strict';
 
 const Audit = require('../audit');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
+const ComputedSi = require('../../computed/metrics/speed-index.js');
 
 const UIStrings = {
   /** The name of the metric that summarizes how quickly the page looked visually complete. The name of this metric is largely abstract and can be loosely translated. Shown to users as the label for the numeric metric value. Ideally fits within a ~40 character limit. */
@@ -56,7 +57,7 @@ class SpeedIndex extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
-    const metricResult = await artifacts.requestSpeedIndex(metricComputationData);
+    const metricResult = await ComputedSi.request(metricComputationData, context);
 
     return {
       score: Audit.computeLogNormalScore(

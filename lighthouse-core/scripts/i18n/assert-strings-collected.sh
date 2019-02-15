@@ -18,7 +18,7 @@ colorText() {
   printf "\\n$2$1%b\\n" '\033[0m'
 }
 
-collectedstringsPath="$lhroot_path/lighthouse-core/lib/locales/en-US.json";
+collectedstringsPath="$lhroot_path/lighthouse-core/lib/i18n/en-US.json";
 currentstringsPath="$lh_tmp_path/current_strings.json";
 freshstringsPath="$lh_tmp_path/fresh_strings.json";
 
@@ -45,6 +45,6 @@ if [ $retVal -eq 0 ]; then
   colorText "✅  PASS. All strings have been collected." "$green"
 else
   colorText "❌  FAIL. Strings have changed." "$red"
-  echo "Commit the changes to lighthouse-core/lib/locales/ update the strings."
+  echo "Commit the changes to lighthouse-core/lib/i18n/ update the strings."
 fi
 exit $retVal

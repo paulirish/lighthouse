@@ -16,5 +16,5 @@ about: Suggest an idea to us!
 **What is the motivation or use case for changing this?**
 
 
-**How is this beneficial to Ligthhouse?**
+**How is this beneficial to Lighthouse?**
 

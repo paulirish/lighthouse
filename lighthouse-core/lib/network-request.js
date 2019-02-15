@@ -51,13 +51,13 @@ const RESOURCE_TYPES = {
 module.exports = class NetworkRequest {
   constructor() {
     this.requestId = '';
-    // TODO(phulce): remove default DevTools connectionId
     this.connectionId = '0';
     this.connectionReused = false;
 
     this.url = '';
     this.protocol = '';
     this.isSecure = false;
+    this.isValid = false;
     this.parsedURL = /** @type {ParsedURL} */ ({scheme: ''});
     this.documentURL = '';
 
@@ -106,6 +106,13 @@ module.exports = class NetworkRequest {
   }
 
   /**
+   * @return {boolean}
+   */
+  hasErrorStatusCode() {
+    return this.statusCode >= 400;
+  }
+
+  /**
    * @param {NetworkRequest} initiator
    */
   setInitiatorRequest(initiator) {
@@ -117,8 +124,14 @@ module.exports = class NetworkRequest {
    */
   onRequestWillBeSent(data) {
     this.requestId = data.requestId;
-
-    const url = new URL(data.request.url);
+    let url;
+    try {
+      // try to construct the url and fill in request
+      url = new URL(data.request.url);
+    } catch (e) {
+      // isValid left false, all other data is blank
+      return;
+    }
     this.url = data.request.url;
     this.documentURL = data.documentURL;
     this.parsedURL = {
@@ -139,6 +152,7 @@ module.exports = class NetworkRequest {
 
     this.frameId = data.frameId;
     this.isLinkPreload = data.initiator.type === 'preload' || !!data.request.isLinkPreload;
+    this.isValid = true;
   }
 
   onRequestServedFromCache() {
@@ -257,6 +271,9 @@ module.exports = class NetworkRequest {
    * @param {LH.Crdp.Network.ResourceTiming} timing
    */
   _recomputeTimesWithResourceTiming(timing) {
+    // Don't recompute times if the data is invalid. RequestTime should always be a thread timestamp.
+    // If we don't have receiveHeadersEnd, we really don't have more accurate data.
+    if (timing.requestTime === 0 || timing.receiveHeadersEnd === -1) return;
     // Take startTime and responseReceivedTime from timing data for better accuracy.
     // Timing's requestTime is a baseline in seconds, rest of the numbers there are ticks in millis.
     this.startTime = timing.requestTime;
@@ -279,25 +296,18 @@ module.exports = class NetworkRequest {
   }
 
   /**
-   * LR loses transfer size information and passes it in the 'X-Original-Content-Length' header.
+   * LR loses transfer size information, but passes it in the 'X-TotalFetchedSize' header.
    */
   _updateTransferSizeForLightRiderIfNecessary() {
     // Bail if we're not in LightRider, this only applies there.
     if (!global.isLightRider) return;
     // Bail if we somehow already have transfer size data.
     if (this.transferSize) return;
-    // Bail if we didn't get any response headers.
-    if (!this.responseHeadersText) return;
 
-    const originalContentLength = this.responseHeaders.
-      find(item => item.name === 'X-Original-Content-Length');
-    // Bail if the x-original-content-length header was missing.
-    if (!originalContentLength) return;
-
-    // Transfer size is the original content length + length of headers
-    const contentBytes = parseFloat(originalContentLength.value);
-    const headerBytes = this.responseHeadersText.length;
-    this.transferSize = contentBytes + headerBytes;
+    const totalFetchedSize = this.responseHeaders.find(item => item.name === 'X-TotalFetchedSize');
+    // Bail if the header was missing.
+    if (!totalFetchedSize) return;
+    this.transferSize = parseFloat(totalFetchedSize.value);
   }
 
   /**

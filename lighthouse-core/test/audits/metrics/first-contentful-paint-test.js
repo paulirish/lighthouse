@@ -5,7 +5,6 @@
  */
 'use strict';
 const Audit = require('../../../audits/metrics/first-contentful-paint');
-const Runner = require('../../../runner.js');
 const assert = require('assert');
 const options = Audit.defaultOptions;
 
@@ -16,17 +15,17 @@ const pwaDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtoo
 
 describe('Performance: first-contentful-paint audit', () => {
   it('evaluates valid input correctly', async () => {
-    const artifacts = Object.assign({
+    const artifacts = {
       traces: {
         [Audit.DEFAULT_PASS]: pwaTrace,
       },
       devtoolsLogs: {
         [Audit.DEFAULT_PASS]: pwaDevtoolsLog,
       },
-    }, Runner.instantiateComputedArtifacts());
+    };
 
     const settings = {throttlingMethod: 'provided'};
-    const result = await Audit.audit(artifacts, {settings, options});
+    const result = await Audit.audit(artifacts, {settings, options, computedCache: new Map()});
     assert.equal(result.score, 1);
     assert.equal(result.rawValue, 498.87);
   });

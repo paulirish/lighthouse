@@ -5,7 +5,6 @@
  */
 'use strict';
 
-// @ts-ignore
 const isEqual = require('lodash.isequal');
 
 /**
@@ -13,10 +12,10 @@ const isEqual = require('lodash.isequal');
  * It is not meant to be performant and is well-suited to use cases where the number of entries is
  * likely to be small (like computed artifacts).
  */
-module.exports = class ArbitraryEqualityMap {
+class ArbitraryEqualityMap {
   constructor() {
-    this._equalsFn = /** @type {function(any,any):boolean} */ ((a, b) => a === b);
-    /** @type {Array<{key: string, value: *}>} */
+    this._equalsFn = ArbitraryEqualityMap.deepEquals;
+    /** @type {Array<{key: *, value: *}>} */
     this._entries = [];
   }
 
@@ -28,7 +27,7 @@ module.exports = class ArbitraryEqualityMap {
   }
 
   /**
-   * @param {string} key
+   * @param {*} key
    * @return {boolean}
    */
   has(key) {
@@ -36,7 +35,7 @@ module.exports = class ArbitraryEqualityMap {
   }
 
   /**
-   * @param {string} key
+   * @param {*} key
    * @return {*}
    */
   get(key) {
@@ -45,7 +44,7 @@ module.exports = class ArbitraryEqualityMap {
   }
 
   /**
-   * @param {string} key
+   * @param {*} key
    * @param {*} value
    */
   set(key, value) {
@@ -55,7 +54,7 @@ module.exports = class ArbitraryEqualityMap {
   }
 
   /**
-   * @param {string} key
+   * @param {*} key
    * @return {number}
    */
   _findIndexOf(key) {
@@ -77,4 +76,6 @@ module.exports = class ArbitraryEqualityMap {
   static deepEquals(objA, objB) {
     return isEqual(objA, objB);
   }
-};
+}
+
+module.exports = ArbitraryEqualityMap;

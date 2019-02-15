@@ -22,7 +22,7 @@ class Deprecations extends Audit {
     return {
       id: 'deprecations',
       title: 'Avoids deprecated APIs',
-      failureTitle: 'Uses deprecated API\'s',
+      failureTitle: 'Uses deprecated APIs',
       description: 'Deprecated APIs will eventually be removed from the browser. ' +
           '[Learn more](https://www.chromestatus.com/features#deprecated).',
       requiredArtifacts: ['ChromeConsoleMessages'],
@@ -45,6 +45,7 @@ class Deprecations extends Audit {
       };
     });
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'value', itemType: 'code', text: 'Deprecation / Warning'},
       {key: 'url', itemType: 'url', text: 'URL'},

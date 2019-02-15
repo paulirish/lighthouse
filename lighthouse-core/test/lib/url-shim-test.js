@@ -36,6 +36,19 @@ describe('URL Shim', () => {
     assert.equal(URL.isValid('eval(<context>):45:16'), false);
   });
 
+  it('safely identifies allowed URL protocols', () => {
+    assert.ok(URL.isProtocolAllowed('http://google.com/'));
+    assert.ok(URL.isProtocolAllowed('https://google.com/'));
+    assert.ok(URL.isProtocolAllowed('chrome://version'));
+    assert.ok(URL.isProtocolAllowed('chrome-extension://blipmdconlkpinefehnmjammfjpmpbjk/popup.html'));
+  });
+
+  it('safely identifies disallowed URL protocols', () => {
+    assert.equal(URL.isProtocolAllowed('file:///i/am/a/fake/file.html'), false);
+    assert.equal(URL.isProtocolAllowed('ftp://user:password@private.ftp.example.com/index.html'), false);
+    assert.equal(URL.isProtocolAllowed('gopher://underground:9090/path'), false);
+  });
+
   it('safely identifies same hosts', () => {
     const urlA = 'https://5321212.fls.net/page?query=string#hash';
     const urlB = 'http://5321212.fls.net/deeply/nested/page';

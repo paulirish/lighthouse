@@ -12,7 +12,7 @@ const defaultConfig = require('../../config/default-config.js');
 const log = require('lighthouse-logger');
 const Gatherer = require('../../gather/gatherers/gatherer');
 const Audit = require('../../audits/audit');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
 
 /* eslint-env jest */
 
@@ -94,7 +94,7 @@ describe('Config', () => {
     const configJson = {
       passes: [{
         passName: unlikelyPassName,
-        gatherers: ['viewport'],
+        gatherers: ['meta-elements'],
       }, {
         passName: unlikelyPassName,
         gatherers: ['viewport-dimensions'],
@@ -139,7 +139,7 @@ describe('Config', () => {
       passes: [{
         gatherers: [
           'viewport-dimensions',
-          'viewport',
+          'meta-elements',
         ],
       }],
       audits: ['is-on-https'],
@@ -696,6 +696,72 @@ describe('Config', () => {
     });
   });
 
+  describe('mergePlugins', () => {
+    const configFixturePath = __dirname + '/../fixtures/config-plugins/';
+
+    it('should append audits', () => {
+      const configJson = {
+        audits: ['installable-manifest', 'metrics'],
+        plugins: ['lighthouse-plugin-simple'],
+      };
+      const config = new Config(configJson, {configPath: configFixturePath});
+      assert.deepStrictEqual(config.audits.map(a => a.path),
+        ['installable-manifest', 'metrics', 'redirects', 'user-timings']);
+    });
+
+    it('should append a category', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['lighthouse-plugin-simple'],
+      };
+      const config = new Config(configJson, {configPath: configFixturePath});
+      const categoryNames = Object.keys(config.categories);
+      assert.ok(categoryNames.length > 1);
+      assert.strictEqual(categoryNames[categoryNames.length - 1], 'lighthouse-plugin-simple');
+      assert.strictEqual(config.categories['lighthouse-plugin-simple'].title, 'Simple');
+    });
+
+    it('should throw if the plugin is invalid', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['lighthouse-plugin-no-category'],
+      };
+      // Required to have a `category`, so plugin is invalid.
+      assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
+        /^Error: lighthouse-plugin-no-category has no valid category/);
+    });
+
+    it('should throw if the plugin is not found', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['lighthouse-plugin-not-a-plugin'],
+      };
+      assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
+        /^Error: Unable to locate plugin: lighthouse-plugin-not-a-plugin/);
+    });
+
+    it('should throw if the plugin name does not begin with "lighthouse-plugin-"', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['just-let-me-be-a-plugin'],
+      };
+      assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
+        /^Error: plugin name 'just-let-me-be-a-plugin' does not start with 'lighthouse-plugin-'/);
+    });
+
+    it('should throw if the plugin name would shadow a category id', () => {
+      const configJson = {
+        extends: 'lighthouse:default',
+        plugins: ['lighthouse-plugin-simple'],
+        categories: {
+          'lighthouse-plugin-simple': {auditRefs: [{id: 'missing-audit'}]},
+        },
+      };
+      assert.throws(() => new Config(configJson, {configPath: configFixturePath}),
+        /^Error: plugin name 'lighthouse-plugin-simple' not allowed because it is the id of a category/); // eslint-disable-line max-len
+    });
+  });
+
   describe('getCategories', () => {
     it('returns the IDs & names of the categories', () => {
       const categories = Config.getCategories(origConfig);
@@ -972,6 +1038,78 @@ describe('Config', () => {
 
       assert.throws(_ => loadGatherer(`${root}/missing-after-pass`),
         /afterPass\(\) method/);
+    });
+  });
+
+  describe('#getPrintString', () => {
+    it('doesn\'t include empty gatherer/audit options in output', () => {
+      const gOpt = 'gathererOption';
+      const aOpt = 'auditOption';
+      const configJson = {
+        extends: 'lighthouse:default',
+        passes: [{
+          passName: 'defaultPass',
+          gatherers: [
+            // `options` merged into default `scripts` gatherer.
+            {path: 'scripts', options: {gOpt}},
+          ],
+        }],
+        audits: [
+          // `options` merged into default `metrics` audit.
+          {path: 'metrics', options: {aOpt}},
+        ],
+      };
+
+      const printed = new Config(configJson).getPrintString();
+      const printedConfig = JSON.parse(printed);
+
+      // Check that options weren't completely eliminated.
+      const scriptsGatherer = printedConfig.passes[0].gatherers.find(g => g.path === 'scripts');
+      assert.strictEqual(scriptsGatherer.options.gOpt, gOpt);
+      const metricsAudit = printedConfig.audits.find(a => a.path === 'metrics');
+      assert.strictEqual(metricsAudit.options.aOpt, aOpt);
+
+      for (const pass of printedConfig.passes) {
+        for (const gatherer of pass.gatherers) {
+          if (gatherer.options) {
+            assert.ok(Object.keys(gatherer.options).length > 0);
+          }
+        }
+      }
+
+      for (const audit of printedConfig.audits) {
+        if (audit.options) {
+          assert.ok(Object.keys(audit.options).length > 0);
+        }
+      }
+    });
+
+    it('prints localized category titles', () => {
+      const printed = new Config(defaultConfig).getPrintString();
+      const printedConfig = JSON.parse(printed);
+      let localizableCount = 0;
+
+      Object.entries(printedConfig.categories).forEach(([printedCategoryId, printedCategory]) => {
+        const origTitle = origConfig.categories[printedCategoryId].title;
+        if (i18n.isIcuMessage(origTitle)) localizableCount++;
+        const i18nOrigTitle = i18n.getFormatted(origTitle, origConfig.settings.locale);
+
+        assert.strictEqual(printedCategory.title, i18nOrigTitle);
+      });
+
+      // Should have localized at least one string.
+      assert.ok(localizableCount > 0);
+    });
+
+    it('prints a valid ConfigJson that can make an identical Config', () => {
+      // depends on defaultConfig having a `path` for all gatherers and audits.
+      const firstConfig = new Config(defaultConfig);
+      const firstPrint = firstConfig.getPrintString();
+
+      const secondConfig = new Config(JSON.parse(firstPrint));
+      const secondPrint = secondConfig.getPrintString();
+
+      assert.strictEqual(firstPrint, secondPrint);
     });
   });
 });

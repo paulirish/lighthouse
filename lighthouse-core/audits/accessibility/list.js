@@ -11,6 +11,22 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if all list elements have a valid structure containing only list items. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: 'Lists contain only `<li>` elements and script supporting elements ' +
+      '(`<script>` and `<template>`).',
+  /** Title of an accesibility audit that evaluates if all list elements have a valid structure containing only list items. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: 'Lists do not contain only `<li>` elements and script ' +
+      'supporting elements (`<script>` and `<template>`).',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Screen readers have a specific way of announcing lists. Ensuring proper list ' +
+      'structure aids screen reader output. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/list?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class List extends AxeAudit {
   /**
@@ -19,16 +35,13 @@ class List extends AxeAudit {
   static get meta() {
     return {
       id: 'list',
-      title: 'Lists contain only `<li>` elements and script supporting elements ' +
-          '(`<script>` and `<template>`).',
-      failureTitle: 'Lists do not contain only `<li>` elements and script ' +
-          'supporting elements (`<script>` and `<template>`).',
-      description: 'Screen readers have a specific way of announcing lists. Ensuring proper list ' +
-          'structure aids screen reader output. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/list?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = List;
+module.exports.UIStrings = UIStrings;

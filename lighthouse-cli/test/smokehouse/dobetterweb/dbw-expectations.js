@@ -69,10 +69,6 @@ module.exports = [
           },
         },
       },
-      'no-websql': {
-        score: 0,
-        displayValue: 'Found "mydb" (v1.0)',
-      },
       'notification-on-start': {
         score: 0,
       },
@@ -136,6 +132,14 @@ module.exports = [
               wastedBytes: 682028,
             },
           ],
+        },
+      },
+      'js-libraries': {
+        score: 1,
+        details: {
+          items: [{
+            name: 'jQuery',
+          }],
         },
       },
     },

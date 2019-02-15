@@ -13,7 +13,7 @@ const path = require('path');
 const esprima = require('esprima');
 
 const LH_ROOT = path.join(__dirname, '../../../');
-const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/gim;
+const UISTRINGS_REGEX = /UIStrings = (.|\s)*?\};\n/im;
 
 /**
  * @typedef ICUMessageDefn
@@ -98,11 +98,10 @@ function collectAllStringsInDir(dir, strings = {}) {
 }
 
 /**
- * @param {LH.Locale} locale
  * @param {Record<string, ICUMessageDefn>} strings
  */
-function writeStringsToLocaleFormat(locale, strings) {
-  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/locales/${locale}.json`);
+function writeEnStringsToLocaleFormat(strings) {
+  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/i18n/en-US.json`);
   /** @type {Record<string, ICUMessageDefn>} */
   const output = {};
   const sortedEntries = Object.entries(strings).sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
@@ -116,5 +115,5 @@ function writeStringsToLocaleFormat(locale, strings) {
 const strings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
 console.log('Collected!');
 
-writeStringsToLocaleFormat('en-US', strings);
+writeEnStringsToLocaleFormat(strings);
 console.log('Written to disk!');

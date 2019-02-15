@@ -12,6 +12,7 @@ const GatherRunner = require('../../gather/gather-runner');
 const assert = require('assert');
 const Config = require('../../config/config');
 const unresolvedPerfLog = require('./../fixtures/unresolved-perflog.json');
+const NetworkRequest = require('../../lib/network-request.js');
 
 class TestGatherer extends Gatherer {
   constructor() {
@@ -52,9 +53,6 @@ function getMockedEmulationDriver(emulationFn, netThrottleFn, cpuThrottleFn,
     }
     cleanBrowserCaches() {}
     clearDataForOrigin() {}
-    getUserAgent() {
-      return Promise.resolve('Fake user agent');
-    }
   };
   const EmulationMock = class extends Connection {
     sendCommand(command, params) {
@@ -125,7 +123,8 @@ describe('GatherRunner', function() {
     const options = {url, driver, config, settings};
 
     const results = await GatherRunner.run([], options);
-    expect(results.HostUserAgent).toEqual('Fake user agent');
+    expect(results.HostUserAgent).toEqual(fakeDriver.protocolGetVersionResponse.userAgent);
+    expect(results.HostUserAgent).toMatch(/Chrome\/\d+/);
   });
 
   it('collects network user agent as an artifact', async () => {
@@ -175,7 +174,7 @@ describe('GatherRunner', function() {
     );
 
     return GatherRunner.setupDriver(driver, {
-      settings: {},
+      settings: {emulatedFormFactor: 'mobile'},
     }).then(_ => {
       assert.ok(tests.calledDeviceEmulation, 'did not call device emulation');
       assert.deepEqual(tests.calledNetworkEmulation, {
@@ -214,6 +213,25 @@ describe('GatherRunner', function() {
     });
   });
 
+  it('uses correct emulation form factor', async () => {
+    let emulationParams;
+    const driver = getMockedEmulationDriver(
+      params => emulationParams = params,
+      () => true,
+      () => true
+    );
+
+    await GatherRunner.setupDriver(driver, {settings: {emulatedFormFactor: 'mobile'}});
+    expect(emulationParams).toMatchObject({mobile: true});
+
+    await GatherRunner.setupDriver(driver, {settings: {emulatedFormFactor: 'desktop'}});
+    expect(emulationParams).toMatchObject({mobile: false});
+
+    emulationParams = undefined;
+    await GatherRunner.setupDriver(driver, {settings: {emulatedFormFactor: 'none'}});
+    expect(emulationParams).toBe(undefined);
+  });
+
   it('stops throttling when not devtools', () => {
     const tests = {
       calledDeviceEmulation: false,
@@ -232,6 +250,7 @@ describe('GatherRunner', function() {
 
     return GatherRunner.setupDriver(driver, {
       settings: {
+        emulatedFormFactor: 'mobile',
         throttlingMethod: 'provided',
       },
     }).then(_ => {
@@ -251,6 +270,7 @@ describe('GatherRunner', function() {
     };
     const createEmulationCheck = variable => (...args) => {
       tests[variable] = args;
+
       return true;
     };
     const driver = getMockedEmulationDriver(
@@ -261,6 +281,7 @@ describe('GatherRunner', function() {
 
     return GatherRunner.setupDriver(driver, {
       settings: {
+        emulatedFormFactor: 'mobile',
         throttlingMethod: 'devtools',
         throttling: {
           requestLatencyMs: 100,
@@ -295,6 +316,7 @@ describe('GatherRunner', function() {
       dismissJavaScriptDialogs: asyncFunc,
       enableRuntimeEvents: asyncFunc,
       cacheNatives: asyncFunc,
+      gotoURL: asyncFunc,
       registerPerformanceObserver: asyncFunc,
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
       clearDataForOrigin: createCheck('calledClearStorage'),
@@ -353,6 +375,7 @@ describe('GatherRunner', function() {
       dismissJavaScriptDialogs: asyncFunc,
       enableRuntimeEvents: asyncFunc,
       cacheNatives: asyncFunc,
+      gotoURL: asyncFunc,
       registerPerformanceObserver: asyncFunc,
       cleanBrowserCaches: createCheck('calledCleanBrowserCaches'),
       clearDataForOrigin: createCheck('calledClearStorage'),
@@ -522,9 +545,9 @@ describe('GatherRunner', function() {
       ],
     };
 
-    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(vals => {
+    return GatherRunner.afterPass({url, driver, passConfig}, {TestGatherer: []}).then(passData => {
       assert.equal(calledDevtoolsLogCollect, true);
-      assert.strictEqual(vals.devtoolsLog[0], fakeDevtoolsMessage);
+      assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
     });
   });
 
@@ -535,14 +558,12 @@ describe('GatherRunner', function() {
     const settings = {};
 
     const passes = [{
-      blankDuration: 0,
       recordTrace: true,
       passName: 'firstPass',
       gatherers: [
         {instance: t1},
       ],
     }, {
-      blankDuration: 0,
       passName: 'secondPass',
       gatherers: [
         {instance: t2},
@@ -562,12 +583,10 @@ describe('GatherRunner', function() {
 
   it('respects trace names', () => {
     const passes = [{
-      blankDuration: 0,
       recordTrace: true,
       passName: 'firstPass',
       gatherers: [{instance: new TestGatherer()}],
     }, {
-      blankDuration: 0,
       recordTrace: true,
       passName: 'secondPass',
       gatherers: [{instance: new TestGatherer()}],
@@ -585,12 +604,10 @@ describe('GatherRunner', function() {
 
   it('doesn\'t leave networkRecords as an artifact', () => {
     const passes = [{
-      blankDuration: 0,
       recordTrace: true,
       passName: 'firstPass',
       gatherers: [{instance: new TestGatherer()}],
     }, {
-      blankDuration: 0,
       recordTrace: true,
       passName: 'secondPass',
       gatherers: [{instance: new TestGatherer()}],
@@ -606,30 +623,74 @@ describe('GatherRunner', function() {
   describe('#getPageLoadError', () => {
     it('passes when the page is loaded', () => {
       const url = 'http://the-page.com';
-      const records = [{url}];
-      assert.ok(!GatherRunner.getPageLoadError(url, records));
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
     });
 
     it('passes when the page is loaded, ignoring any fragment', () => {
       const url = 'http://example.com/#/page/list';
-      const records = [{url: 'http://example.com'}];
-      assert.ok(!GatherRunner.getPageLoadError(url, records));
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = 'http://example.com';
+      assert.ok(!GatherRunner.getPageLoadError(url, [mainRecord]));
     });
 
-    it('throws when page fails to load', () => {
+    it('fails when page fails to load', () => {
       const url = 'http://the-page.com';
-      const records = [{url, failed: true, localizedFailDescription: 'foobar'}];
-      const error = GatherRunner.getPageLoadError(url, records);
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.failed = true;
+      mainRecord.localizedFailDescription = 'foobar';
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
       assert.equal(error.message, 'FAILED_DOCUMENT_REQUEST');
-      assert.ok(/Your page failed to load/.test(error.friendlyMessage));
+      assert.equal(error.code, 'FAILED_DOCUMENT_REQUEST');
+      expect(error.friendlyMessage)
+        .toBeDisplayString(/^Lighthouse was unable to reliably load.*foobar/);
     });
 
-    it('throws when page times out', () => {
+    it('fails when page times out', () => {
       const url = 'http://the-page.com';
       const records = [];
       const error = GatherRunner.getPageLoadError(url, records);
       assert.equal(error.message, 'NO_DOCUMENT_REQUEST');
-      assert.ok(/Your page failed to load/.test(error.friendlyMessage));
+      assert.equal(error.code, 'NO_DOCUMENT_REQUEST');
+      expect(error.friendlyMessage).toBeDisplayString(/^Lighthouse was unable to reliably load/);
+    });
+
+    it('fails when page returns with a 404', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.statusCode = 404;
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
+      expect(error.friendlyMessage)
+        .toBeDisplayString(/^Lighthouse was unable to reliably load.*404/);
+    });
+
+    it('fails when page returns with a 500', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.statusCode = 500;
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      assert.equal(error.message, 'ERRORED_DOCUMENT_REQUEST');
+      assert.equal(error.code, 'ERRORED_DOCUMENT_REQUEST');
+      expect(error.friendlyMessage)
+        .toBeDisplayString(/^Lighthouse was unable to reliably load.*500/);
+    });
+
+    it('fails when page domain doesn\'t resolve', () => {
+      const url = 'http://the-page.com';
+      const mainRecord = new NetworkRequest();
+      mainRecord.url = url;
+      mainRecord.failed = true;
+      mainRecord.localizedFailDescription = 'net::ERR_NAME_NOT_RESOLVED';
+      const error = GatherRunner.getPageLoadError(url, [mainRecord]);
+      assert.equal(error.message, 'DNS_FAILURE');
+      assert.equal(error.code, 'DNS_FAILURE');
+      expect(error.friendlyMessage).toBeDisplayString(/^DNS servers could not resolve/);
     });
   });
 
@@ -698,7 +759,7 @@ describe('GatherRunner', function() {
         },
       ];
       const passes = [{
-        blankDuration: 0,
+
         gatherers: gatherers.map(G => ({instance: new G()})),
       }];
 
@@ -752,7 +813,7 @@ describe('GatherRunner', function() {
       ].map(instance => ({instance}));
       const gathererNames = gatherers.map(gatherer => gatherer.instance.name);
       const passes = [{
-        blankDuration: 0,
+
         gatherers,
       }];
 
@@ -789,7 +850,7 @@ describe('GatherRunner', function() {
         {instance: new class EavesdropGatherer3 extends EavesdropGatherer {}()},
       ];
 
-      const passes = [{blankDuration: 0, gatherers}];
+      const passes = [{gatherers}];
       return GatherRunner.run(passes, {
         driver: fakeDriver,
         requestedUrl: 'https://example.com',
@@ -869,7 +930,7 @@ describe('GatherRunner', function() {
       });
     });
 
-    it('supports sync and async throwing of non-fatal errors from gatherers', () => {
+    it('supports sync and async throwing of errors from gatherers', () => {
       const gatherers = [
         // sync
         new class BeforeSync extends Gatherer {
@@ -910,7 +971,7 @@ describe('GatherRunner', function() {
       ].map(instance => ({instance}));
       const gathererNames = gatherers.map(gatherer => gatherer.instance.name);
       const passes = [{
-        blankDuration: 0,
+
         gatherers,
       }];
 
@@ -928,41 +989,9 @@ describe('GatherRunner', function() {
       });
     });
 
-    it('rejects if a gatherer returns a fatal error', () => {
-      const errorMessage = 'Gather Failed in pass()';
-      const err = new Error(errorMessage);
-      err.fatal = true;
-      const gatherers = [
-        // sync
-        new class GathererSuccess extends Gatherer {
-          afterPass() {
-            return 1;
-          }
-        }(),
-        new class GathererFailure extends Gatherer {
-          pass() {
-            return Promise.reject(err);
-          }
-        },
-      ].map(instance => ({instance}));
-      const passes = [{
-        blankDuration: 0,
-        gatherers,
-      }];
-
-      return GatherRunner.run(passes, {
-        driver: fakeDriver,
-        requestedUrl: 'https://example.com',
-        settings: {},
-        config: new Config({}),
-      }).then(
-        _ => assert.ok(false),
-        err => assert.strictEqual(err.message, errorMessage));
-    });
-
     it('rejects if a gatherer does not provide an artifact', () => {
       const passes = [{
-        blankDuration: 0,
+
         recordTrace: true,
         passName: 'firstPass',
         gatherers: [
@@ -980,7 +1009,7 @@ describe('GatherRunner', function() {
 
     it('rejects when domain name can\'t be resolved', () => {
       const passes = [{
-        blankDuration: 0,
+
         recordTrace: true,
         passName: 'firstPass',
         gatherers: [],
@@ -1005,13 +1034,14 @@ describe('GatherRunner', function() {
         config: new Config({}),
       }).then(artifacts => {
         assert.equal(artifacts.LighthouseRunWarnings.length, 1);
-        assert.ok(/unable.*load the page/.test(artifacts.LighthouseRunWarnings[0]));
+        expect(artifacts.LighthouseRunWarnings[0])
+          .toBeDisplayString(/DNS servers could not resolve/);
       });
     });
 
     it('resolves when domain name can\'t be resolved but is offline', () => {
       const passes = [{
-        blankDuration: 0,
+
         recordTrace: true,
         passName: 'firstPass',
         gatherers: [],
@@ -1038,6 +1068,38 @@ describe('GatherRunner', function() {
         .then(_ => {
           assert.ok(true);
         });
+    });
+  });
+
+  describe('.getWebAppManifest', () => {
+    const MANIFEST_URL = 'https://example.com/manifest.json';
+    let passContext;
+
+    beforeEach(() => {
+      passContext = {
+        url: 'https://example.com/index.html',
+        baseArtifacts: {},
+        driver: fakeDriver,
+      };
+    });
+
+    it('should pass through manifest when null', async () => {
+      const getAppManifest = jest.spyOn(fakeDriver, 'getAppManifest');
+      getAppManifest.mockResolvedValueOnce(null);
+      const result = await GatherRunner.getWebAppManifest(passContext);
+      expect(result).toEqual(null);
+    });
+
+    it('should parse the manifest when found', async () => {
+      const manifest = {name: 'App'};
+      const getAppManifest = jest.spyOn(fakeDriver, 'getAppManifest');
+      getAppManifest.mockResolvedValueOnce({data: JSON.stringify(manifest), url: MANIFEST_URL});
+      const result = await GatherRunner.getWebAppManifest(passContext);
+      expect(result).toHaveProperty('raw', JSON.stringify(manifest));
+      expect(result.value).toMatchObject({
+        name: {value: 'App', raw: 'App'},
+        start_url: {value: passContext.url, raw: undefined},
+      });
     });
   });
 });

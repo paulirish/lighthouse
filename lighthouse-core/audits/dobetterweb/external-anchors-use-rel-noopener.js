@@ -20,7 +20,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
       description: 'Add `rel="noopener"` or `rel="noreferrer"` to any external links to improve ' +
           'performance and prevent security vulnerabilities. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/noopener).',
-      requiredArtifacts: ['URL', 'AnchorsWithNoRelNoopener'],
+      requiredArtifacts: ['URL', 'AnchorElements'],
     };
   }
 
@@ -32,8 +32,10 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
     /** @type {string[]} */
     const warnings = [];
     const pageHost = new URL(artifacts.URL.finalUrl).host;
+    const failingAnchors = artifacts.AnchorElements
+      .filter(anchor => anchor.target === '_blank' && !anchor.rel.includes('noopener') &&
+        !anchor.rel.includes('noreferrer'))
     // Filter usages to exclude anchors that are same origin
-    const failingAnchors = artifacts.AnchorsWithNoRelNoopener
       .filter(anchor => {
         try {
           return new URL(anchor.href).host !== pageHost;
@@ -55,6 +57,7 @@ class ExternalAnchorsUseRelNoopenerAudit extends Audit {
         };
       });
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'href', itemType: 'url', text: 'URL'},
       {key: 'target', itemType: 'text', text: 'Target'},

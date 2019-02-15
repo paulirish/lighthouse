@@ -11,6 +11,22 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if all audio elements have a track element that has captions for screen readers. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: '`<audio>` elements contain a `<track>` element with `[kind="captions"]`',
+  /** Title of an accesibility audit that evaluates if all audio elements have a track element that has captions for screen readers. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: '`<audio>` elements are missing a `<track>` element with ' +
+      '`[kind="captions"]`.',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Captions make audio elements usable for deaf or hearing-impaired users, ' +
+      'providing critical information such as who is talking, what they\'re saying, ' +
+      'and other non-speech information. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/audio-caption?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class AudioCaption extends AxeAudit {
   /**
@@ -19,16 +35,13 @@ class AudioCaption extends AxeAudit {
   static get meta() {
     return {
       id: 'audio-caption',
-      title: '`<audio>` elements contain a `<track>` element with `[kind="captions"]`',
-      failureTitle: '`<audio>` elements are missing a `<track>` element with ' +
-          '`[kind="captions"]`.',
-      description: 'Captions make audio elements usable for deaf or hearing-impaired users, ' +
-          'providing critical information such as who is talking, what they\'re saying, ' +
-          'and other non-speech information. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/audio-caption?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = AudioCaption;
+module.exports.UIStrings = UIStrings;

@@ -12,7 +12,8 @@
   <!-- FAIL(font-size): missing viewport -->
   <meta name="viewport" content="invalid-content=should_have_looked_it_up">
   <!-- no <meta name="description" content=""> -->
-  <meta name="robots" content="nofollow, NOINDEX, all">
+  <!-- FAIL(is-crawlable): noindex on root page, vary the case to make sure we are case insensitive -->
+  <meta name="RoBots" content="nofollow, NOINDEX, all">
   <!-- FAIL(hreflang): invalid language code -->
   <link rel="alternate" hreflang="xx" href="https://xx.example.com" />
   <!-- FAIL(hreflang): spece before a valid code -->
@@ -27,6 +28,12 @@
   <a href='https://example.com'>click this</a>
   <a href='/test.html'> click this </a>
   <a href='/test.html'>CLICK THIS</a>
+  <svg>
+    <a href='https://example.com/svg-link'>
+      <circle cx="50" cy="50" r="50"/>
+      <text x="0" y="0" >click this</text>
+    </a>
+  </svg>
 
   <!-- FAIL(plugins): java applet on page -->
   <applet code=HelloWorld.class width="200" height="200" id='applet'>

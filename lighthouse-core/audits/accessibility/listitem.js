@@ -11,6 +11,21 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if any list item elements do not have list parent elements. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: 'List items (`<li>`) are contained within `<ul>` or `<ol>` parent elements',
+  /** Title of an accesibility audit that evaluates if any list item elements do not have list parent elements. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: 'List items (`<li>`) are not contained within `<ul>` ' +
+      'or `<ol>` parent elements.',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Screen readers require list items (`<li>`) to be contained within a ' +
+      'parent `<ul>` or `<ol>` to be announced properly. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/listitem?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class ListItem extends AxeAudit {
   /**
@@ -19,15 +34,13 @@ class ListItem extends AxeAudit {
   static get meta() {
     return {
       id: 'listitem',
-      title: 'List items (`<li>`) are contained within `<ul>` or `<ol>` parent elements',
-      failureTitle: 'List items (`<li>`) are not contained within `<ul>` ' +
-          'or `<ol>` parent elements.',
-      description: 'Screen readers require list items (`<li>`) to be contained within a ' +
-          'parent `<ul>` or `<ol>` to be announced properly. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/listitem?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = ListItem;
+module.exports.UIStrings = UIStrings;

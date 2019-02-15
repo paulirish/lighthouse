@@ -28,19 +28,27 @@ describe('CLI run', function() {
     const timeoutFlag = `--max-wait-for-load=${9000}`;
     const flags = getFlags(`--output=json --output-path=${filename} ${timeoutFlag} ${url}`);
     return run.runLighthouse(url, flags, fastConfig).then(passedResults => {
+      if (!passedResults) {
+        assert.fail('no results');
+        return;
+      }
+
       const {lhr} = passedResults;
       assert.ok(fs.existsSync(filename));
+      /** @type {LH.Result} */
       const results = JSON.parse(fs.readFileSync(filename, 'utf-8'));
       assert.equal(results.audits.viewport.rawValue, false);
 
       // passed results match saved results
       assert.strictEqual(results.fetchTime, lhr.fetchTime);
-      assert.strictEqual(results.url, lhr.url);
+      assert.strictEqual(results.requestedUrl, lhr.requestedUrl);
+      assert.strictEqual(results.finalUrl, lhr.finalUrl);
       assert.strictEqual(results.audits.viewport.rawValue, lhr.audits.viewport.rawValue);
       assert.strictEqual(
           Object.keys(results.audits).length,
           Object.keys(lhr.audits).length);
       assert.deepStrictEqual(results.timing, lhr.timing);
+      assert.ok(results.timing.total !== 0);
 
       fs.unlinkSync(filename);
     });
@@ -56,7 +64,9 @@ describe('flag coercing', () => {
 
 describe('saveResults', () => {
   it('will quit early if we\'re in gather mode', async () => {
-    const result = await run.saveResults(undefined, {gatherMode: true});
+    const result = await run.saveResults(
+      /** @type {LH.RunnerResult} */ ({}),
+      /** @type {LH.CliFlags} */ ({gatherMode: true}));
     assert.equal(result, undefined);
   });
 });

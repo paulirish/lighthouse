@@ -34,7 +34,7 @@ class Audit {
       BINARY: 'binary',
       MANUAL: 'manual',
       INFORMATIVE: 'informative',
-      NOT_APPLICABLE: 'not-applicable',
+      NOT_APPLICABLE: 'notApplicable',
       ERROR: 'error',
     };
   }
@@ -102,10 +102,10 @@ class Audit {
   }
 
   /**
-   * @param {Array<LH.Audit.Heading>} headings
-   * @param {Array<Object<string, LH.Audit.DetailsItem>>} results
-   * @param {LH.Audit.DetailsRendererDetailsSummary=} summary
-   * @return {LH.Audit.DetailsRendererDetailsJSON}
+   * @param {LH.Audit.Details.Table['headings']} headings
+   * @param {LH.Audit.Details.Table['items']} results
+   * @param {LH.Audit.Details.Table['summary']=} summary
+   * @return {LH.Audit.Details.Table}
    */
   static makeTableDetails(headings, results, summary) {
     if (results.length === 0) {
@@ -126,11 +126,11 @@ class Audit {
   }
 
   /**
-   * @param {Array<LH.ResultLite.Audit.ColumnHeading>} headings
-   * @param {Array<LH.ResultLite.Audit.WastedBytesDetailsItem>|Array<LH.ResultLite.Audit.WastedTimeDetailsItem>} items
+   * @param {LH.Audit.Details.Opportunity['headings']} headings
+   * @param {LH.Audit.Details.Opportunity['items']} items
    * @param {number} overallSavingsMs
    * @param {number=} overallSavingsBytes
-   * @return {LH.Result.Audit.OpportunityDetails}
+   * @return {LH.Audit.Details.Opportunity}
    */
   static makeOpportunityDetails(headings, items, overallSavingsMs, overallSavingsBytes) {
     return {

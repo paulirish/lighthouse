@@ -3,13 +3,13 @@
   "compilerOptions": {
     "typeRoots": [
       "@types",
-      "../typings",
+      "../types",
       "./types",
     ],
   },
   "include": [
     "app/src/**/*.js",
-    "../typings/*.d.ts",
+    "../types/*.d.ts",
     "./types/*.d.ts",
   ],
 }

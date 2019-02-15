@@ -16,8 +16,6 @@ const DOM = require('../../../../report/html/renderer/dom.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const ReportUIFeatures = require('../../../../report/html/renderer/report-ui-features.js');
 const CategoryRenderer = require('../../../../report/html/renderer/category-renderer.js');
-// lazy loaded because it depends on CategoryRenderer to be available globally
-let PerformanceCategoryRenderer = null;
 const CriticalRequestChainRenderer = require(
     '../../../../report/html/renderer/crc-details-renderer.js');
 const ReportRenderer = require('../../../../report/html/renderer/report-renderer.js');
@@ -38,11 +36,12 @@ describe('ReportRenderer', () => {
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
     global.DetailsRenderer = DetailsRenderer;
     global.CategoryRenderer = CategoryRenderer;
-    if (!PerformanceCategoryRenderer) {
-      PerformanceCategoryRenderer =
+
+    // lazy loaded because they depend on CategoryRenderer to be available globally
+    global.PerformanceCategoryRenderer =
         require('../../../../report/html/renderer/performance-category-renderer.js');
-    }
-    global.PerformanceCategoryRenderer = PerformanceCategoryRenderer;
+    global.PwaCategoryRenderer =
+        require('../../../../report/html/renderer/pwa-category-renderer.js');
 
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
@@ -51,10 +50,10 @@ describe('ReportRenderer', () => {
       };
     };
 
-    const document = jsdom.jsdom(TEMPLATE_FILE);
-    global.self = document.defaultView;
+    const {window} = new jsdom.JSDOM(TEMPLATE_FILE);
+    global.self = window;
 
-    const dom = new DOM(document);
+    const dom = new DOM(window.document);
     const detailsRenderer = new DetailsRenderer(dom);
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     renderer = new ReportRenderer(dom, categoryRenderer);
@@ -71,6 +70,7 @@ describe('ReportRenderer', () => {
     global.DetailsRenderer = undefined;
     global.CategoryRenderer = undefined;
     global.PerformanceCategoryRenderer = undefined;
+    global.PwaCategoryRenderer = undefined;
   });
 
   describe('renderReport', () => {
@@ -79,8 +79,10 @@ describe('ReportRenderer', () => {
       const output = renderer.renderReport(sampleResults, container);
       assert.ok(output.querySelector('.lh-header-sticky'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
-      assert.equal(output.querySelectorAll('.lh-gauge').length,
+      assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper').length,
           sampleResults.reportCategories.length * 2, 'renders category gauges');
+      // no fireworks
+      assert.ok(output.querySelector('.score100') === null, 'has no fireworks treatment');
     });
 
     it('renders additional reports by replacing the existing one', () => {
@@ -102,6 +104,31 @@ describe('ReportRenderer', () => {
       const url = header.querySelector('.lh-metadata__url');
       assert.equal(url.textContent, sampleResults.finalUrl);
       assert.equal(url.href, sampleResults.finalUrl);
+    });
+
+    it('renders special score gauges after the mainstream ones', () => {
+      const container = renderer._dom._document.body;
+      const output = renderer.renderReport(sampleResults, container);
+
+      const allGaugeCount = output
+        .querySelectorAll('.lh-scores-header > a[class*="lh-gauge"]').length;
+      const regularGaugeCount = output
+        .querySelectorAll('.lh-scores-header > .lh-gauge__wrapper').length;
+
+      // Not all gauges are regular.
+      assert.ok(regularGaugeCount < allGaugeCount);
+
+      const scoresHeaderElem = output.querySelector('.lh-scores-header');
+      for (let i = 0; i < scoresHeaderElem.children.length; i++) {
+        const gauge = scoresHeaderElem.children[i];
+
+        if (i < regularGaugeCount) {
+          assert.ok(gauge.classList.contains('lh-gauge__wrapper'));
+        } else {
+          assert.ok(!gauge.classList.contains('lh-gauge__wrapper'));
+          assert.ok(gauge.classList.contains('lh-gauge--pwa__wrapper'));
+        }
+      }
     });
 
     it('should not mutate a report object', () => {
@@ -149,8 +176,46 @@ describe('ReportRenderer', () => {
   it('can set a custom templateContext', () => {
     assert.equal(renderer._templateContext, renderer._dom.document());
 
-    const otherDocument = jsdom.jsdom(TEMPLATE_FILE);
+    const {window} = new jsdom.JSDOM(TEMPLATE_FILE);
+    const otherDocument = window.document;
     renderer.setTemplateContext(otherDocument);
     assert.equal(renderer._templateContext, otherDocument);
+  });
+
+  it('should render an all 100 report with fireworks', () => {
+    const container = renderer._dom._document.body;
+
+    sampleResults.reportCategories.forEach(element => {
+      element.score = 1;
+    });
+
+    const output = renderer.renderReport(sampleResults, container);
+    // standard checks
+    assert.ok(output.querySelector('.lh-header-sticky'), 'has a header');
+    assert.ok(output.querySelector('.lh-report'), 'has report body');
+    assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper').length,
+        sampleResults.reportCategories.length * 2, 'renders category gauges');
+    // fireworks!
+    assert.ok(output.querySelector('.score100'), 'has fireworks treatment');
+  });
+
+  it('renders `not_applicable` audits as `notApplicable`', () => {
+    const clonedSampleResult = JSON.parse(JSON.stringify(sampleResultsOrig));
+
+    let notApplicableCount = 0;
+    Object.values(clonedSampleResult.audits).forEach(audit => {
+      if (audit.scoreDisplayMode === 'notApplicable') {
+        notApplicableCount++;
+        audit.scoreDisplayMode = 'not_applicable';
+      }
+    });
+
+    assert.ok(notApplicableCount > 20); // Make sure something's being tested.
+
+    const container = renderer._dom._document.body;
+    const reportElement = renderer.renderReport(sampleResults, container);
+    const notApplicableElementCount = reportElement
+      .querySelectorAll('.lh-audit--notapplicable').length;
+    assert.strictEqual(notApplicableCount, notApplicableElementCount);
   });
 });

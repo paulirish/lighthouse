@@ -129,8 +129,6 @@ class OptimizedImages extends Gatherer {
    * @return {Promise<?{fromProtocol: boolean, originalSize: number, jpegSize: number, webpSize: number}>}
    */
   calculateImageStats(driver, networkRecord) {
-    // TODO(phulce): remove this dance of trying _getEncodedResponse with a fallback when Audits
-    // domain hits stable in Chrome 62
     return Promise.resolve(networkRecord.requestId).then(requestId => {
       if (this._getEncodedResponseUnsupported) return;
       return this._getEncodedResponse(driver, requestId, 'jpeg').then(jpegData => {
@@ -153,7 +151,7 @@ class OptimizedImages extends Gatherer {
     }).then(result => {
       if (result) return result;
 
-      // Take the slower fallback path if getEncodedResponse isn't available yet
+      // Take the slower fallback path if getEncodedResponse didn't work
       // CORS canvas tainting doesn't support cross-origin images, so skip them early
       if (!networkRecord.isSameOrigin && !networkRecord.isBase64DataUri) return null;
 
@@ -194,7 +192,6 @@ class OptimizedImages extends Gatherer {
       } catch (err) {
         // Track this with Sentry since these errors aren't surfaced anywhere else, but we don't
         // want to tank the entire run due to a single image.
-        // @ts-ignore TODO(bckenny): Sentry type checking
         Sentry.captureException(err, {
           tags: {gatherer: 'OptimizedImages'},
           extra: {imageUrl: URL.elideDataURI(record.url)},

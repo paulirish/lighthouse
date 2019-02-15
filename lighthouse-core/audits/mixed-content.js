@@ -8,6 +8,7 @@
 const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const Util = require('../report/html/renderer/util');
+const NetworkRecords = require('../computed/network-records.js');
 
 /**
  * This audit checks which resources a page currently loads over HTTP which it
@@ -73,16 +74,17 @@ class MixedContent extends Audit {
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
    */
-  static audit(artifacts) {
+  static audit(artifacts, context) {
     const defaultLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const upgradeLogs = artifacts.devtoolsLogs['mixedContentPass'];
     const baseHostname = new URL(artifacts.MixedContent.url).host;
 
     const computedArtifacts = [
-      artifacts.requestNetworkRecords(defaultLogs),
-      artifacts.requestNetworkRecords(upgradeLogs),
+      NetworkRecords.request(defaultLogs, context),
+      NetworkRecords.request(upgradeLogs, context),
     ];
 
     return Promise.all(computedArtifacts).then(([defaultRecords, upgradedRecords]) => {
@@ -127,6 +129,7 @@ class MixedContent extends Audit {
       const displayValue = `${Util.formatNumber(upgradeableResources.length)}
           ${upgradeableResources.length === 1 ? 'request' : 'requests'}`;
 
+      /** @type {LH.Audit.Details.Table['headings']} */
       const headings = [
         {key: 'fullUrl', itemType: 'url', text: 'URL'},
       ];

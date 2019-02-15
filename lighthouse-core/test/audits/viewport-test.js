@@ -11,39 +11,41 @@ const assert = require('assert');
 /* eslint-env jest */
 
 describe('Mobile-friendly: viewport audit', () => {
+  const makeMetaElements = viewport => [{name: 'viewport', content: viewport}];
+
   it('fails when HTML does not contain a viewport meta tag', () => {
     return assert.equal(Audit.audit({
-      Viewport: null,
+      MetaElements: [],
     }).rawValue, false);
   });
 
   it('fails when HTML contains a non-mobile friendly viewport meta tag', () => {
     const viewport = 'maximum-scale=1';
-    assert.equal(Audit.audit({Viewport: viewport}).rawValue, false);
+    assert.equal(Audit.audit({MetaElements: makeMetaElements(viewport)}).rawValue, false);
     assert.equal(Audit.audit({
-      Viewport: viewport,
+      MetaElements: makeMetaElements(viewport),
     }).warnings[0], undefined);
   });
 
   it('fails when HTML contains an invalid viewport meta tag key', () => {
     const viewport = 'nonsense=true';
-    assert.equal(Audit.audit({Viewport: viewport}).rawValue, false);
+    assert.equal(Audit.audit({MetaElements: makeMetaElements(viewport)}).rawValue, false);
     assert.equal(Audit.audit({
-      Viewport: viewport,
+      MetaElements: makeMetaElements(viewport),
     }).warnings[0], 'Invalid properties found: {"nonsense":"true"}');
   });
 
   it('fails when HTML contains an invalid viewport meta tag value', () => {
     const viewport = 'initial-scale=microscopic';
-    assert.equal(Audit.audit({Viewport: viewport}).rawValue, false);
+    assert.equal(Audit.audit({MetaElements: makeMetaElements(viewport)}).rawValue, false);
     assert.equal(Audit.audit({
-      Viewport: viewport,
+      MetaElements: makeMetaElements(viewport),
     }).warnings[0], 'Invalid values found: {"initial-scale":"microscopic"}');
   });
 
   it('fails when HTML contains an invalid viewport meta tag key and value', () => {
     const viewport = 'nonsense=true, initial-scale=microscopic';
-    const {rawValue, warnings} = Audit.audit({Viewport: viewport});
+    const {rawValue, warnings} = Audit.audit({MetaElements: makeMetaElements(viewport)});
     assert.equal(rawValue, false);
     assert.equal(warnings[0], 'Invalid properties found: {"nonsense":"true"}');
     assert.equal(warnings[1], 'Invalid values found: {"initial-scale":"microscopic"}');
@@ -58,7 +60,7 @@ describe('Mobile-friendly: viewport audit', () => {
     ];
     viewports.forEach(viewport => {
       assert.equal(Audit.audit({
-        Viewport: viewport,
+        MetaElements: makeMetaElements(viewport),
       }).rawValue, true);
     });
   });
@@ -69,7 +71,7 @@ describe('Mobile-friendly: viewport audit', () => {
       'width=device-width, viewport-fit=cover',
     ];
     viewports.forEach(viewport => {
-      const result = Audit.audit({Viewport: viewport});
+      const result = Audit.audit({MetaElements: makeMetaElements(viewport)});
       assert.equal(result.rawValue, true);
       assert.equal(result.warnings[0], undefined);
     });

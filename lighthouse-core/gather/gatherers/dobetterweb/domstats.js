@@ -84,7 +84,7 @@ function elementPathInDOM(element) {
  * @return {LH.Artifacts.DOMStats}
  */
 /* istanbul ignore next */
-function getDOMStats(element, deep=true) {
+function getDOMStats(element, deep = true) {
   let deepestNode = null;
   let maxDepth = 0;
   let maxWidth = 0;
@@ -94,7 +94,7 @@ function getDOMStats(element, deep=true) {
    * @param {Element} element
    * @param {number} depth
    */
-  const _calcDOMWidthAndHeight = function(element, depth=1) {
+  const _calcDOMWidthAndHeight = function(element, depth = 1) {
     if (depth > maxDepth) {
       deepestNode = element;
       maxDepth = depth;
@@ -123,12 +123,13 @@ function getDOMStats(element, deep=true) {
     depth: {
       max: result.maxDepth,
       pathToElement: elementPathInDOM(deepestNode),
-      snippet: getOuterHTMLSnippet(deepestNode),
+      // ignore style since it will provide no additional context, and is often long
+      snippet: getOuterHTMLSnippet(deepestNode, ['style']),
     },
     width: {
       max: result.maxWidth,
       pathToElement: elementPathInDOM(parentWithMostChildren),
-      snippet: getOuterHTMLSnippet(parentWithMostChildren),
+      snippet: getOuterHTMLSnippet(parentWithMostChildren, ['style']),
     },
   };
 }
@@ -140,7 +141,7 @@ class DOMStats extends Gatherer {
    */
   afterPass(passContext) {
     const expression = `(function() {
-      ${pageFunctions.getOuterHTMLSnippet.toString()};
+      ${pageFunctions.getOuterHTMLSnippetString};
       ${createSelectorsLabel.toString()};
       ${elementPathInDOM.toString()};
       return (${getDOMStats.toString()}(document.documentElement));

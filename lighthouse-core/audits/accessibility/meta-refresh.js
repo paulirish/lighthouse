@@ -11,6 +11,21 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if the page uses a meta tag that refreshes the page automatically. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: 'The document does not use `<meta http-equiv="refresh">`',
+  /** Title of an accesibility audit that evaluates if the page uses a meta tag that refreshes the page automatically. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: 'The document uses `<meta http-equiv="refresh">`',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Users do not expect a page to refresh automatically, and doing so will move ' +
+      'focus back to the top of the page. This may create a frustrating or ' +
+      'confusing experience. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/meta-refresh?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class MetaRefresh extends AxeAudit {
   /**
@@ -19,15 +34,13 @@ class MetaRefresh extends AxeAudit {
   static get meta() {
     return {
       id: 'meta-refresh',
-      title: 'The document does not use `<meta http-equiv="refresh">`',
-      failureTitle: 'The document uses `<meta http-equiv="refresh">`',
-      description: 'Users do not expect a page to refresh automatically, and doing so will move ' +
-          'focus back to the top of the page. This may create a frustrating or ' +
-          'confusing experience. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/meta-refresh?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = MetaRefresh;
+module.exports.UIStrings = UIStrings;

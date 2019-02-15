@@ -10,6 +10,9 @@ const log = require('lighthouse-logger');
 const ChromeProtocol = require('./gather/connections/cri.js');
 const Config = require('./config/config');
 
+const URL = require('./lib/url-shim.js');
+const LHError = require('./lib/lh-error.js');
+
 /** @typedef {import('./gather/connections/connection.js')} Connection */
 
 /*
@@ -22,7 +25,7 @@ const Config = require('./config/config');
  *
  *         lighthouse-cli \
  *                         -- core/index.js ----> runner.js ----> [Gather / Audit]
- *   lighthouse-extension /
+ *                clients /
  */
 
 /**
@@ -36,12 +39,16 @@ const Config = require('./config/config');
  * @return {Promise<LH.RunnerResult|undefined>}
  */
 async function lighthouse(url, flags = {}, configJSON, connection) {
+  // verify the url is valid and that protocol is allowed
+  if (url && (!URL.isValid(url) || !URL.isProtocolAllowed(url))) {
+    throw new LHError(LHError.errors.INVALID_URL);
+  }
+
   // set logging preferences, assume quiet
   flags.logLevel = flags.logLevel || 'error';
   log.setLevel(flags.logLevel);
 
-  // Use ConfigParser to generate a valid config file
-  const config = new Config(configJSON, flags);
+  const config = generateConfig(configJSON, flags);
 
   connection = connection || new ChromeProtocol(flags.port, flags.hostname);
 
@@ -49,6 +56,19 @@ async function lighthouse(url, flags = {}, configJSON, connection) {
   return Runner.run(connection, {url, config});
 }
 
+/**
+ * Generate a Lighthouse Config.
+ * @param {LH.Config.Json=} configJson Configuration for the Lighthouse run. If
+ *   not present, the default config is used.
+ * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
+ *   they will override any settings in the config.
+ * @return {Config}
+ */
+function generateConfig(configJson, flags) {
+  return new Config(configJson, flags);
+}
+
+lighthouse.generateConfig = generateConfig;
 lighthouse.getAuditList = Runner.getAuditList;
 lighthouse.traceCategories = require('./gather/driver').traceCategories;
 lighthouse.Audit = require('./audits/audit');

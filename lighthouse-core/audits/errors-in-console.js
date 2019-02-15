@@ -60,6 +60,7 @@ class ErrorLogs extends Audit {
 
     const tableRows = consoleRows.concat(runtimeExRows);
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
       {key: 'description', itemType: 'code', text: 'Description'},

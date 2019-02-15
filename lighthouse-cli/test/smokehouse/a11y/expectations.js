@@ -13,14 +13,6 @@ module.exports = [
     requestedUrl: 'http://localhost:10200/a11y/a11y_tester.html',
     finalUrl: 'http://localhost:10200/a11y/a11y_tester.html',
     audits: {
-      'accesskeys': {
-        score: 0,
-        details: {
-          items: {
-            length: 1,
-          },
-        },
-      },
       'aria-allowed-attr': {
         score: 0,
         details: {
@@ -166,10 +158,10 @@ module.exports = [
         },
       },
       'layout-table': {
-        score: 0,
+        score: 1,
         details: {
           items: {
-            length: 1,
+            length: 0,
           },
         },
       },
@@ -236,6 +228,10 @@ module.exports = [
             length: 1,
           },
         },
+      },
+      'accesskeys': {
+        score: null,
+        scoreDisplayMode: 'manual',
       },
     },
   },

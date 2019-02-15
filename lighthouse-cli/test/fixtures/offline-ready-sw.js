@@ -24,7 +24,11 @@ const RUNTIME = 'runtime';
 
 // The install handler takes care of precaching the resources we always need.
 self.addEventListener('install', event => {
-  self.skipWaiting();
+  if (self.location.search.includes('slow')) {
+    event.waitUntil(new Promise(resolve => setTimeout(resolve, 5000)));
+  } else {
+    self.skipWaiting();
+  }
 
   const populateCaches = caches.open(PRECACHE)
       .then(cache => cache.addAll(PRECACHE_URLS));

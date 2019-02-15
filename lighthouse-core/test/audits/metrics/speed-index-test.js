@@ -9,7 +9,6 @@
 
 const Audit = require('../../../audits/metrics/speed-index.js');
 const assert = require('assert');
-const Runner = require('../../../runner.js');
 const options = Audit.defaultOptions;
 
 const pwaTrace = require('../../fixtures/traces/progressive-app-m60.json');
@@ -17,30 +16,15 @@ const pwaDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtoo
 
 describe('Performance: speed-index audit', () => {
   it('works on a real trace', () => {
-    const artifacts = Object.assign(Runner.instantiateComputedArtifacts(), {
+    const artifacts = {
       traces: {defaultPass: pwaTrace},
       devtoolsLogs: {defaultPass: pwaDevtoolsLog},
-    });
+    };
 
     const settings = {throttlingMethod: 'provided'};
-    return Audit.audit(artifacts, {options, settings}).then(result => {
+    return Audit.audit(artifacts, {options, settings, computedCache: new Map()}).then(result => {
       assert.equal(result.score, 1);
       assert.equal(result.rawValue, 605);
     });
   }, 10000);
-
-  it('scores speed index of 845 as 100', () => {
-    const artifacts = {
-      traces: {},
-      devtoolsLogs: {},
-      requestSpeedIndex() {
-        return Promise.resolve({timing: 845});
-      },
-    };
-
-    return Audit.audit(artifacts, {options}).then(result => {
-      assert.equal(result.score, 1);
-      assert.equal(result.rawValue, 845);
-    });
-  });
 });

@@ -11,6 +11,20 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if all elements with ARIA HTML attributes have spelled the name of attribute correctly. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: '`[aria-*]` attributes are valid and not misspelled',
+  /** Title of an accesibility audit that evaluates if all elements with ARIA HTML attributes have spelled the name of attribute correctly. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: '`[aria-*]` attributes are not valid or misspelled',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Assistive technologies, like screen readers, can\'t interpret ARIA ' +
+      'attributes with invalid names. [Learn ' +
+      'more](https://dequeuniversity.com/rules/axe/3.1/aria-valid-attr?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class ARIAValidAttr extends AxeAudit {
   /**
@@ -19,14 +33,13 @@ class ARIAValidAttr extends AxeAudit {
   static get meta() {
     return {
       id: 'aria-valid-attr',
-      title: '`[aria-*]` attributes are valid and not misspelled',
-      failureTitle: '`[aria-*]` attributes are not valid or misspelled',
-      description: 'Assistive technologies, like screen readers, can\'t interpret ARIA ' +
-          'attributes with invalid names. [Learn ' +
-          'more](https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = ARIAValidAttr;
+module.exports.UIStrings = UIStrings;

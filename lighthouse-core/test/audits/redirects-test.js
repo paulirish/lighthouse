@@ -5,121 +5,128 @@
  */
 'use strict';
 
-const Audit = require('../../audits/redirects.js');
+const RedirectsAudit = require('../../audits/redirects.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
+const createTestTrace = require('../create-test-trace.js');
 
 /* eslint-env jest */
-const FAILING_THREE_REDIRECTS = {
+
+const FAILING_THREE_REDIRECTS = [{
+  requestId: '1',
+  startTime: 0,
+  priority: 'VeryHigh',
+  url: 'http://example.com/',
+  timing: {receiveHeadersEnd: 11},
+}, {
+  requestId: '1:redirect',
+  startTime: 11,
+  priority: 'VeryHigh',
+  url: 'https://example.com/',
+  timing: {receiveHeadersEnd: 12},
+}, {
+  requestId: '1:redirect:redirect',
+  startTime: 12,
+  priority: 'VeryHigh',
+  url: 'https://m.example.com/',
+  timing: {receiveHeadersEnd: 17},
+}, {
+  requestId: '1:redirect:redirect:redirect',
   startTime: 17,
+  priority: 'VeryHigh',
   url: 'https://m.example.com/final',
-  redirects: [
-    {
-      startTime: 0,
-      url: 'http://example.com/',
-    },
-    {
-      startTime: 11,
-      url: 'https://example.com/',
-    },
-    {
-      startTime: 12,
-      url: 'https://m.example.com/',
-    },
-  ],
-};
+  timing: {receiveHeadersEnd: 19},
+}];
 
-const FAILING_TWO_REDIRECTS = {
-  startTime: 446.286,
+const FAILING_TWO_REDIRECTS = [{
+  requestId: '1',
+  startTime: 445,
+  priority: 'VeryHigh',
+  url: 'http://lisairish.com/',
+  timing: {receiveHeadersEnd: 446},
+}, {
+  requestId: '1:redirect',
+  startTime: 446,
+  priority: 'VeryHigh',
+  url: 'https://lisairish.com/',
+  timing: {receiveHeadersEnd: 447},
+}, {
+  requestId: '1:redirect:redirect',
+  startTime: 447,
+  priority: 'VeryHigh',
   url: 'https://www.lisairish.com/',
-  redirects: [
-    {
-      startTime: 445.648,
-      url: 'http://lisairish.com/',
-    },
-    {
-      startTime: 445.757,
-      url: 'https://lisairish.com/',
-    },
-  ],
-};
+  timing: {receiveHeadersEnd: 448},
+}];
 
-const SUCCESS_ONE_REDIRECT = {
-  startTime: 136.383,
+const SUCCESS_ONE_REDIRECT = [{
+  requestId: '1',
+  startTime: 135,
+  priority: 'VeryHigh',
+  url: 'https://lisairish.com/',
+  timing: {receiveHeadersEnd: 136},
+}, {
+  requestId: '1:redirect',
+  startTime: 136,
+  priority: 'VeryHigh',
   url: 'https://www.lisairish.com/',
-  redirects: [{
-    startTime: 135.873,
-    url: 'https://lisairish.com/',
-  }],
-};
+  timing: {receiveHeadersEnd: 139},
+}];
 
-const SUCCESS_NOREDIRECT = {
+const SUCCESS_NOREDIRECT = [{
+  requestId: '1',
   startTime: 135.873,
+  priority: 'VeryHigh',
   url: 'https://www.google.com/',
-  redirects: [],
-};
+  timing: {receiveHeadersEnd: 140},
+}];
 
 describe('Performance: Redirects audit', () => {
-  let nodeTimings;
+  const mockArtifacts = (networkRecords, finalUrl) => {
+    const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
 
-  const mockArtifacts = (mockChain) => {
     return {
-      traces: {},
-      devtoolsLogs: {},
-      requestLanternInteractive: () => ({pessimisticEstimate: {nodeTimings}}),
-      requestTraceOfTab: () => {},
-      requestNetworkRecords: () => [],
-      requestMainResource: function() {
-        return Promise.resolve(mockChain);
-      },
+      traces: {defaultPass: createTestTrace({traceEnd: 5000})},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+      URL: {finalUrl},
     };
   };
 
   it('fails when 3 redirects detected', () => {
-    nodeTimings = new Map([
-      [{type: 'network', record: {url: 'http://example.com/'}}, {startTime: 0}],
-      [{type: 'network', record: {url: 'https://example.com/'}}, {startTime: 5000}],
-      [{type: 'network', record: {url: 'https://m.example.com/'}}, {startTime: 10000}],
-      [{type: 'network', record: {url: 'https://m.example.com/final'}}, {startTime: 17000}],
-    ]);
-
-    return Audit.audit(mockArtifacts(FAILING_THREE_REDIRECTS), {}).then(output => {
-      assert.equal(output.score, 0);
+    const artifacts = mockArtifacts(FAILING_THREE_REDIRECTS, 'https://m.example.com/final');
+    const context = {settings: {}, computedCache: new Map()};
+    return RedirectsAudit.audit(artifacts, context).then(output => {
+      assert.equal(Math.round(output.score * 100) / 100, 0.37);
       assert.equal(output.details.items.length, 4);
-      assert.equal(output.rawValue, 17000);
+      assert.equal(output.rawValue, 1890);
     });
   });
 
   it('fails when 2 redirects detected', () => {
-    nodeTimings = new Map([
-      [{type: 'network', record: {url: 'http://lisairish.com/'}}, {startTime: 0}],
-      [{type: 'network', record: {url: 'https://lisairish.com/'}}, {startTime: 300}],
-      [{type: 'network', record: {url: 'https://www.lisairish.com/'}}, {startTime: 638}],
-    ]);
-
-    return Audit.audit(mockArtifacts(FAILING_TWO_REDIRECTS), {}).then(output => {
-      assert.equal(Math.round(output.score * 100) / 100, 0.56);
+    const artifacts = mockArtifacts(FAILING_TWO_REDIRECTS, 'https://www.lisairish.com/');
+    const context = {settings: {}, computedCache: new Map()};
+    return RedirectsAudit.audit(artifacts, context).then(output => {
+      assert.equal(Math.round(output.score * 100) / 100, 0.46);
       assert.equal(output.details.items.length, 3);
-      assert.equal(Math.round(output.rawValue), 638);
+      assert.equal(Math.round(output.rawValue), 1110);
     });
   });
 
   it('passes when one redirect detected', () => {
-    nodeTimings = new Map([
-      [{type: 'network', record: {url: 'https://lisairish.com/'}}, {startTime: 0}],
-      [{type: 'network', record: {url: 'https://www.lisairish.com/'}}, {startTime: 510}],
-    ]);
-
-    return Audit.audit(mockArtifacts(SUCCESS_ONE_REDIRECT), {}).then(output => {
+    const artifacts = mockArtifacts(SUCCESS_ONE_REDIRECT, 'https://www.lisairish.com/');
+    const context = {settings: {}, computedCache: new Map()};
+    return RedirectsAudit.audit(artifacts, context).then(output => {
       // If === 1 redirect, perfect score is expected, regardless of latency
       assert.equal(output.score, 1);
       // We will still generate a table and show wasted time
       assert.equal(output.details.items.length, 2);
-      assert.equal(Math.round(output.rawValue), 510);
+      assert.equal(Math.round(output.rawValue), 780);
     });
   });
 
   it('passes when no redirect detected', () => {
-    return Audit.audit(mockArtifacts(SUCCESS_NOREDIRECT), {}).then(output => {
+    const artifacts = mockArtifacts(SUCCESS_NOREDIRECT, 'https://www.google.com/');
+    const context = {settings: {}, computedCache: new Map()};
+    return RedirectsAudit.audit(artifacts, context).then(output => {
       assert.equal(output.score, 1);
       assert.equal(output.details.items.length, 0);
       assert.equal(output.rawValue, 0);

@@ -19,7 +19,7 @@ function generateRecord(resourceSizeInKb, durationInMs, mimeType = 'image/png') 
   };
 }
 
-function generateSize(width, height, prefix = 'client') {
+function generateSize(width, height, prefix = 'displayed') {
   const size = {};
   size[`${prefix}Width`] = width;
   size[`${prefix}Height`] = height;
@@ -28,7 +28,7 @@ function generateSize(width, height, prefix = 'client') {
 
 function generateImage(clientSize, naturalSize, networkRecord, src = 'https://google.com/logo.png') {
   Object.assign(networkRecord || {}, {url: src});
-  const image = {src, networkRecord};
+  const image = {src, ...networkRecord};
   Object.assign(image, clientSize, naturalSize);
   return image;
 }
@@ -39,7 +39,7 @@ describe('Page uses responsive images', () => {
     it(description, () => {
       const result = UsesResponsiveImagesAudit.audit_({
         ViewportDimensions: {devicePixelRatio: data.devicePixelRatio || 1},
-        ImageUsage: [
+        ImageElements: [
           generateImage(
             generateSize(...data.clientSize),
             generateSize(...data.naturalSize, 'natural'),
@@ -92,7 +92,7 @@ describe('Page uses responsive images', () => {
   it('handles images without network record', () => {
     const auditResult = UsesResponsiveImagesAudit.audit_({
       ViewportDimensions: {devicePixelRatio: 2},
-      ImageUsage: [
+      ImageElements: [
         generateImage(
           generateSize(100, 100),
           generateSize(300, 300, 'natural'),
@@ -107,7 +107,7 @@ describe('Page uses responsive images', () => {
   it('identifies when images are not wasteful', () => {
     const auditResult = UsesResponsiveImagesAudit.audit_({
       ViewportDimensions: {devicePixelRatio: 2},
-      ImageUsage: [
+      ImageElements: [
         generateImage(
           generateSize(200, 200),
           generateSize(450, 450, 'natural'),
@@ -139,7 +139,7 @@ describe('Page uses responsive images', () => {
 
     const auditResult = UsesResponsiveImagesAudit.audit_({
       ViewportDimensions: {devicePixelRatio: 1},
-      ImageUsage: [
+      ImageElements: [
         generateImage(generateSize(10, 10), naturalSizeA, recordA, urlA),
       ],
     });
@@ -157,7 +157,7 @@ describe('Page uses responsive images', () => {
 
     const auditResult = UsesResponsiveImagesAudit.audit_({
       ViewportDimensions: {devicePixelRatio: 1},
-      ImageUsage: [
+      ImageElements: [
         generateImage(generateSize(10, 10), naturalSizeA, recordA, urlA),
         generateImage(generateSize(450, 450), naturalSizeA, recordA, urlA),
         generateImage(generateSize(30, 30), naturalSizeA, recordA, urlA),

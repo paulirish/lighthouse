@@ -12,7 +12,6 @@ const stream = require('stream');
 const Simulator = require('./dependency-graph/simulator/simulator');
 const lanternTraceSaver = require('./lantern-trace-saver');
 const Metrics = require('./traces/pwmetrics-events');
-const TraceParser = require('./traces/trace-parser');
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
@@ -20,58 +19,13 @@ const artifactsFilename = 'artifacts.json';
 const traceSuffix = '.trace.json';
 const devtoolsLogSuffix = '.devtoolslog.json';
 
-/** @typedef {{timestamp: number, datauri: string}} Screenshot */
 /**
  * @typedef {object} PreparedAssets
  * @property {string} passName
  * @property {LH.Trace} traceData
  * @property {LH.DevtoolsLog} devtoolsLog
- * @property {string} screenshotsHTML
- * @property {Array<Screenshot>} screenshots
  */
 
-/**
- * Generate basic HTML page of screenshot filmstrip
- * @param {Array<Screenshot>} screenshots
- * @return {string}
- */
-function screenshotDump(screenshots) {
-  return `
-  <!doctype html>
-  <meta charset="utf-8">
-  <title>screenshots</title>
-  <style>
-html {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    height: 100%;
-    background-image: linear-gradient(to left, #4ca1af , #c4e0e5);
-    background-attachment: fixed;
-    padding: 10px;
-}
-body {
-    white-space: nowrap;
-    background-image: linear-gradient(to left, #4ca1af , #c4e0e5);
-    width: 100%;
-    margin: 0;
-}
-img {
-    margin: 4px;
-}
-</style>
-  <body>
-    <script>
-      var shots = ${JSON.stringify(screenshots)};
-
-  shots.forEach(s => {
-    var i = document.createElement('img');
-    i.src = s.datauri;
-    i.title = s.timestamp;
-    document.body.appendChild(i);
-  });
-  </script>
-  `;
-}
 
 /**
  * Load artifacts object from files located within basePath
@@ -94,7 +48,7 @@ async function loadArtifacts(basePath) {
 
   // load devtoolsLogs
   artifacts.devtoolsLogs = {};
-  filenames.filter(f => f.endsWith(devtoolsLogSuffix)).map(filename => {
+  filenames.filter(f => f.endsWith(devtoolsLogSuffix)).forEach(filename => {
     const passName = filename.replace(devtoolsLogSuffix, '');
     const devtoolsLog = JSON.parse(fs.readFileSync(path.join(basePath, filename), 'utf8'));
     artifacts.devtoolsLogs[passName] = devtoolsLog;
@@ -102,23 +56,18 @@ async function loadArtifacts(basePath) {
 
   // load traces
   artifacts.traces = {};
-  const promises = filenames.filter(f => f.endsWith(traceSuffix)).map(filename => {
-    return new Promise(resolve => {
-      const passName = filename.replace(traceSuffix, '');
-      const readStream = fs.createReadStream(path.join(basePath, filename), {
-        encoding: 'utf-8',
-        highWaterMark: 4 * 1024 * 1024, // TODO benchmark to find the best buffer size here
-      });
-      const parser = new TraceParser();
-      readStream.on('data', chunk => parser.parseChunk(chunk));
-      readStream.on('end', _ => {
-        artifacts.traces[passName] = parser.getTrace();
-        resolve();
-      });
-    });
+  filenames.filter(f => f.endsWith(traceSuffix)).forEach(filename => {
+    const file = fs.readFileSync(path.join(basePath, filename), {encoding: 'utf-8'});
+    const trace = JSON.parse(file);
+    const passName = filename.replace(traceSuffix, '');
+    artifacts.traces[passName] = Array.isArray(trace) ? {traceEvents: trace} : trace;
   });
-  await Promise.all(promises);
 
+  if (Array.isArray(artifacts.Timing)) {
+    // Any Timing entries in saved artifacts will have a different timeOrigin than the auditing phase
+    // The `gather` prop is read later in generate-timing-trace and they're added to a separate track of trace events
+    artifacts.Timing.forEach(entry => (entry.gather = true));
+  }
   return artifacts;
 }
 
@@ -130,6 +79,8 @@ async function loadArtifacts(basePath) {
  * @return {Promise<void>}
  */
 async function saveArtifacts(artifacts, basePath) {
+  const status = {msg: 'Saving artifacts', id: 'lh:assetSaver:saveArtifacts'};
+  log.time(status);
   mkdirp.sync(basePath);
   rimraf.sync(`${basePath}/*${traceSuffix}`);
   rimraf.sync(`${basePath}/${artifactsFilename}`);
@@ -151,6 +102,7 @@ async function saveArtifacts(artifacts, basePath) {
   const restArtifactsString = JSON.stringify(restArtifacts, null, 2);
   fs.writeFileSync(`${basePath}/${artifactsFilename}`, restArtifactsString, 'utf8');
   log.log('Artifacts saved to disk in folder:', basePath);
+  log.timeEnd(status);
 }
 
 /**
@@ -168,15 +120,7 @@ async function prepareAssets(artifacts, audits) {
     const trace = artifacts.traces[passName];
     const devtoolsLog = artifacts.devtoolsLogs[passName];
 
-    // Avoid Runner->AssetSaver->Runner circular require by loading Runner here.
-    const Runner = require('../runner.js');
-    const computedArtifacts = Runner.instantiateComputedArtifacts();
-    /** @type {Array<Screenshot>} */
-    const screenshots = await computedArtifacts.requestScreenshots(trace);
-
     const traceData = Object.assign({}, trace);
-    const screenshotsHTML = screenshotDump(screenshots);
-
     if (audits) {
       const evts = new Metrics(traceData.traceEvents, audits).generateFakeEvents();
       traceData.traceEvents = traceData.traceEvents.concat(evts);
@@ -186,8 +130,6 @@ async function prepareAssets(artifacts, audits) {
       passName,
       traceData,
       devtoolsLog,
-      screenshotsHTML,
-      screenshots,
     });
   }
 
@@ -297,14 +239,6 @@ async function saveAssets(artifacts, audits, pathWithBasename) {
     const devtoolsLogFilename = `${pathWithBasename}-${index}${devtoolsLogSuffix}`;
     fs.writeFileSync(devtoolsLogFilename, JSON.stringify(passAssets.devtoolsLog, null, 2));
     log.log('saveAssets', 'devtools log saved to disk: ' + devtoolsLogFilename);
-
-    const screenshotsHTMLFilename = `${pathWithBasename}-${index}.screenshots.html`;
-    fs.writeFileSync(screenshotsHTMLFilename, passAssets.screenshotsHTML);
-    log.log('saveAssets', 'screenshots saved to disk: ' + screenshotsHTMLFilename);
-
-    const screenshotsJSONFilename = `${pathWithBasename}-${index}.screenshots.json`;
-    fs.writeFileSync(screenshotsJSONFilename, JSON.stringify(passAssets.screenshots, null, 2));
-    log.log('saveAssets', 'screenshots saved to disk: ' + screenshotsJSONFilename);
 
     const streamTraceFilename = `${pathWithBasename}-${index}${traceSuffix}`;
     log.log('saveAssets', 'streaming trace file to disk: ' + streamTraceFilename);

@@ -1,0 +1,5 @@
+{
+  "name": "lighthouse-plugin-simple",
+  "private": true,
+  "main": "./plugin-simple.js"
+}

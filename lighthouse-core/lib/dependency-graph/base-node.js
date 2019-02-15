@@ -209,14 +209,14 @@ class BaseNode {
       }
     });
 
-    if (!idToNodeMap.has(this.id)) throw new Error(`Cloned graph missing node ${this.id}`);
+    if (!idToNodeMap.has(this.id)) throw new Error('Cloned graph missing node');
     return idToNodeMap.get(this.id);
   }
 
   /**
    * Traverses all paths in the graph, calling iterator on each node visited. Decides which nodes to
    * visit with the getNext function.
-   * @param {function(Node, Node[])} iterator
+   * @param {function(Node, Node[]): void} iterator
    * @param {function(Node): Node[]} getNext
    */
   _traversePaths(iterator, getNext) {
@@ -238,7 +238,7 @@ class BaseNode {
   /**
    * Traverses all connected nodes exactly once, calling iterator on each. Decides which nodes to
    * visit with the getNext function.
-   * @param {function(Node, Node[])} iterator
+   * @param {function(Node, Node[]): void} iterator
    * @param {function(Node): Node[]} [getNext] Defaults to returning the dependents.
    */
   traverse(iterator, getNext) {

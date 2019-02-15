@@ -1,0 +1,120 @@
+<!doctype html>
+<!--
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+-->
+
+<html>
+<head>
+  <title>SEO tap target audit tester</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <style>
+  a {
+    color: blue;
+  }
+  body {
+    margin: 0;
+  }
+  </style>
+  <script>
+    // Ensure gatherers still work when the prototype is messed with
+    HTMLElement.prototype.matches = { value: "blahblah" };
+  </script>
+</head>
+<body>
+  <!-- Big tap target, but it's invisible because it's behind the main content div -->
+  <a style="background: red; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -1;"></a>
+  <div style="background: white; padding: 20px;">
+    <h1>SEO Tap targets</h1>
+
+    <!-- Invisible nodes don't cause failures -->
+    <div>
+      <!-- Scroll container hides the child -->
+      <div style="height: 1px; overflow: auto;">
+        <a style="display: inline-block; height: 1000px; width: 1000px"></a>
+      </div>
+      <!-- Various invisible tap targets-->
+      <a></a>
+      <a style="width: 0;height:0;display:inline-block;">0</a>
+      <a style="display: none">display none</a>
+      <span style="display: none"><a>display none parent</a></span>
+      <a style="display: inline-block; width: 0; overflow-x: hidden;height: 1px">
+        width 0 and overflow x hidden
+      </a>
+      <!-- Visible target should not fail because nothing overlaps it -->
+      <a>visible target</a>
+    </div>
+    <br/><br/>
+
+    
+    <div style="overflow: hidden; position: relative">
+      <!-- Should be counted as visible although part of it is outside the scroll container -->
+      <a>
+        <div style="position: absolute;top: -100px">invisible</div>
+        visible
+      </a>
+    </div>
+
+    <br/><br/>
+
+    <!-- Link contains large inline block element - no failure because finger
+      should be placed in the center of the whole link area -->
+    <a style="background: red;">
+      <div style="display: inline-block; height: 30px; width: 30px; background: orange;"></div>
+      Link
+    </a>
+    <br/>
+    <a style="display: block; padding: 30px; background: #ddf;">
+      Link that the top one would overlap with, if it weren't for the inline-block child.
+    </a>
+
+    <br/><br/>
+
+    <div role="button">
+      Tap target with children that are also tap targets should not fail.
+      (Children should not be counted as independent tap targets that appear
+      in the list.)
+      Two children to make sure the two children also don't conflict with each other:
+      <a>Child 1</a><a>Child2</a>
+    </div>
+
+    <br/><br/>
+
+    <div style="position: relative">
+      <a style="display: block; position: absolute; top:0; height: 40px; width: 40px;">inner</a>
+      <a style="display: block; height: 100px; width: 100px; background: yellowgreen">outer</a>
+    </div>
+
+    <br/><br/>
+
+    <!-- Only target that's being overlapped should fail, the overlapping one shouldn't -->
+    <div>
+      <a style="display: block; width: 100px; height: 30px;background: #ddd;">
+        too small target
+      </a>
+      <a style="display: block; width: 100px; height: 100px;background: #aaa;">
+        big enough target
+      </a>
+    </div>
+
+    <br/><br/>
+
+    <!-- Should not fail if the two links have the same link target -->
+    <div>
+      <a style="display: block; width: 10px; height: 10px;" href="../seo/"></a>
+      <a style="display: block; width: 10px; height: 10px;" href="./"></a>
+    </div>
+
+    <!-- Links in text blocks are exempted from size/overlap requirements and should not fail -->
+    <p style="width: 100px">
+      This is <a>a link in a text block.</a>
+      This is <a>a link in a text block.</a>
+      This is <a>a link in a text block.</a>
+      This is <a>a link in a text block.</a>
+      This is <a>a link in a text block.</a>
+    </p>
+  </div>
+</body>
+</html>

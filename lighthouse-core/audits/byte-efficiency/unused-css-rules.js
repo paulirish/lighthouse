@@ -6,14 +6,14 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to remove content from their CSS that isn’t needed immediately and instead load that content at a later time. This is displayed in a list of audit titles that Lighthouse generates. */
-  title: 'Defer unused CSS',
+  title: 'Remove unused CSS',
   /** Description of a Lighthouse audit that tells the user *why* they should defer loading any content in CSS that isn’t needed at page load. This is displayed after a user expands the section to see more. No word length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Remove unused rules from stylesheets to reduce unnecessary ' +
-    'bytes consumed by network activity. ' +
+  description: 'Remove dead rules from stylesheets and defer the loading of CSS not used for ' +
+    'above-the-fold content to reduce unnecessary bytes consumed by network activity. ' +
     '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/unused-css).',
 };
 
@@ -157,15 +157,15 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {Promise<ByteEfficiencyAudit.ByteEfficiencyProduct>}
    */
-  static audit_(artifacts) {
+  static audit_(artifacts, networkRecords) {
     const styles = artifacts.CSSUsage.stylesheets;
     const usage = artifacts.CSSUsage.rules;
     const pageUrl = artifacts.URL.finalUrl;
 
-    const devtoolsLogs = artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS];
-    return artifacts.requestNetworkRecords(devtoolsLogs).then(networkRecords => {
+    return Promise.resolve(networkRecords).then(networkRecords => {
       const indexedSheets = UnusedCSSRules.indexStylesheetsById(styles, networkRecords);
       UnusedCSSRules.indexUsedRules(usage, indexedSheets);
 
@@ -173,7 +173,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
           .map(sheetId => UnusedCSSRules.mapSheetToResult(indexedSheets[sheetId], pageUrl))
           .filter(sheet => sheet && sheet.wastedBytes > IGNORE_THRESHOLD_IN_BYTES);
 
-      /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+      /** @type {LH.Audit.Details.Opportunity['headings']} */
       const headings = [
         {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
         {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},

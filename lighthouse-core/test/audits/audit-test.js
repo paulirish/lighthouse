@@ -90,7 +90,7 @@ describe('Audit', () => {
     const providedResult = {rawValue: true, notApplicable: true};
     const result = Audit.generateAuditResult(B, providedResult);
     assert.equal(result.score, null);
-    assert.equal(result.scoreDisplayMode, 'not-applicable');
+    assert.equal(result.scoreDisplayMode, 'notApplicable');
   });
 
   it('sets state of failed audits', () => {

@@ -1,0 +1,256 @@
+/**
+ * @license Copyright 2019 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+'use strict';
+
+const assert = require('assert');
+const ConfigPlugin = require('../../config/config-plugin.js');
+
+/* eslint-env jest */
+
+/**
+ * @param {any} val
+ * @return {any}
+ */
+function deepClone(val) {
+  return JSON.parse(JSON.stringify(val));
+}
+
+const nicePluginName = 'lighthouse-plugin-nice-plugin';
+const nicePlugin = {
+  audits: [{path: 'not/a/path/audit.js'}],
+  category: {
+    title: 'Nice Plugin',
+    description: 'A nice plugin for nice testing',
+    auditRefs: [
+      {id: 'nice-audit', weight: 1},
+      {id: 'installable-manifest', weight: 220},
+    ],
+  },
+};
+
+describe('ConfigPlugin', () => {
+  it('accepts a well formed plugin', () => {
+    const pluginJson = ConfigPlugin.parsePlugin(nicePlugin, nicePluginName);
+    expect(pluginJson).toMatchSnapshot();
+  });
+
+  it('throws on something other than a plugin object', () => {
+    assert.throws(() => ConfigPlugin.parsePlugin(5, nicePluginName),
+      /^Error: lighthouse-plugin-nice-plugin is not defined as an object/);
+  });
+
+  it('throws on an array instead of a plugin object', () => {
+    assert.throws(() => ConfigPlugin.parsePlugin([], nicePluginName),
+      /^Error: lighthouse-plugin-nice-plugin is not defined as an object/);
+  });
+
+  it('throws if there are excess plugin properties', () => {
+    const pluginClone = deepClone(nicePlugin);
+    pluginClone.extraProperty = 'extra';
+
+    assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+      /^Error: lighthouse-plugin-nice-plugin has unrecognized properties: \[extraProperty\]$/);
+  });
+
+  it('deals only with the JSON roundtrip version of the passed-in object', () => {
+    const evilAudits = [{path: 'not/a/path/audit.js'}];
+    const evilCategory = {
+      title: 'Evil Plugin',
+      description: 'A plugin that\'s trying to undermine you.',
+      manualDescription: 'Still here.',
+      auditRefs: [
+        {id: 'evil-audit', weight: 0},
+      ],
+    };
+
+    const evilPlugin = {
+      // Getter should be flattened to just value.
+      get audits() {
+        return evilAudits;
+      },
+      // Excess property would normally throw, but live function is dropped by stringify/parse.
+      evilProperty() {
+        throw new Error('get out of here');
+      },
+      category: evilCategory,
+    };
+
+    const pluginJson = ConfigPlugin.parsePlugin(evilPlugin, 'lighthouse-plugin-evil');
+    assert.deepStrictEqual(pluginJson, {
+      audits: evilAudits,
+      categories: {
+        'lighthouse-plugin-evil': evilCategory,
+      },
+    });
+    assert.strictEqual(Object.getOwnPropertyDescriptor(pluginJson, 'audits').get, undefined);
+  });
+
+  describe('`audits` array', () => {
+    it('correctly passes through the contained audits', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.audits.push({path: 'second/audit.js'});
+      const pluginJson = ConfigPlugin.parsePlugin(pluginClone, nicePluginName);
+
+      assert.strictEqual(pluginJson.audits[0].path, 'not/a/path/audit.js');
+      assert.strictEqual(pluginJson.audits[1].path, 'second/audit.js');
+    });
+
+    it('accepts a plugin with no new audits added', () => {
+      const pluginClone = deepClone(nicePlugin);
+      delete pluginClone.audits;
+      const pluginJson = ConfigPlugin.parsePlugin(pluginClone, nicePluginName);
+
+      assert.strictEqual(pluginJson.audits, undefined);
+    });
+
+    it('throws if not an array', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.audits = 5;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid audits array/);
+    });
+
+    it('throws if it contains non-objects', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.audits[0] = 5;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid audits array/);
+    });
+
+    it('throws if it contains objects with excess properties', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.audits[0].extraProperty = 'extra';
+      pluginClone.audits[0].otherProperty = 'other';
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin.*audit.*extraProperty.*otherProperty/);
+    });
+
+    it('throws if it contains objects with a missing `path`', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.audits[0].path = undefined;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has a missing audit path/);
+    });
+  });
+
+  describe('`category`', () => {
+    it('correctly adds the category under the plugin\'s name', () => {
+      const pluginJson = ConfigPlugin.parsePlugin(nicePlugin, nicePluginName);
+      assert.ok(pluginJson.categories[nicePluginName]);
+    });
+
+    it('throws if category is missing', () => {
+      const pluginClone = deepClone(nicePlugin);
+      delete pluginClone.category;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has no valid category/);
+    });
+
+    it('throws if category contains excess properties', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.category.extraProperty = 'extra';
+      pluginClone.category.otherProperty = 'other';
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin.*category.*extraProperty.*otherProperty/);
+    });
+
+    it('throws if category has an invalid or missing title', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.category.title = 55;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid category tile/);
+
+      const pluginClone2 = deepClone(nicePlugin);
+      delete pluginClone2.category.title;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone2, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid category tile/);
+    });
+
+    it('accepts a category with no description', () => {
+      const pluginClone = deepClone(nicePlugin);
+      delete pluginClone.category.description;
+      const pluginJson = ConfigPlugin.parsePlugin(pluginClone, nicePluginName);
+      assert.ok(pluginJson);
+    });
+
+    it('throws if category has an invalid description', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.category.description = 55;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid category description/);
+    });
+
+    it('accepts a category with no manualDescription', () => {
+      const pluginClone = deepClone(nicePlugin);
+      delete pluginClone.category.description;
+      const pluginJson = ConfigPlugin.parsePlugin(pluginClone, nicePluginName);
+      assert.ok(pluginJson);
+    });
+
+    it('throws if category has an invalid manualDescription', () => {
+      const pluginClone = deepClone(nicePlugin);
+      pluginClone.category.manualDescription = 55;
+      assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+        /^Error: lighthouse-plugin-nice-plugin has an invalid category manualDescription/);
+    });
+
+    describe('`category.auditRefs`', () => {
+      it('correctly passes through the contained auditRefs', () => {
+        const pluginJson = ConfigPlugin.parsePlugin(nicePlugin, nicePluginName);
+
+        const auditRefs = pluginJson.categories[nicePluginName].auditRefs;
+        assert.deepStrictEqual(auditRefs[0], {id: 'nice-audit', weight: 1});
+        assert.deepStrictEqual(auditRefs[1], {id: 'installable-manifest', weight: 220});
+      });
+
+      it('throws if auditRefs is missing', () => {
+        const pluginClone = deepClone(nicePlugin);
+        delete pluginClone.category.auditRefs;
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin has no valid auditsRefs/);
+      });
+
+      it('throws if it contains non-objects', () => {
+        const pluginClone = deepClone(nicePlugin);
+        pluginClone.category.auditRefs[0] = 5;
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin has no valid auditsRefs/);
+      });
+
+      it('throws if it contains objects with excess properties', () => {
+        const pluginClone = deepClone(nicePlugin);
+        pluginClone.category.auditRefs[0].extraProperty = 'extra';
+        pluginClone.category.auditRefs[0].otherProperty = 'other';
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin.*auditRef.*extraProperty.*otherProperty/);
+      });
+
+      it('throws if it contains objects with an invalid or missing `id`', () => {
+        const pluginClone = deepClone(nicePlugin);
+        pluginClone.category.auditRefs[1].id = 55;
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin has an invalid auditRef id/);
+
+        const pluginClone2 = deepClone(nicePlugin);
+        delete pluginClone2.category.auditRefs[0].id;
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone2, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin has an invalid auditRef id/);
+      });
+
+      it('throws if it contains objects with an invalid or missing `weight`', () => {
+        const pluginClone = deepClone(nicePlugin);
+        pluginClone.category.auditRefs[0].weight = 'NotAWeight';
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin has an invalid auditRef weight/);
+
+        const pluginClone2 = deepClone(nicePlugin);
+        delete pluginClone2.category.auditRefs[1].weight;
+        assert.throws(() => ConfigPlugin.parsePlugin(pluginClone2, nicePluginName),
+          /^Error: lighthouse-plugin-nice-plugin has an invalid auditRef weight/);
+      });
+    });
+  });
+});

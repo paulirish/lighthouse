@@ -19,8 +19,7 @@
 /* globals self, Util, CategoryRenderer */
 
 /** @typedef {import('./dom.js')} DOM */
-/** @typedef {import('./details-renderer.js').FilmstripDetails} FilmstripDetails */
-/** @typedef {LH.Result.Audit.OpportunityDetails} OpportunityDetails */
+/** @typedef {LH.Audit.Details.Opportunity} OpportunityDetails */
 
 class PerformanceCategoryRenderer extends CategoryRenderer {
   /**
@@ -112,7 +111,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
   /**
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>} groups
-   * @param {string=} environment 'PSI' and undefined are the only valid values
+   * @param {'PSI'=} environment 'PSI' and undefined are the only valid values
    * @return {Element}
    * @override
    */
@@ -120,16 +119,16 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const element = this.dom.createElement('div', 'lh-category');
     if (environment === 'PSI') {
       const gaugeEl = this.dom.createElement('div', 'lh-score__gauge');
-      gaugeEl.appendChild(this.renderScoreGauge(category));
+      gaugeEl.appendChild(this.renderScoreGauge(category, groups));
       element.appendChild(gaugeEl);
     } else {
       this.createPermalinkSpan(element, category.id);
-      element.appendChild(this.renderCategoryHeader(category));
+      element.appendChild(this.renderCategoryHeader(category, groups));
     }
 
     // Metrics
     const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
-    const metricAuditsEl = this.renderAuditGroup(groups['metrics'], {expandable: false});
+    const metricAuditsEl = this.renderAuditGroup(groups.metrics);
 
     const keyMetrics = metricAudits.filter(a => a.weight >= 3);
     const otherMetrics = metricAudits.filter(a => a.weight < 3);
@@ -144,9 +143,13 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     otherMetrics.forEach(item => {
       metricsColumn2El.appendChild(this._renderMetric(item));
     });
-    const estValuesEl = this.dom.createChildOf(metricsColumn2El, 'div',
-        'lh-metrics__disclaimer lh-metrics__disclaimer');
-    estValuesEl.textContent = Util.UIStrings.varianceDisclaimer;
+
+    // 'Values are estimated and may vary' is used as the category description for PSI
+    if (environment !== 'PSI') {
+      const estValuesEl = this.dom.createChildOf(metricsColumn2El, 'div',
+          'lh-metrics__disclaimer lh-metrics__disclaimer');
+      estValuesEl.textContent = Util.UIStrings.varianceDisclaimer;
+    }
 
     metricAuditsEl.classList.add('lh-audit-group--metrics');
     element.appendChild(metricAuditsEl);
@@ -157,8 +160,9 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     const thumbnailResult = thumbnailAudit && thumbnailAudit.result;
     if (thumbnailResult && thumbnailResult.details) {
       timelineEl.id = thumbnailResult.id;
+      // @ts-ignore TODO(bckenny): fix detailsRenderer.render input type
       const filmstripEl = this.detailsRenderer.render(thumbnailResult.details);
-      timelineEl.appendChild(filmstripEl);
+      filmstripEl && timelineEl.appendChild(filmstripEl);
     }
 
     // Opportunities
@@ -172,7 +176,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       const wastedMsValues = opportunityAudits.map(audit => this._getWastedMs(audit));
       const maxWaste = Math.max(...wastedMsValues);
       const scale = Math.max(Math.ceil(maxWaste / 1000) * 1000, minimumScale);
-      const groupEl = this.renderAuditGroup(groups['load-opportunities'], {expandable: false});
+      const groupEl = this.renderAuditGroup(groups['load-opportunities']);
       const tmpl = this.dom.cloneTemplate('#tmpl-lh-opportunity-header', this.templateContext);
 
       this.dom.find('.lh-load-opportunity__col--one', tmpl).textContent =
@@ -184,7 +188,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       groupEl.appendChild(headerEl);
       opportunityAudits.forEach((item, i) =>
           groupEl.appendChild(this._renderOpportunity(item, i, scale)));
-      groupEl.classList.add('lh-audit-group--opportunities');
+      groupEl.classList.add('lh-audit-group--load-opportunities');
       element.appendChild(groupEl);
     }
 
@@ -198,21 +202,24 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
         });
 
     if (diagnosticAudits.length) {
-      const groupEl = this.renderAuditGroup(groups['diagnostics'], {expandable: false});
+      const groupEl = this.renderAuditGroup(groups['diagnostics']);
       diagnosticAudits.forEach((item, i) => groupEl.appendChild(this.renderAudit(item, i)));
       groupEl.classList.add('lh-audit-group--diagnostics');
       element.appendChild(groupEl);
     }
 
     // Passed audits
-    const passedElements = category.auditRefs
+    const passedAudits = category.auditRefs
         .filter(audit => (audit.group === 'load-opportunities' || audit.group === 'diagnostics') &&
-            Util.showAsPassed(audit.result))
-        .map((audit, i) => this.renderAudit(audit, i));
+            Util.showAsPassed(audit.result));
 
-    if (!passedElements.length) return element;
+    if (!passedAudits.length) return element;
 
-    const passedElem = this.renderPassedAuditsSection(passedElements);
+    const clumpOpts = {
+      auditRefs: passedAudits,
+      groupDefinitions: groups,
+    };
+    const passedElem = this.renderClump('passed', clumpOpts);
     element.appendChild(passedElem);
     return element;
   }

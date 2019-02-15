@@ -7,9 +7,24 @@
 
 const Audit = require('../audit');
 const LinkHeader = require('http-link-header');
+const MainResource = require('../../computed/main-resource.js');
 const VALID_LANGS = importValidLangs();
 const LINK_HEADER = 'link';
 const NO_LANGUAGE = 'x-default';
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of a Lighthouse audit that provides detail on the `hreflang` attribute on a page. This descriptive title is shown when the page's `hreflang` attribute is configured correctly. "hreflang" is an HTML attribute and should not be translated. */
+  title: 'Document has a valid `hreflang`',
+  /** Title of a Lighthouse audit that provides detail on the `hreflang` attribute on a page. This descriptive title is shown when the page's `hreflang` attribute is not valid and needs to be fixed. "hreflang" is an HTML attribute and should not be translated. */
+  failureTitle: 'Document doesn\'t have a valid `hreflang`',
+  /** Description of a Lighthouse audit that tells the user *why* they need to have an hreflang link on their page. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. "hreflang" is an HTML attribute and should not be translated. */
+  description: 'hreflang links tell search engines what version of a page they should ' +
+    'list in search results for a given language or region. [Learn more]' +
+    '(https://developers.google.com/web/tools/lighthouse/audits/hreflang).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * Import list of valid languages from axe core without including whole axe-core package
@@ -64,24 +79,23 @@ class Hreflang extends Audit {
   static get meta() {
     return {
       id: 'hreflang',
-      title: 'Document has a valid `hreflang`',
-      failureTitle: 'Document doesn\'t have a valid `hreflang`',
-      description: 'hreflang links tell search engines what version of a page they should ' +
-        'list in search results for a given language or region. [Learn more]' +
-        '(https://developers.google.com/web/tools/lighthouse/audits/hreflang).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Hreflang', 'URL'],
     };
   }
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
    */
-  static audit(artifacts) {
+  static audit(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const URL = artifacts.URL;
 
-    return artifacts.requestMainResource({devtoolsLog, URL})
+    return MainResource.request({devtoolsLog, URL}, context)
       .then(mainResource => {
         /** @type {Array<{source: string|{type: 'node', snippet: string}}>} */
         const invalidHreflangs = [];
@@ -103,6 +117,7 @@ class Hreflang extends Audit {
           .filter(h => h.name.toLowerCase() === LINK_HEADER && !headerHasValidHreflangs(h.value))
           .forEach(h => invalidHreflangs.push({source: `${h.name}: ${h.value}`}));
 
+        /** @type {LH.Audit.Details.Table['headings']} */
         const headings = [
           {key: 'source', itemType: 'code', text: 'Source'},
         ];
@@ -117,3 +132,4 @@ class Hreflang extends Audit {
 }
 
 module.exports = Hreflang;
+module.exports.UIStrings = UIStrings;

@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const i18n = require('../lib/i18n');
+const i18n = require('../lib/i18n/i18n.js');
 
 expect.extend({
   toBeDisplayString(received, expected) {

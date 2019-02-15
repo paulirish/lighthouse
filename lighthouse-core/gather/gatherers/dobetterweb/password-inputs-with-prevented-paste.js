@@ -35,7 +35,7 @@ class PasswordInputsWithPreventedPaste extends Gatherer {
    */
   afterPass(passContext) {
     return passContext.driver.evaluateAsync(`(() => {
-      ${pageFunctions.getOuterHTMLSnippet.toString()};
+      ${pageFunctions.getOuterHTMLSnippetString};
       return (${findPasswordInputsWithPreventedPaste.toString()}());
     })()`);
   }

@@ -6,6 +6,7 @@
 'use strict';
 
 const cli = require('../../lighthouse-cli/run');
+const cliFlags = require('../../lighthouse-cli/cli-flags.js');
 
 const {server} = require('../../lighthouse-cli/test/fixtures/static-server');
 
@@ -18,10 +19,7 @@ async function update() {
   const port = await new Promise(res => server.on('listening', () => res(server.address().port)));
 
   const url = `http://localhost:${port}/dobetterweb/dbw_tester.html`;
-  const flags = {
-    gatherMode: 'lighthouse-core/test/results/artifacts',
-  };
-  // @ts-ignore Remove when we fix Flags typing
+  const flags = cliFlags.getFlags(`--gather-mode=lighthouse-core/test/results/artifacts ${url}`);
   await cli.runLighthouse(url, flags, undefined);
   await new Promise(res => server.close(res));
 }

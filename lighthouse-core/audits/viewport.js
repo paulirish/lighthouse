@@ -20,7 +20,7 @@ class Viewport extends Audit {
           'or `initial-scale`',
       description: 'Add a viewport meta tag to optimize your app for mobile screens. ' +
           '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/has-viewport-meta-tag).',
-      requiredArtifacts: ['Viewport'],
+      requiredArtifacts: ['MetaElements'],
     };
   }
 
@@ -29,7 +29,8 @@ class Viewport extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    if (artifacts.Viewport === null) {
+    const viewportMeta = artifacts.MetaElements.find(meta => meta.name === 'viewport');
+    if (!viewportMeta) {
       return {
         explanation: 'No viewport meta tag found',
         rawValue: false,
@@ -37,7 +38,7 @@ class Viewport extends Audit {
     }
 
     const warnings = [];
-    const parsedProps = Parser.parseMetaViewPortContent(artifacts.Viewport);
+    const parsedProps = Parser.parseMetaViewPortContent(viewportMeta.content || '');
 
     if (Object.keys(parsedProps.unknownProperties).length) {
       warnings.push(`Invalid properties found: ${JSON.stringify(parsedProps.unknownProperties)}`);

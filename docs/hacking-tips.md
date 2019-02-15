@@ -1,5 +1,20 @@
 A few assorted scripts and tips to make hacking on Lighthouse a bit easier
 
+## Evaluate Lighthouse's runtime performance
+
+Lighthouse has instrumentation to collect timing data for its operations. The data is exposed at `LHR.timing.entries`.  You can generate a trace from this data for closer analysis.
+
+![image](https://user-images.githubusercontent.com/39191/47525915-3c477000-d853-11e8-90a2-27036f93e682.png)
+[View example trace](https://ahead-daughter.surge.sh/paulirish.json.timing.trace.html)
+
+To generate, run `yarn timing-trace` with the LHR json:
+```sh
+lighthouse http://example.com --output=json --output-path=lhr.json
+yarn timing-trace lhr.json
+```
+
+That will generate `lhr.json.timing.trace.json`. Then, drag 'n drop that file into `chrome://tracing`.
+
 ## Unhandled promise rejections
 
 Getting errors like these?

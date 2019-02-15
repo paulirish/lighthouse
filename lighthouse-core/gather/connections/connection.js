@@ -7,7 +7,7 @@
 
 const EventEmitter = require('events').EventEmitter;
 const log = require('lighthouse-logger');
-const LHError = require('../../lib/errors');
+const LHError = require('../../lib/lh-error');
 
 // TODO(bckenny): CommandCallback properties should be tied by command type after
 // https://github.com/Microsoft/TypeScript/pull/22348. See driver.js TODO.

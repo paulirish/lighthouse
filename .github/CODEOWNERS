@@ -12,9 +12,10 @@ lighthouse-core/report/             @paulirish
 
 lighthouse-core/config/             @patrickhulce       @brendankenny
 lighthouse-core/lib/                @brendankenny       @paulirish
-lighthouse-extension/               @paulirish          @patrickhulce
+clients/                            @paulirish          @patrickhulce
 lighthouse-viewer/                  @ebidel             @brendankenny
 
 docs/                               @paulirish
+proto/                              @brendankenny       @exterkamp
 
-# no explicit owner for plots, travis, etc
+# no explicit owner for travis, etc

@@ -12,6 +12,23 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if a table intended for layout contains data annotations as it can be confusing for screen readers. This is evaluated by checking if tables with the ARIA role of `presentation` or `none` contain any data elements such as table headers (`<th>`). This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: 'Presentational `<table>` elements avoid using `<th>`, `<caption>` or the ' +
+      '`[summary]` attribute.',
+  /** Title of an accesibility audit that evaluates if a table intended for layout contains data annotations as it can be confusing for screen readers. This is evaluated by checking if tables with the ARIA role of `presentation` or `none` contain any data elements such as table headers (`<th>`). This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: 'Presentational `<table>` elements do not avoid using `<th>`, ' +
+      '`<caption>` or the `[summary]` attribute.',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'A table being used for layout purposes should not include data elements, ' +
+      'such as the th or caption elements or the summary attribute, because this can ' +
+      'create a confusing experience for screen reader users. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/layout-table?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class LayoutTable extends AxeAudit {
   /**
@@ -20,17 +37,13 @@ class LayoutTable extends AxeAudit {
   static get meta() {
     return {
       id: 'layout-table',
-      title: 'Presentational `<table>` elements avoid using `<th>`, `<caption>` or the ' +
-          '`[summary]` attribute.',
-      failureTitle: 'Presentational `<table>` elements do not avoid using `<th>`, ' +
-          '`<caption>` or the `[summary]` attribute.',
-      description: 'A table being used for layout purposes should not include data elements, ' +
-          'such as the th or caption elements or the summary attribute, because this can ' +
-          'create a confusing experience for screen reader users. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/layout-table?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = LayoutTable;
+module.exports.UIStrings = UIStrings;

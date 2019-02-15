@@ -29,12 +29,14 @@
  *      document
  *   );
  *
- * @param {string} LHResultJsonString The stringified version of {LH.Result}
+ * @param {LH.Result | string} LHResult The stringified version of {LH.Result}
  * @param {Document} document The host page's window.document
  * @return {{scoreGaugeEl: Element, perfCategoryEl: Element, finalScreenshotDataUri: string|null}}
  */
-function prepareLabData(LHResultJsonString, document) {
-  const lhResult = /** @type {LH.Result} */ JSON.parse(LHResultJsonString);
+function prepareLabData(LHResult, document) {
+  const lhResult = (typeof LHResult === 'string') ?
+    /** @type {LH.Result} */ (JSON.parse(LHResult)) : LHResult;
+
   const dom = new DOM(document);
 
   // Assume fresh styles needed on every call, so mark all template styles as unused.
@@ -44,6 +46,11 @@ function prepareLabData(LHResultJsonString, document) {
   const perfCategory = reportLHR.reportCategories.find(cat => cat.id === 'performance');
   if (!perfCategory) throw new Error(`No performance category. Can't make lab data section`);
   if (!reportLHR.categoryGroups) throw new Error(`No category groups found.`);
+
+  // Use custom title and description.
+  reportLHR.categoryGroups.metrics.title = lhResult.i18n.rendererFormattedStrings.labDataTitle;
+  reportLHR.categoryGroups.metrics.description =
+      lhResult.i18n.rendererFormattedStrings.lsPerformanceCategoryDescription;
 
   const perfRenderer = new PerformanceCategoryRenderer(dom, new DetailsRenderer(dom));
   // PSI environment string will ensure the categoryHeader and permalink elements are excluded
@@ -67,7 +74,7 @@ function prepareLabData(LHResultJsonString, document) {
 function _getFinalScreenshot(perfCategory) {
   const auditRef = perfCategory.auditRefs.find(audit => audit.id === 'final-screenshot');
   if (!auditRef || !auditRef.result || auditRef.result.scoreDisplayMode === 'error') return null;
-  return auditRef.result.details.data;
+  return /** @type {LH.Audit.Details.Screenshot} */ (auditRef.result.details).data;
 }
 
 if (typeof module !== 'undefined' && module.exports) {

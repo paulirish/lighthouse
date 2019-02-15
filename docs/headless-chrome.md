@@ -5,12 +5,12 @@
 Setup:
 
 ```sh
-# get node 6
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - &&\
+# Lighthouse requires Node 8 LTS (8.9) or later.
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs npm
 
 # get chromium (stable)
-apt-get install chromium-browser
+apt-get install chromium
 
 # install lighthouse
 npm i -g lighthouse
@@ -53,6 +53,30 @@ xvfb-run --server-args='-screen 0, 1024x768x16' \
 
 # Kick off Lighthouse run on same port as debugging port.
 lighthouse --port=9222 https://github.com
+```
+
+## Posting Lighthouse reports to GitHub Gists
+
+Be sure to replace `${GITHUB_OWNER}` and `${GITHUB_TOKEN}` with your own credentials. The code below is tested on Ubuntu. 
+
+```sh
+apt-get install -y nodejs npm chromium jq
+npm install -g lighthouse
+
+# Run lighthouse as JSON, pipe it to jq to wrangle and send it to GitHub Gist via curl 
+# so Lighthouse Viewer can grab it. 
+lighthouse "http://localhost" --chrome-flags="--no-sandbox --headless" \
+  --output json \
+| jq -r "{ description: \"YOUR TITLE HERE\", public: \"false\", files: {\"$(date "+%Y%m%d").lighthouse.report.json\": {content: (. | tostring) }}}" \
+| curl -sS -X POST -H 'Content-Type: application/json' \
+    -u ${GITHUB_OWNER}:${GITHUB_TOKEN} \
+    -d @- https://api.github.com/gists > results.gist
+
+# Let's be nice and add the Lighthouse Viewer link in the Gist description.
+GID=$(cat results.gist | jq -r '.id') && \
+curl -sS -X POST -H 'Content-Type: application/json' \
+  -u ${GITHUB_OWNER}:${GITHUB_TOKEN} \
+  -d "{ \"description\": \"YOUR TITLE HERE - Lighthouse: https://googlechrome.github.io/lighthouse/viewer/?gist=${GID}\" }" "https://api.github.com/gists/${GID}" > updated.gist
 ```
 
 ## Node module

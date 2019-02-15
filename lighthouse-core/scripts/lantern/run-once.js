@@ -9,20 +9,20 @@
 const fs = require('fs');
 const path = require('path');
 const PredictivePerf = require('../../../lighthouse-core/audits/predictive-perf');
-const Runner = require('../../../lighthouse-core/runner');
 const Simulator = require('../../../lighthouse-core/lib/dependency-graph/simulator/simulator');
 const traceSaver = require('../../../lighthouse-core/lib/lantern-trace-saver');
 
 if (process.argv.length !== 4) throw new Error('Usage $0 <trace file> <devtools file>');
 
 async function run() {
-  const tracePath = require.resolve(process.argv[2]);
+  const tracePath = path.resolve(process.cwd(), process.argv[2]);
   const traces = {defaultPass: require(tracePath)};
-  const devtoolsLogs = {defaultPass: require(process.argv[3])};
-  const artifacts = {traces, devtoolsLogs, ...Runner.instantiateComputedArtifacts()};
+  const devtoolsLogs = {defaultPass: require(path.resolve(process.cwd(), process.argv[3]))};
+  const artifacts = {traces, devtoolsLogs};
 
+  const context = {computedCache: new Map()};
   // @ts-ignore - We don't need the full artifacts
-  const result = await PredictivePerf.audit(artifacts);
+  const result = await PredictivePerf.audit(artifacts, context);
   process.stdout.write(JSON.stringify(result.details.items[0], null, 2));
 
   // Dump the TTI graph with simulated timings to a trace if LANTERN_DEBUG is enabled

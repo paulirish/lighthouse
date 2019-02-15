@@ -80,9 +80,8 @@ class ReportGenerator {
       });
     });
 
-    // @ts-ignore TS loses track of type Array
-    const flattedTable = [].concat(...table);
-    return [header, ...flattedTable].map(row => row.join(separator)).join(CRLF);
+    return [header].concat(...table)
+      .map(row => row.join(separator)).join(CRLF);
   }
 
   /**

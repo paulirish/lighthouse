@@ -12,6 +12,23 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if all table cell elements in a table that use the headers HTML attribute use it correctly to refer to cells within the same table. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: 'Cells in a `<table>` element that use the `[headers]` attribute only refer ' +
+      'to other cells of that same table.',
+  /** Title of an accesibility audit that evaluates if all table cell elements in a table that use the headers HTML attribute use it correctly to refer to cells within the same table. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: 'Cells in a `<table>` element that use the `[headers]` ' +
+      'attribute refers to other cells of that same table.',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Screen readers have features to make navigating tables easier. Ensuring ' +
+      '`<td>` cells using the `[headers]` attribute only refer to other cells in the same ' +
+      'table may improve the experience for screen reader users. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/td-headers-attr?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class TDHeadersAttr extends AxeAudit {
   /**
@@ -20,17 +37,13 @@ class TDHeadersAttr extends AxeAudit {
   static get meta() {
     return {
       id: 'td-headers-attr',
-      title: 'Cells in a `<table>` element that use the `[headers]` attribute only refer ' +
-          'to other cells of that same table.',
-      failureTitle: 'Cells in a `<table>` element that use the `[headers]` ' +
-          'attribute refers to other cells of that same table.',
-      description: 'Screen readers have features to make navigating tables easier. Ensuring ' +
-          '`<td>` cells using the `[headers]` attribute only refer to other cells in the same ' +
-          'table may improve the experience for screen reader users. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/td-headers-attr?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = TDHeadersAttr;
+module.exports.UIStrings = UIStrings;

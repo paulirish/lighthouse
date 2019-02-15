@@ -26,9 +26,9 @@ describe('Num DOM nodes audit', () => {
     assert.equal(auditResult.score, 0.43);
     assert.equal(auditResult.rawValue, numNodes);
     expect(auditResult.displayValue).toBeDisplayString('1,500 nodes');
-    assert.equal(auditResult.details.items[0].totalNodes, numNodes.toLocaleString());
-    assert.equal(auditResult.details.items[0].depth, '1');
-    assert.equal(auditResult.details.items[0].width, '2');
+    assert.equal(auditResult.details.items[0].value, numNodes.toLocaleString());
+    assert.equal(auditResult.details.items[1].value, '1');
+    assert.equal(auditResult.details.items[2].value, '2');
   });
 
   it('calculates score hitting top distribution', () => {

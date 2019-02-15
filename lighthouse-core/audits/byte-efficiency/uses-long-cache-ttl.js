@@ -6,13 +6,13 @@
 'use strict';
 
 const assert = require('assert');
-// @ts-ignore - typed where used.
 const parseCacheControl = require('parse-cache-control');
 const Audit = require('../audit');
 const NetworkRequest = require('../../lib/network-request');
 const URL = require('../../lib/url-shim');
 const linearInterpolation = require('../../lib/statistics').linearInterpolation;
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
+const NetworkRecords = require('../../computed/network-records.js');
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the cache policy applies to the page's static assets. Cache refers to browser disk cache, which keeps old versions of network resources around for future use. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -104,22 +104,14 @@ class CacheHeaders extends Audit {
   }
 
   /**
-   * Computes the user-specified cache lifetime, 0 if explicit no-cache policy is in effect, and null if not
-   * user-specified. See https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-   *
+   * Return max-age if defined, otherwise expires header if defined, and null if not.
    * @param {Map<string, string>} headers
-   * @param {{'no-cache'?: boolean,'no-store'?: boolean, 'max-age'?: number}} cacheControl Follows the potential settings of cache-control, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+   * @param {ReturnType<typeof parseCacheControl>} cacheControl
    * @return {?number}
    */
   static computeCacheLifetimeInSeconds(headers, cacheControl) {
-    if (cacheControl) {
-      // Cache-Control takes precendence over expires
-      if (cacheControl['no-cache'] || cacheControl['no-store']) return 0;
-      const maxAge = cacheControl['max-age'];
-      if (maxAge !== undefined && Number.isFinite(maxAge)) return Math.max(maxAge, 0);
-    } else if ((headers.get('pragma') || '').includes('no-cache')) {
-      // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
-      return 0;
+    if (cacheControl && cacheControl['max-age'] !== undefined) {
+      return cacheControl['max-age'];
     }
 
     const expiresHeaders = headers.get('expires');
@@ -127,7 +119,7 @@ class CacheHeaders extends Audit {
       const expires = new Date(expiresHeaders).getTime();
       // Invalid expires values MUST be treated as already expired
       if (!expires) return 0;
-      return Math.max(0, Math.ceil((expires - Date.now()) / 1000));
+      return Math.ceil((expires - Date.now()) / 1000);
     }
 
     return null;
@@ -169,13 +161,38 @@ class CacheHeaders extends Audit {
   }
 
   /**
+   * Returns true if headers suggest a record should not be cached for a long time.
+   * @param {Map<string, string>} headers
+   * @param {ReturnType<typeof parseCacheControl>} cacheControl
+   * @returns {boolean}
+   */
+  static shouldSkipRecord(headers, cacheControl) {
+    // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
+    if (!cacheControl && (headers.get('pragma') || '').includes('no-cache')) {
+      return true;
+    }
+
+    // Ignore assets where policy implies they should not be cached long periods
+    if (cacheControl &&
+      (
+        cacheControl['must-revalidate'] ||
+        cacheControl['no-cache'] ||
+        cacheControl['no-store'] ||
+        cacheControl['private'])) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
    */
   static audit(artifacts, context) {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    return artifacts.requestNetworkRecords(devtoolsLogs).then(records => {
+    return NetworkRecords.request(devtoolsLogs, context).then(records => {
       const results = [];
       let queryStringCount = 0;
       let totalWastedBytes = 0;
@@ -196,15 +213,20 @@ class CacheHeaders extends Audit {
         }
 
         const cacheControl = parseCacheControl(headers.get('cache-control'));
-        let cacheLifetimeInSeconds = CacheHeaders.computeCacheLifetimeInSeconds(
-          headers,
-          cacheControl
-        );
+        if (this.shouldSkipRecord(headers, cacheControl)) {
+          continue;
+        }
 
-        // Ignore assets with an explicit no-cache policy
-        if (cacheLifetimeInSeconds === 0) continue;
+        // Ignore if cacheLifetimeInSeconds is a nonpositive number.
+        let cacheLifetimeInSeconds = CacheHeaders.computeCacheLifetimeInSeconds(
+          headers, cacheControl);
+        if (cacheLifetimeInSeconds !== null &&
+          (!Number.isFinite(cacheLifetimeInSeconds) || cacheLifetimeInSeconds <= 0)) {
+          continue;
+        }
         cacheLifetimeInSeconds = cacheLifetimeInSeconds || 0;
 
+        // Ignore assets whose cache lifetime is already high enough
         const cacheHitProbability = CacheHeaders.getCacheHitProbability(cacheLifetimeInSeconds);
         if (cacheHitProbability > IGNORE_THRESHOLD_IN_PERCENT) continue;
 
@@ -215,9 +237,19 @@ class CacheHeaders extends Audit {
         totalWastedBytes += wastedBytes;
         if (url.includes('?')) queryStringCount++;
 
+        // Include cacheControl info (if it exists) per url as a diagnostic.
+        /** @type {LH.Audit.Details.Diagnostic|undefined} */
+        let diagnostic;
+        if (cacheControl) {
+          diagnostic = {
+            type: 'diagnostic',
+            ...cacheControl,
+          };
+        }
+
         results.push({
           url,
-          cacheControl,
+          diagnostic,
           cacheLifetimeMs: cacheLifetimeInSeconds * 1000,
           cacheHitProbability,
           totalBytes,
@@ -225,9 +257,11 @@ class CacheHeaders extends Audit {
         });
       }
 
-      results.sort(
-        (a, b) => a.cacheLifetimeMs - b.cacheLifetimeMs || b.totalBytes - a.totalBytes
-      );
+      results.sort((a, b) => {
+        return a.cacheLifetimeMs - b.cacheLifetimeMs ||
+          b.totalBytes - a.totalBytes ||
+          a.url.localeCompare(b.url);
+      });
 
       const score = Audit.computeLogNormalScore(
         totalWastedBytes,
@@ -235,6 +269,7 @@ class CacheHeaders extends Audit {
         context.options.scoreMedian
       );
 
+      /** @type {LH.Audit.Details.Table['headings']} */
       const headings = [
         {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
         // TODO(i18n): pre-compute localized duration

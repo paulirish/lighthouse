@@ -8,8 +8,11 @@
 const URL = require('../lib/url-shim');
 const Audit = require('./audit');
 const UnusedBytes = require('./byte-efficiency/byte-efficiency-audit');
-const CriticalRequestChains = require('../gather/computed/critical-request-chains');
-const i18n = require('../lib/i18n');
+const CriticalRequestChains = require('../computed/critical-request-chains.js');
+const i18n = require('../lib/i18n/i18n.js');
+const MainResource = require('../computed/main-resource.js');
+const PageDependencyGraph = require('../computed/page-dependency-graph.js');
+const LoadSimulator = require('../computed/load-simulator.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to use <link rel=preload> to initiate important network requests earlier during page load. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -17,6 +20,9 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user *why* they should preload important network requests. The associated network requests are started halfway through pageload (or later) but should be started at the beginning. This is displayed after a user expands the section to see more. No character length limits. '<link rel=preload>' is the html code the user would include in their page and shouldn't be translated. 'Learn More' becomes link text to additional documentation. */
   description: 'Consider using <link rel=preload> to prioritize fetching resources that are ' +
     'currently requested later in page load. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/preload).',
+  /** A warning message that is shown when the user tried to follow the advice of the audit, but it's not working as expected. Forgetting to set the `crossorigin` HTML attribute, or setting it to an incorrect value, on the link is a common mistake when adding preload links. */
+  crossoriginWarning: 'A preload <link> was found for "{preloadURL}" but was not used ' +
+    'by the browser. Check that you are using the `crossorigin` attribute properly.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -55,6 +61,25 @@ class UsesRelPreloadAudit extends Audit {
     });
 
     return urls;
+  }
+
+  /**
+   * Finds which URLs were attempted to be preloaded, but failed to be reused and were requested again.
+   *
+   * @param {LH.Gatherer.Simulation.GraphNode} graph
+   * @return {Set<string>}
+   */
+  static getURLsFailedToPreload(graph) {
+    /** @type {Array<LH.Artifacts.NetworkRequest>} */
+    const requests = [];
+    graph.traverse(node => node.type === 'network' && requests.push(node.record));
+
+    const preloadRequests = requests.filter(req => req.isLinkPreload);
+    const preloadURLs = new Set(preloadRequests.map(req => req.url));
+    // A failed preload attempt will manifest as a URL that was requested twice.
+    // Once with `isLinkPreload` AND again without `isLinkPreload`.
+    const failedRequests = requests.filter(req => preloadURLs.has(req.url) && !req.isLinkPreload);
+    return new Set(failedRequests.map(req => req.url));
   }
 
   /**
@@ -170,9 +195,9 @@ class UsesRelPreloadAudit extends Audit {
     const simulatorOptions = {trace, devtoolsLog, settings: context.settings};
 
     const [mainResource, graph, simulator] = await Promise.all([
-      artifacts.requestMainResource({devtoolsLog, URL}),
-      artifacts.requestPageDependencyGraph({trace, devtoolsLog}),
-      artifacts.requestLoadSimulator(simulatorOptions),
+      MainResource.request({devtoolsLog, URL}, context),
+      PageDependencyGraph.request({trace, devtoolsLog}, context),
+      LoadSimulator.request(simulatorOptions, context),
     ]);
 
     const urls = UsesRelPreloadAudit.getURLsToPreload(mainResource, graph);
@@ -180,7 +205,15 @@ class UsesRelPreloadAudit extends Audit {
     // sort results by wastedTime DESC
     results.sort((a, b) => b.wastedMs - a.wastedMs);
 
-    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+    /** @type {Array<string>|undefined} */
+    let warnings;
+    const failedURLs = UsesRelPreloadAudit.getURLsFailedToPreload(graph);
+    if (failedURLs.size) {
+      warnings = Array.from(failedURLs)
+        .map(preloadURL => str_(UIStrings.crossoriginWarning, {preloadURL}));
+    }
+
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'wastedMs', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnWastedMs)},
@@ -190,11 +223,14 @@ class UsesRelPreloadAudit extends Audit {
     return {
       score: UnusedBytes.scoreForWastedMs(wastedMs),
       rawValue: wastedMs,
-      displayValue: str_(i18n.UIStrings.displayValueMsSavings, {wastedMs}),
+      displayValue: wastedMs ?
+        str_(i18n.UIStrings.displayValueMsSavings, {wastedMs}) :
+        '',
       extendedInfo: {
         value: results,
       },
       details,
+      warnings,
     };
   }
 }

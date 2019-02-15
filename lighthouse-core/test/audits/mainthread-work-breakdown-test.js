@@ -7,7 +7,6 @@
 
 /* eslint-env jest */
 const PageExecutionTimings = require('../../audits/mainthread-work-breakdown.js');
-const Runner = require('../../runner.js');
 const assert = require('assert');
 const options = PageExecutionTimings.defaultOptions;
 
@@ -53,12 +52,9 @@ describe('Performance: page execution timings audit', () => {
   }
 
   it('should compute the correct pageExecutionTiming values for the pwa trace', async () => {
-    const artifacts = Object.assign(
-      {traces: {defaultPass: acceptableTrace}},
-      Runner.instantiateComputedArtifacts()
-    );
+    const artifacts = {traces: {defaultPass: acceptableTrace}};
 
-    const output = await PageExecutionTimings.audit(artifacts, {options});
+    const output = await PageExecutionTimings.audit(artifacts, {options, computedCache: new Map()});
     assert.deepStrictEqual(keyOutput(output), acceptableTraceExpectations);
     assert.equal(Math.round(output.rawValue), 1360);
     assert.equal(output.details.items.length, 7);
@@ -66,13 +62,11 @@ describe('Performance: page execution timings audit', () => {
   });
 
   it('should compute the correct values when simulated', async () => {
-    const artifacts = Object.assign(
-      {traces: {defaultPass: acceptableTrace}},
-      Runner.instantiateComputedArtifacts()
-    );
+    const artifacts = {traces: {defaultPass: acceptableTrace}};
 
     const settings = {throttlingMethod: 'simulate', throttling: {cpuSlowdownMultiplier: 3}};
-    const output = await PageExecutionTimings.audit(artifacts, {options, settings});
+    const context = {options, settings, computedCache: new Map()};
+    const output = await PageExecutionTimings.audit(artifacts, context);
 
     const keyedOutput = keyOutput(output);
     for (const key of Object.keys(acceptableTraceExpectations)) {
@@ -87,12 +81,9 @@ describe('Performance: page execution timings audit', () => {
   });
 
   it('should compute the correct values for the redirect trace', async () => {
-    const artifacts = Object.assign(
-      {traces: {defaultPass: siteWithRedirectTrace}},
-      Runner.instantiateComputedArtifacts()
-    );
+    const artifacts = {traces: {defaultPass: siteWithRedirectTrace}};
 
-    const output = await PageExecutionTimings.audit(artifacts, {options});
+    const output = await PageExecutionTimings.audit(artifacts, {options, computedCache: new Map()});
     assert.deepStrictEqual(keyOutput(output), siteWithRedirectTraceExpectations);
     assert.equal(Math.round(output.rawValue), 784);
     assert.equal(output.details.items.length, 7);
@@ -100,12 +91,9 @@ describe('Performance: page execution timings audit', () => {
   });
 
   it('should compute the correct values for the load trace', async () => {
-    const artifacts = Object.assign(
-      {traces: {defaultPass: {traceEvents: loadTrace}}},
-      Runner.instantiateComputedArtifacts()
-    );
+    const artifacts = {traces: {defaultPass: {traceEvents: loadTrace}}};
 
-    const output = await PageExecutionTimings.audit(artifacts, {options});
+    const output = await PageExecutionTimings.audit(artifacts, {options, computedCache: new Map()});
     assert.deepStrictEqual(keyOutput(output), loadTraceExpectations);
     assert.equal(Math.round(output.rawValue), 933);
     assert.equal(output.details.items.length, 6);
@@ -113,12 +101,10 @@ describe('Performance: page execution timings audit', () => {
   });
 
   it('should get no data when no events are present', () => {
-    const artifacts = Object.assign(
-      {traces: {defaultPass: errorTrace}},
-      Runner.instantiateComputedArtifacts()
-    );
+    const artifacts = {traces: {defaultPass: errorTrace}};
 
-    return PageExecutionTimings.audit(artifacts, {options}).then(output => {
+    const context = {options, computedCache: new Map()};
+    return PageExecutionTimings.audit(artifacts, context).then(output => {
       assert.equal(output.details.items.length, 0);
       assert.equal(output.score, 1);
       assert.equal(Math.round(output.rawValue), 0);

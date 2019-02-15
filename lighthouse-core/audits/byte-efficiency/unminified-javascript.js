@@ -6,8 +6,8 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
-const esprima = require('esprima');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
+const computeTokenLength = require('../../lib/minification-estimator').computeJSTokenLength;
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to minify the page’s JS code to reduce file size. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -53,17 +53,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
    */
   static computeWaste(scriptContent, networkRecord) {
     const contentLength = scriptContent.length;
-    let totalTokenLength = 0;
-
-    /** @type {Array<esprima.Token> & {errors: Error[]}} */
-    const tokens = (esprima.tokenize(scriptContent, {tolerant: true}));
-    if (!tokens.length && tokens.errors && tokens.errors.length) {
-      throw tokens.errors[0];
-    }
-
-    for (const token of tokens) {
-      totalTokenLength += token.value.length;
-    }
+    const totalTokenLength = computeTokenLength(scriptContent);
 
     const totalBytes = ByteEfficiencyAudit.estimateTransferSize(networkRecord, contentLength,
       'Script');
@@ -105,7 +95,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       }
     }
 
-    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},

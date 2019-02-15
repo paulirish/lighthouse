@@ -10,28 +10,24 @@ const assert = require('assert');
 const manifestParser = require('../../lib/manifest-parser');
 
 const manifestSrc = JSON.stringify(require('../fixtures/manifest.json'));
+const manifestDirtyJpgSrc = JSON.stringify(require('../fixtures/manifest-dirty-jpg.json'));
 const EXAMPLE_MANIFEST_URL = 'https://example.com/manifest.json';
 const EXAMPLE_DOC_URL = 'https://example.com/index.html';
-const exampleManifest = noUrlManifestParser(manifestSrc);
-
-const Runner = require('../../runner.js');
-
-function generateMockArtifacts() {
-  const computedArtifacts = Runner.instantiateComputedArtifacts();
-  const mockArtifacts = Object.assign({}, computedArtifacts, {
-    Manifest: exampleManifest,
-  });
-  return mockArtifacts;
-}
 
 /**
- * Simple manifest parsing helper when the manifest URLs aren't material to the
- * test. Uses example.com URLs for testing.
- * @param {string} manifestSrc
- * @return {!ManifestNode<(!Manifest|undefined)>}
+ * @param {string} src
  */
-function noUrlManifestParser(manifestSrc) {
-  return manifestParser(manifestSrc, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+function generateMockArtifacts(src = manifestSrc) {
+  const exampleManifest = manifestParser(src, EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+
+  return {
+    WebAppManifest: exampleManifest,
+  };
+}
+function generateMockAuditContext() {
+  return {
+    computedCache: new Map(),
+  };
 }
 
 /* eslint-env jest */
@@ -39,9 +35,10 @@ describe('PWA: splash screen audit', () => {
   describe('basics', () => {
     it('fails if page had no manifest', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest = null;
+      artifacts.WebAppManifest = null;
+      const context = generateMockAuditContext();
 
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('No manifest was fetched'), result.explanation);
       });
@@ -49,8 +46,9 @@ describe('PWA: splash screen audit', () => {
 
     it('fails with a non-parsable manifest', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      artifacts.WebAppManifest = manifestParser('{,:}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      const context = generateMockAuditContext();
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('failed to parse as valid JSON'));
       });
@@ -58,8 +56,9 @@ describe('PWA: splash screen audit', () => {
 
     it('fails when an empty manifest is present', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      artifacts.WebAppManifest = manifestParser('{}', EXAMPLE_MANIFEST_URL, EXAMPLE_DOC_URL);
+      const context = generateMockAuditContext();
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation);
         assert.strictEqual(result.details.items[0].failures.length, 4);
@@ -67,7 +66,8 @@ describe('PWA: splash screen audit', () => {
     });
 
     it('passes with complete manifest and SW', () => {
-      return SplashScreenAudit.audit(generateMockArtifacts()).then(result => {
+      const context = generateMockAuditContext();
+      return SplashScreenAudit.audit(generateMockArtifacts(), context).then(result => {
         assert.strictEqual(result.rawValue, true, result.explanation);
         assert.strictEqual(result.explanation, undefined, result.explanation);
       });
@@ -77,9 +77,10 @@ describe('PWA: splash screen audit', () => {
   describe('one-off-failures', () => {
     it('fails when a manifest contains no name', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest.value.name.value = undefined;
+      artifacts.WebAppManifest.value.name.value = undefined;
+      const context = generateMockAuditContext();
 
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('name'), result.explanation);
       });
@@ -87,21 +88,22 @@ describe('PWA: splash screen audit', () => {
 
     it('fails when a manifest contains no background color', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest.value.background_color.value = undefined;
+      artifacts.WebAppManifest.value.background_color.value = undefined;
+      const context = generateMockAuditContext();
 
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('background_color'), result.explanation);
       });
     });
 
-    it('fails when a manifest contains no background color', () => {
-      const artifacts = generateMockArtifacts();
-      artifacts.Manifest = noUrlManifestParser(JSON.stringify({
+    it('fails when a manifest contains invalid background color', () => {
+      const artifacts = generateMockArtifacts(JSON.stringify({
         background_color: 'no',
       }));
+      const context = generateMockAuditContext();
 
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('background_color'), result.explanation);
       });
@@ -109,9 +111,10 @@ describe('PWA: splash screen audit', () => {
 
     it('fails when a manifest contains no theme color', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest.value.theme_color.value = undefined;
+      artifacts.WebAppManifest.value.theme_color.value = undefined;
+      const context = generateMockAuditContext();
 
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
         assert.ok(result.explanation.includes('theme_color'), result.explanation);
       });
@@ -119,11 +122,24 @@ describe('PWA: splash screen audit', () => {
 
     it('fails if page had no icons in the manifest', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.Manifest.value.icons.value = [];
+      artifacts.WebAppManifest.value.icons.value = [];
+      const context = generateMockAuditContext();
 
-      return SplashScreenAudit.audit(artifacts).then(result => {
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.rawValue, false);
-        assert.ok(result.explanation.includes('icons'), result.explanation);
+        assert.ok(result.explanation.includes('PNG icon'), result.explanation);
+      });
+    });
+
+    it('fails if icons were present, but no valid PNG present', () => {
+      const artifacts = generateMockArtifacts(manifestDirtyJpgSrc);
+      const context = generateMockAuditContext();
+
+      return SplashScreenAudit.audit(artifacts, context).then(result => {
+        assert.strictEqual(result.rawValue, false);
+        assert.ok(result.explanation.includes('PNG icon'), result.explanation);
+        const failures = result.details.items[0].failures;
+        assert.strictEqual(failures.length, 1, failures);
       });
     });
   });

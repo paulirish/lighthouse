@@ -6,7 +6,17 @@
 
 /* eslint-disable */
 
-document.write('<script src="level-2.js?delay=500"></script>')
+document.write('<script src="/perf/level-2.js?delay=500"></script>');
+document.write('<script src="/perf/level-2.js?warning&delay=500"></script>');
 
-// load another origin
-fetch('http://localhost:10503/preload.html');
+// delay our preconnect-candidates so that they're not assumed to be working already
+setTimeout(() => {
+  // load another origin
+  fetch('http://localhost:10503/preload.html');
+
+  // load another origin in a way where the `crossorigin` attribute matters
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css?family=Lobster%20Two';
+  document.head.appendChild(link);
+}, 300);

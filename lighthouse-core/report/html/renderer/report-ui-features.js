@@ -30,7 +30,7 @@ class ReportUIFeatures {
    * @param {DOM} dom
    */
   constructor(dom) {
-    /** @type {LH.ReportResult} */
+    /** @type {LH.Result} */
     this.json; // eslint-disable-line no-unused-expressions
     /** @type {DOM} */
     this._dom = dom;
@@ -44,6 +44,8 @@ class ReportUIFeatures {
     this.headerSticky; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
     this.headerBackground; // eslint-disable-line no-unused-expressions
+    /** @type {HTMLElement} */
+    this.headerContent; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
     this.lighthouseIcon; // eslint-disable-line no-unused-expressions
     /** @type {!HTMLElement} */
@@ -78,7 +80,7 @@ class ReportUIFeatures {
   /**
    * Adds export button, print, and other functionality to the report. The method
    * should be called whenever the report needs to be re-rendered.
-   * @param {LH.ReportResult} report
+   * @param {LH.Result} report
    */
   initFeatures(report) {
     if (this._dom.isDevTools()) return;
@@ -105,7 +107,7 @@ class ReportUIFeatures {
   }
 
   _setupMediaQueryListeners() {
-    const mediaQuery = self.matchMedia('(max-width: 600px)');
+    const mediaQuery = self.matchMedia('(max-width: 500px)');
     mediaQuery.addListener(this.onMediaQueryChange);
     // Ensure the handler is called on init
     this.onMediaQueryChange(mediaQuery);
@@ -130,20 +132,18 @@ class ReportUIFeatures {
 
   _setupHeaderAnimation() {
     const scoresWrapper = this._dom.find('.lh-scores-wrapper', this._document);
-    this.headerOverlap = /** @type {number} */
-      // @ts-ignore - TODO: move off CSSOM to support other browsers
-      (scoresWrapper.computedStyleMap().get('margin-top').value);
-
+    const computedMarginTop = window.getComputedStyle(scoresWrapper).marginTop;
+    this.headerOverlap = parseFloat(computedMarginTop || '0');
     this.headerSticky = this._dom.find('.lh-header-sticky', this._document);
     this.headerBackground = this._dom.find('.lh-header-bg', this._document);
+    this.headerContent = this._dom.find('.lh-header', this._document);
     this.lighthouseIcon = this._dom.find('.lh-lighthouse', this._document);
     this.scoresWrapperBg = this._dom.find('.lh-scores-wrapper__background', this._document);
     this.productInfo = this._dom.find('.lh-product-info', this._document);
     this.toolbar = this._dom.find('.lh-toolbar', this._document);
     this.toolbarMetadata = this._dom.find('.lh-toolbar__metadata', this._document);
-
-    // @ts-ignore - TODO: move off CSSOM to support other browsers
-    this.headerHeight = this.headerBackground.computedStyleMap().get('height').value;
+    const computedHeight = window.getComputedStyle(this.headerBackground).height;
+    this.headerHeight = parseFloat(computedHeight || '0');
 
     this._document.addEventListener('scroll', this.onScroll, {passive: true});
 
@@ -221,17 +221,17 @@ class ReportUIFeatures {
   animateHeader() {
     const collapsedHeaderHeight = 50;
     const heightDiff = this.headerHeight - collapsedHeaderHeight + this.headerOverlap;
-    const scrollPct = Math.min(1,
-      this.latestKnownScrollY / (this.headerHeight - collapsedHeaderHeight));
+    const scrollPct = Math.max(0, Math.min(1,
+      this.latestKnownScrollY / (this.headerHeight - collapsedHeaderHeight)));
 
     const scoresContainer = /** @type {HTMLElement} */ (this.scoresWrapperBg.parentElement);
 
     this.headerSticky.style.transform = `translateY(${heightDiff * scrollPct * -1}px)`;
     this.headerBackground.style.transform = `translateY(${scrollPct * this.headerOverlap}px)`;
     this.lighthouseIcon.style.transform =
-      `translate3d(calc(var(--report-width) / 2),` +
-      ` calc(-100% - ${scrollPct * this.headerOverlap * -1}px), 0) scale(${1 - scrollPct})`;
-    this.lighthouseIcon.style.opacity = Math.max(0, 1 - scrollPct).toString();
+      `translate3d(0,` +
+      `-${scrollPct * this.headerOverlap * -1}px, 0) scale(${1 - scrollPct})`;
+    this.headerContent.style.opacity = (1 - scrollPct).toString();
 
     // Switch up the score background & shadows
     this.scoresWrapperBg.style.opacity = (1 - scrollPct).toString();
@@ -241,10 +241,12 @@ class ReportUIFeatures {
     scoreShadow.style.transform = `scaleY(${1 - scrollPct * 0.2})`;
 
     // Fade & move the scorescale
-    const scoreScalePositionDelta = 32;
-    const scoreScale = this._dom.find('.lh-scorescale', scoresContainer);
-    scoreScale.style.opacity = `${1 - scrollPct}`;
-    scoreScale.style.transform = `translateY(${scrollPct * -scoreScalePositionDelta}px)`;
+    try {
+      const scoreScalePositionDelta = 32;
+      const scoreScale = this._dom.find('.lh-scorescale', scoresContainer);
+      scoreScale.style.opacity = `${1 - scrollPct}`;
+      scoreScale.style.transform = `translateY(${scrollPct * -scoreScalePositionDelta}px)`;
+    } catch (e) {}
 
     // Move the toolbar & export
     this.toolbar.style.transform = `translateY(${heightDiff * scrollPct}px)`;
@@ -356,7 +358,7 @@ class ReportUIFeatures {
   /**
    * Opens a new tab to the online viewer and sends the local page's JSON results
    * to the online viewer using postMessage.
-   * @param {LH.ReportResult} reportJson
+   * @param {LH.Result} reportJson
    * @param {string} viewerPath
    * @protected
    */
@@ -367,8 +369,7 @@ class ReportUIFeatures {
     // load event, however it is cross-domain and won't fire. Instead, listen
     // for a message from the target app saying "I'm open".
     const json = reportJson;
-    window.addEventListener('message', function msgHandler(/** @type {Event} */ e) {
-      const messageEvent = /** @type {MessageEvent} */ (e);
+    window.addEventListener('message', function msgHandler(messageEvent) {
       if (messageEvent.origin !== VIEWER_ORIGIN) {
         return;
       }
@@ -472,7 +473,7 @@ class ReportUIFeatures {
     const ext = blob.type.match('json') ? '.json' : '.html';
     const href = URL.createObjectURL(blob);
 
-    const a = /** @type {HTMLAnchorElement} */ (this._dom.createElement('a'));
+    const a = this._dom.createElement('a');
     a.download = `${filename}${ext}`;
     a.href = href;
     this._document.body.appendChild(a); // Firefox requires anchor to be in the DOM.

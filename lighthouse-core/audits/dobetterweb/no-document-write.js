@@ -35,6 +35,7 @@ class NoDocWriteAudit extends ViolationAudit {
   static audit(artifacts) {
     const results = ViolationAudit.getViolationResults(artifacts, /document\.write/);
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
       {key: 'label', itemType: 'text', text: 'Location'},

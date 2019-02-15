@@ -7,7 +7,8 @@
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const UnusedCSSRules = require('./unused-css-rules');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
+const computeTokenLength = require('../../lib/minification-estimator').computeCSSTokenLength;
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to minify (remove whitespace) the page's CSS code. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -46,58 +47,7 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
    * @return {number}
    */
   static computeTokenLength(content) {
-    let totalTokenLength = 0;
-    let isInComment = false;
-    let isInLicenseComment = false;
-    let isInString = false;
-    let stringOpenChar = null;
-
-    for (let i = 0; i < content.length; i++) {
-      const twoChars = content.substr(i, 2);
-      const char = twoChars.charAt(0);
-
-      const isWhitespace = char === ' ' || char === '\n' || char === '\t';
-      const isAStringOpenChar = char === `'` || char === '"';
-
-      if (isInComment) {
-        if (isInLicenseComment) totalTokenLength++;
-
-        if (twoChars === '*/') {
-          if (isInLicenseComment) totalTokenLength++;
-          isInComment = false;
-          i++;
-        }
-      } else if (isInString) {
-        totalTokenLength++;
-        if (char === '\\') {
-          totalTokenLength++;
-          i++;
-        } else if (char === stringOpenChar) {
-          isInString = false;
-        }
-      } else {
-        if (twoChars === '/*') {
-          isInComment = true;
-          isInLicenseComment = content.charAt(i + 2) === '!';
-          if (isInLicenseComment) totalTokenLength += 2;
-          i++;
-        } else if (isAStringOpenChar) {
-          isInString = true;
-          stringOpenChar = char;
-          totalTokenLength++;
-        } else if (!isWhitespace) {
-          totalTokenLength++;
-        }
-      }
-    }
-
-    // If the content contained unbalanced comments, it's either invalid or we had a parsing error.
-    // Report the token length as the entire string so it will be ignored.
-    if (isInComment || isInString) {
-      return content.length;
-    }
-
-    return totalTokenLength;
+    return computeTokenLength(content);
   }
 
   /**
@@ -152,7 +102,7 @@ class UnminifiedCSS extends ByteEfficiencyAudit {
       items.push(result);
     }
 
-    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},

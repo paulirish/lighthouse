@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfigPlugin accepts a well formed plugin 1`] = `
+Object {
+  "audits": Array [
+    Object {
+      "path": "not/a/path/audit.js",
+    },
+  ],
+  "categories": Object {
+    "lighthouse-plugin-nice-plugin": Object {
+      "auditRefs": Array [
+        Object {
+          "id": "nice-audit",
+          "weight": 1,
+        },
+        Object {
+          "id": "installable-manifest",
+          "weight": 220,
+        },
+      ],
+      "description": "A nice plugin for nice testing",
+      "manualDescription": undefined,
+      "title": "Nice Plugin",
+    },
+  },
+}
+`;

@@ -9,12 +9,11 @@ const assert = require('assert');
 
 // eslint-disable-next-line
 const NetworkAnalyzer = require('../../../../lib/dependency-graph/simulator/network-analyzer');
-const Runner = require('../../../../runner');
+const NetworkRecords = require('../../../../computed/network-records.js');
 const devtoolsLog = require('../../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
 /* eslint-env jest */
 describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
-  let computedArtifacts;
   let recordId;
 
   function createRecord(opts) {
@@ -38,7 +37,6 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
 
   beforeEach(() => {
     recordId = 1;
-    computedArtifacts = Runner.instantiateComputedArtifacts();
   });
 
   function assertCloseEnough(valueA, valueB, threshold = 1) {
@@ -125,7 +123,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should work on a real devtoolsLog', () => {
-      return computedArtifacts.requestNetworkRecords(devtoolsLog).then(records => {
+      return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateIfConnectionWasReused(records);
         const distinctConnections = Array.from(result.values()).filter(item => !item).length;
         assert.equal(result.size, 66);
@@ -201,7 +199,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should work on a real devtoolsLog', () => {
-      return computedArtifacts.requestNetworkRecords(devtoolsLog).then(records => {
+      return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateRTTByOrigin(records);
         assertCloseEnough(result.get('https://pwa.rocks').min, 3);
         assertCloseEnough(result.get('https://www.googletagmanager.com').min, 3);
@@ -210,7 +208,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should approximate well with either method', () => {
-      return computedArtifacts.requestNetworkRecords(devtoolsLog).then(records => {
+      return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateRTTByOrigin(records).get(NetworkAnalyzer.SUMMARY);
         const resultApprox = NetworkAnalyzer.estimateRTTByOrigin(records, {
           forceCoarseEstimates: true,
@@ -250,7 +248,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should work on a real devtoolsLog', () => {
-      return computedArtifacts.requestNetworkRecords(devtoolsLog).then(records => {
+      return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateServerResponseTimeByOrigin(records);
         assertCloseEnough(result.get('https://pwa.rocks').avg, 162);
         assertCloseEnough(result.get('https://www.googletagmanager.com').avg, 153);
@@ -259,7 +257,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should approximate well with either method', () => {
-      return computedArtifacts.requestNetworkRecords(devtoolsLog).then(records => {
+      return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateServerResponseTimeByOrigin(records).get(
           NetworkAnalyzer.SUMMARY
         );
@@ -273,11 +271,119 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
   });
 
+  describe('#estimateThroughput', () => {
+    const estimateThroughput = NetworkAnalyzer.estimateThroughput;
+
+    function createThroughputRecord(responseReceivedTime, endTime, extras) {
+      return Object.assign(
+        {
+          responseReceivedTime,
+          endTime,
+          transferSize: 1000,
+          finished: true,
+          failed: false,
+          statusCode: 200,
+          url: 'https://google.com/logo.png',
+          parsedURL: {isValid: true, scheme: 'https'},
+        },
+        extras
+      );
+    }
+
+    it('should return Infinity for no/missing records', () => {
+      assert.equal(estimateThroughput([]), Infinity);
+      assert.equal(estimateThroughput([createThroughputRecord(0, 0, {finished: false})]), Infinity);
+    });
+
+    it('should compute correctly for a basic waterfall', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 1),
+        createThroughputRecord(1, 2),
+        createThroughputRecord(2, 6),
+      ]);
+
+      assert.equal(result, 500 * 8);
+    });
+
+    it('should compute correctly for concurrent requests', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 1),
+        createThroughputRecord(0.5, 1),
+      ]);
+
+      assert.equal(result, 2000 * 8);
+    });
+
+    it('should compute correctly for gaps', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 1),
+        createThroughputRecord(3, 4),
+      ]);
+
+      assert.equal(result, 1000 * 8);
+    });
+
+    it('should compute correctly for partially overlapping requests', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 1),
+        createThroughputRecord(0.5, 1.5),
+        createThroughputRecord(1.25, 3),
+        createThroughputRecord(1.4, 4),
+        createThroughputRecord(5, 9),
+      ]);
+
+      assert.equal(result, 625 * 8);
+    });
+
+    it('should exclude failed records', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 2),
+        createThroughputRecord(3, 4, {failed: true}),
+      ]);
+      assert.equal(result, 500 * 8);
+    });
+
+    it('should exclude cached records', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 2),
+        createThroughputRecord(3, 4, {statusCode: 304}),
+      ]);
+      assert.equal(result, 500 * 8);
+    });
+
+    it('should exclude unfinished records', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 2),
+        createThroughputRecord(3, 4, {finished: false}),
+      ]);
+      assert.equal(result, 500 * 8);
+    });
+
+    it('should exclude data URIs', () => {
+      const result = estimateThroughput([
+        createThroughputRecord(0, 2),
+        createThroughputRecord(3, 4, {parsedURL: {scheme: 'data'}}),
+      ]);
+      assert.equal(result, 500 * 8);
+    });
+  });
+
   describe('#findMainDocument', () => {
     it('should find the main document', async () => {
-      const records = await computedArtifacts.requestNetworkRecords(devtoolsLog);
+      const records = await NetworkRecords.request(devtoolsLog, {computedCache: new Map()});
       const mainDocument = NetworkAnalyzer.findMainDocument(records);
       assert.equal(mainDocument.url, 'https://pwa.rocks/');
+    });
+
+    it('should break ties using position in array', async () => {
+      const records = [
+        {url: 'http://example.com', resourceType: 'Other'},
+        {url: 'https://example.com', resourceType: 'Other'},
+        {url: 'https://www.example.com', resourceType: 'Document', startTime: 0},
+        {url: 'https://www.iframe.com', resourceType: 'Document', startTime: 0},
+      ];
+      const mainDocument = NetworkAnalyzer.findMainDocument(records);
+      assert.equal(mainDocument.url, 'https://www.example.com');
     });
   });
 });

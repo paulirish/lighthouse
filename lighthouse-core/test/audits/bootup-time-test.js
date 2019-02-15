@@ -7,7 +7,6 @@
 
 /* eslint-env jest */
 const BootupTime = require('../../audits/bootup-time.js');
-const Runner = require('../../runner.js');
 const assert = require('assert');
 
 const acceptableTrace = require('../fixtures/traces/progressive-app-m60.json');
@@ -28,9 +27,10 @@ describe('Performance: bootup-time audit', () => {
     const artifacts = Object.assign({
       traces: {[BootupTime.DEFAULT_PASS]: acceptableTrace},
       devtoolsLogs: {[BootupTime.DEFAULT_PASS]: acceptableDevtoolsLogs},
-    }, Runner.instantiateComputedArtifacts());
+    });
+    const computedCache = new Map();
 
-    return BootupTime.audit(artifacts, {options: auditOptions}).then(output => {
+    return BootupTime.audit(artifacts, {options: auditOptions, computedCache}).then(output => {
       assert.deepEqual(roundedValueOf(output, 'https://pwa.rocks/script.js'), {scripting: 31.8, scriptParseCompile: 1.3, total: 36.8});
       assert.deepEqual(roundedValueOf(output, 'https://www.googletagmanager.com/gtm.js?id=GTM-Q5SW'), {scripting: 96.9, scriptParseCompile: 6.5, total: 104.4});
       assert.deepEqual(roundedValueOf(output, 'https://www.google-analytics.com/plugins/ua/linkid.js'), {scripting: 25.2, scriptParseCompile: 1.2, total: 26.4});
@@ -46,11 +46,12 @@ describe('Performance: bootup-time audit', () => {
     const artifacts = Object.assign({
       traces: {defaultPass: acceptableTrace},
       devtoolsLogs: {defaultPass: acceptableDevtoolsLogs},
-    }, Runner.instantiateComputedArtifacts());
+    });
 
     const options = auditOptions;
     const settings = {throttlingMethod: 'simulate', throttling: {cpuSlowdownMultiplier: 3}};
-    const output = await BootupTime.audit(artifacts, {options, settings});
+    const computedCache = new Map();
+    const output = await BootupTime.audit(artifacts, {options, settings, computedCache});
 
     assert.deepEqual(roundedValueOf(output, 'https://pwa.rocks/script.js'), {scripting: 95.3, scriptParseCompile: 3.9, total: 110.5});
 
@@ -63,9 +64,10 @@ describe('Performance: bootup-time audit', () => {
     const artifacts = Object.assign({
       traces: {defaultPass: errorTrace},
       devtoolsLogs: {defaultPass: []},
-    }, Runner.instantiateComputedArtifacts());
+    });
+    const computedCache = new Map();
 
-    return BootupTime.audit(artifacts, {options: auditOptions})
+    return BootupTime.audit(artifacts, {options: auditOptions, computedCache})
       .then(output => {
         assert.equal(output.details.items.length, 0);
         assert.equal(output.score, 1);

@@ -28,7 +28,6 @@ trap teardown EXIT
 
 colorText "Generating a fresh LHR..." "$purple"
 set -x
-# TODO(phulce): add a lantern LHR-differ
 node "$lhroot_path/lighthouse-cli" -A="$lhroot_path/lighthouse-core/test/results/artifacts" --throttling-method=devtools --quiet --output=json --output-path="$freshLHRPath"
 set +x
 

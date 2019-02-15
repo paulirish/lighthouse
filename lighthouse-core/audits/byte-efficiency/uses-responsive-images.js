@@ -16,7 +16,7 @@
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const Sentry = require('../../lib/sentry');
 const URL = require('../../lib/url-shim');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to resize images to match the display dimensions. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -42,26 +42,26 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'devtoolsLogs', 'traces'],
+      requiredArtifacts: ['ImageElements', 'ViewportDimensions', 'devtoolsLogs', 'traces'],
     };
   }
 
   /**
-   * @param {LH.Artifacts.SingleImageUsage} image
+   * @param {LH.Artifacts.ImageElement} image
    * @param {number} DPR devicePixelRatio
    * @return {null|Error|LH.Audit.ByteEfficiencyItem};
    */
   static computeWaste(image, DPR) {
     // Nothing can be done without network info.
-    if (!image.networkRecord) {
+    if (!image.resourceSize) {
       return null;
     }
 
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
-    const usedPixels = image.clientWidth * image.clientHeight * Math.pow(DPR, 2);
+    const usedPixels = image.displayedWidth * image.displayedHeight * Math.pow(DPR, 2);
     const wastedRatio = 1 - (usedPixels / actualPixels);
-    const totalBytes = image.networkRecord.resourceSize;
+    const totalBytes = image.resourceSize;
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     // If the image has 0 dimensions, it's probably hidden/offscreen, so let the offscreen-images
@@ -87,7 +87,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
    * @return {ByteEfficiencyAudit.ByteEfficiencyProduct}
    */
   static audit_(artifacts) {
-    const images = artifacts.ImageUsage;
+    const images = artifacts.ImageElements;
     const DPR = artifacts.ViewportDimensions.devicePixelRatio;
 
     /** @type {string[]} */
@@ -96,7 +96,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const resultsMap = new Map();
     images.forEach(image => {
       // TODO: give SVG a free pass until a detail per pixel metric is available
-      if (!image.networkRecord || image.networkRecord.mimeType === 'image/svg+xml') {
+      if (!image.resourceSize || image.mimeType === 'image/svg+xml') {
         return;
       }
 
@@ -105,7 +105,6 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
 
       if (processed instanceof Error) {
         warnings.push(processed.message);
-        // @ts-ignore TODO(bckenny): Sentry type checking
         Sentry.captureException(processed, {tags: {audit: this.meta.id}, level: 'warning'});
         return;
       }
@@ -120,7 +119,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const items = Array.from(resultsMap.values())
         .filter(item => item.wastedBytes > IGNORE_THRESHOLD_IN_BYTES);
 
-    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
       {key: 'url', valueType: 'thumbnail', label: ''},
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},

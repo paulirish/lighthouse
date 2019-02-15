@@ -22,8 +22,6 @@ module.exports = {
       'unused-css-rules',
       'unused-javascript',
     ],
-
-    // TODO(phulce): re-write testers to work with faster lantern loading
     throttlingMethod: 'devtools',
   },
 };

@@ -12,7 +12,9 @@
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const Sentry = require('../../lib/sentry');
 const URL = require('../../lib/url-shim');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
+const Interactive = require('../../computed/metrics/interactive.js');
+const TraceOfTab = require('../../computed/trace-of-tab.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to defer loading offscreen images. Offscreen images are images located outside of the visible browser viewport. As they are unseen by the user and slow down page load, they should be loaded later, closer to when the user is going to see them. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -45,7 +47,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'devtoolsLogs', 'traces'],
+      requiredArtifacts: ['ImageElements', 'ViewportDimensions', 'devtoolsLogs', 'traces'],
     };
   }
 
@@ -67,21 +69,23 @@ class OffscreenImages extends ByteEfficiencyAudit {
   }
 
   /**
-   * @param {LH.Artifacts.SingleImageUsage} image
+   * @param {LH.Artifacts.ImageElement} image
    * @param {{innerWidth: number, innerHeight: number}} viewportDimensions
+   * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {null|Error|WasteResult}
    */
-  static computeWaste(image, viewportDimensions) {
-    if (!image.networkRecord) {
+  static computeWaste(image, viewportDimensions, networkRecords) {
+    const networkRecord = networkRecords.find(record => record.url === image.src);
+    if (!image.resourceSize || !networkRecord) {
       return null;
     }
 
     const url = URL.elideDataURI(image.src);
-    const totalPixels = image.clientWidth * image.clientHeight;
+    const totalPixels = image.displayedWidth * image.displayedHeight;
     const visiblePixels = this.computeVisiblePixels(image.clientRect, viewportDimensions);
     // Treat images with 0 area as if they're offscreen. See https://github.com/GoogleChrome/lighthouse/issues/1914
     const wastedRatio = totalPixels === 0 ? 1 : 1 - visiblePixels / totalPixels;
-    const totalBytes = image.networkRecord.resourceSize;
+    const totalBytes = image.resourceSize;
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     if (!Number.isFinite(wastedRatio)) {
@@ -90,7 +94,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
 
     return {
       url,
-      requestStartTime: image.networkRecord.startTime,
+      requestStartTime: networkRecord.startTime,
       totalBytes,
       wastedBytes,
       wastedPercent: 100 * wastedRatio,
@@ -165,8 +169,8 @@ class OffscreenImages extends ByteEfficiencyAudit {
    * @param {LH.Audit.Context} context
    * @return {Promise<ByteEfficiencyAudit.ByteEfficiencyProduct>}
    */
-  static audit_(artifacts, networkRecords, context) {
-    const images = artifacts.ImageUsage;
+  static async audit_(artifacts, networkRecords, context) {
+    const images = artifacts.ImageElements;
     const viewportDimensions = artifacts.ViewportDimensions;
     const trace = artifacts.traces[ByteEfficiencyAudit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS];
@@ -174,14 +178,13 @@ class OffscreenImages extends ByteEfficiencyAudit {
     /** @type {string[]} */
     const warnings = [];
     const resultsMap = images.reduce((results, image) => {
-      const processed = OffscreenImages.computeWaste(image, viewportDimensions);
+      const processed = OffscreenImages.computeWaste(image, viewportDimensions, networkRecords);
       if (processed === null) {
         return results;
       }
 
       if (processed instanceof Error) {
         warnings.push(processed.message);
-        // @ts-ignore TODO(bckenny): Sentry type checking
         Sentry.captureException(processed, {tags: {audit: this.meta.id}, level: 'warning'});
         return results;
       }
@@ -196,29 +199,43 @@ class OffscreenImages extends ByteEfficiencyAudit {
     }, /** @type {Map<string, WasteResult>} */ (new Map()));
 
     const settings = context.settings;
-    return artifacts.requestInteractive({trace, devtoolsLog, settings}).then(interactive => {
-      const unfilteredResults = Array.from(resultsMap.values());
+
+    let items;
+    const unfilteredResults = Array.from(resultsMap.values());
+    // get the interactive time or fallback to getting the end of trace time
+    try {
+      const interactive = await Interactive.request({trace, devtoolsLog, settings}, context);
+
+      // use interactive to generate items
       const lanternInteractive = /** @type {LH.Artifacts.LanternMetric} */ (interactive);
       // Filter out images that were loaded after all CPU activity
-      const items = context.settings.throttlingMethod === 'simulate' ?
+      items = context.settings.throttlingMethod === 'simulate' ?
         OffscreenImages.filterLanternResults(unfilteredResults, lanternInteractive) :
         // @ts-ignore - .timestamp will exist if throttlingMethod isn't lantern
         OffscreenImages.filterObservedResults(unfilteredResults, interactive.timestamp);
+    } catch (err) {
+      // if the error is during a Lantern run, end of trace may also be inaccurate, so rethrow
+      if (context.settings.throttlingMethod === 'simulate') {
+        throw err;
+      }
+      // use end of trace as a substitute for finding interactive time
+      items = OffscreenImages.filterObservedResults(unfilteredResults,
+        await TraceOfTab.request(trace, context).then(tot => tot.timestamps.traceEnd));
+    }
 
-      /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
-      const headings = [
-        {key: 'url', valueType: 'thumbnail', label: ''},
-        {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
-        {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},
-        {key: 'wastedBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnWastedBytes)},
-      ];
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
+    const headings = [
+      {key: 'url', valueType: 'thumbnail', label: ''},
+      {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
+      {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},
+      {key: 'wastedBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnWastedBytes)},
+    ];
 
-      return {
-        warnings,
-        items,
-        headings,
-      };
-    });
+    return {
+      warnings,
+      items,
+      headings,
+    };
   }
 }
 

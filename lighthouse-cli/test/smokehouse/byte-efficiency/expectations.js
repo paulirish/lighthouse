@@ -5,9 +5,6 @@
  */
 'use strict';
 
-// TODO(phulce): assert more score values once Lantern can tie more trace events back to images.
-// See https://github.com/GoogleChrome/lighthouse/issues/4600.
-
 /**
  * Expected Lighthouse audit values for byte efficiency tests
  */
@@ -20,7 +17,7 @@ module.exports = [
         details: {
           overallSavingsBytes: '>17000',
           items: {
-            length: 1,
+            length: 2,
           },
         },
       },
@@ -36,7 +33,7 @@ module.exports = [
       },
       'unused-css-rules': {
         details: {
-          overallSavingsBytes: '>39000',
+          overallSavingsBytes: '>35000',
           items: {
             length: 2,
           },

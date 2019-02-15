@@ -67,4 +67,32 @@ describe('CLI Tests', function() {
       assert.equal(ret.status, 1);
     });
   });
+
+  describe('print-config', () => {
+    it('should print the default config and exit immediately after', () => {
+      const ret = spawnSync('node', [indexPath, '--print-config'], {encoding: 'utf8'});
+
+      const config = JSON.parse(ret.stdout);
+      assert.strictEqual(config.settings.output[0], 'html');
+      assert.strictEqual(config.settings.auditMode, false);
+
+      expect(config).toMatchSnapshot();
+    });
+
+    it('should print the overridden config and exit immediately after', () => {
+      const flags = [
+        '--print-config', '-A',
+        '--output', 'json',
+        '--only-audits', 'metrics',
+      ];
+      const ret = spawnSync('node', [indexPath, ...flags], {encoding: 'utf8'});
+
+      const config = JSON.parse(ret.stdout);
+      assert.strictEqual(config.settings.output[0], 'json');
+      assert.strictEqual(config.settings.auditMode, true);
+      assert.strictEqual(config.audits.length, 1);
+
+      expect(config).toMatchSnapshot();
+    });
+  });
 });

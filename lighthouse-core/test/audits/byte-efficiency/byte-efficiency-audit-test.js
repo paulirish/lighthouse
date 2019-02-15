@@ -5,11 +5,13 @@
  */
 'use strict';
 
-const Runner = require('../../../runner');
 const ByteEfficiencyAudit_ = require('../../../audits/byte-efficiency/byte-efficiency-audit');
 const NetworkNode = require('../../../lib/dependency-graph/network-node');
 const CPUNode = require('../../../lib/dependency-graph/cpu-node');
 const Simulator = require('../../../lib/dependency-graph/simulator/simulator');
+const PageDependencyGraph = require('../../../computed/page-dependency-graph.js');
+const LoadSimulator = require('../../../computed/load-simulator.js');
+
 
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
@@ -51,9 +53,11 @@ describe('Byte efficiency base audit', () => {
   describe('#estimateTransferSize', () => {
     const estimate = ByteEfficiencyAudit.estimateTransferSize;
 
-    it('should estimate by compression ratio when no network record available', () => {
-      const result = estimate(undefined, 1000, '', 0.345);
-      assert.equal(result, 345);
+    it('should estimate by resource type compression ratio when no network info available', () => {
+      assert.equal(estimate(undefined, 1000, 'Stylesheet'), 200);
+      assert.equal(estimate(undefined, 1000, 'Script'), 330);
+      assert.equal(estimate(undefined, 1000, 'Document'), 330);
+      assert.equal(estimate(undefined, 1000, ''), 500);
     });
 
     it('should return transferSize when asset matches', () => {
@@ -182,9 +186,9 @@ describe('Byte efficiency base audit', () => {
   it('should work on real graphs', async () => {
     const throttling = {rttMs: 150, throughputKbps: 1600, cpuSlowdownMultiplier: 1};
     const settings = {throttlingMethod: 'simulate', throttling};
-    const artifacts = Runner.instantiateComputedArtifacts();
-    const graph = await artifacts.requestPageDependencyGraph({trace, devtoolsLog});
-    const simulator = await artifacts.requestLoadSimulator({devtoolsLog, settings});
+    const computedCache = new Map();
+    const graph = await PageDependencyGraph.request({trace, devtoolsLog}, {computedCache});
+    const simulator = await LoadSimulator.request({devtoolsLog, settings}, {computedCache});
     const result = ByteEfficiencyAudit.createAuditProduct(
       {
         headings: [{key: 'value', text: 'Label'}],
@@ -209,20 +213,22 @@ describe('Byte efficiency base audit', () => {
       }
     }
 
-    const artifacts = Runner.instantiateComputedArtifacts();
-    artifacts.traces = {defaultPass: trace};
-    artifacts.devtoolsLogs = {defaultPass: devtoolsLog};
+    const artifacts = {
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+    };
+    const computedCache = new Map();
 
     const modestThrottling = {rttMs: 150, throughputKbps: 1000, cpuSlowdownMultiplier: 2};
     const ultraSlowThrottling = {rttMs: 150, throughputKbps: 100, cpuSlowdownMultiplier: 8};
     let settings = {throttlingMethod: 'simulate', throttling: modestThrottling};
-    let result = await MockAudit.audit(artifacts, {settings});
+    let result = await MockAudit.audit(artifacts, {settings, computedCache});
     // expect modest savings
     expect(result.rawValue).toBeLessThan(5000);
     expect(result.rawValue).toMatchSnapshot();
 
     settings = {throttlingMethod: 'simulate', throttling: ultraSlowThrottling};
-    result = await MockAudit.audit(artifacts, {settings});
+    result = await MockAudit.audit(artifacts, {settings, computedCache});
     // expect lots of savings
     expect(result.rawValue).not.toBeLessThan(5000);
     expect(result.rawValue).toMatchSnapshot();
@@ -245,14 +251,16 @@ describe('Byte efficiency base audit', () => {
       }
     }
 
-    const artifacts = Runner.instantiateComputedArtifacts();
-    artifacts.traces = {defaultPass: trace};
-    artifacts.devtoolsLogs = {defaultPass: devtoolsLog};
+    const artifacts = {
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
+    };
+    const computedCache = new Map();
 
     const modestThrottling = {rttMs: 150, throughputKbps: 1000, cpuSlowdownMultiplier: 2};
     const settings = {throttlingMethod: 'simulate', throttling: modestThrottling};
-    const result = await MockAudit.audit(artifacts, {settings});
-    const resultTti = await MockJustTTIAudit.audit(artifacts, {settings});
+    const result = await MockAudit.audit(artifacts, {settings, computedCache});
+    const resultTti = await MockJustTTIAudit.audit(artifacts, {settings, computedCache});
     // expect less savings with just TTI
     expect(resultTti.rawValue).toBeLessThan(result.rawValue);
     expect({default: result.rawValue, justTTI: resultTti.rawValue}).toMatchSnapshot();

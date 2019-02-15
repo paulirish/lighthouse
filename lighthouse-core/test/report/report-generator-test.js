@@ -53,10 +53,11 @@ describe('ReportGenerator', () => {
     });
 
     it('should inject the report templates', () => {
-      const page = jsdom.jsdom(ReportGenerator.generateReportHtml({}));
-      const templates = jsdom.jsdom(TEMPLATES_FILE);
-      assert.equal(page.querySelectorAll('template[id^="tmpl-"]').length,
-          templates.querySelectorAll('template[id^="tmpl-"]').length, 'all templates injected');
+      const page = new jsdom.JSDOM(ReportGenerator.generateReportHtml({}));
+      const templates = new jsdom.JSDOM(TEMPLATES_FILE);
+      assert.equal(page.window.document.querySelectorAll('template[id^="tmpl-"]').length,
+        templates.window.document.querySelectorAll('template[id^="tmpl-"]').length,
+        'all templates injected');
     });
 
     it('should inject the report CSS', () => {

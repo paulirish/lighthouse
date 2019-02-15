@@ -1,0 +1,785 @@
+{
+  "lighthouse-core/audits/accessibility/accesskeys.js | description": {
+    "message": "Клавишите за достъп дават възможност на потребителите бързо да преместят фокуса към определена част от страницата. За правилно навигиране всеки клавиш за достъп трябва да е уникален. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/accesskeys?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/accesskeys.js | failureTitle": {
+    "message": "Някои стойности на [accesskey] не са уникални"
+  },
+  "lighthouse-core/audits/accessibility/accesskeys.js | title": {
+    "message": "Стойностите на [accesskey] са уникални"
+  },
+  "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": {
+    "message": "Всеки елемент role на ARIA поддържа конкретен поднабор от атрибути aria-*. При несъответствие атрибутите aria-* ще станат невалидни. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-allowed-attr?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-allowed-attr.js | failureTitle": {
+    "message": "Някои атрибути [aria-*] не съответстват на ролите си"
+  },
+  "lighthouse-core/audits/accessibility/aria-allowed-attr.js | title": {
+    "message": "Атрибутите [aria-*] съответстват на ролите си"
+  },
+  "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
+    "message": "Някои роли на ARIA имат задължителни атрибути, от които екранните четци получават описание на състоянието на съответния елемент. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-required-attr?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-required-attr.js | failureTitle": {
+    "message": "Някои елементи [role] нямат всички задължителни атрибути [aria-*]"
+  },
+  "lighthouse-core/audits/accessibility/aria-required-attr.js | title": {
+    "message": "Елементите [role] имат всички задължителни атрибути [aria-*]"
+  },
+  "lighthouse-core/audits/accessibility/aria-required-children.js | description": {
+    "message": "Някои родителски роли на ARIA трябва да съдържат конкретни дъщерни роли, за да изпълняват функциите за достъпност, за които са предназначени. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-required-children?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-required-children.js | failureTitle": {
+    "message": "Липсват задължителни дъщерни атрибути [role] за елементи с атрибут [role]."
+  },
+  "lighthouse-core/audits/accessibility/aria-required-children.js | title": {
+    "message": "Елементите с атрибут [role] са обезпечени с необходимите дъщерни елементи [role]"
+  },
+  "lighthouse-core/audits/accessibility/aria-required-parent.js | description": {
+    "message": "Някои дъщерни роли на ARIA трябва да се съдържат в конкретни родителски роли, за да изпълняват правилно функциите за достъпност, за които са предназначени. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-required-parent?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-required-parent.js | failureTitle": {
+    "message": "Някои елементи [role] не се съдържат в задължителния за тях родителски елемент"
+  },
+  "lighthouse-core/audits/accessibility/aria-required-parent.js | title": {
+    "message": "Елементите [role] се съдържат в задължителния за тях родителски елемент"
+  },
+  "lighthouse-core/audits/accessibility/aria-roles.js | description": {
+    "message": "Ролите на ARIA трябва да имат валидни стойности, за да изпълняват функциите за достъпност, за които са предназначени. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-roles?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-roles.js | failureTitle": {
+    "message": "Някои стойности на [role] не са валидни"
+  },
+  "lighthouse-core/audits/accessibility/aria-roles.js | title": {
+    "message": "Стойностите на [role] са валидни"
+  },
+  "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
+    "message": "Помощните технологии, като например екранни четци, не могат да интерпретират атрибути на ARIA с невалидни стойности. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr-value?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | failureTitle": {
+    "message": "Някои атрибути [aria-*] нямат валидни стойности"
+  },
+  "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | title": {
+    "message": "Атрибутите [aria-*] имат валидни стойности"
+  },
+  "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": {
+    "message": "Помощните технологии, като например екранни четци, не могат да интерпретират атрибути на ARIA с невалидни имена. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/aria-valid-attr?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/aria-valid-attr.js | failureTitle": {
+    "message": "Някои атрибути [aria-*] не са валидни или са изписани неправилно"
+  },
+  "lighthouse-core/audits/accessibility/aria-valid-attr.js | title": {
+    "message": "Атрибутите [aria-*] са валидни и са изписани правилно"
+  },
+  "lighthouse-core/audits/accessibility/audio-caption.js | description": {
+    "message": "Надписите правят аудиоелементите използваеми за лицата, лишени от слух, и потребителите със слухови увреждания, като предоставят важна информация, например кой говори и какво казва, както и друга информация, несвързана с речта. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/audio-caption?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/audio-caption.js | failureTitle": {
+    "message": "За някои елементи <audio> липсва елемент <track> с [kind=\"captions\"]."
+  },
+  "lighthouse-core/audits/accessibility/audio-caption.js | title": {
+    "message": "Елементите <audio> съдържат елемент <track> с [kind=\"captions\"]"
+  },
+  "lighthouse-core/audits/accessibility/axe-audit.js | failingElementsHeader": {
+    "message": "Елементи с грешки"
+  },
+  "lighthouse-core/audits/accessibility/button-name.js | description": {
+    "message": "Когато даден бутон няма достъпно име, той ще бъде прочитан като „бутон“ от екранните четци и съответно ще бъде неизползваем за потребителите им. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/button-name?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/button-name.js | failureTitle": {
+    "message": "Бутоните нямат достъпни имена"
+  },
+  "lighthouse-core/audits/accessibility/button-name.js | title": {
+    "message": "Бутоните имат достъпни имена"
+  },
+  "lighthouse-core/audits/accessibility/bypass.js | description": {
+    "message": "Добавянето на начини за заобикаляне на повтарящото се съдържание дава възможност на потребителите, използващи клавиатура, да навигират по-ефективно в страницата. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/bypass?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/bypass.js | failureTitle": {
+    "message": "Страницата не съдържа заглавие, връзка за пропускане или участък с ориентир"
+  },
+  "lighthouse-core/audits/accessibility/bypass.js | title": {
+    "message": "Страницата съдържа заглавие, връзка за пропускане или участък с ориентир"
+  },
+  "lighthouse-core/audits/accessibility/color-contrast.js | description": {
+    "message": "Четенето на текст с нисък контраст е трудно или невъзможно за много потребители. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/color-contrast?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/color-contrast.js | failureTitle": {
+    "message": "Коефициентът на контрастност между цветовете на заден и преден план не е достатъчно голям."
+  },
+  "lighthouse-core/audits/accessibility/color-contrast.js | title": {
+    "message": "Коефициентът на контрастност между цветовете на заден и преден план е достатъчно голям"
+  },
+  "lighthouse-core/audits/accessibility/definition-list.js | description": {
+    "message": "Когато списъците с определения не са маркирани правилно, екранните четци може да предоставят объркваща или неточна информация. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/definition-list?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/definition-list.js | failureTitle": {
+    "message": "Елементите <dl> не съдържат само правилно подредени групи <dt> и <dd> и елементи <script> или <template>."
+  },
+  "lighthouse-core/audits/accessibility/definition-list.js | title": {
+    "message": "Елементите <dl> съдържат само правилно подредени групи <dt> и <dd> и елементи <script> или <template>."
+  },
+  "lighthouse-core/audits/accessibility/dlitem.js | description": {
+    "message": "Списъчните елементи за определение (<dt> и <dd>) трябва да бъдат обвити в родителски елемент <dl>, за да могат да бъдат прочетени правилно от екранните четци. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/dlitem?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/dlitem.js | failureTitle": {
+    "message": "Някои списъчни елементи за определение не са обвити в елементи <dl>"
+  },
+  "lighthouse-core/audits/accessibility/dlitem.js | title": {
+    "message": "Списъчните елементи за определение са обвити в елементи <dl>"
+  },
+  "lighthouse-core/audits/accessibility/document-title.js | description": {
+    "message": "Заглавието дава възможност на потребителите на екранни четци да добият обща представа за страницата, а потребителите на търсещи машини разчитат на него в голяма степен, за да определят дали страницата е подходяща за търсенето им. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/title)."
+  },
+  "lighthouse-core/audits/accessibility/document-title.js | failureTitle": {
+    "message": "Документът няма елемент <title>"
+  },
+  "lighthouse-core/audits/accessibility/document-title.js | title": {
+    "message": "Документът има елемент <title>"
+  },
+  "lighthouse-core/audits/accessibility/duplicate-id.js | description": {
+    "message": "Стойността на всеки атрибут за идентификатор трябва да е уникална, за да се предотврати пропускането на други екземпляри от помощните технологии. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/duplicate-id?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/duplicate-id.js | failureTitle": {
+    "message": "Някои атрибути [id] на страницата не са уникални"
+  },
+  "lighthouse-core/audits/accessibility/duplicate-id.js | title": {
+    "message": "Атрибутите [id] на страницата са уникални"
+  },
+  "lighthouse-core/audits/accessibility/frame-title.js | description": {
+    "message": "Потребителите на екранни четци очакват заглавието на рамката да описва съдържанието й. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/frame-title?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/frame-title.js | failureTitle": {
+    "message": "Някои елементи <frame> или <iframe> нямат заглавие"
+  },
+  "lighthouse-core/audits/accessibility/frame-title.js | title": {
+    "message": "Елементите <frame> или <iframe> имат заглавие"
+  },
+  "lighthouse-core/audits/accessibility/html-has-lang.js | description": {
+    "message": "Ако за дадена страница не е посочен атрибут lang, екранният четец приема, че тя е написана на стандартния език, който потребителят е избрал при настройването му. Ако страницата всъщност не е на стандартния език, екранният четец може да не прочете текста й правилно. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/html-lang?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/html-has-lang.js | failureTitle": {
+    "message": "Елементът <html> няма атрибут [lang]"
+  },
+  "lighthouse-core/audits/accessibility/html-has-lang.js | title": {
+    "message": "Елементът <html> има атрибут [lang]"
+  },
+  "lighthouse-core/audits/accessibility/html-lang-valid.js | description": {
+    "message": "Посочването на валиден [език по BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) помага на екранните четци да прочитат текста правилно. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/valid-lang?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/html-lang-valid.js | failureTitle": {
+    "message": "Елементът <html> няма валидна стойност за атрибута [lang]."
+  },
+  "lighthouse-core/audits/accessibility/html-lang-valid.js | title": {
+    "message": "Елементът <html> има валидна стойност за атрибута [lang]"
+  },
+  "lighthouse-core/audits/accessibility/image-alt.js | description": {
+    "message": "Информативните елементи трябва да имат кратък, описателен алтернативен текст. При декоративните елементи атрибутът alt може да бъде оставен без стойност. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/image-alt?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/image-alt.js | failureTitle": {
+    "message": "Някои графични елементи нямат атрибути [alt]"
+  },
+  "lighthouse-core/audits/accessibility/image-alt.js | title": {
+    "message": "Графичните елементи имат атрибути [alt]"
+  },
+  "lighthouse-core/audits/accessibility/input-image-alt.js | description": {
+    "message": "Когато дадено изображение се използва като бутон от типа <input>, предоставянето на алтернативен текст може да помогне на потребителите на екранни четци да разберат за какво служи бутонът. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/input-image-alt?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/input-image-alt.js | failureTitle": {
+    "message": "Някои елементи <input type=\"image\"> нямат алтернативен текст ([alt])"
+  },
+  "lighthouse-core/audits/accessibility/input-image-alt.js | title": {
+    "message": "Елементите <input type=\"image\"> имат алтернативен текст ([alt])"
+  },
+  "lighthouse-core/audits/accessibility/label.js | description": {
+    "message": "Етикетите дават възможност на помощните технологии, като например екранни четци, да прочитат правилно контролите във формуляри. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/label?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/label.js | failureTitle": {
+    "message": "Някои елементи на формуляра нямат свързани етикети"
+  },
+  "lighthouse-core/audits/accessibility/label.js | title": {
+    "message": "Елементите на формуляра имат свързани етикети"
+  },
+  "lighthouse-core/audits/accessibility/layout-table.js | description": {
+    "message": "Ако дадена таблица се използва само за оформление, тя не трябва да съдържа елементи с данни, като например елементите th или caption или атрибута summary, тъй като това може да създаде объркване за потребителите на екранни четци. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/layout-table?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/layout-table.js | failureTitle": {
+    "message": "Презентационните елементи <table> използват <th>, <caption> или атрибута [summary]."
+  },
+  "lighthouse-core/audits/accessibility/layout-table.js | title": {
+    "message": "Презентационните елементи <table> не използват <th>, <caption> или атрибута [summary]."
+  },
+  "lighthouse-core/audits/accessibility/link-name.js | description": {
+    "message": "Текстът на връзките (и алтернативният текст за изображения, който се използва за връзки), който е различим, уникален и дава възможност фокусът да бъде поставен върху него, подобрява навигирането за потребителите на екранни четци. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/link-name?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/link-name.js | failureTitle": {
+    "message": "Някои връзки нямат отличително име"
+  },
+  "lighthouse-core/audits/accessibility/link-name.js | title": {
+    "message": "Връзките имат отличителни имена"
+  },
+  "lighthouse-core/audits/accessibility/list.js | description": {
+    "message": "Екранните четци съобщават съдържанието на списъците по конкретен начин. Правилното структуриране на списъците улеснява прочитането им от екранните четци. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/list?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/list.js | failureTitle": {
+    "message": "Някои списъци не съдържат само елементи <li> и спомагателни елементи за скриптовете (<script> и <template>)."
+  },
+  "lighthouse-core/audits/accessibility/list.js | title": {
+    "message": "Списъците съдържат само елементи <li> и спомагателни елементи за скриптовете (<script> и <template>)."
+  },
+  "lighthouse-core/audits/accessibility/listitem.js | description": {
+    "message": "Екранните четци изискват списъчните елементи (<li>) да се съдържат в родителски елемент <ul> или <ol>, за да бъдат прочетени правилно. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/listitem?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/listitem.js | failureTitle": {
+    "message": "Някои списъчни елементи (<li>) не се съдържат в родителски елементи <ul> или <ol>."
+  },
+  "lighthouse-core/audits/accessibility/listitem.js | title": {
+    "message": "Списъчните елементи (<li>) се съдържат в родителски елементи <ul> или <ol>"
+  },
+  "lighthouse-core/audits/accessibility/meta-refresh.js | description": {
+    "message": "Потребителите не очакват страницата да се опресни автоматично и ако това се случи, фокусът ще бъде върнат в горната й част. Това може да бъде дразнещо или объркващо за потребителите. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/meta-refresh?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/meta-refresh.js | failureTitle": {
+    "message": "Документът използва <meta http-equiv=\"refresh\">"
+  },
+  "lighthouse-core/audits/accessibility/meta-refresh.js | title": {
+    "message": "Документът не използва <meta http-equiv=\"refresh\">"
+  },
+  "lighthouse-core/audits/accessibility/meta-viewport.js | description": {
+    "message": "Невъзможността за промяна на мащаба създава проблем за потребителите със слабо зрение, които разчитат на увеличението на екрана, за да виждат добре съдържанието на уеб страниците. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/meta-viewport?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/meta-viewport.js | failureTitle": {
+    "message": "[user-scalable=\"no\"] се използва в елемента <meta name=\"viewport\"> или стойността на атрибута [maximum-scale] е по-малка от 5."
+  },
+  "lighthouse-core/audits/accessibility/meta-viewport.js | title": {
+    "message": "[user-scalable=\"no\"] не се използва в елемента <meta name=\"viewport\"> и стойността на атрибута [maximum-scale] не е по-малка от 5."
+  },
+  "lighthouse-core/audits/accessibility/object-alt.js | description": {
+    "message": "Екранните четци не могат да интерпретират нетекстово съдържание. Добавянето на алтернативен текст към елементите <object> помага на екранните четци да предават смисъла им на потребителите. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/object-alt?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/object-alt.js | failureTitle": {
+    "message": "Някои елементи <object> нямат алтернативен текст ([alt])"
+  },
+  "lighthouse-core/audits/accessibility/object-alt.js | title": {
+    "message": "Елементите <object> имат алтернативен текст ([alt])"
+  },
+  "lighthouse-core/audits/accessibility/tabindex.js | description": {
+    "message": "Ако стойността е по-голяма от 0, значи се използва изричен ред на навигиране. Въпреки че е технически валидно, това често е дразнещо за потребителите, които разчитат на помощни технологии. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/tabindex?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/tabindex.js | failureTitle": {
+    "message": "Някои елементи имат атрибут [tabindex] със стойност, по-голяма от 0"
+  },
+  "lighthouse-core/audits/accessibility/tabindex.js | title": {
+    "message": "Никой от елементите няма атрибут [tabindex] със стойност, по-голяма от 0"
+  },
+  "lighthouse-core/audits/accessibility/td-headers-attr.js | description": {
+    "message": "Екранните четци имат функции за улесняване на навигирането в таблици. Когато клетките от типа <td>, използващи атрибута [headers], са свързани само с други клетки в същата таблица, това може да подобри практическата работа за потребителите на екранни четци. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/td-headers-attr?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/td-headers-attr.js | failureTitle": {
+    "message": "Някои клетки в елемент <table>, които използват атрибута [headers], не са свързани с други клетки от същата таблица."
+  },
+  "lighthouse-core/audits/accessibility/td-headers-attr.js | title": {
+    "message": "Клетките в елемент <table>, които използват атрибута [headers], са свързани само с други клетки от същата таблица."
+  },
+  "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": {
+    "message": "Екранните четци имат функции за улесняване на навигирането в таблици. Свързването на всички заглавки в таблицата с набор от клетки може да подобри практическата работа за потребителите на екранни четци. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/th-has-data-cells?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/th-has-data-cells.js | failureTitle": {
+    "message": "Някои елементи <th> и елементи с [role=\"columnheader\"/\"rowheader\"] нямат клетки с данни, за които служат като описание."
+  },
+  "lighthouse-core/audits/accessibility/th-has-data-cells.js | title": {
+    "message": "Елементите <th> и елементите с [role=\"columnheader\"/\"rowheader\"] имат клетки с данни, за които служат като описание."
+  },
+  "lighthouse-core/audits/accessibility/valid-lang.js | description": {
+    "message": "Посочването на валиден [език по BCP 47](https://www.w3.org/International/questions/qa-choosing-language-tags#question) за елементите дава възможност на екранните четци да произнасят текста правилно. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/valid-lang?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/valid-lang.js | failureTitle": {
+    "message": "Някои атрибути [lang] нямат валидна стойност"
+  },
+  "lighthouse-core/audits/accessibility/valid-lang.js | title": {
+    "message": "Атрибутите [lang] имат валидна стойност"
+  },
+  "lighthouse-core/audits/accessibility/video-caption.js | description": {
+    "message": "Наличието на надпис за даден видеоклип улеснява достъпа до съответната информация за лицата, лишени от слух, и потребителите със слухови увреждания. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/video-caption?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/video-caption.js | failureTitle": {
+    "message": "Някои елементи <video> не съдържат елемент <track> с [kind=\"captions\"]."
+  },
+  "lighthouse-core/audits/accessibility/video-caption.js | title": {
+    "message": "Елементите <video> съдържат елемент <track> с [kind=\"captions\"]"
+  },
+  "lighthouse-core/audits/accessibility/video-description.js | description": {
+    "message": "Аудиоописанията предоставят полезна информация за видеоклиповете (например за обстановката и изражението на лицата на героите), която потребителите не биха могли да разберат от диалога. [Научете повече](https://dequeuniversity.com/rules/axe/2.2/video-description?application=lighthouse)."
+  },
+  "lighthouse-core/audits/accessibility/video-description.js | failureTitle": {
+    "message": "Някои елементи <video> не съдържат елемент <track> с [kind=\"description\"]."
+  },
+  "lighthouse-core/audits/accessibility/video-description.js | title": {
+    "message": "Елементите <video> съдържат елемент <track> с [kind=\"description\"]"
+  },
+  "lighthouse-core/audits/bootup-time.js | chromeExtensionsWarning": {
+    "message": "Зареждането на тази страница се забавя от разширения за Chrome. Опитайте да я проверите в режим „инкогнито“ или от потребителски профил в Chrome без инсталирани разширения."
+  },
+  "lighthouse-core/audits/bootup-time.js | columnScriptEval": {
+    "message": "Проверка на скрипта"
+  },
+  "lighthouse-core/audits/bootup-time.js | columnScriptParse": {
+    "message": "Синтактичен анализ на скрипта"
+  },
+  "lighthouse-core/audits/bootup-time.js | columnTotal": {
+    "message": "Общо"
+  },
+  "lighthouse-core/audits/bootup-time.js | description": {
+    "message": "Препоръчваме да намалите времето, прекарвано в синтактичен анализ, компилиране и изпълнение на JS. Използването на JS ресурси с по-малък размер може да помогне за това. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/bootup)."
+  },
+  "lighthouse-core/audits/bootup-time.js | failureTitle": {
+    "message": "Намалете времето за изпълнение на JavaScript"
+  },
+  "lighthouse-core/audits/bootup-time.js | title": {
+    "message": "Време за изпълнение на JavaScript"
+  },
+  "lighthouse-core/audits/byte-efficiency/efficient-animated-content.js | description": {
+    "message": "Големите GIF файлове не са ефективни за показване на анимирано съдържание. Вместо това препоръчваме да използвате видеоклипове във формат MPEG4/WebM за анимации и PNG/WebP за статични изображения, за да намалите преноса на данни. [Научете повече](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/replace-animated-gifs-with-video/)"
+  },
+  "lighthouse-core/audits/byte-efficiency/efficient-animated-content.js | title": {
+    "message": "Използвайте видеоформати за анимираното съдържание"
+  },
+  "lighthouse-core/audits/byte-efficiency/offscreen-images.js | description": {
+    "message": "За да намалите времето до интерактивност, препоръчваме скритите изображения и тези извън видимата част на екрана да се зареждат след всички критични ресурси. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/offscreen-images)."
+  },
+  "lighthouse-core/audits/byte-efficiency/offscreen-images.js | title": {
+    "message": "Отложете зареждането на изображенията извън видимата част на екрана"
+  },
+  "lighthouse-core/audits/byte-efficiency/render-blocking-resources.js | description": {
+    "message": "Ресурси блокират първото изобразяване на страницата ви. Препоръчваме да вградите критичните JS/CSS елементи и да отложите зареждането на всички некритични JS/стилове. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources)."
+  },
+  "lighthouse-core/audits/byte-efficiency/render-blocking-resources.js | title": {
+    "message": "Елиминирайте ресурсите, които блокират изобразяването"
+  },
+  "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | description": {
+    "message": "Мрежовите ресурси с голям размер струват пари на потребителите и са тясно свързани с бавното зареждане. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/network-payloads)."
+  },
+  "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | displayValue": {
+    "message": "Общият размер бе {totalBytes, number, bytes} КБ"
+  },
+  "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | failureTitle": {
+    "message": "Не използвайте мрежови ресурси с голям размер"
+  },
+  "lighthouse-core/audits/byte-efficiency/total-byte-weight.js | title": {
+    "message": "Не се използват мрежови ресурси с голям размер"
+  },
+  "lighthouse-core/audits/byte-efficiency/unminified-css.js | description": {
+    "message": "Минимизирането на файловете със CSS може да намали размера на мрежовите ресурси. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/minify-css)."
+  },
+  "lighthouse-core/audits/byte-efficiency/unminified-css.js | title": {
+    "message": "Минимизирайте CSS"
+  },
+  "lighthouse-core/audits/byte-efficiency/unminified-javascript.js | description": {
+    "message": "Минимизирането на файловете с JavaScript може да намали размера на ресурсите и времето за синтактичен анализ на скрипта. [Научете повече](https://developers.google.com/speed/docs/insights/MinifyResources)."
+  },
+  "lighthouse-core/audits/byte-efficiency/unminified-javascript.js | title": {
+    "message": "Минимизирайте JavaScript"
+  },
+  "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
+    "message": "Премахнете неизползваните правила от стиловите листове, за да намалите ненужния пренос на данни при мрежовата активност. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/unused-css)."
+  },
+  "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
+    "message": "Отложете зареждането на неизползваните CSS стилове"
+  },
+  "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
+    "message": "Премахнете неизползвания JavaScript, за да намалите преноса на данни при мрежовата активност."
+  },
+  "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
+    "message": "Премахнете неизползвания JavaScript"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
+    "message": "Продължителното съхраняване на кеша може да ускори повторните посещения на страницата ви. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/cache-policy)."
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | displayValue": {
+    "message": "{itemCount,plural, =1{Намерен е 1 ресурс}other{Намерени са # ресурса}}"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | failureTitle": {
+    "message": "Използвайте ефективни правила за кеша, за да улесните показването на статичните активи"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | title": {
+    "message": "Използват се ефективни правила за кеширане на статичните активи"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-optimized-images.js | description": {
+    "message": "Оптимизираните изображения се зареждат по-бързо и използват по-малко мобилни данни. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/optimize-images)."
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-optimized-images.js | title": {
+    "message": "Кодирайте изображенията ефективно"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-responsive-images.js | description": {
+    "message": "Показвайте правилно оразмерени изображения, за да пестите мобилни данни и да ускорите зареждането. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/oversized-images)."
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-responsive-images.js | title": {
+    "message": "Оразмерете изображенията правилно"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | description": {
+    "message": "При показването на текстови ресурси трябва да се използва компресиране (gzip, deflate или brotli), за да се намали общият пренос на данни. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/text-compression)."
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
+    "message": "Активирайте компресирането на текста"
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
+    "message": "Графичните формати, като JPEG 2000, JPEG XR и WebP, често осигуряват по-ефективно компресиране от PNG или JPEG. Това означава по-бързо изтегляне и използване на по-малко данни. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/webp)."
+  },
+  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
+    "message": "Използвайте съвременни формати за показване на изображения"
+  },
+  "lighthouse-core/audits/critical-request-chains.js | description": {
+    "message": "Веригите от критични заявки по-долу ви показват кои ресурси се зареждат с висок приоритет. За да ускорите зареждането на страницата, препоръчваме да скъсите веригите, да намалите размера за изтегляне на ресурсите или да отложите изтеглянето на ненужните от тях. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains)."
+  },
+  "lighthouse-core/audits/critical-request-chains.js | displayValue": {
+    "message": "{itemCount,plural, =1{Намерена е 1 верига}other{Намерени са # вериги}}"
+  },
+  "lighthouse-core/audits/critical-request-chains.js | title": {
+    "message": "Намалете дълбочината на критичните заявки"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | columnElement": {
+    "message": "Елемент"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | columnStatistic": {
+    "message": "Статистически данни"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | columnValue": {
+    "message": "Стойност"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | description": {
+    "message": "Браузърните инженери препоръчват страниците да съдържат под ~ 1500 възела на DOM. Най-добре е йерархичната структура да е с дълбочина под 32 елемента и всеки родителски елемент да има по-малко от 60 дъщерни. Големият размер на DOM може да доведе до използване на повече памет, удължаване на [стиловите изчисления](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations) и забавяне поради [преоформяне](https://developers.google.com/speed/articles/reflow). [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/dom-size)."
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | displayValue": {
+    "message": "{itemCount,plural, =1{1 възел}other{# възела}}"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | failureTitle": {
+    "message": "Не използвайте DOM с твърде голям размер"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMDepth": {
+    "message": "Максимална дълбочина на DOM"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMNodes": {
+    "message": "Общ брой възли на DOM"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMWidth": {
+    "message": "Максимален брой дъщерни елементи"
+  },
+  "lighthouse-core/audits/dobetterweb/dom-size.js | title": {
+    "message": "Не се използва DOM с твърде голям размер"
+  },
+  "lighthouse-core/audits/font-display.js | description": {
+    "message": "Използвайте функцията font-display на CSS, така че текстът да е видим за потребителите при зареждането на уеб шрифтовете. [Научете повече](https://developers.google.com/web/updates/2016/02/font-display)."
+  },
+  "lighthouse-core/audits/font-display.js | failureTitle": {
+    "message": "Уверете се, че текстът остава видим при зареждането на уеб шрифтовете"
+  },
+  "lighthouse-core/audits/font-display.js | title": {
+    "message": "Целият текст остава видим при зареждането на уеб шрифтовете"
+  },
+  "lighthouse-core/audits/mainthread-work-breakdown.js | columnCategory": {
+    "message": "Категория"
+  },
+  "lighthouse-core/audits/mainthread-work-breakdown.js | description": {
+    "message": "Препоръчваме да намалите времето, прекарвано в синтактичен анализ, компилиране и изпълнение на JS. Използването на JS ресурси с по-малък размер може да помогне за това."
+  },
+  "lighthouse-core/audits/mainthread-work-breakdown.js | failureTitle": {
+    "message": "Сведете до минимум работата по основната нишка"
+  },
+  "lighthouse-core/audits/mainthread-work-breakdown.js | title": {
+    "message": "Работата по основната нишка е сведена до минимум"
+  },
+  "lighthouse-core/audits/metrics/estimated-input-latency.js | description": {
+    "message": "Резултатът по-горе показва приблизително колко време (в милисекунди) е необходимо на приложението ви, за да реагира на входящо потребителско действие по време на най-натоварения 5-секунден период от зареждането на страницата. Ако забавянето е над 50 мсек, приложението ви може да се стори бавно на потребителите. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency)."
+  },
+  "lighthouse-core/audits/metrics/estimated-input-latency.js | title": {
+    "message": "Прогнозно забавяне при входящо действие"
+  },
+  "lighthouse-core/audits/metrics/first-contentful-paint.js | description": {
+    "message": "Показателят „Първо изобразяване на съдържание (FCP)“ указва след колко време се изобразява първият текстов или графичен елемент. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint)."
+  },
+  "lighthouse-core/audits/metrics/first-contentful-paint.js | title": {
+    "message": "Първо изобразяване на съдържание"
+  },
+  "lighthouse-core/audits/metrics/first-cpu-idle.js | description": {
+    "message": "Показателят „Първи момент на неактивност на процесора“ указва първия момент, в който основната нишка на страницата е достатъчно свободна, за да обработва входящи действия. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/first-interactive)."
+  },
+  "lighthouse-core/audits/metrics/first-cpu-idle.js | title": {
+    "message": "Първи момент на неактивност на процесора"
+  },
+  "lighthouse-core/audits/metrics/first-meaningful-paint.js | description": {
+    "message": "Показателят „Първо значимо изобразяване“ измерва времето, за което основното съдържание на страницата става видимо. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint)."
+  },
+  "lighthouse-core/audits/metrics/first-meaningful-paint.js | title": {
+    "message": "Първо значимо изобразяване"
+  },
+  "lighthouse-core/audits/metrics/interactive.js | description": {
+    "message": "Показателят „Време до интерактивност“ указва колко време отнема постигането на пълна интерактивност за страницата. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive)."
+  },
+  "lighthouse-core/audits/metrics/interactive.js | title": {
+    "message": "Време до интерактивност"
+  },
+  "lighthouse-core/audits/metrics/speed-index.js | description": {
+    "message": "Индексът на скоростта показва колко бързо се постига визуална завършеност на страницата. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/speed-index)."
+  },
+  "lighthouse-core/audits/metrics/speed-index.js | title": {
+    "message": "Индекс на скоростта"
+  },
+  "lighthouse-core/audits/redirects.js | description": {
+    "message": "Пренасочванията водят до допълнително забавяне на зареждането на страницата. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/redirects)."
+  },
+  "lighthouse-core/audits/redirects.js | title": {
+    "message": "Не използвайте пренасочвания през няколко страници"
+  },
+  "lighthouse-core/audits/time-to-first-byte.js | description": {
+    "message": "Показателят „Време до първия байт“ указва след колко време сървърът изпраща отговор. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/ttfb)."
+  },
+  "lighthouse-core/audits/time-to-first-byte.js | displayValue": {
+    "message": "Основният документ отне {timeInMs, number, milliseconds} мсек"
+  },
+  "lighthouse-core/audits/time-to-first-byte.js | failureTitle": {
+    "message": "Намалете времето за отговор от сървъра (време до първия байт)"
+  },
+  "lighthouse-core/audits/time-to-first-byte.js | title": {
+    "message": "Сървърът отговаря бързо (време до първия байт)"
+  },
+  "lighthouse-core/audits/user-timings.js | columnDuration": {
+    "message": "Продължителност"
+  },
+  "lighthouse-core/audits/user-timings.js | columnName": {
+    "message": "Име"
+  },
+  "lighthouse-core/audits/user-timings.js | columnStartTime": {
+    "message": "Начален час"
+  },
+  "lighthouse-core/audits/user-timings.js | columnType": {
+    "message": "Тип"
+  },
+  "lighthouse-core/audits/user-timings.js | description": {
+    "message": "Препоръчваме да използвате API за разбивка на потребителските времена за приложението си, за да измервате действителната му ефективност по време на ключови аспекти от практическата работа на потребителите. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/user-timing)."
+  },
+  "lighthouse-core/audits/user-timings.js | displayValue": {
+    "message": "{itemCount,plural, =1{1 потребителско време}other{# потребителски времена}}"
+  },
+  "lighthouse-core/audits/user-timings.js | title": {
+    "message": "Точки и измервания в разбивката на потребителските времена"
+  },
+  "lighthouse-core/audits/uses-rel-preconnect.js | crossoriginWarning": {
+    "message": "Намерен бе елемент <link> за предварително свързване за {securityOrigin}, който обаче не бе използван от браузъра. Проверете дали използвате правилно атрибута crossorigin."
+  },
+  "lighthouse-core/audits/uses-rel-preconnect.js | description": {
+    "message": "Препоръчваме да добавите подсказки за предварително свързване или предварително извличане на DNS за ресурсите с цел ранно установяване на връзка с важни източници на трети страни. [Научете повече](https://developers.google.com/web/fundamentals/performance/resource-prioritization#preconnect)."
+  },
+  "lighthouse-core/audits/uses-rel-preconnect.js | title": {
+    "message": "Осигурете предварително свързване с необходимите източници"
+  },
+  "lighthouse-core/audits/uses-rel-preload.js | description": {
+    "message": "Препоръчваме да използвате <link rel=preload>, за да укажете най-напред да се извличат ресурсите, които понастоящем се заявяват на по-късен етап от зареждането на страницата. [Научете повече](https://developers.google.com/web/tools/lighthouse/audits/preload)."
+  },
+  "lighthouse-core/audits/uses-rel-preload.js | title": {
+    "message": "Задайте ключовите заявки да се зареждат предварително"
+  },
+  "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
+    "message": "Това са възможности за подобряване на използването на ARIA в приложението ви. Така може да подобрите практическата работа за потребителите на помощни технологии, като например екранни четци."
+  },
+  "lighthouse-core/config/default-config.js | a11yAriaGroupTitle": {
+    "message": "Най-добрите практики за атрибутите на ARIA са спазени"
+  },
+  "lighthouse-core/config/default-config.js | a11yColorContrastGroupDescription": {
+    "message": "Това са възможности за подобряване на четливостта на съдържанието ви."
+  },
+  "lighthouse-core/config/default-config.js | a11yColorContrastGroupTitle": {
+    "message": "Контрастът на цветовете е задоволителен"
+  },
+  "lighthouse-core/config/default-config.js | a11yCorrectAttributesGroupDescription": {
+    "message": "Това са възможности да подобрите конфигурацията на HTML елементите си."
+  },
+  "lighthouse-core/config/default-config.js | a11yCorrectAttributesGroupTitle": {
+    "message": "Атрибутите на елементите се използват правилно"
+  },
+  "lighthouse-core/config/default-config.js | a11yDescribeContentsGroupDescription": {
+    "message": "Това са възможности да направите съдържанието си по-разбираемо за потребителите на помощни технологии, като например екранни четци."
+  },
+  "lighthouse-core/config/default-config.js | a11yDescribeContentsGroupTitle": {
+    "message": "Елементите описват съдържанието добре"
+  },
+  "lighthouse-core/config/default-config.js | a11yElementNamesGroupDescription": {
+    "message": "Това са възможности за подобряване на семантиката на контролите в приложението ви. Така може да подобрите практическата работа за потребителите на помощни технологии, като например екранни четци."
+  },
+  "lighthouse-core/config/default-config.js | a11yElementNamesGroupTitle": {
+    "message": "Елементите имат отличителни имена"
+  },
+  "lighthouse-core/config/default-config.js | a11yLanguageGroupDescription": {
+    "message": "Това са възможности да направите съдържанието си по-разбираемо за потребителите, използващи други езици."
+  },
+  "lighthouse-core/config/default-config.js | a11yLanguageGroupTitle": {
+    "message": "Посоченият за страницата език е валиден"
+  },
+  "lighthouse-core/config/default-config.js | a11yMetaGroupDescription": {
+    "message": "Това са възможности да подобрите практическата работа на потребителите за сайта си."
+  },
+  "lighthouse-core/config/default-config.js | a11yMetaGroupTitle": {
+    "message": "Meta маркерите са използвани правилно"
+  },
+  "lighthouse-core/config/default-config.js | a11yWellStructuredGroupDescription": {
+    "message": "Това са възможности да се уверите, че HTML кодът ви е структуриран правилно."
+  },
+  "lighthouse-core/config/default-config.js | a11yWellStructuredGroupTitle": {
+    "message": "Елементите са добре структурирани"
+  },
+  "lighthouse-core/config/default-config.js | diagnosticsGroupDescription": {
+    "message": "Повече информация за ефективността на приложението ви."
+  },
+  "lighthouse-core/config/default-config.js | diagnosticsGroupTitle": {
+    "message": "Диагностика"
+  },
+  "lighthouse-core/config/default-config.js | firstPaintImprovementsGroupDescription": {
+    "message": "Най-критичният аспект на ефективността е времето, за което пикселите се изобразяват на екрана. Ключови показатели: първо изобразяване на съдържание, първо значимо изобразяване"
+  },
+  "lighthouse-core/config/default-config.js | firstPaintImprovementsGroupTitle": {
+    "message": "Подобрения, свързани с първото изобразяване"
+  },
+  "lighthouse-core/config/default-config.js | loadOpportunitiesGroupDescription": {
+    "message": "Тези оптимизации могат да ускорят зареждането на страницата."
+  },
+  "lighthouse-core/config/default-config.js | loadOpportunitiesGroupTitle": {
+    "message": "Възможности"
+  },
+  "lighthouse-core/config/default-config.js | metricGroupTitle": {
+    "message": "Показатели"
+  },
+  "lighthouse-core/config/default-config.js | overallImprovementsGroupDescription": {
+    "message": "Подобрете зареждането като цяло, така че страницата да реагира бързо и да е готова за използване възможно най-скоро. Ключови показатели: време до интерактивност, индекс на скоростта"
+  },
+  "lighthouse-core/config/default-config.js | overallImprovementsGroupTitle": {
+    "message": "Цялостни подобрения"
+  },
+  "lighthouse-core/config/default-config.js | performanceCategoryTitle": {
+    "message": "Ефективност"
+  },
+  "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": {
+    "message": "Бързина и надеждност"
+  },
+  "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
+    "message": "Възможност за инсталиране"
+  },
+  "lighthouse-core/config/default-config.js | pwaOptimizedGroupTitle": {
+    "message": "Оптимизиране за PWA"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnCacheTTL": {
+    "message": "Време на валидност на кеша"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnSize": {
+    "message": "Размер (КБ)"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": {
+    "message": "Прекарано време"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnURL": {
+    "message": "URL адрес"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnWastedBytes": {
+    "message": "Потенциална икономия (КБ)"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | columnWastedMs": {
+    "message": "Потенциална икономия (мсек)"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | displayValueByteSavings": {
+    "message": "Потенциално спестяване на {wastedBytes, number, bytes} КБ"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | displayValueMsSavings": {
+    "message": "Потенциално спестяване на {wastedMs, number, milliseconds} мсек"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | ms": {
+    "message": "{timeInMs, number, milliseconds} мсек"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | seconds": {
+    "message": "{timeInMs, number, seconds} сек"
+  },
+  "lighthouse-core/lib/lh-error.js | badTraceRecording": {
+    "message": "Нещо се обърка при записването на трасирането за зареждането на страницата ви. Моля, стартирайте отново Lighthouse. ({errorCode})"
+  },
+  "lighthouse-core/lib/lh-error.js | didntCollectScreenshots": {
+    "message": "Chrome не събра екранни снимки при зареждането на страницата. Моля, уверете се, че на нея има видимо съдържание, и опитайте отново да стартирате Lighthouse. ({errorCode})"
+  },
+  "lighthouse-core/lib/lh-error.js | dnsFailure": {
+    "message": "DNS сървърите не можаха да преобразуват предоставения домейн."
+  },
+  "lighthouse-core/lib/lh-error.js | internalChromeError": {
+    "message": "Възникна вътрешна грешка в Chrome. Моля, рестартирайте браузъра и опитайте отново да стартирате Lighthouse."
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadFailed": {
+    "message": "Lighthouse не успя надеждно да зареди заявената от вас страница. Уверете се, че тествате точния URL адрес и че сървърът отговаря правилно на всички заявки."
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadFailedHung": {
+    "message": "Lighthouse не успя надеждно да зареди заявения от вас URL адрес, тъй като страницата спря да реагира."
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadFailedInsecure": {
+    "message": "Идентификационните данни за сигурност за предоставения от вас URL адрес не са валидни. ({securityMessages})"
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadFailedWithDetails": {
+    "message": "Lighthouse не успя надеждно да зареди заявената от вас страница. Уверете се, че тествате точния URL адрес и че сървърът отговаря правилно на всички заявки. (Подробности: {errorDetails})"
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadFailedWithStatusCode": {
+    "message": "Lighthouse не успя надеждно да зареди заявената от вас страница. Уверете се, че тествате точния URL адрес и че сървърът отговаря правилно на всички заявки. (Код на състоянието: {statusCode})"
+  },
+  "lighthouse-core/lib/lh-error.js | pageLoadTookTooLong": {
+    "message": "Зареждането на страницата отне твърде дълго време. Моля, използвайте посочените в отчета възможности за ускоряване на зареждането й, след което опитайте отново да стартирате Lighthouse. ({errorCode})"
+  },
+  "lighthouse-core/lib/lh-error.js | protocolTimeout": {
+    "message": "Предвиденото време за изчакване на отговор от протокола DevTools бе превишено. (Метод: {protocolMethod})"
+  },
+  "lighthouse-core/lib/lh-error.js | requestContentTimeout": {
+    "message": "Предвиденото време за извличане на съдържанието на ресурсите бе превишено"
+  },
+  "lighthouse-core/lib/lh-error.js | urlInvalid": {
+    "message": "Предоставеният от вас URL адрес изглежда невалиден."
+  },
+  "lighthouse-core/report/html/renderer/util.js | auditGroupExpandTooltip": {
+    "message": "Показване на проверките"
+  },
+  "lighthouse-core/report/html/renderer/util.js | crcInitialNavigation": {
+    "message": "Първоначална навигация"
+  },
+  "lighthouse-core/report/html/renderer/util.js | crcLongestDurationLabel": {
+    "message": "Максимално забавяне в критичния път:"
+  },
+  "lighthouse-core/report/html/renderer/util.js | errorLabel": {
+    "message": "Грешка!"
+  },
+  "lighthouse-core/report/html/renderer/util.js | errorMissingAuditInfo": {
+    "message": "Грешка в отчета: няма информация за проверката"
+  },
+  "lighthouse-core/report/html/renderer/util.js | labDataTitle": {
+    "message": "Данни от контролиран тест"
+  },
+  "lighthouse-core/report/html/renderer/util.js | lsPerformanceCategoryDescription": {
+    "message": "Анализът с [Lighthouse](https://developers.google.com/web/tools/lighthouse/) на текущата страница бе извършен през емулирана мобилна мрежа. Стойностите са прогнозни и може да варират."
+  },
+  "lighthouse-core/report/html/renderer/util.js | manualAuditsGroupTitle": {
+    "message": "Допълнителни елементи, които да проверите ръчно"
+  },
+  "lighthouse-core/report/html/renderer/util.js | notApplicableAuditsGroupTitle": {
+    "message": "Не е приложимо"
+  },
+  "lighthouse-core/report/html/renderer/util.js | opportunityResourceColumnLabel": {
+    "message": "Възможност"
+  },
+  "lighthouse-core/report/html/renderer/util.js | opportunitySavingsColumnLabel": {
+    "message": "Прогнозна икономия"
+  },
+  "lighthouse-core/report/html/renderer/util.js | passedAuditsGroupTitle": {
+    "message": "Успешно преминати проверки"
+  },
+  "lighthouse-core/report/html/renderer/util.js | scorescaleLabel": {
+    "message": "Скала на резултата:"
+  },
+  "lighthouse-core/report/html/renderer/util.js | toplevelWarningsMessage": {
+    "message": "Възникнаха проблеми при изготвянето на този отчет от Lighthouse:"
+  },
+  "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
+    "message": "Стойностите са прогнозни и може да варират."
+  },
+  "lighthouse-core/report/html/renderer/util.js | warningHeader": {
+    "message": "Предупреждения: "
+  }
+}

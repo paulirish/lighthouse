@@ -1,0 +1,5 @@
+{
+  "name": "lighthouse-plugin-no-category",
+  "private": true,
+  "main": "./plugin-no-category.js"
+}

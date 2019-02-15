@@ -36,9 +36,6 @@ module.exports = [
       'no-document-write': {
         score: 1,
       },
-      'no-websql': {
-        score: 1,
-      },
       'uses-passive-event-listeners': {
         score: 1,
       },
@@ -61,13 +58,15 @@ module.exports = [
         score: 1,
       },
       'user-timings': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'critical-request-chains': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
-      'webapp-install-banner': {
+      'installable-manifest': {
         score: 0,
+        explanation: 'Failures: No manifest was fetched.',
+        details: {items: [{isParseFailure: true}]},
       },
       'splash-screen': {
         score: 0,
@@ -76,22 +75,22 @@ module.exports = [
         score: 0,
       },
       'aria-valid-attr': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'aria-allowed-attr': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'color-contrast': {
         score: 1,
       },
       'image-alt': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'label': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'tabindex': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'content-width': {
         score: 1,
@@ -122,12 +121,12 @@ module.exports = [
         score: 1,
       },
       'user-timings': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'critical-request-chains': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
-      'webapp-install-banner': {
+      'installable-manifest': {
         score: 1,
       },
       'splash-screen': {
@@ -137,10 +136,10 @@ module.exports = [
         score: 0,
       },
       'aria-valid-attr': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'aria-allowed-attr': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'color-contrast': {
         score: 1,
@@ -149,12 +148,25 @@ module.exports = [
         score: 0,
       },
       'label': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'tabindex': {
-        scoreDisplayMode: 'not-applicable',
+        scoreDisplayMode: 'notApplicable',
       },
       'content-width': {
+        score: 1,
+      },
+    },
+  },
+
+  {
+    requestedUrl: 'http://localhost:10503/offline-ready.html?slow',
+    finalUrl: 'http://localhost:10503/offline-ready.html?slow',
+    audits: {
+      'service-worker': {
+        score: 1,
+      },
+      'works-offline': {
         score: 1,
       },
     },

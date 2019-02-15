@@ -9,12 +9,12 @@
     "requestedUrl": "https://www.reddit.com/r/nba",
     "finalUrl": "https://www.reddit.com/r/nba"
   },
-  "Viewport": null,
+  "MetaElements": [],
   "ViewportDimensions": {
     "innerWidth": 412,
-    "innerHeight": 732,
+    "innerHeight": 660,
     "outerWidth": 412,
-    "outerHeight": 732,
+    "outerHeight": 660,
     "devicePixelRatio": 2.625
   }
 }

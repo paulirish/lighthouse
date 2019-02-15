@@ -7,6 +7,7 @@
 
 const UnusedCSSAudit = require('../../../audits/byte-efficiency/unused-css-rules.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
 
 /* eslint-env jest */
 
@@ -117,33 +118,32 @@ describe('Best Practices: unused css rules audit', () => {
   });
 
   describe('#audit', () => {
-    const devtoolsLogs = {defaultPass: []};
-    const requestNetworkRecords = () => {
-      return Promise.resolve([
-        {
-          url: 'file://a.css',
-          transferSize: 10 * 1024,
-          resourceType: 'Stylesheet',
-        },
-      ]);
-    };
+    const networkRecords = [
+      {
+        url: 'file://a.css',
+        transferSize: 10 * 1024,
+        resourceType: 'Stylesheet',
+      },
+    ];
+
+    function getArtifacts({CSSUsage}) {
+      return {
+        devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog(networkRecords)},
+        URL: {finalUrl: ''},
+        CSSUsage,
+      };
+    }
 
     it('ignores missing stylesheets', () => {
-      return UnusedCSSAudit.audit_({
-        devtoolsLogs,
-        requestNetworkRecords,
-        URL: {finalUrl: ''},
+      return UnusedCSSAudit.audit_(getArtifacts({
         CSSUsage: {rules: [{styleSheetId: 'a', used: false}], stylesheets: []},
-      }).then(result => {
+      }), networkRecords).then(result => {
         assert.equal(result.items.length, 0);
       });
     });
 
     it('ignores stylesheets that are 100% used', () => {
-      return UnusedCSSAudit.audit_({
-        devtoolsLogs,
-        requestNetworkRecords,
-        URL: {finalUrl: ''},
+      return UnusedCSSAudit.audit_(getArtifacts({
         CSSUsage: {rules: [
           {styleSheetId: 'a', used: true},
           {styleSheetId: 'a', used: true},
@@ -158,19 +158,16 @@ describe('Best Practices: unused css rules audit', () => {
             content: '.my.favorite.selector { rule: content; }',
           },
         ]},
-      }).then(result => {
+      }), networkRecords).then(result => {
         assert.equal(result.items.length, 0);
       });
     });
 
     it('fails when lots of rules are unused', () => {
-      return UnusedCSSAudit.audit_({
-        devtoolsLogs,
-        requestNetworkRecords,
-        URL: {finalUrl: ''},
+      return UnusedCSSAudit.audit_(getArtifacts({
         CSSUsage: {rules: [
-          {styleSheetId: 'a', used: true, startOffset: 0, endOffset: 11}, // 44 * 1 / 4
-          {styleSheetId: 'b', used: true, startOffset: 0, endOffset: 6000}, // 4000 * 3 / 2
+          {styleSheetId: 'a', used: true, startOffset: 0, endOffset: 11}, // 44 * 25% = 11
+          {styleSheetId: 'b', used: true, startOffset: 0, endOffset: 60000}, // 40000 * 3 * 50% = 60000
         ], stylesheets: [
           {
             header: {styleSheetId: 'a', sourceURL: 'file://a.css'},
@@ -178,27 +175,24 @@ describe('Best Practices: unused css rules audit', () => {
           },
           {
             header: {styleSheetId: 'b', sourceURL: 'file://b.css'},
-            content: `${generate('123', 4000)}`,
+            content: `${generate('123', 40000)}`,
           },
           {
             header: {styleSheetId: 'c', sourceURL: ''},
             content: `${generate('123', 450)}`, // will be filtered out
           },
         ]},
-      }).then(result => {
+      }), networkRecords).then(result => {
         assert.equal(result.items.length, 2);
         assert.equal(result.items[0].totalBytes, 10 * 1024);
-        assert.equal(result.items[1].totalBytes, 6000);
+        assert.equal(result.items[1].totalBytes, 40000 * 3 * 0.2);
         assert.equal(result.items[0].wastedPercent, 75);
         assert.equal(result.items[1].wastedPercent, 50);
       });
     });
 
     it('does not include empty or small sheets', () => {
-      return UnusedCSSAudit.audit_({
-        devtoolsLogs,
-        requestNetworkRecords,
-        URL: {finalUrl: ''},
+      return UnusedCSSAudit.audit_(getArtifacts({
         CSSUsage: {rules: [
           {styleSheetId: 'a', used: true, startOffset: 0, endOffset: 8000}, // 4000 * 3 / 2
           {styleSheetId: 'b', used: true, startOffset: 0, endOffset: 500}, // 500 * 3 / 3
@@ -224,7 +218,7 @@ describe('Best Practices: unused css rules audit', () => {
             content: '       ',
           },
         ]},
-      }).then(result => {
+      }), networkRecords).then(result => {
         assert.equal(result.items.length, 1);
         assert.equal(Math.floor(result.items[0].wastedPercent), 33);
       });

@@ -18,7 +18,7 @@ describe('Printer', () => {
   });
 
   it('rejects invalid output paths', () => {
-    const path = undefined;
+    const path = /** @type {any} */ (undefined);
     assert.notEqual(Printer.checkOutputPath(path), path);
   });
 

@@ -6,6 +6,14 @@
 'use strict';
 
 const Audit = require('./audit');
+const TraceOfTab = require('../computed/trace-of-tab.js');
+const Speedline = require('../computed/speedline.js');
+const FirstContentfulPaint = require('../computed/metrics/first-contentful-paint.js');
+const FirstMeaningfulPaint = require('../computed/metrics/first-meaningful-paint.js');
+const FirstCPUIdle = require('../computed/metrics/first-cpu-idle.js');
+const Interactive = require('../computed/metrics/interactive.js');
+const SpeedIndex = require('../computed/metrics/speed-index.js');
+const EstimatedInputLatency = require('../computed/metrics/estimated-input-latency.js');
 
 class Metrics extends Audit {
   /**
@@ -31,14 +39,26 @@ class Metrics extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const metricComputationData = {trace, devtoolsLog, settings: context.settings};
 
-    const traceOfTab = await artifacts.requestTraceOfTab(trace);
-    const speedline = await artifacts.requestSpeedline(trace);
-    const firstContentfulPaint = await artifacts.requestFirstContentfulPaint(metricComputationData);
-    const firstMeaningfulPaint = await artifacts.requestFirstMeaningfulPaint(metricComputationData);
-    const firstCPUIdle = await artifacts.requestFirstCPUIdle(metricComputationData);
-    const interactive = await artifacts.requestInteractive(metricComputationData);
-    const speedIndex = await artifacts.requestSpeedIndex(metricComputationData);
-    const estimatedInputLatency = await artifacts.requestEstimatedInputLatency(metricComputationData); // eslint-disable-line max-len
+
+    /**
+     * @template TArtifacts
+     * @template TReturn
+     * @param {{request: (artifact: TArtifacts, context: LH.Audit.Context) => Promise<TReturn>}} Artifact
+     * @param {TArtifacts} artifact
+     * @return {Promise<TReturn|undefined>}
+     */
+    const requestOrUndefined = (Artifact, artifact) => {
+      return Artifact.request(artifact, context).catch(_ => undefined);
+    };
+
+    const traceOfTab = await TraceOfTab.request(trace, context);
+    const speedline = await Speedline.request(trace, context);
+    const firstContentfulPaint = await FirstContentfulPaint.request(metricComputationData, context);
+    const firstMeaningfulPaint = await FirstMeaningfulPaint.request(metricComputationData, context);
+    const firstCPUIdle = await requestOrUndefined(FirstCPUIdle, metricComputationData);
+    const interactive = await requestOrUndefined(Interactive, metricComputationData);
+    const speedIndex = await requestOrUndefined(SpeedIndex, metricComputationData);
+    const estimatedInputLatency = await EstimatedInputLatency.request(metricComputationData, context); // eslint-disable-line max-len
 
     /** @type {UberMetricsItem} */
     const metrics = {
@@ -47,12 +67,12 @@ class Metrics extends Audit {
       firstContentfulPaintTs: firstContentfulPaint.timestamp,
       firstMeaningfulPaint: firstMeaningfulPaint.timing,
       firstMeaningfulPaintTs: firstMeaningfulPaint.timestamp,
-      firstCPUIdle: firstCPUIdle.timing,
-      firstCPUIdleTs: firstCPUIdle.timestamp,
-      interactive: interactive.timing,
-      interactiveTs: interactive.timestamp,
-      speedIndex: speedIndex.timing,
-      speedIndexTs: speedIndex.timestamp,
+      firstCPUIdle: firstCPUIdle && firstCPUIdle.timing,
+      firstCPUIdleTs: firstCPUIdle && firstCPUIdle.timestamp,
+      interactive: interactive && interactive.timing,
+      interactiveTs: interactive && interactive.timestamp,
+      speedIndex: speedIndex && speedIndex.timing,
+      speedIndexTs: speedIndex && speedIndex.timestamp,
       estimatedInputLatency: estimatedInputLatency.timing,
       estimatedInputLatencyTs: estimatedInputLatency.timestamp,
 
@@ -88,12 +108,16 @@ class Metrics extends Audit {
       }
     }
 
-    /** @type {MetricsDetails} */
-    const details = {items: [metrics]};
+    /** @type {LH.Audit.Details.Diagnostic} */
+    const details = {
+      type: 'diagnostic',
+      // TODO: Consider not nesting metrics under `items`.
+      items: [metrics],
+    };
 
     return {
       score: 1,
-      rawValue: interactive.timing,
+      rawValue: (interactive && interactive.timing) || 0,
       details,
     };
   }
@@ -105,11 +129,11 @@ class Metrics extends Audit {
  * @property {number=} firstContentfulPaintTs
  * @property {number} firstMeaningfulPaint
  * @property {number=} firstMeaningfulPaintTs
- * @property {number} firstCPUIdle
+ * @property {number=} firstCPUIdle
  * @property {number=} firstCPUIdleTs
- * @property {number} interactive
+ * @property {number=} interactive
  * @property {number=} interactiveTs
- * @property {number} speedIndex
+ * @property {number=} speedIndex
  * @property {number=} speedIndexTs
  * @property {number} estimatedInputLatency
  * @property {number=} estimatedInputLatencyTs
@@ -134,7 +158,5 @@ class Metrics extends Audit {
  * @property {number} observedSpeedIndex
  * @property {number} observedSpeedIndexTs
  */
-
-/** @typedef {{items: [UberMetricsItem]}} MetricsDetails */
 
 module.exports = Metrics;

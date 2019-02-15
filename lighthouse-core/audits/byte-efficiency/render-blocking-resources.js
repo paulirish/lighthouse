@@ -10,11 +10,14 @@
 'use strict';
 
 const Audit = require('../audit');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
 const BaseNode = require('../../lib/dependency-graph/base-node');
 const ByteEfficiencyAudit = require('./byte-efficiency-audit');
 const UnusedCSS = require('./unused-css-rules');
 const NetworkRequest = require('../../lib/network-request');
+const TraceOfTab = require('../../computed/trace-of-tab.js');
+const LoadSimulator = require('../../computed/load-simulator.js');
+const FirstContentfulPaint = require('../../computed/metrics/first-contentful-paint.js');
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
 /** @typedef {import('../../lib/dependency-graph/base-node.js').Node} Node */
@@ -83,14 +86,14 @@ class RenderBlockingResources extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const simulatorData = {devtoolsLog, settings: context.settings};
-    const traceOfTab = await artifacts.requestTraceOfTab(trace);
-    const simulator = await artifacts.requestLoadSimulator(simulatorData);
+    const traceOfTab = await TraceOfTab.request(trace, context);
+    const simulator = await LoadSimulator.request(simulatorData, context);
     const wastedCssBytes = await RenderBlockingResources.computeWastedCSSBytes(artifacts, context);
 
     const metricSettings = {throttlingMethod: 'simulate'};
     const metricComputationData = {trace, devtoolsLog, simulator, settings: metricSettings};
     // @ts-ignore - TODO(bckenny): allow optional `throttling` settings
-    const fcpSimulation = await artifacts.requestFirstContentfulPaint(metricComputationData);
+    const fcpSimulation = await FirstContentfulPaint.request(metricComputationData, context);
     const fcpTsInMs = traceOfTab.timestamps.firstContentfulPaint / 1000;
 
     const nodesByUrl = getNodesAndTimingByUrl(fcpSimulation.optimisticEstimate.nodeTimings);
@@ -100,14 +103,12 @@ class RenderBlockingResources extends Audit {
     for (const resource of artifacts.TagsBlockingFirstPaint) {
       // Ignore any resources that finished after observed FCP (they're clearly not render-blocking)
       if (resource.endTime * 1000 > fcpTsInMs) continue;
-      // TODO(phulce): beacon these occurences to Sentry to improve FCP graph
+      // TODO: beacon to Sentry, https://github.com/GoogleChrome/lighthouse/issues/7041
       if (!nodesByUrl[resource.tag.url]) continue;
 
       const {node, nodeTiming} = nodesByUrl[resource.tag.url];
 
       // Mark this node and all its dependents as deferrable
-      // TODO(phulce): make this slightly more surgical
-      // i.e. the referenced font asset won't become inlined just because you inline the CSS
       node.traverse(node => deferredNodeIds.add(node.id));
 
       // "wastedMs" is the download time of the network request, responseReceived - requestSent
@@ -187,7 +188,6 @@ class RenderBlockingResources extends Audit {
   static async computeWastedCSSBytes(artifacts, context) {
     const wastedBytesByUrl = new Map();
     try {
-      // TODO(phulce): pull this out into computed artifact
       const results = await UnusedCSS.audit(artifacts, context);
       // @ts-ignore - TODO(bckenny): details types.
       for (const item of results.details.items) {
@@ -211,7 +211,7 @@ class RenderBlockingResources extends Audit {
       displayValue = str_(i18n.UIStrings.displayValueMsSavings, {wastedMs});
     }
 
-    /** @type {LH.Result.Audit.OpportunityDetails['headings']} */
+    /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnSize)},

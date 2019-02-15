@@ -14,9 +14,9 @@
 const NEXUS5X_EMULATION_METRICS = {
   mobile: true,
   screenWidth: 412,
-  screenHeight: 732,
+  screenHeight: 660,
   width: 412,
-  height: 732,
+  height: 660,
   positionX: 0,
   positionY: 0,
   scale: 1,
@@ -27,9 +27,25 @@ const NEXUS5X_EMULATION_METRICS = {
   },
 };
 
+/**
+ * Desktop metrics adapted from emulated_devices/module.json
+ * @type {LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest}
+ */
+const DESKTOP_EMULATION_METRICS = {
+  mobile: false,
+  width: 1350,
+  height: 940,
+  deviceScaleFactor: 1,
+};
+
 const NEXUS5X_USERAGENT = {
-  userAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36' +
-    '(KHTML, like Gecko) Chrome/66.0.3359.30 Mobile Safari/537.36',
+  // eslint-disable-next-line max-len
+  userAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3694.0 Mobile Safari/537.36',
+};
+
+const DESKTOP_USERAGENT = {
+  // eslint-disable-next-line max-len
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3694.0 Safari/537.36',
 };
 
 const OFFLINE_METRICS = {
@@ -62,6 +78,20 @@ async function enableNexus5X(driver) {
     driver.sendCommand('Network.enable'),
     driver.sendCommand('Network.setUserAgentOverride', NEXUS5X_USERAGENT),
     driver.sendCommand('Emulation.setTouchEmulationEnabled', {enabled: true}),
+  ]);
+}
+
+/**
+ * @param {Driver} driver
+ * @return {Promise<void>}
+ */
+async function enableDesktop(driver) {
+  await Promise.all([
+    driver.sendCommand('Emulation.setDeviceMetricsOverride', DESKTOP_EMULATION_METRICS),
+    // Network.enable must be called for UA overriding to work
+    driver.sendCommand('Network.enable'),
+    driver.sendCommand('Network.setUserAgentOverride', DESKTOP_USERAGENT),
+    driver.sendCommand('Emulation.setTouchEmulationEnabled', {enabled: false}),
   ]);
 }
 
@@ -121,6 +151,7 @@ function disableCPUThrottling(driver) {
 
 module.exports = {
   enableNexus5X,
+  enableDesktop,
   enableNetworkThrottling,
   clearAllNetworkEmulation,
   enableCPUThrottling,

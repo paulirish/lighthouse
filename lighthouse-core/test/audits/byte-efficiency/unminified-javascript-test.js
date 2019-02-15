@@ -43,7 +43,7 @@ describe('Page uses optimized responses', () => {
             const foo = 1
             /Edge\/\d*\.\d*/.exec('foo')
           `,
-        '123.4': '#$*% non sense',
+        '123.4': '#$*%dense',
       },
     }, [
       {requestId: '123.1', url: 'foo.js', transferSize: 20 * KB, resourceType},
@@ -52,17 +52,16 @@ describe('Page uses optimized responses', () => {
       {requestId: '123.4', url: 'invalid.js', transferSize: 100 * KB, resourceType},
     ]);
 
-    assert.ok(auditResult.warnings.length);
-    assert.equal(auditResult.items.length, 3);
-    assert.equal(auditResult.items[0].url, 'foo.js');
-    assert.equal(Math.round(auditResult.items[0].wastedPercent), 57);
-    assert.equal(Math.round(auditResult.items[0].wastedBytes / 1024), 11);
-    assert.equal(auditResult.items[1].url, 'other.js');
-    assert.equal(Math.round(auditResult.items[1].wastedPercent), 53);
-    assert.equal(Math.round(auditResult.items[1].wastedBytes / 1024), 27);
-    assert.equal(auditResult.items[2].url, 'valid-ish.js');
-    assert.equal(Math.round(auditResult.items[2].wastedPercent), 72);
-    assert.equal(Math.round(auditResult.items[2].wastedBytes / 1024), 72);
+    const results = auditResult.items.map(item => Object.assign(item, {
+      wastedKB: Math.round(item.wastedBytes / 1024),
+      wastedPercent: Math.round(item.wastedPercent),
+    }));
+
+    expect(results).toMatchObject([
+      {url: 'foo.js', wastedPercent: 57, wastedKB: 11},
+      {url: 'other.js', wastedPercent: 53, wastedKB: 27},
+      {url: 'valid-ish.js', wastedPercent: 39, wastedKB: 39},
+    ]);
   });
 
   it('passes when scripts are already minified', () => {
@@ -85,7 +84,7 @@ describe('Page uses optimized responses', () => {
       },
     }, [
       {requestId: '123.1', url: 'foo.js', transferSize: 20 * KB, resourceType},
-      {requestId: '123.2', url: 'other.js', transferSize: 3 * KB, resourceType},
+      {requestId: '123.2', url: 'other.js', transferSize: 3 * KB, resourceType}, // too small
       {requestId: '123.3', url: 'invalid.js', transferSize: 20 * KB, resourceType},
     ]);
 

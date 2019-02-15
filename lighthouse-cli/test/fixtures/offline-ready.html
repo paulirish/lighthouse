@@ -24,18 +24,28 @@
 </h4>
 
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/offline-ready-sw.js').then(function(registration) {
+  async function registerServiceWorker(qs = '') {
+    if (!('serviceWorker' in navigator)) return
+
+    try {
+      const registration = await navigator.serviceWorker.register(`/offline-ready-sw.js${qs}`)
       console.log('service worker registration complete');
 
       registration.addEventListener('statechange',  e => {
         console.log('sw registration is now', e.target.state);
       });
-    }).catch(function(e) {
+    } catch (e) {
       console.error('service worker is not so cool.', e);
       throw e;
-    });
+    }
   }
+
+  if (window.location.search.includes('slow')) {
+    window.addEventListener('load', () => registerServiceWorker('?delay=5000&slow'));
+  } else {
+    registerServiceWorker();
+  }
+
 </script>
 
 <!--

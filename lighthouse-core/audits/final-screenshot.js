@@ -6,7 +6,8 @@
 'use strict';
 
 const Audit = require('./audit');
-const LHError = require('../lib/errors');
+const LHError = require('../lib/lh-error');
+const Screenshots = require('../computed/screenshots.js');
 
 class FinalScreenshot extends Audit {
   /**
@@ -24,11 +25,12 @@ class FinalScreenshot extends Audit {
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
    */
-  static async audit(artifacts) {
+  static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const screenshots = await artifacts.requestScreenshots(trace);
+    const screenshots = await Screenshots.request(trace, context);
     const finalScreenshot = screenshots[screenshots.length - 1];
 
     if (!finalScreenshot) {

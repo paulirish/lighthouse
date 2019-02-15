@@ -35,7 +35,7 @@ function getFlags(manualArgv) {
           'lighthouse <url> --disable-device-emulation --throttling-method=provided',
           'Disable device emulation and all throttling')
       .example(
-          'lighthouse <url> --chrome-flags="--window-size=412,732"',
+          'lighthouse <url> --chrome-flags="--window-size=412,660"',
           'Launch Chrome with a specific window size')
       .example(
           'lighthouse <url> --quiet --chrome-flags="--headless"',
@@ -56,8 +56,8 @@ function getFlags(manualArgv) {
 
       .group(
         [
-          'save-assets', 'list-all-audits', 'list-trace-categories', 'additional-trace-categories',
-          'config-path', 'preset', 'chrome-flags', 'port', 'hostname',
+          'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
+          'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'emulated-form-factor',
           'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
           'only-audits', 'only-categories', 'skip-audits',
         ],
@@ -70,7 +70,8 @@ function getFlags(manualArgv) {
         'blocked-url-patterns': 'Block any network requests to the specified URL patterns',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
-        'disable-device-emulation': 'Disable Nexus 5X emulation',
+        'disable-device-emulation': 'Disable all device form factor emulation. Deprecated: use --emulated-form-factor=none instead',
+        'emulated-form-factor': 'Controls the emulated device form factor (mobile vs. desktop) if not disabled',
         'throttling-method': 'Controls throttling method',
         'throttling.rttMs': 'Controls simulated network RTT (TCP layer)',
         'throttling.throughputKbps': 'Controls simulated network download throughput',
@@ -89,7 +90,7 @@ function getFlags(manualArgv) {
         'config-path': 'The path to the config JSON.',
         'preset': 'Use a built-in configuration.',
         'chrome-flags':
-            `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see http://bit.ly/chrome-flags
+            `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see https://bit.ly/chrome-flags
             Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.`,
         'hostname': 'The hostname to use for the debugging protocol.',
         'port': 'The port to use for the debugging protocol. Use 0 for a random port',
@@ -99,6 +100,7 @@ function getFlags(manualArgv) {
         'only-audits': 'Only run the specified audits',
         'only-categories': 'Only run the specified categories',
         'skip-audits': 'Run everything except these audits',
+        'print-config': 'Print the normalized config for the given config and options, then exit.',
       })
       // set aliases
       .alias({'gather-mode': 'G', 'audit-mode': 'A'})
@@ -109,7 +111,7 @@ function getFlags(manualArgv) {
         'output-path': `The file path to output the results. Use 'stdout' to write to stdout.
   If using JSON output, default is stdout.
   If using HTML output, default is a file in the working directory with a name based on the test URL and date.
-  If using multiple outputs, --output-path is ignored.
+  If using multiple outputs, --output-path is appended with the standard extension for each output type. "reports/my-run" -> "reports/my-run.report.html", "reports/my-run.report.json", etc.
   Example: --output-path=./lighthouse-results.html`,
         'view': 'Open HTML report in your browser',
       })
@@ -117,9 +119,10 @@ function getFlags(manualArgv) {
       // boolean values
       .boolean([
         'disable-storage-reset', 'disable-device-emulation', 'save-assets', 'list-all-audits',
-        'list-trace-categories', 'view', 'verbose', 'quiet', 'help',
+        'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config',
       ])
       .choices('output', printer.getValidOutputOptions())
+      .choices('emulated-form-factor', ['mobile', 'desktop', 'none'])
       .choices('throttling-method', ['devtools', 'provided', 'simulate'])
       .choices('preset', ['full', 'perf', 'mixed-content'])
       // force as an array
@@ -139,16 +142,19 @@ function getFlags(manualArgv) {
       .default('enable-error-reporting', undefined) // Undefined so prompted by default
       .check(/** @param {LH.CliFlags} argv */ (argv) => {
         // Lighthouse doesn't need a URL if...
-        //   - We're in auditMode (and we have artifacts already)
         //   - We're just listing the available options.
-        // If one of these don't apply, stop the program and ask for a url.
-        const isListMode = argv.listAllAudits || argv.listTraceCategories;
+        //   - We're just printing the config.
+        //   - We're in auditMode (and we have artifacts already)
+        // If one of these don't apply, if no URL, stop the program and ask for one.
+        const isPrintSomethingMode = argv.listAllAudits || argv.listTraceCategories || argv.printConfig;
         const isOnlyAuditMode = !!argv.auditMode && !argv.gatherMode;
-        if (!isListMode && !isOnlyAuditMode && argv._.length === 0) {
-          throw new Error('Please provide a url');
+        if (isPrintSomethingMode || isOnlyAuditMode) {
+          return true;
+        } else if (argv._.length > 0) {
+          return true;
         }
 
-        return true;
+        throw new Error('Please provide a url');
       })
       .epilogue(
           'For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')

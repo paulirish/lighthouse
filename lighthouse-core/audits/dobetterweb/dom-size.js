@@ -14,7 +14,7 @@
 
 const Audit = require('../audit');
 const Util = require('../../report/html/renderer/util.js');
-const i18n = require('../../lib/i18n');
+const i18n = require('../../lib/i18n/i18n.js');
 
 const MAX_DOM_NODES = 1500;
 const MAX_DOM_TREE_WIDTH = 60;
@@ -32,17 +32,23 @@ const UIStrings = {
     'children/parent element. A large DOM can increase memory usage, cause longer ' +
     '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
     'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/tools/lighthouse/audits/dom-size).',
-  /** Label for the total number of DOM nodes found in the page. */
-  columnDOMNodes: 'Total DOM Nodes',
-  /** Label for the numeric value of the maximum depth in the page's DOM tree. */
-  columnDOMDepth: 'Maximum DOM Depth',
-  /** Label for the value of the maximum number of children any DOM node in the page has. */
-  columnDOMWidth: 'Maximum Children',
+  /** Table column header for the type of statistic. These statistics describe how big the DOM is (count of DOM nodes, children, depth). */
+  columnStatistic: 'Statistic',
+  /** Table column header for the DOM element. Each DOM element is described with its HTML representation. */
+  columnElement: 'Element',
+  /** Table column header for the observed value of the DOM statistic. */
+  columnValue: 'Value',
   /** [ICU Syntax] Label for an audit identifying the number of DOM nodes found in the page. */
   displayValue: `{itemCount, plural,
     =1 {1 node}
     other {# nodes}
     }`,
+  /** Label for the total number of DOM nodes found in the page. */
+  statisticDOMNodes: 'Total DOM Nodes',
+  /** Label for the numeric value of the maximum depth in the page's DOM tree. */
+  statisticDOMDepth: 'Maximum DOM Depth',
+  /** Label for the numeric value of the maximum number of children any DOM element in the page has. The element described will have the most children in the page. */
+  statisticDOMWidth: 'Maximum Child Elements',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -95,29 +101,35 @@ class DOMSize extends Audit {
       context.options.scoreMedian
     );
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'totalNodes', itemType: 'text', text: str_(UIStrings.columnDOMNodes)},
-      {key: 'depth', itemType: 'text', text: str_(UIStrings.columnDOMDepth)},
-      {key: 'width', itemType: 'text', text: str_(UIStrings.columnDOMWidth)},
+      {key: 'statistic', itemType: 'text', text: str_(UIStrings.columnStatistic)},
+      {key: 'element', itemType: 'code', text: str_(UIStrings.columnElement)},
+      {key: 'value', itemType: 'numeric', text: str_(UIStrings.columnValue)},
     ];
 
-    /** @type {Array<Object<string, LH.Audit.DetailsItem>>} */
+    /** @type {LH.Audit.Details.Table['items']} */
     const items = [
       {
-        totalNodes: Util.formatNumber(stats.totalDOMNodes),
-        depth: Util.formatNumber(stats.depth.max),
-        width: Util.formatNumber(stats.width.max),
+        statistic: str_(UIStrings.statisticDOMNodes),
+        element: '',
+        value: Util.formatNumber(stats.totalDOMNodes),
       },
       {
-        totalNodes: '',
-        depth: {
+        statistic: str_(UIStrings.statisticDOMDepth),
+        element: {
           type: 'code',
           value: stats.depth.snippet,
         },
-        width: {
+        value: Util.formatNumber(stats.depth.max),
+      },
+      {
+        statistic: str_(UIStrings.statisticDOMWidth),
+        element: {
           type: 'code',
           value: stats.width.snippet,
         },
+        value: Util.formatNumber(stats.width.max),
       },
     ];
 

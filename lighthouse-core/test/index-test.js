@@ -52,7 +52,7 @@ describe('Module Tests', function() {
   });
 
   it('should throw an error when the second parameter is not an object', function() {
-    return lighthouse('SOME_URL', 'flags')
+    return lighthouse('chrome://version', 'flags')
       .then(() => {
         throw new Error('Should not have resolved when second arg is not an object');
       }, err => {
@@ -61,7 +61,7 @@ describe('Module Tests', function() {
   });
 
   it('should throw an error when the config is invalid', function() {
-    return lighthouse('SOME_URL', {}, {})
+    return lighthouse('chrome://version', {}, {})
       .then(() => {
         throw new Error('Should not have resolved when second arg is not an object');
       }, err => {
@@ -70,10 +70,10 @@ describe('Module Tests', function() {
   });
 
   it('should throw an error when the config contains incorrect audits', function() {
-    return lighthouse('SOME_URL', {}, {
+    return lighthouse('chrome://version', {}, {
       passes: [{
         gatherers: [
-          'viewport',
+          'scripts',
         ],
       }],
       audits: [
@@ -84,6 +84,24 @@ describe('Module Tests', function() {
         throw new Error('Should not have resolved');
       }, err => {
         assert.ok(err.message.includes('fluff'));
+      });
+  });
+
+  it('should throw an error when the url is invalid', function() {
+    return lighthouse('https:/i-am-not-valid', {}, {})
+      .then(() => {
+        throw new Error('Should not have resolved when url is invalid');
+      }, err => {
+        assert.ok(err);
+      });
+  });
+
+  it('should throw an error when the url is invalid protocol (file:///)', function() {
+    return lighthouse('file:///a/fake/index.html', {}, {})
+      .then(() => {
+        throw new Error('Should not have resolved when url is file:///');
+      }, err => {
+        assert.ok(err);
       });
   });
 
@@ -110,7 +128,7 @@ describe('Module Tests', function() {
       assert.strictEqual(results.lhr.audits.viewport.score, 0);
       assert.ok(results.lhr.audits.viewport.explanation);
       assert.ok(results.lhr.timing);
-      assert.equal(typeof results.lhr.timing.total, 'number');
+      assert.ok(results.lhr.timing.entries.length > 3, 'timing entries not populated');
     });
   });
 

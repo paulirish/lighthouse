@@ -11,6 +11,21 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if all video elements have child track elements that contain a description of the video content. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: '`<video>` elements contain a `<track>` element with `[kind="description"]`',
+  /** Title of an accesibility audit that evaluates if all video elements have child track elements that contain a description of the video content. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: '`<video>` elements do not contain a `<track>` element with ' +
+      '`[kind="description"]`.',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Audio descriptions provide relevant information for videos that dialogue ' +
+      'cannot, such as facial expressions and scenes. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/video-description?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class VideoDescription extends AxeAudit {
   /**
@@ -19,15 +34,13 @@ class VideoDescription extends AxeAudit {
   static get meta() {
     return {
       id: 'video-description',
-      title: '`<video>` elements contain a `<track>` element with `[kind="description"]`',
-      failureTitle: '`<video>` elements do not contain a `<track>` element with ' +
-          '`[kind="description"]`.',
-      description: 'Audio descriptions provide relevant information for videos that dialogue ' +
-          'cannot, such as facial expressions and scenes. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/video-description?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = VideoDescription;
+module.exports.UIStrings = UIStrings;

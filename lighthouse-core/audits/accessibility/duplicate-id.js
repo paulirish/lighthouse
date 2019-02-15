@@ -11,6 +11,20 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if there are any duplicate id HTML attributes on the page. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: '`[id]` attributes on the page are unique',
+  /** Title of an accesibility audit that evaluates if there are any duplicate id HTML attributes on the page. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: '`[id]` attributes on the page are not unique',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'The value of an id attribute must be unique to prevent ' +
+      'other instances from being overlooked by assistive technologies. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/duplicate-id?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class DuplicateId extends AxeAudit {
   /**
@@ -19,14 +33,13 @@ class DuplicateId extends AxeAudit {
   static get meta() {
     return {
       id: 'duplicate-id',
-      title: '`[id]` attributes on the page are unique',
-      failureTitle: '`[id]` attributes on the page are not unique',
-      description: 'The value of an id attribute must be unique to prevent ' +
-          'other instances from being overlooked by assistive technologies. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/duplicate-id?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = DuplicateId;
+module.exports.UIStrings = UIStrings;

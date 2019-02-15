@@ -7,20 +7,20 @@
 
 const Audit = require('../../audits/mixed-content.js');
 const assert = require('assert');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 /* eslint-env jest */
 
 describe('Mixed Content audit', () => {
   function getArtifacts(baseUrl, defaultPassRecords, mixedContentPassRecords) {
+    const defaultDevtoolsLog = networkRecordsToDevtoolsLog(defaultPassRecords);
+    const mixedContentDevtoolsLog = networkRecordsToDevtoolsLog(mixedContentPassRecords);
+
     return {
       MixedContent: {url: baseUrl},
-      devtoolsLogs: {[Audit.DEFAULT_PASS]: true, ['mixedContentPass']: false},
-      requestNetworkRecords: (pass) => {
-        if (pass) {
-          return Promise.resolve(defaultPassRecords);
-        } else {
-          return Promise.resolve(mixedContentPassRecords);
-        }
+      devtoolsLogs: {
+        [Audit.DEFAULT_PASS]: defaultDevtoolsLog,
+        ['mixedContentPass']: mixedContentDevtoolsLog,
       },
     };
   }
@@ -36,8 +36,9 @@ describe('Mixed Content audit', () => {
       {url: 'https://example.org/resource1.js', isSecure: true, finished: true, documentURL: 'https://example.org'},
       {url: 'https://third-party.example.com/resource2.js', isSecure: true, finished: true, documentURL: 'https://example.org'},
     ];
+    const context = {computedCache: new Map()};
     return Audit.audit(
-      getArtifacts('https://example.org', defaultRecords, upgradeRecords)
+      getArtifacts('https://example.org', defaultRecords, upgradeRecords), context
     ).then(result => {
       assert.strictEqual(result.rawValue, true);
       assert.strictEqual(result.score, 1);
@@ -55,10 +56,11 @@ describe('Mixed Content audit', () => {
       {url: 'https://example.org/', isSecure: true, finished: true, documentURL: 'http://example.org/'},
       {url: 'https://example.org/resource1.js', isSecure: true, finished: true, documentURL: 'https://example.org'},
       {url: 'https://third-party.example.com/resource2.js', isSecure: true, finished: true, documentURL: 'https://example.org'},
-      {url: 'https://fourth-party.example.com/resource3.js', isSecure: false, finished: true, documentURL: 'https://third-party.example.com'},
+      {url: 'https://fourth-party.example.com/resource3.js', isSecure: true, finished: true, documentURL: 'https://third-party.example.com'},
     ];
+    const context = {computedCache: new Map()};
     return Audit.audit(
-      getArtifacts('http://example.org', defaultRecords, upgradeRecords)
+      getArtifacts('http://example.org', defaultRecords, upgradeRecords), context
     ).then(result => {
       // Score for 3 upgradeable out of 4: 100 * (0 + 3*0.5) / 4
       assert.strictEqual(result.rawValue, false);

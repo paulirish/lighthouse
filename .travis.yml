@@ -6,7 +6,9 @@ branches:
 matrix:
   include:
     - node_js: "8"
-    - node_js: "9"
+    - node_js: "10"
+      if: head_branch IS blank AND branch = master
+    - node_js: "11"
       if: head_branch IS blank AND branch = master
 dist: trusty
 cache:
@@ -14,8 +16,6 @@ cache:
   directories:
     - node_modules
     - lantern-data
-    - lighthouse-extension/node_modules
-    - lighthouse-viewer/node_modules
     - /home/travis/.rvm/gems/
 install:
   # if our e2e tests fail in the future it might be that we are not compatible
@@ -23,8 +23,6 @@ install:
   # @see https://github.com/GoogleChrome/lighthouse/pull/4640/files#r171425004
   - export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
   - yarn
-  # travis can't handle the parallel install (without caches)
-  - yarn run install-all:task:windows
 before_script:
   - export DISPLAY=:99.0
   # see comment above about puppeteer
@@ -38,11 +36,11 @@ script:
   - yarn unit:silentcoverage
   - yarn type-check
   - yarn smoke:silentcoverage
-  - yarn test-extension
+  - yarn test-clients
   - yarn test-viewer
   - yarn test-lantern
   - yarn i18n:checks
-  # _JAVA_OPTIONS is breaking parsing of compiler output. See #3338.
+  # _JAVA_OPTIONS is breaking parsing of `compile-devtools` output. See #3338.
   - unset _JAVA_OPTIONS
   # FIXME(paulirish): re-enable after a roll of LH->CDT
   # - yarn compile-devtools

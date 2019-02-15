@@ -11,6 +11,20 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if all input elements of type image have an alt HTML attribute to describe their contents. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: '`<input type="image">` elements have `[alt]` text',
+  /** Title of an accesibility audit that evaluates if all input elements of type image have an alt HTML attribute to describe their contents. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: '`<input type="image">` elements do not have `[alt]` text',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'When an image is being used as an `<input>` button, providing alternative ' +
+      'text can help screen reader users understand the purpose of the button. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/input-image-alt?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class InputImageAlt extends AxeAudit {
   /**
@@ -19,14 +33,13 @@ class InputImageAlt extends AxeAudit {
   static get meta() {
     return {
       id: 'input-image-alt',
-      title: '`<input type="image">` elements have `[alt]` text',
-      failureTitle: '`<input type="image">` elements do not have `[alt]` text',
-      description: 'When an image is being used as an `<input>` button, providing alternative ' +
-          'text can help screen reader users understand the purpose of the button. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/input-image-alt?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = InputImageAlt;
+module.exports.UIStrings = UIStrings;

@@ -52,6 +52,7 @@ module.exports = {
       argsIgnorePattern: '(^reject$|^_$)',
       varsIgnorePattern: '(^_$)',
     }],
+    'space-infix-ops': 2,
     'strict': [2, 'global'],
     'prefer-const': 2,
     'curly': [2, 'multi-line'],

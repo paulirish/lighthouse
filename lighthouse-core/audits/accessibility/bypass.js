@@ -12,6 +12,20 @@
  */
 
 const AxeAudit = require('./axe-audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Title of an accesibility audit that evaluates if the page has elements that let screen reader users skip over repetitive content. `heading`, `skip link`, and `landmark region` are technical terms for the elements that enable quick page navigation. This title is descriptive of the successful state and is shown to users when no user action is required. */
+  title: 'The page contains a heading, skip link, or landmark region',
+  /** Title of an accesibility audit that evaluates if the page has elements that let screen reader users skip over repetitive content. `heading`, `skip link`, and `landmark region` are technical terms for the elements that enable quick page navigation. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
+  failureTitle: 'The page does not contain a heading, skip link, or landmark region',
+  /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  description: 'Adding ways to bypass repetitive content lets keyboard users navigate the ' +
+      'page more efficiently. ' +
+      '[Learn more](https://dequeuniversity.com/rules/axe/3.1/bypass?application=lighthouse).',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class Bypass extends AxeAudit {
   /**
@@ -20,14 +34,13 @@ class Bypass extends AxeAudit {
   static get meta() {
     return {
       id: 'bypass',
-      title: 'The page contains a heading, skip link, or landmark region',
-      failureTitle: 'The page does not contain a heading, skip link, or landmark region',
-      description: 'Adding ways to bypass repetitive content lets keyboard users navigate the ' +
-          'page more efficiently. ' +
-          '[Learn more](https://dequeuniversity.com/rules/axe/2.2/bypass?application=lighthouse).',
+      title: str_(UIStrings.title),
+      failureTitle: str_(UIStrings.failureTitle),
+      description: str_(UIStrings.description),
       requiredArtifacts: ['Accessibility'],
     };
   }
 }
 
 module.exports = Bypass;
+module.exports.UIStrings = UIStrings;

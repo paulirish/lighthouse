@@ -11,6 +11,14 @@
  */
 
 const Audit = require('../audit');
+const i18n = require('../../lib/i18n/i18n.js');
+
+const UIStrings = {
+  /** Label of a table column that identifies HTML elements that have failed an audit. */
+  failingElementsHeader: 'Failing Elements',
+};
+
+const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 class AxeAudit extends Audit {
   /**
@@ -36,11 +44,11 @@ class AxeAudit extends Audit {
     const impact = rule && rule.impact;
     const tags = rule && rule.tags;
 
-    /** @type {Array<{node: LH.Audit.DetailsRendererNodeDetailsJSON}>}>} */
+    /** @type {LH.Audit.Details.Table['items']}>} */
     let items = [];
     if (rule && rule.nodes) {
       items = rule.nodes.map(node => ({
-        node: /** @type {LH.Audit.DetailsRendererNodeDetailsJSON} */ ({
+        node: /** @type {LH.Audit.Details.NodeValue} */ ({
           type: 'node',
           selector: Array.isArray(node.target) ? node.target.join(' ') : '',
           path: node.path,
@@ -50,18 +58,30 @@ class AxeAudit extends Audit {
       }));
     }
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'node', itemType: 'node', text: 'Failing Elements'},
+      {key: 'node', itemType: 'node', text: str_(UIStrings.failingElementsHeader)},
     ];
+
+    /** @type {LH.Audit.Details.Diagnostic|undefined} */
+    let diagnostic;
+    if (impact || tags) {
+      diagnostic = {
+        type: 'diagnostic',
+        impact,
+        tags,
+      };
+    }
 
     return {
       rawValue: typeof rule === 'undefined',
       extendedInfo: {
         value: rule,
       },
-      details: {...Audit.makeTableDetails(headings, items), impact, tags},
+      details: {...Audit.makeTableDetails(headings, items), diagnostic},
     };
   }
 }
 
 module.exports = AxeAudit;
+module.exports.UIStrings = UIStrings;

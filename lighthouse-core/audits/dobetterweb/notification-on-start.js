@@ -36,6 +36,7 @@ class NotificationOnStart extends ViolationAudit {
   static audit(artifacts) {
     const results = ViolationAudit.getViolationResults(artifacts, /notification permission/);
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
       {key: 'label', itemType: 'text', text: 'Location'},

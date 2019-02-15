@@ -12,7 +12,8 @@
 
 const Audit = require('./audit');
 const {taskGroups} = require('../lib/task-groups');
-const i18n = require('../lib/i18n');
+const i18n = require('../lib/i18n/i18n.js');
+const MainThreadTasks = require('../computed/main-thread-tasks.js');
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the main thread work the browser did to load the page. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -81,7 +82,7 @@ class MainThreadWorkBreakdown extends Audit {
     const settings = context.settings || {};
     const trace = artifacts.traces[MainThreadWorkBreakdown.DEFAULT_PASS];
 
-    const tasks = await artifacts.requestMainThreadTasks(trace);
+    const tasks = await MainThreadTasks.request(trace, context);
     const multiplier = settings.throttlingMethod === 'simulate' ?
       settings.throttling.cpuSlowdownMultiplier : 1;
 
@@ -104,6 +105,7 @@ class MainThreadWorkBreakdown extends Audit {
       };
     });
 
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'groupLabel', itemType: 'text', text: str_(UIStrings.columnCategory)},
       {key: 'duration', itemType: 'ms', granularity: 1, text: str_(i18n.UIStrings.columnTimeSpent)},

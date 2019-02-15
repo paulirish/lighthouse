@@ -8,6 +8,13 @@
 const Audit = require('./audit');
 const Util = require('../report/html/renderer/util');
 
+const LanternFcp = require('../computed/metrics/lantern-first-contentful-paint.js');
+const LanternFmp = require('../computed/metrics/lantern-first-meaningful-paint.js');
+const LanternInteractive = require('../computed/metrics/lantern-interactive.js');
+const LanternFirstCPUIdle = require('../computed/metrics/lantern-first-cpu-idle.js');
+const LanternSpeedIndex = require('../computed/metrics/lantern-speed-index.js');
+const LanternEil = require('../computed/metrics/lantern-estimated-input-latency.js');
+
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 //   https://www.desmos.com/calculator/rjp0lbit8y
 const SCORING_POINT_OF_DIMINISHING_RETURNS = 1700;
@@ -23,7 +30,7 @@ class PredictivePerf extends Audit {
       title: 'Predicted Performance (beta)',
       description:
         'Predicted performance evaluates how your site will perform under ' +
-        'a 3G connection on a mobile device.',
+        'a cellular connection on a mobile device.',
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };
@@ -31,20 +38,21 @@ class PredictivePerf extends Audit {
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
    */
-  static async audit(artifacts) {
+  static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     /** @type {LH.Config.Settings} */
     // @ts-ignore - TODO(bckenny): allow optional `throttling` settings
     const settings = {}; // Use default settings.
-    const fcp = await artifacts.requestLanternFirstContentfulPaint({trace, devtoolsLog, settings});
-    const fmp = await artifacts.requestLanternFirstMeaningfulPaint({trace, devtoolsLog, settings});
-    const tti = await artifacts.requestLanternInteractive({trace, devtoolsLog, settings});
-    const ttfcpui = await artifacts.requestLanternFirstCPUIdle({trace, devtoolsLog, settings});
-    const si = await artifacts.requestLanternSpeedIndex({trace, devtoolsLog, settings});
-    const eil = await artifacts.requestLanternEstimatedInputLatency({trace, devtoolsLog, settings});
+    const fcp = await LanternFcp.request({trace, devtoolsLog, settings}, context);
+    const fmp = await LanternFmp.request({trace, devtoolsLog, settings}, context);
+    const tti = await LanternInteractive.request({trace, devtoolsLog, settings}, context);
+    const ttfcpui = await LanternFirstCPUIdle.request({trace, devtoolsLog, settings}, context);
+    const si = await LanternSpeedIndex.request({trace, devtoolsLog, settings}, context);
+    const eil = await LanternEil.request({trace, devtoolsLog, settings}, context);
 
     const values = {
       roughEstimateOfFCP: fcp.timing,
@@ -82,7 +90,11 @@ class PredictivePerf extends Audit {
       score,
       rawValue: values.roughEstimateOfTTI,
       displayValue: Util.formatMilliseconds(values.roughEstimateOfTTI),
-      details: {items: [values]},
+      details: {
+        type: 'diagnostic',
+        // TODO: Consider not nesting values under `items`.
+        items: [values],
+      },
     };
   }
 }

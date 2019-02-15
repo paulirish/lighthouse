@@ -10,7 +10,7 @@
  */
 class DragAndDrop {
   /**
-   * @param {function(File)} fileHandlerCallback Invoked when the user chooses a new file.
+   * @param {function(File): void} fileHandlerCallback Invoked when the user chooses a new file.
    */
   constructor(fileHandlerCallback) {
     const dropZone = document.querySelector('.drop_zone');

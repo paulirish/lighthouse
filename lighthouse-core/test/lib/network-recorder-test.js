@@ -6,6 +6,7 @@
 'use strict';
 
 const NetworkRecorder = require('../../lib/network-recorder');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 const assert = require('assert');
 const devtoolsLogItems = require('../fixtures/artifacts/perflog/defaultPass.devtoolslog.json');
 const redirectsDevtoolsLog = require('../fixtures/wikipedia-redirect.devtoolslog.json');
@@ -43,6 +44,77 @@ describe('network recorder', function() {
     assert.equal(redirectB.resourceType, undefined);
     assert.equal(redirectC.resourceType, undefined);
     assert.equal(mainDocument.resourceType, 'Document');
+  });
+
+  it('recordsFromLogs ignores records with an invalid URL', function() {
+    const logs = [
+      { // valid request
+        'method': 'Network.requestWillBeSent',
+        'params': {
+          'requestId': '1',
+          'frameId': '1',
+          'loaderId': '1',
+          'documentURL': 'https://www.example.com',
+          'request': {
+            // This URL is valid
+            'url': 'https://www.example.com',
+            'method': 'GET',
+            'headers': {
+              'Upgrade-Insecure-Requests': '1',
+              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) ' +
+                ' AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2774.2 Safari/537.36',
+            },
+            'mixedContentType': 'none',
+            'initialPriority': 'VeryHigh',
+          },
+          'timestamp': 107988.912007,
+          'wallTime': 1466620735.21187,
+          'initiator': {
+            'type': 'other',
+          },
+          'type': 'Document',
+        },
+      },
+      { // invalid request
+        'method': 'Network.requestWillBeSent',
+        'params': {
+          'requestId': '2',
+          'loaderId': '2',
+          'documentURL': 'https://www.example.com',
+          'request': {
+            // This URL is invalid
+            'url': 'https:',
+            'method': 'GET',
+            'headers': {
+              'Origin': 'https://www.example.com',
+            },
+            'mixedContentType': 'blockable',
+            'initialPriority': 'VeryLow',
+            'referrerPolicy': 'no-referrer-when-downgrade',
+          },
+          'timestamp': 831346.969485,
+          'wallTime': 1538411434.25547,
+          'initiator': {
+            'type': 'other',
+          },
+          'type': 'Font',
+          'frameId': '1',
+          'hasUserGesture': false,
+        },
+      },
+    ];
+    assert.equal(logs.length, 2);
+    const records = NetworkRecorder.recordsFromLogs(logs);
+    assert.equal(records.length, 1);
+  });
+
+  it('should ignore invalid `timing` data', () => {
+    const inputRecords = [{url: 'http://example.com', startTime: 1, endTime: 2}];
+    const devtoolsLogs = networkRecordsToDevtoolsLog(inputRecords);
+    const responseReceived = devtoolsLogs.find(item => item.method === 'Network.responseReceived');
+    responseReceived.params.response.timing = {requestTime: 0, receiveHeadersEnd: -1};
+    const records = NetworkRecorder.recordsFromLogs(devtoolsLogs);
+    expect(records).toMatchObject([{url: 'http://example.com', startTime: 1, endTime: 2}]);
   });
 
   describe('#findNetworkQuietPeriods', () => {
@@ -115,6 +187,25 @@ describe('network recorder', function() {
       const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
       assert.deepStrictEqual(periods, [
         {start: 1000, end: Infinity},
+      ]);
+    });
+
+    it('should handle iframe requests', () => {
+      const iframeRequest = {
+        finished: false,
+        url: 'https://iframe.com',
+        documentURL: 'https://iframe.com',
+        responseReceivedTime: 1.2,
+      };
+
+      const records = [
+        record({startTime: 0, endTime: 1}),
+        record({startTime: 0, endTime: 1.2, ...iframeRequest}),
+      ];
+
+      const periods = NetworkRecorder.findNetworkQuietPeriods(records, 0);
+      assert.deepStrictEqual(periods, [
+        {start: 1200, end: Infinity},
       ]);
     });
 

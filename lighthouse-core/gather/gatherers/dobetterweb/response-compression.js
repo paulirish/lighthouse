@@ -103,7 +103,6 @@ class ResponseCompression extends Gatherer {
           });
         });
       }).catch(err => {
-        // @ts-ignore TODO(bckenny): Sentry type checking
         Sentry.captureException(err, {
           tags: {gatherer: 'ResponseCompression'},
           extra: {url: URL.elideDataURI(record.url)},

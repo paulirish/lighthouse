@@ -6,7 +6,7 @@ The result object contains all the audit information Lighthouse determined about
 
 The top-level Lighthouse Result object (LHR) is what the lighthouse node module returns and the entirety of the JSON output of the CLI. It contains some metadata about the run and the results in the various subproperties below.
 
-For an always up-to-date definition of the LHR, take a look [at our typedefs](https://github.com/GoogleChrome/lighthouse/blob/master/typings/lhr.d.ts).
+For an always up-to-date definition of the LHR, take a look [at our typedefs](https://github.com/GoogleChrome/lighthouse/blob/master/types/lhr.d.ts).
 
 ### Properties
 
@@ -58,7 +58,7 @@ An object containing the results of the audits, keyed by their name.
 | rawValue | <code>boolean&#124;number</code> | The unscored value determined by the audit. Typically this will match the score if there's no additional information to impart. For performance audits, this value is typically a number indicating the metric value. |
 | displayValue | `string` | The string to display in the report alongside audit results. If empty, nothing additional is shown. This is typically used to explain additional information such as the number and nature of failing items. |
 | score | <code>number</code> | The scored value determined by the audit as a number `0-1`, representing displayed scores of 0-100. |
-| scoreDisplayMode | <code>"binary"&#124;"numeric"&#124;"error"&#124;"manual"&#124;"not-applicable"&#124;"informative"</code> | A string identifying how the score should be interpreted for display i.e. is the audit pass/fail (score of 1 or 0), did it fail, should it be ignored, or are there shades of gray (scores between 0-1 inclusive). |
+| scoreDisplayMode | <code>"binary"&#124;"numeric"&#124;"error"&#124;"manual"&#124;"notApplicable"&#124;"informative"</code> | A string identifying how the score should be interpreted for display i.e. is the audit pass/fail (score of 1 or 0), did it fail, should it be ignored, or are there shades of gray (scores between 0-1 inclusive). |
 | details | `Object` | Extra information found by the audit necessary for display. The structure of this object varies from audit to audit. The structure of this object is somewhat stable between minor version bumps as this object is used to render the HTML report. |
 
 

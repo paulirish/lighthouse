@@ -6,8 +6,10 @@
 'use strict';
 
 const Audit = require('./audit');
-const LHError = require('../lib/errors');
+const LHError = require('../lib/lh-error');
 const jpeg = require('jpeg-js');
+const Speedline = require('../computed/speedline.js');
+const Interactive = require('../computed/metrics/interactive.js');
 
 const NUMBER_OF_THUMBNAILS = 10;
 const THUMBNAIL_WIDTH = 120;
@@ -74,7 +76,7 @@ class ScreenshotThumbnails extends Audit {
     /** @type {Map<SpeedlineFrame, string>} */
     const cachedThumbnails = new Map();
 
-    const speedline = await artifacts.requestSpeedline(trace);
+    const speedline = await Speedline.request(trace, context);
 
     // Make the minimum time range 3s so sites that load super quickly don't get a single screenshot
     let minimumTimelineDuration = context.options.minimumTimelineDuration || 3000;
@@ -82,7 +84,7 @@ class ScreenshotThumbnails extends Audit {
     if (context.settings.throttlingMethod !== 'simulate') {
       const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
       const metricComputationData = {trace, devtoolsLog, settings: context.settings};
-      const tti = artifacts.requestInteractive(metricComputationData);
+      const tti = Interactive.request(metricComputationData, context);
       try {
         minimumTimelineDuration = Math.max((await tti).timing, minimumTimelineDuration);
       } catch (_) {}
@@ -114,14 +116,16 @@ class ScreenshotThumbnails extends Audit {
           }
         });
       }
-
-      const imageData = frameForTimestamp.getParsedImage();
-      const thumbnailImageData = ScreenshotThumbnails.scaleImageToThumbnail(imageData);
-      const base64Data =
-        cachedThumbnails.get(frameForTimestamp) ||
-        jpeg.encode(thumbnailImageData, 90).data.toString('base64');
-
-      cachedThumbnails.set(frameForTimestamp, base64Data);
+      let base64Data;
+      const cachedThumbnail = cachedThumbnails.get(frameForTimestamp);
+      if (cachedThumbnail) {
+        base64Data = cachedThumbnail;
+      } else {
+        const imageData = frameForTimestamp.getParsedImage();
+        const thumbnailImageData = ScreenshotThumbnails.scaleImageToThumbnail(imageData);
+        base64Data = jpeg.encode(thumbnailImageData, 90).data.toString('base64');
+        cachedThumbnails.set(frameForTimestamp, base64Data);
+      }
       thumbnails.push({
         timing: Math.round(targetTimestamp - speedline.beginning),
         timestamp: targetTimestamp * 1000,
