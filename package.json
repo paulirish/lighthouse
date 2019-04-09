@@ -60,7 +60,8 @@
     "mixed-content": "./lighthouse-cli/index.js --chrome-flags='--headless' --preset=mixed-content",
     "minify-latest-run": "./lighthouse-core/scripts/lantern/minify-trace.js ./latest-run/defaultPass.trace.json ./latest-run/defaultPass.trace.min.json && ./lighthouse-core/scripts/lantern/minify-devtoolslog.js ./latest-run/defaultPass.devtoolslog.json ./latest-run/defaultPass.devtoolslog.min.json",
     "compile-proto": "protoc --python_out=./ ./proto/lighthouse-result.proto && mv ./proto/*_pb2.py ./proto/scripts",
-    "build-proto-roundtrip": "cd proto/scripts && PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2 python json_roundtrip_via_proto.py"
+    "build-proto-roundtrip": "cd proto/scripts && PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2 python json_roundtrip_via_proto.py",
+    "now-build": "node -e \"const ReportGenerator = require('./lighthouse-core/report/report-generator'); const lhr = require('./lighthouse-core/test/results/sample_v2.json');const html = ReportGenerator.generateReportHtml(lhr); fs.writeFileSync('./dist/index.html', html, {encoding: 'utf-8'});\""
   },
   "devDependencies": {
     "@firebase/app-types": "0.3.1",
