@@ -1,4 +1,6 @@
 {
+  "version": 2,
+  "builds": [{ "src": ".now-build.sh", "use": "@now/static-build" }],
   "github": {
     "silent": true
   }
