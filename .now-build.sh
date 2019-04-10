@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+echo "running node......."
 node -e "
    console.log('🕒 Generating report for sample_v2.json...');
    const ReportGenerator = require('./lighthouse-core/report/report-generator');
