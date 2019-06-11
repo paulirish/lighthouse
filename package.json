@@ -82,7 +82,7 @@
     "@types/jest": "^24.0.9",
     "@types/jpeg-js": "^0.3.0",
     "@types/lodash.isequal": "^4.5.2",
-    "@types/make-dir": "^1.0.3",
+    "@types/make-dir": "^2.1.0",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "*",
     "@types/opn": "^3.0.28",
