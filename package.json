@@ -85,7 +85,7 @@
     "@types/make-dir": "^1.0.3",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "*",
-    "@types/opn": "^3.0.28",
+    "@types/opn": "^5.5.0",
     "@types/raven": "^2.5.1",
     "@types/rimraf": "^2.0.2",
     "@types/semver": "^5.5.0",
