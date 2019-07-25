@@ -1,5 +1,5 @@
-# version is the only required field
-version = 1
+# config for https://github.com/chdsbd/kodiak
+version = 1 # required
 
 [merge.message]
-body = "" # default: "github_default"
+body = ""
