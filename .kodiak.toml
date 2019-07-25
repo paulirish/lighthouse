@@ -1,5 +1,2 @@
 # config for https://github.com/chdsbd/kodiak
 version = 1 # required
-
-[merge.message]
-body = ""
