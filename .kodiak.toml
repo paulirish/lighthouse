@@ -1,2 +1,5 @@
 # version is the only required field
 version = 1
+
+[merge.message]
+body = "" # default: "github_default"
