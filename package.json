@@ -141,7 +141,7 @@
     "cssstyle": "1.2.1",
     "details-element-polyfill": "2.2.0",
     "http-link-header": "^0.8.0",
-    "inquirer": "^3.3.0",
+    "inquirer": "^7.0.3",
     "intl-messageformat": "^2.2.0",
     "intl-messageformat-parser": "^1.4.0",
     "jpeg-js": "0.1.2",
