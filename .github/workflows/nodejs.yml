@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: yarn build-all
     - run: yarn --frozen-lockfile
     - run: yarn diff:sample-json
     - run: yarn lint
