@@ -1,0 +1,33 @@
+# Workflow that only runs when a commit lands on master.
+
+name: 🛬
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  # This job could be renamed more generically if we add other steps in here
+  buildtracker:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: git clone
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+
+    - run: yarn --frozen-lockfile
+    - run: yarn build-all
+
+    - name: Store in buildtracker
+      uses: paularmstrong/build-tracker-action@master
+      with:
+        # https://buildtracker.dev/docs/guides/github-actions#configuration
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BT_API_AUTH_TOKEN: ${{ secrets.BT_API_AUTH_TOKEN }}

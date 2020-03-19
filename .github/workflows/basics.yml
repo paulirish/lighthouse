@@ -11,6 +11,9 @@ jobs:
   basics:
 
     runs-on: ubuntu-latest
+    strategy:
+      # e.g. if lint fails, continue to the unit tests anyway
+      fail-fast: false
 
     steps:
     - name: git clone
@@ -21,7 +24,7 @@ jobs:
       with:
         node-version: 10.x
 
-   # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
+    # Cache yarn deps. thx https://github.com/actions/cache/blob/master/examples.md#node---yarn
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
