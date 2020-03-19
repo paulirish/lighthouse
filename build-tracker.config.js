@@ -1,6 +1,6 @@
 // https://buildtracker.dev/docs/installation/#upload-your-builds
 
-"use strict";
+'use strict';
 
 module.exports = {
   applicationUrl: 'https://lh-build-tracker.herokuapp.com',

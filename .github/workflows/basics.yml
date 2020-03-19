@@ -11,6 +11,9 @@ jobs:
   basics:
 
     runs-on: ubuntu-latest
+    strategy:
+      # e.g. if lint fails, continue to the unit tests anyway
+      fail-fast: false
 
     steps:
     - name: git clone
