@@ -9,7 +9,6 @@ on:
   pull_request:
 
 jobs:
-  # This job could be renamed more generically if we add other steps in here
   buildtracker:
 
     runs-on: ubuntu-latest
