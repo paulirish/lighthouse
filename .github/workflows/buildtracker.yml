@@ -1,11 +1,12 @@
 # Workflow that only runs when a commit lands on master.
 
-name: 🛬
+name: 👷‍♀️
 
 on:
   push:
     branches:
       - master
+  pull_request
 
 jobs:
   # This job could be renamed more generically if we add other steps in here
