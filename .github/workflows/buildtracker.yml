@@ -6,7 +6,8 @@ on:
   push:
     branches:
       - master
-  pull_request:
+  # running on PRs disabled until we can disable the comments. https://github.com/paularmstrong/build-tracker-action/issues/3
+  # pull_request:
 
 jobs:
   buildtracker:
@@ -26,8 +27,8 @@ jobs:
     - run: yarn build-all
 
     - name: Store in buildtracker
-      uses: paularmstrong/build-tracker-action@master
-      with:
+      run: yarn bt-cli upload-build
+      env:
         # https://buildtracker.dev/docs/guides/github-actions#configuration
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BT_API_AUTH_TOKEN: ${{ secrets.BT_API_AUTH_TOKEN }}
