@@ -30,7 +30,7 @@ const expectations = [
               autocompleteAttr: 'sectio-red shipping cc-namez',
               autofillPredict: 'UNKNOWN_TYPE',
               nodeLabel: 'textarea',
-              snippet: '<textarea type="text" id="name_cc1" name="name_cc1" autocomplete="sectio-red shipping cc-namez" placeholder="John Doe" title="overall type: UNKNOWN_TYPEnserver type: NO_SERVER_DATAnheuristic type: UNK…" autofill-information="overall type: UNKNOWN_TYPEnserver type: NO_SERVER_DATAnheuristic type: UNK…" autofill-prediction="UNKNOWN_TYPE">',
+              snippet: '<textarea type="text" id="name_cc1" name="name_cc1" autocomplete="sectio-red shipping cc-namez" placeholder="John Doe" title="overall type: UNKNOWN_TYPE\nserver type: NO_SERVER_DATA\nheuristic type: UNK…" autofill-information="overall type: UNKNOWN_TYPE\nserver type: NO_SERVER_DATA\nheuristic type: UNK…" autofill-prediction="UNKNOWN_TYPE">',
             },
             {
               id: 'CCNo1',
@@ -40,7 +40,7 @@ const expectations = [
               autocompleteAttr: 'cc-number',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_NUMBER',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="CCNo1" name="CCNo1" autocomplete="cc-number" placeholder="5555 5555 5555 5555" title="overall type: HTML_TYPE_CREDIT_CARD_NUMBERnserver type: NO_SERVER_DATAnheu…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_NUMBERnserver type: NO_SERVER_DATAnheu…" autofill-prediction="HTML_TYPE_CREDIT_CARD_NUMBER">',
+              snippet: '<input type="text" id="CCNo1" name="CCNo1" autocomplete="cc-number" placeholder="5555 5555 5555 5555" title=\"overall type: HTML_TYPE_CREDIT_CARD_NUMBER\nserver type: NO_SERVER_DATA\nheu…" autofill-information=\"overall type: HTML_TYPE_CREDIT_CARD_NUMBER\nserver type: NO_SERVER_DATA\nheu…" autofill-prediction="HTML_TYPE_CREDIT_CARD_NUMBER">',
             },
             {
               id: 'CCExpiresMonth1',
@@ -49,7 +49,7 @@ const expectations = [
               autocompleteAttr: 'cc-exp-month',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_EXP_MONTH',
               nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
-              snippet: '<select id="CCExpiresMonth1" name="CCExpiresMonth1" autocomplete="cc-exp-month" title="overall type: HTML_TYPE_CREDIT_CARD_EXP_MONTHnserver type: NO_SERVER_DATAn…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_EXP_MONTHnserver type: NO_SERVER_DATAn…" autofill-prediction="HTML_TYPE_CREDIT_CARD_EXP_MONTH">',
+              snippet: '<select id="CCExpiresMonth1" name="CCExpiresMonth1" autocomplete="cc-exp-month" title="overall type: HTML_TYPE_CREDIT_CARD_EXP_MONTH\nserver type: NO_SERVER_DATA\n…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_EXP_MONTH\nserver type: NO_SERVER_DATA\n…" autofill-prediction="HTML_TYPE_CREDIT_CARD_EXP_MONTH">',
             },
             {
               id: 'CCExpiresYear1',
@@ -58,7 +58,7 @@ const expectations = [
               autocompleteAttr: 'section-red billing cc-exp-year',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_EXP_YEAR',
               nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
-              snippet: '<select id="CCExpiresYear1" autocomplete="section-red billing cc-exp-year" title="overall type: HTML_TYPE_CREDIT_CARD_EXP_YEARnserver type: NO_SERVER_DATAnh…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_EXP_YEARnserver type: NO_SERVER_DATAnh…" autofill-prediction="HTML_TYPE_CREDIT_CARD_EXP_YEAR">',
+              snippet: '<select id="CCExpiresYear1" autocomplete="section-red billing cc-exp-year" title="overall type: HTML_TYPE_CREDIT_CARD_EXP_YEAR\nserver type: NO_SERVER_DATA\nh…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_EXP_YEAR\nserver type: NO_SERVER_DATA\nh…" autofill-prediction="HTML_TYPE_CREDIT_CARD_EXP_YEAR">',
             },
             {
               id: 'cvc1',
@@ -68,7 +68,7 @@ const expectations = [
               autocompleteAttr: 'cc-csc',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE',
               nodeLabel: 'input',
-              snippet: '<input id="cvc1" name="cvc1" autocomplete="cc-csc" placeholder="555" title="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODEnserver type: NO_SERV…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODEnserver type: NO_SERV…" autofill-prediction="HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE">',
+              snippet: '<input id="cvc1" name="cvc1" autocomplete="cc-csc" placeholder="555" title="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE\nserver type: NO_SERV…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE\nserver type: NO_SERV…" autofill-prediction="HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE">',
             },
           ],
           labels: [
@@ -106,7 +106,7 @@ const expectations = [
               autocompleteAttr: 'name',
               autofillPredict: 'HTML_TYPE_NAME',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="name_shipping" autocomplete="name" placeholder="John Doe" title="overall type: HTML_TYPE_NAMEnserver type: NO_SERVER_DATAnheuristic type: N…" autofill-information="overall type: HTML_TYPE_NAMEnserver type: NO_SERVER_DATAnheuristic type: N…" autofill-prediction="HTML_TYPE_NAME">',
+              snippet: '<input type="text" id="name_shipping" autocomplete="name" placeholder="John Doe" title="overall type: HTML_TYPE_NAME\nserver type: NO_SERVER_DATA\nheuristic type: N…" autofill-information="overall type: HTML_TYPE_NAME\nserver type: NO_SERVER_DATA\nheuristic type: N…" autofill-prediction="HTML_TYPE_NAME">',
             },
             {
               id: 'address_shipping',
@@ -116,7 +116,7 @@ const expectations = [
               autocompleteAttr: 'shippin street-address',
               autofillPredict: 'ADDRESS_HOME_LINE1',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="address_shipping" autocomplete="shippin street-address" placeholder="Your address" title="overall type: ADDRESS_HOME_LINE1nserver type: NO_SERVER_DATAnheuristic typ…" autofill-information="overall type: ADDRESS_HOME_LINE1nserver type: NO_SERVER_DATAnheuristic typ…" autofill-prediction="ADDRESS_HOME_LINE1">',
+              snippet: '<input type="text" id="address_shipping" autocomplete="shippin street-address" placeholder="Your address" title="overall type: ADDRESS_HOME_LINE1\nserver type: NO_SERVER_DATA\nheuristic typ…" autofill-information="overall type: ADDRESS_HOME_LINE1\nserver type: NO_SERVER_DATA\nheuristic typ…" autofill-prediction="ADDRESS_HOME_LINE1">',
             },
             {
               id: 'city_shipping',
@@ -126,7 +126,7 @@ const expectations = [
               autocompleteAttr: 'mobile section-red shipping address-level2',
               autofillPredict: 'ADDRESS_HOME_CITY',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2" title="overall type: ADDRESS_HOME_CITYnserver type: NO_SERVER_DATAnheuristic type…" autofill-information="overall type: ADDRESS_HOME_CITYnserver type: NO_SERVER_DATAnheuristic type…" autofill-prediction="ADDRESS_HOME_CITY">',
+              snippet: '<input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2" title="overall type: ADDRESS_HOME_CITY\nserver type: NO_SERVER_DATA\nheuristic type…" autofill-information="overall type: ADDRESS_HOME_CITY\nserver type: NO_SERVER_DATA\nheuristic type…" autofill-prediction="ADDRESS_HOME_CITY">',
             },
             {
               id: 'state_shipping',
@@ -135,7 +135,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'ADDRESS_HOME_STATE',
               nodeLabel: 'Select a state\nCA\nMA\nNY\nMD\nOR\nOH\nIL\nDC',
-              snippet: '<select id="state_shipping" title="overall type: ADDRESS_HOME_STATEnserver type: NO_SERVER_DATAnheuristic typ…" autofill-information="overall type: ADDRESS_HOME_STATEnserver type: NO_SERVER_DATAnheuristic typ…" autofill-prediction="ADDRESS_HOME_STATE">',
+              snippet: '<select id="state_shipping" title="overall type: ADDRESS_HOME_STATE\nserver type: NO_SERVER_DATA\nheuristic typ…" autofill-information="overall type: ADDRESS_HOME_STATE\nserver type: NO_SERVER_DATA\nheuristic typ…" autofill-prediction="ADDRESS_HOME_STATE">',
             },
             {
               id: 'zip_shipping',
@@ -145,7 +145,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'ADDRESS_HOME_ZIP',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="zip_shipping" title="overall type: ADDRESS_HOME_ZIPnserver type: NO_SERVER_DATAnheuristic type:…" autofill-information="overall type: ADDRESS_HOME_ZIPnserver type: NO_SERVER_DATAnheuristic type:…" autofill-prediction="ADDRESS_HOME_ZIP">',
+              snippet: '<input type="text" id="zip_shipping" title="overall type: ADDRESS_HOME_ZIP\nserver type: NO_SERVER_DATA\nheuristic type:…" autofill-information="overall type: ADDRESS_HOME_ZIP\nserver type: NO_SERVER_DATA\nheuristic type:…\" autofill-prediction="ADDRESS_HOME_ZIP">',
             },
             {
               id: 'name_billing',
@@ -155,7 +155,7 @@ const expectations = [
               autocompleteAttr: 'sectio-red billing name',
               autofillPredict: 'NAME_FULL',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="name_billing" name="name_billing" placeholder="your name" autocomplete="sectio-red billing name" title="overall type: NAME_FULLnserver type: NO_SERVER_DATAnheuristic type: NAME_F…" autofill-information="overall type: NAME_FULLnserver type: NO_SERVER_DATAnheuristic type: NAME_F…" autofill-prediction="NAME_FULL">',
+              snippet: '<input type="text" id="name_billing" name="name_billing" placeholder="your name" autocomplete="sectio-red billing name" title="overall type: NAME_FULL\nserver type: NO_SERVER_DATA\nheuristic type: NAME_F…" autofill-information="overall type: NAME_FULL\nserver type: NO_SERVER_DATA\nheuristic type: NAME_F…" autofill-prediction="NAME_FULL">',
             },
             {
               id: 'address_billing',
@@ -165,7 +165,7 @@ const expectations = [
               autocompleteAttr: 'billing street-address',
               autofillPredict: 'HTML_TYPE_STREET_ADDRESS',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="address_billing" name="address_billing" autocomplete="billing street-address" placeholder="your address" title="overall type: HTML_TYPE_STREET_ADDRESSnserver type: NO_SERVER_DATAnheurist…" autofill-information="overall type: HTML_TYPE_STREET_ADDRESSnserver type: NO_SERVER_DATAnheurist…" autofill-prediction="HTML_TYPE_STREET_ADDRESS">',
+              snippet: '<input type="text" id="address_billing" name="address_billing" autocomplete="billing street-address" placeholder="your address" title="overall type: HTML_TYPE_STREET_ADDRESS\nserver type: NO_SERVER_DATA\nheurist…" autofill-information="overall type: HTML_TYPE_STREET_ADDRESS\nserver type: NO_SERVER_DATA\nheurist…" autofill-prediction="HTML_TYPE_STREET_ADDRESS">',
             },
             {
               id: 'city_billing',
@@ -175,7 +175,7 @@ const expectations = [
               autocompleteAttr: 'section-red shipping ',
               autofillPredict: 'UNKNOWN_TYPE',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="city_billing" name="city_billing" placeholder="city you live in" autocomplete="section-red shipping " title="overall type: UNKNOWN_TYPEnserver type: NO_SERVER_DATAnheuristic type: ADD…" autofill-information="overall type: UNKNOWN_TYPEnserver type: NO_SERVER_DATAnheuristic type: ADD…" autofill-prediction="UNKNOWN_TYPE">',
+              snippet: '<input type="text" id="city_billing" name="city_billing" placeholder="city you live in" autocomplete="section-red shipping " title="overall type: UNKNOWN_TYPE\nserver type: NO_SERVER_DATA\nheuristic type: ADD…" autofill-information="overall type: UNKNOWN_TYPE\nserver type: NO_SERVER_DATA\nheuristic type: ADD…" autofill-prediction="UNKNOWN_TYPE">',
             },
             {
               id: 'state_billing',
@@ -184,7 +184,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'ADDRESS_HOME_STATE',
               nodeLabel: '\n            Select a state\n            CA\n            MA\n            NY\n      …',
-              snippet: '<select id="state_billing" name="state_billing" title="overall type: ADDRESS_HOME_STATEnserver type: NO_SERVER_DATAnheuristic typ…" autofill-information="overall type: ADDRESS_HOME_STATEnserver type: NO_SERVER_DATAnheuristic typ…" autofill-prediction="ADDRESS_HOME_STATE">',
+              snippet: '<select id="state_billing" name="state_billing" title="overall type: ADDRESS_HOME_STATE\nserver type: NO_SERVER_DATA\nheuristic typ…" autofill-information="overall type: ADDRESS_HOME_STATE\nserver type: NO_SERVER_DATA\nheuristic typ…" autofill-prediction="ADDRESS_HOME_STATE">',
             },
             {
               id: 'zip_billing',
@@ -194,7 +194,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'ADDRESS_HOME_ZIP',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="zip_billing" title="overall type: ADDRESS_HOME_ZIPnserver type: NO_SERVER_DATAnheuristic type:…" autofill-information="overall type: ADDRESS_HOME_ZIPnserver type: NO_SERVER_DATAnheuristic type:…" autofill-prediction="ADDRESS_HOME_ZIP">',
+              snippet: '<input type="text" id="zip_billing" title="overall type: ADDRESS_HOME_ZIP\nserver type: NO_SERVER_DATA\nheuristic type:…" autofill-information="overall type: ADDRESS_HOME_ZIP\nserver type: NO_SERVER_DATA\nheuristic type:…" autofill-prediction="ADDRESS_HOME_ZIP">',
             },
             {
               id: 'name_cc2',
@@ -204,7 +204,7 @@ const expectations = [
               autocompleteAttr: 'cc-name',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_NAME_FULL',
               nodeLabel: 'textarea',
-              snippet: '<textarea type="text" id="name_cc2" name="name_cc2" autocomplete="cc-name" title="overall type: HTML_TYPE_CREDIT_CARD_NAME_FULLnserver type: NO_SERVER_DATAn…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_NAME_FULLnserver type: NO_SERVER_DATAn…" autofill-prediction="HTML_TYPE_CREDIT_CARD_NAME_FULL">',
+              snippet: '<textarea type="text" id="name_cc2" name="name_cc2" autocomplete="cc-name" title="overall type: HTML_TYPE_CREDIT_CARD_NAME_FULL\nserver type: NO_SERVER_DATA\n…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_NAME_FULL\nserver type: NO_SERVER_DATA\n…" autofill-prediction="HTML_TYPE_CREDIT_CARD_NAME_FULL">',
             },
             {
               id: 'CCNo2',
@@ -214,7 +214,7 @@ const expectations = [
               autocompleteAttr: 'section-red cc-number',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_NUMBER',
               nodeLabel: 'input',
-              snippet: '<input type="text" id="CCNo2" name="CCNo2" autocomplete="section-red cc-number" title="overall type: HTML_TYPE_CREDIT_CARD_NUMBERnserver type: NO_SERVER_DATAnheu…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_NUMBERnserver type: NO_SERVER_DATAnheu…" autofill-prediction="HTML_TYPE_CREDIT_CARD_NUMBER">',
+              snippet: '<input type="text" id="CCNo2" name="CCNo2" autocomplete="section-red cc-number" title="overall type: HTML_TYPE_CREDIT_CARD_NUMBER\nserver type: NO_SERVER_DATA\nheu…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_NUMBER\nserver type: NO_SERVER_DATA\nheu…" autofill-prediction="HTML_TYPE_CREDIT_CARD_NUMBER">',
             },
             {
               id: 'CCExpiresMonth2',
@@ -223,7 +223,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'CREDIT_CARD_EXP_MONTH',
               nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
-              snippet: '<select id="CCExpiresMonth2" name="CCExpiresMonth2" title="overall type: CREDIT_CARD_EXP_MONTHnserver type: NO_SERVER_DATAnheuristic …" autofill-information="overall type: CREDIT_CARD_EXP_MONTHnserver type: NO_SERVER_DATAnheuristic …" autofill-prediction="CREDIT_CARD_EXP_MONTH">',
+              snippet: '<select id="CCExpiresMonth2" name="CCExpiresMonth2" title="overall type: CREDIT_CARD_EXP_MONTH\nserver type: NO_SERVER_DATA\nheuristic …" autofill-information="overall type: CREDIT_CARD_EXP_MONTH\nserver type: NO_SERVER_DATA\nheuristic …" autofill-prediction="CREDIT_CARD_EXP_MONTH">',
             },
             {
               id: 'CCExpiresYear',
@@ -232,7 +232,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'CREDIT_CARD_EXP_4_DIGIT_YEAR',
               nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
-              snippet: '<select id="CCExpiresYear" title="overall type: CREDIT_CARD_EXP_4_DIGIT_YEARnserver type: NO_SERVER_DATAnheu…" autofill-information="overall type: CREDIT_CARD_EXP_4_DIGIT_YEARnserver type: NO_SERVER_DATAnheu…" autofill-prediction="CREDIT_CARD_EXP_4_DIGIT_YEAR">',
+              snippet: '<select id="CCExpiresYear" title="overall type: CREDIT_CARD_EXP_4_DIGIT_YEAR\nserver type: NO_SERVER_DATA\nheu…" autofill-information="overall type: CREDIT_CARD_EXP_4_DIGIT_YEAR\nserver type: NO_SERVER_DATA\nheu…" autofill-prediction="CREDIT_CARD_EXP_4_DIGIT_YEAR">',
             },
             {
               id: 'cvc2',
@@ -242,7 +242,7 @@ const expectations = [
               autocompleteAttr: 'cc-csc',
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE',
               nodeLabel: 'input',
-              snippet: '<input id="cvc2" name="cvc2" autocomplete="cc-csc" title="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODEnserver type: NO_SERV…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODEnserver type: NO_SERV…" autofill-prediction="HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE">',
+              snippet: '<input id="cvc2" name="cvc2" autocomplete="cc-csc" title="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE\nserver type: NO_SERV…" autofill-information="overall type: HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE\nserver type: NO_SERV…" autofill-prediction="HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE">',
             },
             {
               id: 'mobile-number',
@@ -252,7 +252,7 @@ const expectations = [
               autocompleteAttr: 'section-red shipping mobile tel',
               autofillPredict: 'HTML_TYPE_TEL',
               nodeLabel: 'input',
-              snippet: '<input type="text" name="mobile-number" id="mobile-number" autocomplete="section-red shipping mobile tel" title="overall type: HTML_TYPE_TELnserver type: NO_SERVER_DATAnheuristic type: PH…" autofill-information="overall type: HTML_TYPE_TELnserver type: NO_SERVER_DATAnheuristic type: PH…" autofill-prediction="HTML_TYPE_TEL">',
+              snippet: '<input type="text" name="mobile-number" id="mobile-number" autocomplete="section-red shipping mobile tel" title="overall type: HTML_TYPE_TEL\nserver type: NO_SERVER_DATA\nheuristic type: PH…" autofill-information="overall type: HTML_TYPE_TEL\nserver type: NO_SERVER_DATA\nheuristic type: PH…" autofill-prediction="HTML_TYPE_TEL">',
             },
             {
               id: 'random',
@@ -262,7 +262,7 @@ const expectations = [
               autocompleteAttr: null,
               autofillPredict: 'UNKNOWN_TYPE',
               nodeLabel: 'input',
-              snippet: '<input type="text" name="random" id="random" title="overall type: UNKNOWN_TYPEnserver type: NO_SERVER_DATAnheuristic type: UNK…" autofill-information="overall type: UNKNOWN_TYPEnserver type: NO_SERVER_DATAnheuristic type: UNK…" autofill-prediction="UNKNOWN_TYPE">',
+              snippet: '<input type="text" name="random" id="random" title="overall type: UNKNOWN_TYPE\nserver type: NO_SERVER_DATA\nheuristic type: UNK…" autofill-information="overall type: UNKNOWN_TYPE\nserver type: NO_SERVER_DATA\nheuristic type: UNK…" autofill-prediction="UNKNOWN_TYPE">',
             },
           ],
           labels: [
