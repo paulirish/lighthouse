@@ -26,9 +26,9 @@ const UIStrings = {
    'attribute to a valid value.' +
   ' [Learn more](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)',
   /** Label for a column in a data table; entries will be the autocomplete token suggestions based on heuristics. */
-  columnAutocompleteSuggestions: 'Autocomplete Token Suggestions',
+  columnAutocompleteSuggestions: 'Autocomplete Suggestion',
   /** Label for a column in a data table; entries will be the incorrect autocomplete prefix tokens or prompting user to review them. */
-  columnAutocompletePrefixSuggestion: 'Autocomplete Prefix Token Check',
+  columnAutocompletePrefixSuggestion: 'Autocomplete Prefix Check',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
