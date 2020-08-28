@@ -383,6 +383,12 @@
   "lighthouse-core/audits/apple-touch-icon.js | title": {
     "message": "Provides a valid `apple-touch-icon`"
   },
+  "lighthouse-core/audits/autocomplete.js | columnAutocompletePrefixSuggestion": {
+    "message": "Autocomplete Prefix Token Check"
+  },
+  "lighthouse-core/audits/autocomplete.js | columnAutocompleteSuggestions": {
+    "message": "Autocomplete Token Suggestions"
+  },
   "lighthouse-core/audits/autocomplete.js | description": {
     "message": "Autocomplete helps users submit forms quicker. To reduce user effort, consider enabling autocomplete by setting the `autocomplete` attribute to a valid value. [Learn more](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)"
   },

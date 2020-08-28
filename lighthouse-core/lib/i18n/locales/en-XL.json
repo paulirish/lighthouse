@@ -383,6 +383,12 @@
   "lighthouse-core/audits/apple-touch-icon.js | title": {
     "message": "P̂ŕôv́îd́êś â v́âĺîd́ `apple-touch-icon`"
   },
+  "lighthouse-core/audits/autocomplete.js | columnAutocompletePrefixSuggestion": {
+    "message": "Âút̂óĉóm̂ṕl̂ét̂é P̂ŕêf́îx́ T̂ók̂én̂ Ćĥéĉḱ"
+  },
+  "lighthouse-core/audits/autocomplete.js | columnAutocompleteSuggestions": {
+    "message": "Âút̂óĉóm̂ṕl̂ét̂é T̂ók̂én̂ Śûǵĝéŝt́îón̂ś"
+  },
   "lighthouse-core/audits/autocomplete.js | description": {
     "message": "Âút̂óĉóm̂ṕl̂ét̂é ĥél̂ṕŝ úŝér̂ś ŝúb̂ḿît́ f̂ór̂ḿŝ q́ûíĉḱêŕ. T̂ó r̂éd̂úĉé ûśêŕ êf́f̂ór̂t́, ĉón̂śîd́êŕ êńâb́l̂ín̂ǵ âút̂óĉóm̂ṕl̂ét̂é b̂ý ŝét̂t́îńĝ t́ĥé `autocomplete` ât́t̂ŕîb́ût́ê t́ô á v̂ál̂íd̂ v́âĺûé. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)"
   },
