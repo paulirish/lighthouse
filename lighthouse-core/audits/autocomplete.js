@@ -196,7 +196,7 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{attribute: Boolean, prefixSuggestion: string}
+   * @return {{attribute: Boolean, prefixSuggestion: string}}
    */
   static isValidAutocomplete(input) {
     if (!input.autocompleteAttr) return {attribute: false, prefixSuggestion: ''};
