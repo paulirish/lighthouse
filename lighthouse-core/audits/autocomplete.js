@@ -28,7 +28,7 @@ const UIStrings = {
   /** Label for a column in a data table; entries will be the autocomplete token suggestions based on heuristics. */
   columnAutocompleteSuggestions: 'Autocomplete Suggestion',
   /** Label for a column in a data table; entries will be the incorrect autocomplete prefix tokens or prompting user to review them. */
-  columnAutocompletePrefixSuggestion: 'Autocomplete Prefix Check',
+  columnAutocompletePrefixSuggestion: 'Prefix Check',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
