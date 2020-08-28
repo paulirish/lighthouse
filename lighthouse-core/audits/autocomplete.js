@@ -199,16 +199,16 @@ class AutocompleteAudit extends Audit {
    * @return {{attribute: Boolean, prefixSuggestion: string}}
    */
   static isValidAutocomplete(input) {
-    if (!input.autocompleteAttr) return {attribute: false, prefixSuggestion: ''};
-    if (input.autocompleteAttr.includes(' ') ) {
-      const tokenArray = input.autocompleteAttr.split(' ');
+    if (!input.autocomplete.attribute) return {attribute: false, prefixSuggestion: ''};
+    if (input.autocomplete.attribute.includes(' ') ) {
+      const tokenArray = input.autocomplete.attribute.split(' ');
       const invalidPrefixes = this.isValidAutocompletePrefix(
         tokenArray.slice(0, tokenArray.length - 1));
       let prefixSuggestion = '';
       if (invalidPrefixes.length > 0) {
         prefixSuggestion = 'Review: ' + invalidPrefixes.join(', ');
       }
-      if (invalidPrefixes.length === 0 && !input.autocompleteProp) {
+      if (invalidPrefixes.length === 0 && !input.autocomplete.property) {
         prefixSuggestion = 'Review order of Autocomplete Tokens';
       }
       return {
@@ -217,7 +217,7 @@ class AutocompleteAudit extends Audit {
       };
     }
     return {
-      attribute: validAutocompleteTokens.includes(input.autocompleteAttr),
+      attribute: validAutocompleteTokens.includes(input.autocomplete.attribute),
       prefixSuggestion: '',
     };
   }
@@ -232,9 +232,11 @@ class AutocompleteAudit extends Audit {
       for (const input of form.inputs) {
         const valid = this.isValidAutocomplete(input);
         if (!valid.attribute || valid.prefixSuggestion) {
-          if (!input.autofillPredict) continue;
-          if (noPrediction.includes(input.autofillPredict) && !input.autocompleteAttr) continue;
-          if (input.autofillPredict in autofillSuggestions) {
+          if (!input.autocomplete.prediction) continue;
+          if (noPrediction.includes(input.autocomplete.prediction) &&
+          !input.autocomplete.attribute) continue;
+
+          if (input.autocomplete.prediction in autofillSuggestions) {
             const snippetArray = input.snippet.split(' title=');
             const snippet = snippetArray[0] + '>';
             failingFormsData.push({

@@ -728,9 +728,7 @@ declare global {
         id: string;
         name: string;
         placeholder?: string;
-        autocompleteProp: string;
-        autocompleteAttr: string | null;
-        autofillPredict: string | null;
+        autocomplete: { property: string; attribute: string | null; prediction: string | null;}
         nodeLabel: string;
         snippet: string;
       }
