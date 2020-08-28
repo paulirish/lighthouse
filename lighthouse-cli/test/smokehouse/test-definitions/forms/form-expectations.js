@@ -360,102 +360,102 @@ const expectations = [
             items: [
               {
                 node: {
-                  nodeLabel: 'textarea',
+                  type: 'node',
                   snippet: '<textarea type="text" id="name_cc1" name="name_cc1" autocomplete="sectio-red shipping cc-namez" placeholder="John Doe">',
-                  type: 'node',
+                  nodeLabel: 'textarea',
                 },
-                prefix: 'Review: sectio-red',
                 suggestion: 'Requires manual review.',
+                prefix: 'Review: sectio-red',
               },
               {
                 node: {
-                  nodeLabel: 'input',
+                  type: 'node',
                   snippet: '<input type="text" id="address_shipping" autocomplete="shippin street-address" placeholder="Your address">',
-                  type: 'node',
+                  nodeLabel: 'input',
                 },
-                prefix: 'Review: shippin',
                 suggestion: 'address-line1',
+                prefix: 'Review: shippin',
               },
               {
                 node: {
-                  nodeLabel: 'input',
+                  type: 'node',
                   snippet: '<input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2">',
-                  type: 'node',
+                  nodeLabel: 'input',
                 },
-                prefix: 'Review order of Autocomplete Tokens',
                 suggestion: 'address-level2',
-              },
-              {
-                node: {
-                  nodeLabel: 'Select a state\nCA\nMA\nNY\nMD\nOR\nOH\nIL\nDC',
-                  snippet: '<select id="state_shipping">',
-                  type: 'node',
-                },
-                prefix: '',
-                suggestion: 'address-level1',
-              },
-              {
-                node: {
-                  nodeLabel: 'input',
-                  snippet: '<input type="text" id="zip_shipping">',
-                  type: 'node',
-                },
-                prefix: '',
-                suggestion: 'postal-code',
-              },
-              {
-                node: {
-                  nodeLabel: 'input',
-                  snippet: '<input type="text" id="name_billing" name="name_billing" placeholder="your name" autocomplete="sectio-red billing name">',
-                  type: 'node',
-                },
-                prefix: 'Review: sectio-red',
-                suggestion: 'name',
-              },
-              {
-                node: {
-                  nodeLabel: 'input',
-                  snippet: '<input type="text" id="city_billing" name="city_billing" placeholder="city you live in" autocomplete="section-red shipping ">',
-                  type: 'node',
-                },
                 prefix: 'Review order of Autocomplete Tokens',
-                suggestion: 'Requires manual review.',
               },
               {
                 node: {
+                  type: 'node',
+                  snippet: '<select id="state_shipping">',
                   nodeLabel: 'Select a state\nCA\nMA\nNY\nMD\nOR\nOH\nIL\nDC',
-                  snippet: '<select id="state_billing" name="state_billing">',
-                  type: 'node',
                 },
-                prefix: '',
                 suggestion: 'address-level1',
+                prefix: '',
               },
               {
                 node: {
+                  type: 'node',
+                  snippet: '<input type="text" id="zip_shipping">',
                   nodeLabel: 'input',
-                  snippet: '<input type="text" id="zip_billing">',
-                  type: 'node',
                 },
-                prefix: '',
                 suggestion: 'postal-code',
+                prefix: '',
               },
               {
                 node: {
-                  nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
+                  type: 'node',
+                  snippet: '<input type="text" id="name_billing" name="name_billing" placeholder="your name" autocomplete="sectio-red billing name">',
+                  nodeLabel: 'input',
+                },
+                suggestion: 'name',
+                prefix: 'Review: sectio-red',
+              },
+              {
+                node: {
+                  type: 'node',
+                  snippet: '<input type="text" id="city_billing" name="city_billing" placeholder="city you live in" autocomplete="section-red shipping ">',
+                  nodeLabel: 'input',
+                },
+                suggestion: 'Requires manual review.',
+                prefix: 'Review order of Autocomplete Tokens',
+              },
+              {
+                node: {
+                  type: 'node',
+                  snippet: '<select id="state_billing" name="state_billing">',
+                  nodeLabel: '\n            Select a state\n            CA\n            MA\n            NY\n      …',
+                },
+                suggestion: 'address-level1',
+                prefix: '',
+              },
+              {
+                node: {
+                  type: 'node',
+                  snippet: '<input type="text" id="zip_billing">',
+                  nodeLabel: 'input',
+                },
+                suggestion: 'postal-code',
+                prefix: '',
+              },
+              {
+                node: {
+                  type: 'node',
                   snippet: '<select id="CCExpiresMonth2" name="CCExpiresMonth2">',
-                  type: 'node',
+                  nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
                 },
-                prefix: '',
                 suggestion: 'cc-exp-month',
+                prefix: '',
               },
               {
                 node: {
-                  nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
-                  snippet: '<select id="CCExpiresYear">',
                   type: 'node',
+                  snippet: '<select id="CCExpiresYear">',
+                  nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
                 },
-                prefix: '',
                 suggestion: 'cc-exp-year',
+                prefix: '',
               },
             ],
           },
