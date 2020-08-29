@@ -26,9 +26,11 @@ const UIStrings = {
    'attribute to a valid value.' +
   ' [Learn more](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)',
   /** Label for a column in a data table; entries will be the autocomplete token suggestions based on heuristics. */
-  columnAutocompleteSuggestions: 'Autocomplete Suggestion',
+  columnAutocompleteSuggestions: 'Autocomplete Suggested Value',
   /** Label for a column in a data table; entries will be the incorrect autocomplete prefix tokens or prompting user to review them. */
-  columnAutocompletePrefixSuggestion: 'Prefix Check',
+  columnAutocompleteCurrent: 'Autocomplete Current Value',
+  /** Warning that some autocomplete tokens are invalid. */
+  warningPrefix: 'Autocomplete token is invalid {token}',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -44,10 +46,7 @@ const validAutocompleteTokens = ['name', 'honorific-prefix', 'given-name',
   'transaction-amount', 'language', 'bday', 'bday-day', 'bday-month', 'bday-year',
   'sex', 'url', 'photo', 'tel', 'tel-country-code', 'tel-national', 'tel-area-code', 'on',
   'tel-local', 'tel-local-prefix', 'tel-local-suffix', 'tel-extension', 'email', 'impp', 'off',
-  'additional-name-initial'];
-
-/** @type {string[]} This array contains all acceptable autocomplete prefix tokens from the WHATWG standard. More found at https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill */
-const validTokenPrefixes = ['home', 'work', 'mobile', 'fax', 'pager', 'shipping', 'billing'];
+  'additional-name-initial', 'home', 'work', 'mobile', 'fax', 'pager', 'shipping', 'billing'];
 
 const noPrediction = ['NO_SERVER_DATA', 'UNKNOWN_TYPE', 'EMPTY_TYPE', 'HTML_TYPE_UNSPECIFIED',
   'HTML_TYPE_UNRECOGNIZED'];
@@ -177,50 +176,24 @@ class AutocompleteAudit extends Audit {
   }
 
   /**
-   * @param {string[]} tokenArray
-   * @return {string[]}
-   */
-  static isValidAutocompletePrefix(tokenArray) {
-    const invalid = [];
-    for (const token of tokenArray) {
-      if (token.slice(0, 8) === 'section-') {
-        continue;
-      }
-      if (validTokenPrefixes.includes(token)) {
-        continue;
-      }
-      invalid.push(token);
-    }
-    return invalid;
-  }
-
-  /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{attribute: Boolean, prefixSuggestion: string}}
+   * @return {Boolean}
    */
   static isValidAutocomplete(input) {
-    if (!input.autocomplete.attribute) return {attribute: false, prefixSuggestion: ''};
+    if (!input.autocomplete.attribute) return false;
     if (input.autocomplete.attribute.includes(' ') ) {
       const tokenArray = input.autocomplete.attribute.split(' ');
-      const invalidPrefixes = this.isValidAutocompletePrefix(
-        tokenArray.slice(0, tokenArray.length - 1));
-      let prefixSuggestion = '';
-      if (invalidPrefixes.length > 0) {
-        prefixSuggestion = 'Review: ' + invalidPrefixes.join(', ');
+      for (const token in tokenArray) {
+        if (!validAutocompleteTokens.includes(token)) continue;
+        if (!(token.slice(0, 8) === 'section-')) continue;
+        return false;
       }
-      if (invalidPrefixes.length === 0 && !input.autocomplete.property) {
-        prefixSuggestion = 'Review order of Autocomplete Tokens';
-      }
-      return {
-        attribute: validAutocompleteTokens.includes(tokenArray[tokenArray.length - 1]),
-        prefixSuggestion: prefixSuggestion,
-      };
+      if (!input.autocomplete.property) return false;
+      return true;
     }
-    return {
-      attribute: validAutocompleteTokens.includes(input.autocomplete.attribute),
-      prefixSuggestion: '',
-    };
+    return validAutocompleteTokens.includes(input.autocomplete.attribute);
   }
+
   /**
    * @param {LH.Artifacts} artifacts
    * @return {LH.Audit.Product}
@@ -234,7 +207,7 @@ class AutocompleteAudit extends Audit {
       for (const input of form.inputs) {
         inputsCount += 1;
         const valid = this.isValidAutocomplete(input);
-        if (!valid.attribute || valid.prefixSuggestion) {
+        if (!valid) {
           if (!input.autocomplete.prediction) {
             notApplicable += 1;
             continue;
@@ -247,6 +220,9 @@ class AutocompleteAudit extends Audit {
           if (input.autocomplete.prediction in autofillSuggestions) {
             const snippetArray = input.snippet.split(' title=');
             const snippet = snippetArray[0] + '>';
+            if (!input.autocomplete.attribute) {
+              input.autocomplete.attribute = '';
+            }
             failingFormsData.push({
               node: /** @type {LH.Audit.Details.NodeValue} */ ({
                 type: 'node',
@@ -254,8 +230,8 @@ class AutocompleteAudit extends Audit {
                 nodeLabel: input.nodeLabel,
               }),
               // @ts-ignore
-              suggestion: autofillSuggestions[input.autofillPredict],
-              prefix: valid.prefixSuggestion,
+              suggestion: autofillSuggestions[input.autocomplete.prediction],
+              current: input.autocomplete.attribute,
             });
           }
         }
@@ -265,8 +241,8 @@ class AutocompleteAudit extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'node', itemType: 'node', text: str_(i18n.UIStrings.columnFailingElem)},
+      {key: 'current', itemType: 'text', text: str_(UIStrings.columnAutocompleteCurrent)},
       {key: 'suggestion', itemType: 'text', text: str_(UIStrings.columnAutocompleteSuggestions)},
-      {key: 'prefix', itemType: 'text', text: str_(UIStrings.columnAutocompletePrefixSuggestion)},
     ];
     const details = Audit.makeTableDetails(headings, failingFormsData);
     let displayValue;
