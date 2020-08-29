@@ -34,7 +34,13 @@ const UIStrings = {
    * @example {invalid-token name} token
    * @example {<autocomplete="invalid-token name">} snippet
    */
-  warning: 'Autocomplete token(s): "{token}" is invalid in {snippet}',
+  warningInvalid: 'Autocomplete token(s): "{token}" is invalid in {snippet}',
+  /**
+   * @description Warning that autocomplete token order is invalid.
+   * @example {mobile section-red cc-name} tokens
+   * @example {<autocomplete="mobile section-red cc-name">} snippet
+   */
+  warningOrder: 'Review order of tokens: "{tokens}" in {snippet}',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -181,21 +187,21 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {Boolean}
+   * @return {{isValid: Boolean, orderWarn?: Boolean}}
    */
   static isValidAutocomplete(input) {
-    if (!input.autocomplete.attribute) return false;
+    if (!input.autocomplete.attribute) return {isValid: false};
     if (input.autocomplete.attribute.includes(' ') ) {
       const tokenArray = input.autocomplete.attribute.split(' ');
       for (const token of tokenArray) {
         if (token.slice(0, 8) === 'section-') continue;
         if (validAutocompleteTokens.includes(token)) continue;
-        return false;
+        return {isValid: false};
       }
-      if (!input.autocomplete.property) return false;
-      return true;
+      if (!input.autocomplete.property) return {isValid: false, orderWarn: true};
+      return {isValid: true};
     }
-    return validAutocompleteTokens.includes(input.autocomplete.attribute);
+    return {isValid: validAutocompleteTokens.includes(input.autocomplete.attribute)};
   }
 
   /**
@@ -211,8 +217,8 @@ class AutocompleteAudit extends Audit {
     for (const form of forms) {
       for (const input of form.inputs) {
         inputsCount += 1;
-        const valid = this.isValidAutocomplete(input);
-        if (!valid) {
+        const token = this.isValidAutocomplete(input);
+        if (!token.isValid) {
           if (!input.autocomplete.prediction) {
             notApplicable += 1;
             continue;
@@ -229,7 +235,11 @@ class AutocompleteAudit extends Audit {
               input.autocomplete.attribute = '';
             }
             if (input.autocomplete.attribute) {
-              warnings.push(str_(UIStrings.warning, {token: input.autocomplete.attribute,
+              warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
+                snippet: snippet}));
+            }
+            if (token.orderWarn) {
+              warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
                 snippet: snippet}));
             }
             failingFormsData.push({
