@@ -29,8 +29,12 @@ const UIStrings = {
   columnAutocompleteSuggestions: 'Autocomplete Suggested Value',
   /** Label for a column in a data table; entries will be the incorrect autocomplete prefix tokens or prompting user to review them. */
   columnAutocompleteCurrent: 'Autocomplete Current Value',
-  /** Warning that some autocomplete tokens are invalid. */
-  warningPrefix: 'Autocomplete token is invalid {token}',
+  /**
+   * @description Warning that autocomplete token is invalid.
+   * @example {invalid-token name} token
+   * @example {<autocomplete="invalid-token name">} snippet
+   */
+  warning: 'Autocomplete token(s): "{token}" is invalid in {snippet}',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -201,6 +205,7 @@ class AutocompleteAudit extends Audit {
   static audit(artifacts) {
     const forms = artifacts.FormElements;
     const failingFormsData = [];
+    const warnings = [];
     let notApplicable = 0;
     let inputsCount = 0;
     for (const form of forms) {
@@ -222,6 +227,10 @@ class AutocompleteAudit extends Audit {
             const snippet = snippetArray[0] + '>';
             if (!input.autocomplete.attribute) {
               input.autocomplete.attribute = '';
+            }
+            if (input.autocomplete.attribute) {
+              warnings.push(str_(UIStrings.warning, {token: input.autocomplete.attribute,
+                snippet: snippet}));
             }
             failingFormsData.push({
               node: /** @type {LH.Audit.Details.NodeValue} */ ({
@@ -255,6 +264,7 @@ class AutocompleteAudit extends Audit {
       notApplicable: notApplicable === inputsCount,
       displayValue,
       details,
+      warnings,
     };
   }
 }
