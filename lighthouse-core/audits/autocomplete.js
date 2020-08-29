@@ -183,9 +183,9 @@ class AutocompleteAudit extends Audit {
     if (!input.autocomplete.attribute) return false;
     if (input.autocomplete.attribute.includes(' ') ) {
       const tokenArray = input.autocomplete.attribute.split(' ');
-      for (const token in tokenArray) {
-        if (!validAutocompleteTokens.includes(token)) continue;
-        if (!(token.slice(0, 8) === 'section-')) continue;
+      for (const token of tokenArray) {
+        if (token.slice(0, 8) === 'section-') continue;
+        if (validAutocompleteTokens.includes(token)) continue;
         return false;
       }
       if (!input.autocomplete.property) return false;
