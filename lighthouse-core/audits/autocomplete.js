@@ -210,7 +210,7 @@ class AutocompleteAudit extends Audit {
     }
     // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
     // https://cloudfour.com/thinks/autofill-what-web-devs-should-know-but-dont/#all-the-tokens
-    if (!input.autocomplete.property) return {hasValidTokens: false, inValidOrder: true};
+    if (!input.autocomplete.property) return {hasValidTokens: true, inValidOrder: true};
     return {hasValidTokens: true};
   }
 
@@ -228,7 +228,7 @@ class AutocompleteAudit extends Audit {
       for (const input of form.inputs) {
         inputsCount += 1;
         const token = this.checkAttributeValidity(input);
-        if (!token.hasValidTokens) {
+        if (!token.hasValidTokens || token.inValidOrder) {
           if (!input.autocomplete.prediction) {
             notApplicable += 1;
             continue;
