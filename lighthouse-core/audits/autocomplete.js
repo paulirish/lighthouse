@@ -196,22 +196,22 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{isValid: Boolean, orderWarn?: Boolean}}
+   * @return {{hasValidTokens: Boolean, inValidOrder?: Boolean}}
    */
-  static isValidAutocomplete(input) {
-    if (!input.autocomplete.attribute) return {isValid: false};
+  static checkAttributeValidity(input) {
+    if (!input.autocomplete.attribute) return {hasValidTokens: false};
     const tokenArray = input.autocomplete.attribute.split(' ');
     for (const token of tokenArray) {
       // A `section-` prefix indicates a unique autofill scope.
       // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#:~:text=section-
       if (token.slice(0, 8) === 'section-') continue;
       if (validAutocompleteTokens.includes(token)) continue;
-      return {isValid: false};
+      return {hasValidTokens: false};
     }
     // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
     // https://cloudfour.com/thinks/autofill-what-web-devs-should-know-but-dont/#all-the-tokens
-    if (!input.autocomplete.property) return {isValid: false, orderWarn: true};
-    return {isValid: true};
+    if (!input.autocomplete.property) return {hasValidTokens: false, inValidOrder: true};
+    return {hasValidTokens: true};
   }
 
   /**
@@ -227,8 +227,8 @@ class AutocompleteAudit extends Audit {
     for (const form of forms) {
       for (const input of form.inputs) {
         inputsCount += 1;
-        const token = this.isValidAutocomplete(input);
-        if (!token.isValid) {
+        const token = this.checkAttributeValidity(input);
+        if (!token.hasValidTokens) {
           if (!input.autocomplete.prediction) {
             notApplicable += 1;
             continue;
@@ -249,7 +249,7 @@ class AutocompleteAudit extends Audit {
               warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
                 snippet: snippet}));
             }
-            if (token.orderWarn) {
+            if (token.inValidOrder) {
               warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
                 snippet: snippet}));
             }
