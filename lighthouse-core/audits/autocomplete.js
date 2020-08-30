@@ -61,6 +61,7 @@ const validAutocompleteTokens = ['name', 'honorific-prefix', 'given-name',
 const noPrediction = ['NO_SERVER_DATA', 'UNKNOWN_TYPE', 'EMPTY_TYPE', 'HTML_TYPE_UNSPECIFIED',
   'HTML_TYPE_UNRECOGNIZED'];
 
+/** This mapping contains all autofill predictions to corresponding autocomplete attributes. Autofill predictions are found at https://source.chromium.org/chromium/chromium/src/+/master:components/autofill/core/browser/field_types.h;l=34*/
 const autofillSuggestions = {
   'NO_SERVER_DATA': 'Requires manual review.',
   'UNKNOWN_TYPE': 'Requires manual review.',
