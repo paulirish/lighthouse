@@ -26,7 +26,7 @@ const UIStrings = {
    'attribute to a valid value.' +
   ' [Learn more](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)',
   /** Label for a column in a data table; entries will be the autocomplete token suggestions based on heuristics. */
-  columnAutocompleteSuggestions: 'Autocomplete Suggested Value',
+  columnAutocompleteSuggestions: 'Autocomplete Suggested Token',
   /** Label for a column in a data table; entries will be the incorrect autocomplete prefix tokens or prompting user to review them. */
   columnAutocompleteCurrent: 'Autocomplete Current Value',
   /**
