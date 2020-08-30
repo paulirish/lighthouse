@@ -400,6 +400,14 @@ const expectations = [
       audits: {
         'autocomplete': {
           score: 0,
+          warnings: [
+            'Autocomplete token(s): "sectio-red shipping cc-namez" is invalid in <textarea type="text" id="name_cc1" name="name_cc1" autocomplete="sectio-red shipping cc-namez" placeholder="John Doe">',
+            'Autocomplete token(s): "shippin street-address" is invalid in <input type="text" id="address_shipping" autocomplete="shippin street-address" placeholder="Your address">',
+            'Autocomplete token(s): "mobile section-red shipping address-level2" is invalid in <input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2">',
+            'Review order of tokens: "mobile section-red shipping address-level2" in <input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2">',
+            'Autocomplete token(s): "sectio-red billing name" is invalid in <input type="text" id="name_billing" name="name_billing" placeholder="your name" autocomplete="sectio-red billing name">',
+            'Autocomplete token(s): "section-red shipping " is invalid in <input type="text" id="city_billing" name="city_billing" placeholder="city you live in" autocomplete="section-red shipping ">',
+          ],
           details: {
             items: [
               {
@@ -409,7 +417,7 @@ const expectations = [
                   nodeLabel: 'textarea',
                 },
                 suggestion: 'Requires manual review.',
-                prefix: 'Review: sectio-red',
+                current: 'sectio-red shipping cc-namez',
               },
               {
                 node: {
@@ -418,7 +426,7 @@ const expectations = [
                   nodeLabel: 'input',
                 },
                 suggestion: 'address-line1',
-                prefix: 'Review: shippin',
+                current: 'shippin street-address',
               },
               {
                 node: {
@@ -427,7 +435,7 @@ const expectations = [
                   nodeLabel: 'input',
                 },
                 suggestion: 'address-level2',
-                prefix: 'Review order of Autocomplete Tokens',
+                current: 'mobile section-red shipping address-level2',
               },
               {
                 node: {
@@ -436,7 +444,7 @@ const expectations = [
                   nodeLabel: 'Select a state\nCA\nMA\nNY\nMD\nOR\nOH\nIL\nDC',
                 },
                 suggestion: 'address-level1',
-                prefix: '',
+                current: '',
               },
               {
                 node: {
@@ -445,7 +453,7 @@ const expectations = [
                   nodeLabel: 'input',
                 },
                 suggestion: 'postal-code',
-                prefix: '',
+                current: '',
               },
               {
                 node: {
@@ -454,7 +462,7 @@ const expectations = [
                   nodeLabel: 'input',
                 },
                 suggestion: 'name',
-                prefix: 'Review: sectio-red',
+                current: 'sectio-red billing name',
               },
               {
                 node: {
@@ -463,7 +471,7 @@ const expectations = [
                   nodeLabel: 'input',
                 },
                 suggestion: 'Requires manual review.',
-                prefix: 'Review order of Autocomplete Tokens',
+                current: 'section-red shipping ',
               },
               {
                 node: {
@@ -472,7 +480,7 @@ const expectations = [
                   nodeLabel: '\n            Select a state\n            CA\n            MA\n            NY\n      …',
                 },
                 suggestion: 'address-level1',
-                prefix: '',
+                current: '',
               },
               {
                 node: {
@@ -481,7 +489,7 @@ const expectations = [
                   nodeLabel: 'input',
                 },
                 suggestion: 'postal-code',
-                prefix: '',
+                current: '',
               },
               {
                 node: {
@@ -490,7 +498,7 @@ const expectations = [
                   nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
                 },
                 suggestion: 'cc-exp-month',
-                prefix: '',
+                current: '',
               },
               {
                 node: {
@@ -499,7 +507,7 @@ const expectations = [
                   nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
                 },
                 suggestion: 'cc-exp-year',
-                prefix: '',
+                current: '',
               },
             ],
           },
@@ -508,6 +516,5 @@ const expectations = [
     },
   },
 ];
-
 
 module.exports = expectations;
