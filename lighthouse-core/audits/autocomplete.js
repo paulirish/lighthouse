@@ -173,6 +173,13 @@ const autofillSuggestions = {
   'HTML_TYPE_TRANSACTION_CURRENCY': 'transaction-currency',
 };
 
+/**
+ * The autocomplete attribute can have multiple tokens in it. All tokens should be valid and in the correct order.
+ * For example, cc-namez is an invalid token. tel mobile shipping section-foo are valid tokens, but out of order. The spec defines correct ordering, but in short, correct order is:
+ *
+ * [section-*] [shipping|billing] [home|work|mobile|fax|pager] <autofill field name>
+ *
+ * If either of these invalid situations, the autocomplete property will be an empty string. */
 class AutocompleteAudit extends Audit {
   /**
    * @return {LH.Audit.Meta}
