@@ -227,8 +227,8 @@ class AutocompleteAudit extends Audit {
     for (const form of forms) {
       for (const input of form.inputs) {
         inputsCount += 1;
-        const token = this.checkAttributeValidity(input);
-        if (!token.hasValidTokens || token.inValidOrder) {
+        const autocomplete = this.checkAttributeValidity(input);
+        if (!autocomplete.hasValidTokens || autocomplete.inValidOrder) {
           if (!input.autocomplete.prediction) {
             notApplicable += 1;
             continue;
@@ -249,7 +249,7 @@ class AutocompleteAudit extends Audit {
               warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
                 snippet: snippet}));
             }
-            if (token.inValidOrder) {
+            if (autocomplete.inValidOrder) {
               warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
                 snippet: snippet}));
             }
