@@ -201,6 +201,7 @@ class AutocompleteAudit extends Audit {
         if (validAutocompleteTokens.includes(token)) continue;
         return {isValid: false};
       }
+      // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
       if (!input.autocomplete.property) return {isValid: false, orderWarn: true};
       return {isValid: true};
     }
