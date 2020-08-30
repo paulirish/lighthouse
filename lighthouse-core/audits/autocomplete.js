@@ -192,20 +192,18 @@ class AutocompleteAudit extends Audit {
    */
   static isValidAutocomplete(input) {
     if (!input.autocomplete.attribute) return {isValid: false};
-    if (input.autocomplete.attribute.includes(' ') ) {
-      const tokenArray = input.autocomplete.attribute.split(' ');
-      for (const token of tokenArray) {
-        // A `section-` prefix indicates a unique autofill scope. 
-        // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#:~:text=section-
-        if (token.slice(0, 8).toLowerCase() === 'section-') continue;
-        if (validAutocompleteTokens.includes(token)) continue;
-        return {isValid: false};
-      }
-      // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
-      if (!input.autocomplete.property) return {isValid: false, orderWarn: true};
-      return {isValid: true};
+    const tokenArray = input.autocomplete.attribute.split(' ');
+    for (const token of tokenArray) {
+      // A `section-` prefix indicates a unique autofill scope.
+      // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#:~:text=section-
+      if (token.slice(0, 8) === 'section-') continue;
+      if (validAutocompleteTokens.includes(token)) continue;
+      return {isValid: false};
     }
-    return {isValid: validAutocompleteTokens.includes(input.autocomplete.attribute)};
+    // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
+    // https://cloudfour.com/thinks/autofill-what-web-devs-should-know-but-dont/#all-the-tokens
+    if (!input.autocomplete.property) return {isValid: false, orderWarn: true};
+    return {isValid: true};
   }
 
   /**
