@@ -254,9 +254,11 @@ class AutocompleteAudit extends Audit {
           if (autocomplete.inValidOrder) {
             warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
               snippet: snippet}));
+            suggestion = 'Review order of tokens';
           }
           // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
-          if (!(input.autocomplete.prediction in autofillSuggestions)) {
+          if (!(input.autocomplete.prediction in autofillSuggestions) &&
+          !autocomplete.inValidOrder) {
             suggestion = 'Requires manual review.';
           }
           failingFormsData.push({
