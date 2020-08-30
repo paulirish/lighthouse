@@ -14,6 +14,7 @@
 
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
+const {suggestions} = require('../lib/large-javascript-libraries/library-suggestions.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that lets the user know if there are any missing or invalid autocomplete attributes on page inputs. This descriptive title is shown to users when all input attributes have a valid autocomplete attribute. */
@@ -238,32 +239,35 @@ class AutocompleteAudit extends Audit {
             notApplicable += 1;
             continue;
           }
-          if (input.autocomplete.prediction in autofillSuggestions) {
-            const snippetArray = input.snippet.split(' title=');
-            const snippet = snippetArray[0] + '>';
-            // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
-            if (!input.autocomplete.attribute) {
-              input.autocomplete.attribute = '';
-            }
-            if (input.autocomplete.attribute) {
-              warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
-                snippet: snippet}));
-            }
-            if (autocomplete.inValidOrder) {
-              warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
-                snippet: snippet}));
-            }
-            failingFormsData.push({
-              node: /** @type {LH.Audit.Details.NodeValue} */ ({
-                type: 'node',
-                snippet: snippet,
-                nodeLabel: input.nodeLabel,
-              }),
-              // @ts-ignore
-              suggestion: autofillSuggestions[input.autocomplete.prediction],
-              current: input.autocomplete.attribute,
-            });
+          const snippetArray = input.snippet.split(' title=');
+          const snippet = snippetArray[0] + '>';
+          // @ts-ignore
+          let suggestion = autofillSuggestions[input.autocomplete.prediction];
+          // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
+          if (!input.autocomplete.attribute) {
+            input.autocomplete.attribute = '';
           }
+          if (input.autocomplete.attribute) {
+            warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
+              snippet: snippet}));
+          }
+          if (autocomplete.inValidOrder) {
+            warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
+              snippet: snippet}));
+          }
+          // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
+          if (!(input.autocomplete.prediction in autofillSuggestions)) {
+            suggestion = 'Requires manual review.';
+          }
+          failingFormsData.push({
+            node: /** @type {LH.Audit.Details.NodeValue} */ ({
+              type: 'node',
+              snippet: snippet,
+              nodeLabel: input.nodeLabel,
+            }),
+            suggestion: suggestion,
+            current: input.autocomplete.attribute,
+          });
         }
       }
     }
