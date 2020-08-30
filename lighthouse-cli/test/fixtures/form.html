@@ -61,6 +61,7 @@
          <!-- Valid autocomplete tokens, but out of order, so the entire attribute becomes invalid -->
          <label for="city_shipping">City:</label> <input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2"><br>
          <label for="Sstate_shipping" > State:</label> 
+         <!-- Deliberately left autocomplete attribute unset -->
          <select id="state_shipping">
             <option value="" selected="">Select a state</option>
             <option value="CA">CA</option>
@@ -73,6 +74,7 @@
             <option value="DC">DC</option>
          </select>
          <br>
+         <!-- Deliberately left autocomplete attribute unset -->
          <label for="zip_shipping">Zip:</label> <input type="text" id="zip_shipping"><br>
          <input type="button" value="Submit">
       </div>
@@ -81,8 +83,10 @@
          <!-- Deliberate typos to create invalid token values -->
          <label for="name_billing">Name:</label> <input type="text" id="name_billing" name="name_billing" placeholder="your name" autocomplete="sectio-red billing name"><br>
          <label for="address_billing">Address:</label> <input type="text" id="address_billing" name="address_billing" autocomplete="billing street-address" placeholder="your address"><br>
+         <!-- Valid autocomplete tokens, in the correct order, but missing the required token, so the attribute becomes invalid -->
          <label for="city_billing">City:</label> <input type="text" id="city_billing" name="city_billing"  placeholder="city you live in" autocomplete="section-red shipping "><br>
          <label for="state_billing">State:</label> 
+         <!-- Deliberately left autocomplete attribute unset -->
          <select id="state_billing" name="state_billing">
             <option value="" selected="">Select a state</option>
             <option value="CA">CA</option>
@@ -95,6 +99,7 @@
             <option value="DC">DC</option>
          </select>
          <br>
+         <!-- Deliberately left autocomplete attribute unset -->
          <label for="zip_billing">Zip:</label> <input type="text" id="zip_billing"><br>
          <input id="submit2" type="button" value="Submit">
       </div>
@@ -120,6 +125,7 @@
             <option value="12">12</option>
          </select>
          / 
+         <!-- Deliberately left autocomplete attribute unset -->
          <select id="CCExpiresYear">
             <option value="">YY</option>
             <option value="2019">2019</option>
