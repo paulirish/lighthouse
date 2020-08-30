@@ -14,7 +14,6 @@
 
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
-const {suggestions} = require('../lib/large-javascript-libraries/library-suggestions.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that lets the user know if there are any missing or invalid autocomplete attributes on page inputs. This descriptive title is shown to users when all input attributes have a valid autocomplete attribute. */
