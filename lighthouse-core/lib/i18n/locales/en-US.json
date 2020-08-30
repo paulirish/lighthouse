@@ -383,11 +383,11 @@
   "lighthouse-core/audits/apple-touch-icon.js | title": {
     "message": "Provides a valid `apple-touch-icon`"
   },
-  "lighthouse-core/audits/autocomplete.js | columnAutocompletePrefixSuggestion": {
-    "message": "Prefix Check"
+  "lighthouse-core/audits/autocomplete.js | columnAutocompleteCurrent": {
+    "message": "Autocomplete Current Value"
   },
   "lighthouse-core/audits/autocomplete.js | columnAutocompleteSuggestions": {
-    "message": "Autocomplete Suggestion"
+    "message": "Autocomplete Suggested Token"
   },
   "lighthouse-core/audits/autocomplete.js | description": {
     "message": "Autocomplete helps users submit forms quicker. To reduce user effort, consider enabling autocomplete by setting the `autocomplete` attribute to a valid value. [Learn more](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)"
@@ -397,6 +397,12 @@
   },
   "lighthouse-core/audits/autocomplete.js | title": {
     "message": "Input elements use autocomplete"
+  },
+  "lighthouse-core/audits/autocomplete.js | warningInvalid": {
+    "message": "Autocomplete token(s): \"{token}\" is invalid in {snippet}"
+  },
+  "lighthouse-core/audits/autocomplete.js | warningOrder": {
+    "message": "Review order of tokens: \"{tokens}\" in {snippet}"
   },
   "lighthouse-core/audits/bootup-time.js | chromeExtensionsWarning": {
     "message": "Chrome extensions negatively affected this page's load performance. Try auditing the page in incognito mode or from a Chrome profile without extensions."

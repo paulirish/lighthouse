@@ -383,11 +383,11 @@
   "lighthouse-core/audits/apple-touch-icon.js | title": {
     "message": "P̂ŕôv́îd́êś â v́âĺîd́ `apple-touch-icon`"
   },
-  "lighthouse-core/audits/autocomplete.js | columnAutocompletePrefixSuggestion": {
-    "message": "P̂ŕêf́îx́ Ĉh́êćk̂"
+  "lighthouse-core/audits/autocomplete.js | columnAutocompleteCurrent": {
+    "message": "Âút̂óĉóm̂ṕl̂ét̂é Ĉúr̂ŕêńt̂ V́âĺûé"
   },
   "lighthouse-core/audits/autocomplete.js | columnAutocompleteSuggestions": {
-    "message": "Âút̂óĉóm̂ṕl̂ét̂é Ŝúĝǵêśt̂íôń"
+    "message": "Âút̂óĉóm̂ṕl̂ét̂é Ŝúĝǵêśt̂éd̂ T́ôḱêń"
   },
   "lighthouse-core/audits/autocomplete.js | description": {
     "message": "Âút̂óĉóm̂ṕl̂ét̂é ĥél̂ṕŝ úŝér̂ś ŝúb̂ḿît́ f̂ór̂ḿŝ q́ûíĉḱêŕ. T̂ó r̂éd̂úĉé ûśêŕ êf́f̂ór̂t́, ĉón̂śîd́êŕ êńâb́l̂ín̂ǵ âút̂óĉóm̂ṕl̂ét̂é b̂ý ŝét̂t́îńĝ t́ĥé `autocomplete` ât́t̂ŕîb́ût́ê t́ô á v̂ál̂íd̂ v́âĺûé. [L̂éâŕn̂ ḿôŕê](https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_metadata_to_enable_auto-complete)"
@@ -397,6 +397,12 @@
   },
   "lighthouse-core/audits/autocomplete.js | title": {
     "message": "Îńp̂út̂ él̂ém̂én̂t́ŝ úŝé âút̂óĉóm̂ṕl̂ét̂é"
+  },
+  "lighthouse-core/audits/autocomplete.js | warningInvalid": {
+    "message": "Âút̂óĉóm̂ṕl̂ét̂é t̂ók̂én̂(ś): \"{token}\" îś îńv̂ál̂íd̂ ín̂ {snippet}"
+  },
+  "lighthouse-core/audits/autocomplete.js | warningOrder": {
+    "message": "R̂év̂íêẃ ôŕd̂ér̂ óf̂ t́ôḱêńŝ: \"{tokens}\" ín̂ {snippet}"
   },
   "lighthouse-core/audits/bootup-time.js | chromeExtensionsWarning": {
     "message": "Ĉh́r̂óm̂é êx́t̂én̂śîón̂ś n̂éĝát̂ív̂él̂ý âf́f̂éĉt́êd́ t̂h́îś p̂áĝé'ŝ ĺôád̂ ṕêŕf̂ór̂ḿâńĉé. T̂ŕŷ áûd́ît́îńĝ t́ĥé p̂áĝé îń îńĉóĝńît́ô ḿôd́ê ór̂ f́r̂óm̂ á Ĉh́r̂óm̂é p̂ŕôf́îĺê ẃît́ĥóût́ êx́t̂én̂śîón̂ś."
