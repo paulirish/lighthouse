@@ -233,6 +233,7 @@ class AutocompleteAudit extends Audit {
           if (input.autocomplete.prediction in autofillSuggestions) {
             const snippetArray = input.snippet.split(' title=');
             const snippet = snippetArray[0] + '>';
+            // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
             if (!input.autocomplete.attribute) {
               input.autocomplete.attribute = '';
             }
