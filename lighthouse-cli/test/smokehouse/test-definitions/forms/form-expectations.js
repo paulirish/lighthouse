@@ -434,7 +434,7 @@ const expectations = [
                   snippet: '<input type="text" id="city_shipping" placeholder="city you live" autocomplete="mobile section-red shipping address-level2">',
                   nodeLabel: 'input',
                 },
-                suggestion: 'address-level2',
+                suggestion: 'Review order of tokens',
                 current: 'mobile section-red shipping address-level2',
               },
               {
