@@ -194,7 +194,9 @@ class AutocompleteAudit extends Audit {
     if (input.autocomplete.attribute.includes(' ') ) {
       const tokenArray = input.autocomplete.attribute.split(' ');
       for (const token of tokenArray) {
-        if (token.slice(0, 8) === 'section-') continue;
+        // A `section-` prefix indicates a unique autofill scope. 
+        // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#:~:text=section-
+        if (token.slice(0, 8).toLowerCase() === 'section-') continue;
         if (validAutocompleteTokens.includes(token)) continue;
         return {isValid: false};
       }
