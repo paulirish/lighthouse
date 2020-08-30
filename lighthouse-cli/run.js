@@ -44,7 +44,7 @@ function parseChromeFlags(flags = '') {
       // i.e. `child_process.execFile("lighthouse", ["http://google.com", "--chrome-flags='--headless --no-sandbox'")`
       // the following regular expression removes those wrapping quotes:
       .map((flagsGroup) => flagsGroup.replace(/^\s*('|")(.+)\1\s*$/, '$2').trim())
-      .join(' ');
+      .join(' ').trim();
 
   const parsed = yargsParser(trimmedFlags, {
     configuration: {'camel-case-expansion': false, 'boolean-negation': false},
