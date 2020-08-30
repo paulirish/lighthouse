@@ -58,6 +58,7 @@ const validAutocompleteTokens = ['name', 'honorific-prefix', 'given-name',
   'tel-local', 'tel-local-prefix', 'tel-local-suffix', 'tel-extension', 'email', 'impp', 'off',
   'additional-name-initial', 'home', 'work', 'mobile', 'fax', 'pager', 'shipping', 'billing'];
 
+/** @type {string[]} This array contains all autofull suggestions that have no prediction tied to it. Autofill predictions found at https://source.chromium.org/chromium/chromium/src/+/master:components/autofill/core/browser/field_types.h;l=26 */
 const noPrediction = ['NO_SERVER_DATA', 'UNKNOWN_TYPE', 'EMPTY_TYPE', 'HTML_TYPE_UNSPECIFIED',
   'HTML_TYPE_UNRECOGNIZED'];
 
