@@ -197,7 +197,7 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{hasValidTokens: boolean, inValidOrder?: boolean}}
+   * @return {{hasValidTokens: boolean, isValidOrder?: boolean}}
    */
   static checkAttributeValidity(input) {
     if (!input.autocomplete.attribute) return {hasValidTokens: false};
@@ -211,7 +211,7 @@ class AutocompleteAudit extends Audit {
     }
     // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
     // https://cloudfour.com/thinks/autofill-what-web-devs-should-know-but-dont/#all-the-tokens
-    if (!input.autocomplete.property) return {hasValidTokens: true, inValidOrder: true};
+    if (!input.autocomplete.property) return {hasValidTokens: true, isValidOrder: true};
     return {hasValidTokens: true};
   }
 
@@ -227,7 +227,7 @@ class AutocompleteAudit extends Audit {
     for (const form of forms) {
       for (const input of form.inputs) {
         const autocomplete = this.checkAttributeValidity(input);
-        if (!autocomplete.hasValidTokens || autocomplete.inValidOrder) {
+        if (!autocomplete.hasValidTokens || autocomplete.isValidOrder) {
           if (!input.autocomplete.prediction) continue;
           if (noPrediction.includes(input.autocomplete.prediction) &&
           !input.autocomplete.attribute) continue;
@@ -242,14 +242,14 @@ class AutocompleteAudit extends Audit {
             warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
               snippet: input.snippet}));
           }
-          if (autocomplete.inValidOrder) {
+          if (autocomplete.isValidOrder) {
             warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
               snippet: input.snippet}));
             suggestion = 'Review order of tokens';
           }
           // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
           if (!(input.autocomplete.prediction in autofillSuggestions) &&
-          !autocomplete.inValidOrder) {
+          !autocomplete.isValidOrder) {
             log.warn(`Autocomplete prediction (${input.autocomplete.prediction}) not found in our mapping`);
             continue;
           }
