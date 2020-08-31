@@ -14,6 +14,7 @@
 
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
+const log = require('lighthouse-logger');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that lets the user know if there are any missing or invalid autocomplete attributes on page inputs. This descriptive title is shown to users when all input attributes have a valid autocomplete attribute. */
@@ -236,9 +237,7 @@ class AutocompleteAudit extends Audit {
           // @ts-ignore
           let suggestion = autofillSuggestions[input.autocomplete.prediction];
           // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
-          if (!input.autocomplete.attribute) {
-            input.autocomplete.attribute = '';
-          }
+          if (!input.autocomplete.attribute) input.autocomplete.attribute = '';
           if (input.autocomplete.attribute) {
             warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
               snippet: input.snippet}));
@@ -251,7 +250,8 @@ class AutocompleteAudit extends Audit {
           // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
           if (!(input.autocomplete.prediction in autofillSuggestions) &&
           !autocomplete.inValidOrder) {
-            suggestion = 'Requires manual review.';
+            log.warn(`Autocomplete prediction (${input.autocomplete.prediction}) not found in our mapping`);
+            continue;
           }
           failingFormsData.push({
             node: /** @type {LH.Audit.Details.NodeValue} */ ({
