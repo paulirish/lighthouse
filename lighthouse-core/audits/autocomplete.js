@@ -222,22 +222,16 @@ class AutocompleteAudit extends Audit {
     const forms = artifacts.FormElements;
     const failingFormsData = [];
     const warnings = [];
-    let notApplicable = 0;
-    let inputsCount = 0;
+    let foundPrediction = false;
     for (const form of forms) {
       for (const input of form.inputs) {
-        inputsCount += 1;
         const autocomplete = this.checkAttributeValidity(input);
         if (!autocomplete.hasValidTokens || autocomplete.inValidOrder) {
-          if (!input.autocomplete.prediction) {
-            notApplicable += 1;
-            continue;
-          }
+          if (!input.autocomplete.prediction) continue;
           if (noPrediction.includes(input.autocomplete.prediction) &&
-          !input.autocomplete.attribute) {
-            notApplicable += 1;
-            continue;
-          }
+          !input.autocomplete.attribute) continue;
+
+          foundPrediction = true;
           const snippetArray = input.snippet.split(' title=');
           const snippet = snippetArray[0] + '>';
           // @ts-ignore
@@ -287,7 +281,7 @@ class AutocompleteAudit extends Audit {
     }
     return {
       score: (failingFormsData.length > 0) ? 0 : 1,
-      notApplicable: notApplicable === inputsCount,
+      notApplicable: foundPrediction,
       displayValue,
       details,
       warnings,
