@@ -232,9 +232,7 @@ class AutocompleteAudit extends Audit {
           !input.autocomplete.attribute) continue;
 
           foundPrediction = false;
-          // Split
-          const snippetArray = input.snippet.split(' title=');
-          const snippet = snippetArray[0] + '>';
+
           // @ts-ignore
           let suggestion = autofillSuggestions[input.autocomplete.prediction];
           // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
@@ -243,11 +241,11 @@ class AutocompleteAudit extends Audit {
           }
           if (input.autocomplete.attribute) {
             warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
-              snippet: snippet}));
+              snippet: input.snippet}));
           }
           if (autocomplete.inValidOrder) {
             warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
-              snippet: snippet}));
+              snippet: input.snippet}));
             suggestion = 'Review order of tokens';
           }
           // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
@@ -258,7 +256,7 @@ class AutocompleteAudit extends Audit {
           failingFormsData.push({
             node: /** @type {LH.Audit.Details.NodeValue} */ ({
               type: 'node',
-              snippet: snippet,
+              snippet: input.snippet,
               nodeLabel: input.nodeLabel,
             }),
             suggestion: suggestion,
