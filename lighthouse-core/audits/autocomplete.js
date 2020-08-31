@@ -196,7 +196,7 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{hasValidTokens: Boolean, inValidOrder?: Boolean}}
+   * @return {{hasValidTokens: boolean, inValidOrder?: boolean}}
    */
   static checkAttributeValidity(input) {
     if (!input.autocomplete.attribute) return {hasValidTokens: false};
