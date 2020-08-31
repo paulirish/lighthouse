@@ -222,7 +222,7 @@ class AutocompleteAudit extends Audit {
     const forms = artifacts.FormElements;
     const failingFormsData = [];
     const warnings = [];
-    let foundPrediction = false;
+    let foundPrediction = true;
     for (const form of forms) {
       for (const input of form.inputs) {
         const autocomplete = this.checkAttributeValidity(input);
@@ -231,7 +231,8 @@ class AutocompleteAudit extends Audit {
           if (noPrediction.includes(input.autocomplete.prediction) &&
           !input.autocomplete.attribute) continue;
 
-          foundPrediction = true;
+          foundPrediction = false;
+          // Split
           const snippetArray = input.snippet.split(' title=');
           const snippet = snippetArray[0] + '>';
           // @ts-ignore
