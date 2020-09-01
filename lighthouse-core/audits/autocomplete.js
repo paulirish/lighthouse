@@ -64,7 +64,7 @@ const noPrediction = ['NO_SERVER_DATA', 'UNKNOWN_TYPE', 'EMPTY_TYPE', 'HTML_TYPE
   'HTML_TYPE_UNRECOGNIZED'];
 
 /** This mapping contains all autofill predictions to corresponding autocomplete attributes. Autofill predictions are found at https://source.chromium.org/chromium/chromium/src/+/master:components/autofill/core/browser/field_types.h;l=34*/
-const autofillSuggestions = {
+const predictionTypesToTokens = {
   'NO_SERVER_DATA': 'Requires manual review.',
   'UNKNOWN_TYPE': 'Requires manual review.',
   'EMPTY_TYPE': 'Requires manual review.',
@@ -235,7 +235,7 @@ class AutocompleteAudit extends Audit {
         foundPrediction = true;
 
         // @ts-ignore
-        let suggestion = autofillSuggestions[input.autocomplete.prediction];
+        let suggestion = predictionTypesToTokens[input.autocomplete.prediction];
         // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
         if (!input.autocomplete.attribute) input.autocomplete.attribute = '';
         // Warning is created because while there is an autocomplete attribute, the autocomplete property does not exsist, thus the attribute's value is invalid.
@@ -249,7 +249,7 @@ class AutocompleteAudit extends Audit {
           suggestion = 'Review order of tokens';
         }
         // If the autofill prediction is not in our autofill suggestion mapping, then we want to create a warning
-        if (!(input.autocomplete.prediction in autofillSuggestions) &&
+        if (!(input.autocomplete.prediction in predictionTypesToTokens) &&
           autocomplete.isValidOrder) {
           log.warn(`Autocomplete prediction (${input.autocomplete.prediction})
              not found in our mapping`);
