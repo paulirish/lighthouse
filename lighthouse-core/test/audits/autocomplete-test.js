@@ -543,4 +543,23 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
     const expectedOutput = {hasValidTokens: false};
     expect(output).toStrictEqual(expectedOutput);
   });
+
+  it('returns true if attribute has optional "section=" token', () => {
+    /** @type {LH.Artifacts.FormInput} */
+    const input = {
+      id: '',
+      name: '',
+      placeholder: '',
+      autocomplete: {
+        property: 'section-foo name',
+        attribute: 'section-foo name',
+        prediction: '',
+      },
+      nodeLabel: '',
+      snippet: '',
+    };
+    const output = Autocomplete.checkAttributeValidity(input);
+    const expectedOutput = {hasValidTokens: true, isValidOrder: true};
+    expect(output).toStrictEqual(expectedOutput);
+  });
 });
