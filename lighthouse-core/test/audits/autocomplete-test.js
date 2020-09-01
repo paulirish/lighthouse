@@ -224,8 +224,11 @@ describe('Best Practices: autocomplete audit', () => {
               id: '',
               name: 'name_cc2',
               placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'sectio-red cc-name',
+              autocomplete: {
+                property: '',
+                attribute: 'sectio-red cc-name',
+                prediction: 'HTML_TYPE_CREDIT_CARD_NAME_FULL',
+              },
               autofillPredict: 'HTML_TYPE_CREDIT_CARD_NAME_FULL',
               nodeLabel: 'textarea',
               snippet: '<textarea type="text" name="name_cc2" autocomplete="sectio-red cc-name">',
@@ -234,9 +237,11 @@ describe('Best Practices: autocomplete audit', () => {
               id: '',
               name: 'CCNo2',
               placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'shippin name',
-              autofillPredict: 'NAME_FULL',
+              autocomplete: {
+                property: '',
+                attribute: 'shippin name',
+                prediction: 'NAME_FULL',
+              },
               nodeLabel: 'input',
               snippet: '<input type="text" name="CCNo2" autocomplete="shippin name">',
             },
@@ -245,7 +250,6 @@ describe('Best Practices: autocomplete audit', () => {
         },
       ],
     };
-    
     const {score} = Autocomplete.audit(artifacts);
     expect(score).toBe(0);
   });
