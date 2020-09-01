@@ -42,6 +42,8 @@ const UIStrings = {
    * @example {<autocomplete="mobile section-red cc-name">} snippet
    */
   warningOrder: 'Review order of tokens: "{tokens}" in {snippet}',
+  /* Entry for under the Autocomplete Suggested Token Column that tells users to review the ordering of their tokens if they are valid. */
+  reviewOrder: 'Review order of tokens',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -246,7 +248,7 @@ class AutocompleteAudit extends Audit {
         if (autocomplete.isValidOrder === false) {
           warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
             snippet: input.snippet}));
-          suggestion = 'Review order of tokens';
+          suggestion = UIStrings.reviewOrder;
         }
         // If the autofill prediction is not in our autofill suggestion mapping, then we want to create a warning
         if (!(input.autocomplete.prediction in predictionTypesToTokens) &&
