@@ -243,6 +243,7 @@ Auditing: Avoid large layout shifts
 Auditing: Avoid long main-thread tasks
 Auditing: Avoids `unload` event listeners
 Auditing: Avoid non-composited animations
+Auditing: Image elements have explicit `width` and `height`
 Auditing: Avoids large JavaScript libraries with smaller alternatives
 Auditing: Page has valid source maps
 Auditing: Site works cross-browser
@@ -490,6 +491,7 @@ total-blocking-time: numeric
 total-byte-weight: numeric
 unminified-css: flaky
 unminified-javascript: flaky
+unsized-images: notApplicable
 unused-css-rules: flaky
 unused-javascript: numeric
 use-landmarks: manual
@@ -512,5 +514,5 @@ visual-order-follows-dom: manual
 without-javascript: pass
 works-offline: fail
 
-# of .lh-audit divs: 135
+# of .lh-audit divs: 136
 

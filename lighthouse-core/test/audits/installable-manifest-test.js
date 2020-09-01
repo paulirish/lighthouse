@@ -44,6 +44,16 @@ describe('PWA: webapp install banner audit', () => {
       });
     });
 
+    it('passes when manifest url matches', () => {
+      const artifacts = generateMockArtifacts();
+      const context = generateMockAuditContext();
+
+      return InstallableManifestAudit.audit(artifacts, context).then(result => {
+        assert.strictEqual(artifacts.WebAppManifest.url, EXAMPLE_MANIFEST_URL);
+        assert.strictEqual(result.details.items[0].manifestUrl, EXAMPLE_MANIFEST_URL);
+      });
+    });
+
     it('fails with a non-parsable manifest', () => {
       const artifacts = generateMockArtifacts('{,:}');
       const context = generateMockAuditContext();

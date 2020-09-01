@@ -1341,7 +1341,7 @@
     "message": "T̂ím̂ín̂ǵ b̂úd̂ǵêt́"
   },
   "lighthouse-core/audits/unsized-images.js | description": {
-    "message": "Âĺŵáŷś îńĉĺûd́ê éx̂ṕl̂íĉít̂ ẃîd́t̂h́ âńd̂ h́êíĝh́t̂ ón̂ ím̂áĝé êĺêḿêńt̂ś t̂ó r̂éd̂úĉé l̂áŷóût́ ŝh́îf́t̂ś âńd̂ ím̂ṕr̂óv̂é ĈĹŜ. [Ĺêár̂ń m̂ór̂é](https://web.dev/optimize-cls/#images-without-dimensions)"
+    "message": "Ŝét̂ án̂ éx̂ṕl̂íĉít̂ ẃîd́t̂h́ âńd̂ h́êíĝh́t̂ ón̂ ím̂áĝé êĺêḿêńt̂ś t̂ó r̂éd̂úĉé l̂áŷóût́ ŝh́îf́t̂ś âńd̂ ím̂ṕr̂óv̂é ĈĹŜ. [Ĺêár̂ń m̂ór̂é](https://web.dev/optimize-cls/#images-without-dimensions)"
   },
   "lighthouse-core/audits/unsized-images.js | failureTitle": {
     "message": "Îḿâǵê él̂ém̂én̂t́ŝ d́ô ńôt́ ĥáv̂é êx́p̂ĺîćît́ `width` âńd̂ `height`"

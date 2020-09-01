@@ -22,7 +22,8 @@ const inputTracePath = path.resolve(process.cwd(), process.argv[2]);
 const outputTracePath = path.resolve(process.cwd(), process.argv[3]);
 const inputTraceRaw = fs.readFileSync(inputTracePath, 'utf8');
 /** @type {LH.Trace} */
-const inputTrace = JSON.parse(inputTraceRaw);
+let inputTrace = JSON.parse(inputTraceRaw);
+if (Array.isArray(inputTrace)) inputTrace = {traceEvents: inputTrace};
 
 const outputTrace = minifyTrace(inputTrace);
 const output = `{

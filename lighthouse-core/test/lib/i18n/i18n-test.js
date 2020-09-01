@@ -118,16 +118,28 @@ describe('i18n', () => {
   });
 
   describe('#lookupLocale', () => {
+    const invalidLocale = 'jk-Latn-DE-1996-a-ext-x-phonebk-i-klingon';
+
     it('canonicalizes the locale', () => {
       expect(i18n.lookupLocale('en-xa')).toEqual('en-XA');
     });
 
+    it('canonicalizes the locales', () => {
+      expect(i18n.lookupLocale([invalidLocale, 'en-xa'])).toEqual('en-XA');
+    });
+
+    it('falls back to default if locale not provided or cant be found', () => {
+      expect(i18n.lookupLocale(undefined)).toEqual('en');
+      expect(i18n.lookupLocale(invalidLocale)).toEqual('en');
+      expect(i18n.lookupLocale([invalidLocale, invalidLocale])).toEqual('en');
+    });
+
     it('falls back to root tag prefix if specific locale not available', () => {
-      expect(i18n.lookupLocale('en-JKJK')).toEqual('en');
+      expect(i18n.lookupLocale('es-JKJK')).toEqual('es');
     });
 
     it('falls back to en if no match is available', () => {
-      expect(i18n.lookupLocale('jk-Latn-DE-1996-a-ext-x-phonebk-i-klingon')).toEqual('en');
+      expect(i18n.lookupLocale(invalidLocale)).toEqual('en');
     });
   });
 

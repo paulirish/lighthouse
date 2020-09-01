@@ -20,12 +20,12 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on whether all images have explicit width and height. This descriptive title is shown to users when one or more images does not have explicit width and height */
   failureTitle: 'Image elements do not have explicit `width` and `height`',
   /** Description of a Lighthouse audit that tells the user why they should include explicit width and height for all images. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Always include explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)',
+  description: 'Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-class SizedImages extends Audit {
+class UnsizedImages extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
@@ -67,18 +67,18 @@ class SizedImages extends Audit {
    * @param {LH.Artifacts.ImageElement} image
    * @return {boolean}
    */
-  static isUnsizedImage(image) {
+  static isSizedImage(image) {
     const attrWidth = image.attributeWidth;
     const attrHeight = image.attributeHeight;
     const cssWidth = image.cssWidth;
     const cssHeight = image.cssHeight;
-    const widthIsValidAttribute = SizedImages.isValidAttr(attrWidth);
-    const widthIsValidCss = SizedImages.isValidCss(cssWidth);
-    const heightIsValidAttribute = SizedImages.isValidAttr(attrHeight);
-    const heightIsValidCss = SizedImages.isValidCss(cssHeight);
+    const widthIsValidAttribute = UnsizedImages.isValidAttr(attrWidth);
+    const widthIsValidCss = UnsizedImages.isValidCss(cssWidth);
+    const heightIsValidAttribute = UnsizedImages.isValidAttr(attrHeight);
+    const heightIsValidCss = UnsizedImages.isValidCss(cssHeight);
     const validWidth = widthIsValidAttribute || widthIsValidCss;
     const validHeight = heightIsValidAttribute || heightIsValidCss;
-    return !validWidth || !validHeight;
+    return validWidth && validHeight;
   }
 
   /**
@@ -86,12 +86,15 @@ class SizedImages extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts) {
-    // CSS background-images are ignored for this audit.
-    const images = artifacts.ImageElements.filter(el => !el.isCss);
+    // CSS background-images & ShadowRoot images are ignored for this audit.
+    const images = artifacts.ImageElements.filter(el => !el.isCss && !el.isInShadowDOM);
     const unsizedImages = [];
 
     for (const image of images) {
-      if (!SizedImages.isUnsizedImage(image)) continue;
+      const isFixedImage =
+        image.cssComputedPosition === 'fixed' || image.cssComputedPosition === 'absolute';
+
+      if (isFixedImage || UnsizedImages.isSizedImage(image)) continue;
       const url = URL.elideDataURI(image.src);
       unsizedImages.push({
         url,
@@ -120,5 +123,5 @@ class SizedImages extends Audit {
   }
 }
 
-module.exports = SizedImages;
+module.exports = UnsizedImages;
 module.exports.UIStrings = UIStrings;

@@ -418,9 +418,9 @@ declare global {
         /** The raw height attribute of the image element. CSS images will be set to the empty string. */
         attributeHeight: string;
         /** The CSS width property of the image element. */
-        cssWidth?: string | undefined;
+        cssWidth?: string;
         /** The CSS height property of the image element. */
-        cssHeight?: string | undefined;
+        cssHeight?: string;
         /** The BoundingClientRect of the element. */
         clientRect: {
           top: number;
@@ -428,10 +428,14 @@ declare global {
           left: number;
           right: number;
         };
+        /** The CSS position attribute of the element */
+        cssComputedPosition: string;
         /** Flags whether this element was an image via CSS background-image rather than <img> tag. */
         isCss: boolean;
         /** Flags whether this element was contained within a <picture> tag. */
         isPicture: boolean;
+        /** Flags whether this element was contained within a ShadowRoot */
+        isInShadowDOM: boolean;
         /** Flags whether this element was sized using a non-default `object-fit` CSS property. */
         usesObjectFit: boolean;
         /** Flags whether this element was rendered using a pixel art scaling method.

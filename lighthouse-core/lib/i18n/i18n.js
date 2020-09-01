@@ -12,6 +12,8 @@ const MessageFormat = require('intl-messageformat').default;
 const lookupClosestLocale = require('lookup-closest-locale');
 const LOCALES = require('./locales.js');
 
+const DEFAULT_LOCALE = 'en';
+
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
 /** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */
 
@@ -157,18 +159,17 @@ const formats = {
  * Look up the best available locale for the requested language through these fall backs:
  * - exact match
  * - progressively shorter prefixes (`de-CH-1996` -> `de-CH` -> `de`)
- * - the default locale ('en') if no match is found
  *
- * If `locale` isn't provided, the default is used.
- * @param {string=} locale
+ * If `locale` isn't provided or one could not be found, DEFAULT_LOCALE is returned.
+ * @param {string|string[]=} locales
  * @return {LH.Locale}
  */
-function lookupLocale(locale) {
+function lookupLocale(locales) {
   // TODO: could do more work to sniff out default locale
-  const canonicalLocale = Intl.getCanonicalLocales(locale)[0];
+  const canonicalLocales = Intl.getCanonicalLocales(locales);
 
-  const closestLocale = lookupClosestLocale(canonicalLocale, LOCALES);
-  return closestLocale || 'en';
+  const closestLocale = lookupClosestLocale(canonicalLocales, LOCALES);
+  return closestLocale || DEFAULT_LOCALE;
 }
 
 /**

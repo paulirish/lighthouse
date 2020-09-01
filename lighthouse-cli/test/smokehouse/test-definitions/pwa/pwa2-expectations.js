@@ -116,7 +116,7 @@ module.exports = [
         },
         'installable-manifest': {
           score: 1,
-          details: {items: [pwaDetailsExpectations]},
+          details: {items: [{...pwaDetailsExpectations, manifestUrl: 'https://caltrainschedule.io/manifest.json'}]},
         },
         'splash-screen': {
           score: 1,

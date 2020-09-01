@@ -528,6 +528,7 @@
             "failures": [
               "No manifest was fetched"
             ],
+            "manifestUrl": null,
             "isParseFailure": true,
             "parseFailureReason": "No manifest was fetched"
           }
@@ -1996,6 +1997,41 @@
         ]
       }
     },
+    "unsized-images": {
+      "id": "unsized-images",
+      "title": "Image elements do not have explicit `width` and `height`",
+      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn more](https://web.dev/optimize-cls/#images-without-dimensions)",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "itemType": "thumbnail",
+            "text": ""
+          },
+          {
+            "key": "url",
+            "itemType": "url",
+            "text": "URL"
+          },
+          {
+            "key": "node",
+            "itemType": "node",
+            "text": "Failing Elements"
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
+            "node": {
+              "type": "node"
+            }
+          }
+        ]
+      }
+    },
     "large-javascript-libraries": {
       "id": "large-javascript-libraries",
       "title": "Avoids large JavaScript libraries with smaller alternatives",
@@ -2192,7 +2228,7 @@
               "type": "node",
               "selector": "h2",
               "path": "3,HTML,1,BODY,5,DIV,0,H2",
-              "snippet": "<h2>Do better web tester page</h2>",
+              "snippet": "<h2>",
               "boundingRect": {
                 "width": 396,
                 "height": 28,
@@ -2210,7 +2246,7 @@
               "type": "node",
               "selector": "span",
               "path": "3,HTML,1,BODY,5,DIV,1,SPAN",
-              "snippet": "<span>Hi there!</span>",
+              "snippet": "<span>",
               "boundingRect": {
                 "width": 57,
                 "height": 18,
@@ -2586,7 +2622,7 @@
               "type": "node",
               "selector": "a[href=\"javascript\\:void\\(0\\)\"]",
               "path": "3,HTML,1,BODY,44,A",
-              "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\"></a>",
+              "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\">",
               "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
               "nodeLabel": "a"
             }
@@ -2596,7 +2632,7 @@
               "type": "node",
               "selector": "a[href$=\"mailto\\:inbox\\@email\\.com\"]",
               "path": "3,HTML,1,BODY,46,A",
-              "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\"></a>",
+              "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\">",
               "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"presentation\"\n  Element's default semantics were not overridden with role=\"none\"",
               "nodeLabel": "a"
             }
@@ -2670,7 +2706,7 @@
               "type": "node",
               "selector": "#\\35 934a",
               "path": "3,HTML,1,BODY,2,OBJECT",
-              "snippet": "<object id=\"5934a\"></object>",
+              "snippet": "<object id=\"5934a\">",
               "boundingRect": {
                 "width": 300,
                 "height": 150,
@@ -2688,7 +2724,7 @@
               "type": "node",
               "selector": "#\\35 934b",
               "path": "3,HTML,1,BODY,3,OBJECT",
-              "snippet": "<object id=\"5934b\"></object>",
+              "snippet": "<object id=\"5934b\">",
               "boundingRect": {
                 "width": 300,
                 "height": 150,
@@ -4488,6 +4524,11 @@
           "group": "diagnostics"
         },
         {
+          "id": "unsized-images",
+          "weight": 0,
+          "group": "diagnostics"
+        },
+        {
           "id": "large-javascript-libraries",
           "weight": 0,
           "group": "diagnostics"
@@ -5687,6 +5728,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:unsized-images",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:large-javascript-libraries",
         "duration": 100,
         "entryType": "measure"
@@ -6562,6 +6609,7 @@
         "audits[network-server-latency].details.headings[0].text",
         "audits[long-tasks].details.headings[0].text",
         "audits[no-unload-listeners].details.headings[0].text",
+        "audits[unsized-images].details.headings[1].text",
         "audits[uses-long-cache-ttl].details.headings[0].text",
         "audits[total-byte-weight].details.headings[0].text",
         "audits[render-blocking-resources].details.headings[0].label",
@@ -7023,6 +7071,22 @@
           "path": "audits[non-composited-animations].details.items[0].subItems.items[2].failureReason"
         }
       ],
+      "lighthouse-core/audits/unsized-images.js | failureTitle": [
+        "audits[unsized-images].title"
+      ],
+      "lighthouse-core/audits/unsized-images.js | description": [
+        "audits[unsized-images].description"
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
+        "audits[unsized-images].details.headings[2].text",
+        "audits[color-contrast].details.headings[0].text",
+        "audits[html-has-lang].details.headings[0].text",
+        "audits[image-alt].details.headings[0].text",
+        "audits.label.details.headings[0].text",
+        "audits[link-name].details.headings[0].text",
+        "audits[object-alt].details.headings[0].text",
+        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
+      ],
       "lighthouse-core/audits/large-javascript-libraries.js | title": [
         "audits[large-javascript-libraries].title"
       ],
@@ -7150,15 +7214,6 @@
       ],
       "lighthouse-core/audits/accessibility/color-contrast.js | description": [
         "audits[color-contrast].description"
-      ],
-      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
-        "audits[color-contrast].details.headings[0].text",
-        "audits[html-has-lang].details.headings[0].text",
-        "audits[image-alt].details.headings[0].text",
-        "audits.label.details.headings[0].text",
-        "audits[link-name].details.headings[0].text",
-        "audits[object-alt].details.headings[0].text",
-        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
       ],
       "lighthouse-core/audits/accessibility/definition-list.js | title": [
         "audits[definition-list].title"

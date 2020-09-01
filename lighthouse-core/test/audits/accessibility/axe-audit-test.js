@@ -169,4 +169,31 @@ describe('Accessibility: axe-audit', () => {
       assert.equal(output.score, 0);
     });
   });
+
+  it('prefers our getOuterHTMLSnippet() string over axe\'s html string', () => {
+    class FakeA11yAudit extends AxeAudit {
+      static get meta() {
+        return {
+          id: 'fake-axe-snippet-case',
+          title: 'Example title',
+          scoreDisplayMode: 'informative',
+          requiredArtifacts: ['Accessibility'],
+        };
+      }
+    }
+    const artifacts = {
+      Accessibility: {
+        violations: [
+          {
+            id: 'fake-axe-snippet-case',
+            nodes: [{html: '<input id="axes-source" />', snippet: '<input id="snippet"/>'}],
+            help: 'http://example.com/',
+          },
+        ],
+      },
+    };
+
+    const output = FakeA11yAudit.audit(artifacts);
+    expect(output.details.items[0].node.snippet).toMatch(`<input id="snippet"/>`);
+  });
 });
