@@ -114,6 +114,10 @@ function getElementsInDocument(selector) {
 /* istanbul ignore next */
 function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 500) {
   const ATTRIBUTE_CHAR_LIMIT = 75;
+  // Autofill information that is injected into the snippet via AutofillShowTypePredictions
+  // TODO(paulirish): Don't clean title attribute from all elements if it's unnecessary
+  const autoFillIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
+
   try {
     // ShadowRoots are sometimes passed in; use their hosts' outerHTML.
     if (element instanceof ShadowRoot) {
@@ -121,7 +125,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
     }
 
     const clone = element.cloneNode();
-    ignoreAttrs.forEach(attribute =>{
+    ignoreAttrs.concat(autoFillIgnoreAttrs).forEach(attribute =>{
       clone.removeAttribute(attribute);
     });
     let charCount = 0;
