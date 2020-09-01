@@ -8,6 +8,7 @@
 /* eslint-env jest */
 
 const Autocomplete = require('../../audits/autocomplete.js');
+const lhEnv = require('../../lib/lh-env.js');
 
 
 describe('Best Practices: autocomplete audit', () => {
@@ -520,5 +521,29 @@ describe('Best Practices: autocomplete audit', () => {
     const {score, details} = Autocomplete.audit(artifacts);
     expect(score).toBe(0);
     expect(details).toStrictEqual(expectedDetails);
+  });
+});
+
+describe('Autocomplete Audit: Check Attribute Validity', () => {
+  it('returns false if the attribute is empty', () => {
+    /** @type {LH.Artifacts.FormInput} */
+    const input = {
+      id: '',
+      name: '',
+      placeholder: '',
+      autocomplete: {
+        property: '',
+        attribute: '',
+        prediction: '',
+      },
+      nodeLabel: '',
+      snippet: '',
+    };
+    const output = Autocomplete.checkAttributeValidity(input);
+    const expectedOutput = {
+      hasValidTokens: false,
+      isValidOrder: true,
+    };
+    expect(output).toStrictEqual(expectedOutput);
   });
 });
