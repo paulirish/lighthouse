@@ -358,8 +358,53 @@ describe('Best Practices: autocomplete audit', () => {
     const expectedWarnings = [
       'lighthouse-core/audits/autocomplete.js | warningInvalid # 0',
       'lighthouse-core/audits/autocomplete.js | warningInvalid # 1',
-    ]
-  ;
+    ];
+    const {warnings} = Autocomplete.audit(artifacts);
+    expect(warnings).toStrictEqual(expectedWarnings);
+  });
+
+  it('creates a warning when the tokens are valid but out of order', () => {
+    const artifacts = {
+      FormElements: [
+        {
+          inputs: [
+            {
+              id: '',
+              name: 'name_cc2',
+              placeholder: '',
+              autocomplete: {
+                property: '',
+                attribute: 'shipping section-red cc-name',
+                prediction: 'HTML_TYPE_CREDIT_CARD_NAME_FULL',
+              },
+              nodeLabel: 'textarea',
+              // eslint-disable-next-line max-len
+              snippet: '<textarea type="text" name="name_cc2" autocomplete="shipping section-red cc-name">',
+            },
+            {
+              id: '',
+              name: 'CCNo2',
+              placeholder: '',
+              autocomplete: {
+                property: '',
+                attribute: 'shipping section-red mobile tel',
+                prediction: 'HTML_TYPE_TEL',
+              },
+              nodeLabel: 'input',
+              // eslint-disable-next-line max-len
+              snippet: '<input type="text" name="CCNo2" autocomplete="shipping section-red mobile tel">',
+            },
+          ],
+          labels: [],
+        },
+      ],
+    };
+    const expectedWarnings = [
+      'lighthouse-core/audits/autocomplete.js | warningInvalid # 4',
+      'lighthouse-core/audits/autocomplete.js | warningOrder # 0',
+      'lighthouse-core/audits/autocomplete.js | warningInvalid # 5',
+      'lighthouse-core/audits/autocomplete.js | warningOrder # 1',
+    ];
     const {warnings} = Autocomplete.audit(artifacts);
     expect(warnings).toStrictEqual(expectedWarnings);
   });
