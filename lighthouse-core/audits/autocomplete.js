@@ -197,22 +197,22 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{hasValidTokens: boolean, isValidOrder?: boolean}}
+   * @return {{hasValidTokens: boolean, isValidOrder: boolean}}
    */
   static checkAttributeValidity(input) {
-    if (!input.autocomplete.attribute) return {hasValidTokens: false};
+    if (!input.autocomplete.attribute) return {hasValidTokens: false, isValidOrder: true};
     const tokenArray = input.autocomplete.attribute.split(' ');
     for (const token of tokenArray) {
       // A `section-` prefix indicates a unique autofill scope.
       // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#:~:text=section-
       if (token.slice(0, 8) === 'section-') continue;
       if (validAutocompleteTokens.includes(token)) continue;
-      return {hasValidTokens: false};
+      return {hasValidTokens: false, isValidOrder: true};
     }
     // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
     // https://cloudfour.com/thinks/autofill-what-web-devs-should-know-but-dont/#all-the-tokens
-    if (!input.autocomplete.property) return {hasValidTokens: true, isValidOrder: true};
-    return {hasValidTokens: true};
+    if (!input.autocomplete.property) return {hasValidTokens: true, isValidOrder: false};
+    return {hasValidTokens: true, isValidOrder: true};
   }
 
   /**
@@ -227,42 +227,42 @@ class AutocompleteAudit extends Audit {
     for (const form of forms) {
       for (const input of form.inputs) {
         const autocomplete = this.checkAttributeValidity(input);
-        if (!autocomplete.hasValidTokens || autocomplete.isValidOrder) {
-          if (!input.autocomplete.prediction) continue;
-          if (noPrediction.includes(input.autocomplete.prediction) &&
+        if (autocomplete.hasValidTokens && autocomplete.isValidOrder) continue;
+        if (!input.autocomplete.prediction) continue;
+        if (noPrediction.includes(input.autocomplete.prediction) &&
           !input.autocomplete.attribute) continue;
 
-          foundPrediction = false;
+        foundPrediction = false;
 
-          // @ts-ignore
-          let suggestion = autofillSuggestions[input.autocomplete.prediction];
-          // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
-          if (!input.autocomplete.attribute) input.autocomplete.attribute = '';
-          if (input.autocomplete.attribute) {
-            warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
-              snippet: input.snippet}));
-          }
-          if (autocomplete.isValidOrder) {
-            warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
-              snippet: input.snippet}));
-            suggestion = 'Review order of tokens';
-          }
-          // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
-          if (!(input.autocomplete.prediction in autofillSuggestions) &&
-          !autocomplete.isValidOrder) {
-            log.warn(`Autocomplete prediction (${input.autocomplete.prediction}) not found in our mapping`);
-            continue;
-          }
-          failingFormsData.push({
-            node: /** @type {LH.Audit.Details.NodeValue} */ ({
-              type: 'node',
-              snippet: input.snippet,
-              nodeLabel: input.nodeLabel,
-            }),
-            suggestion: suggestion,
-            current: input.autocomplete.attribute,
-          });
+        // @ts-ignore
+        let suggestion = autofillSuggestions[input.autocomplete.prediction];
+        // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
+        if (!input.autocomplete.attribute) input.autocomplete.attribute = '';
+        if (input.autocomplete.attribute) {
+          warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
+            snippet: input.snippet}));
         }
+        if (!autocomplete.isValidOrder) {
+          warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
+            snippet: input.snippet}));
+          suggestion = 'Review order of tokens';
+        }
+        // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
+        if (!(input.autocomplete.prediction in autofillSuggestions) &&
+          autocomplete.isValidOrder) {
+          log.warn(`Autocomplete prediction (${input.autocomplete.prediction})
+             not found in our mapping`);
+          continue;
+        }
+        failingFormsData.push({
+          node: /** @type {LH.Audit.Details.NodeValue} */ ({
+            type: 'node',
+            snippet: input.snippet,
+            nodeLabel: input.nodeLabel,
+          }),
+          suggestion: suggestion,
+          current: input.autocomplete.attribute,
+        });
       }
     }
 
