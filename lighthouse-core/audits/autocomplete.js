@@ -69,9 +69,9 @@ const noPrediction = ['NO_SERVER_DATA', 'UNKNOWN_TYPE', 'EMPTY_TYPE', 'HTML_TYPE
 
 /** This mapping contains all autofill predictions to corresponding autocomplete attributes. Autofill predictions are found at https://source.chromium.org/chromium/chromium/src/+/master:components/autofill/core/browser/field_types.h;l=34*/
 const predictionTypesToTokens = {
-  'NO_SERVER_DATA': UIStrings.manualReview,
-  'UNKNOWN_TYPE': UIStrings.manualReview,
-  'EMPTY_TYPE': UIStrings.manualReview,
+  'NO_SERVER_DATA': str_(UIStrings.manualReview),
+  'UNKNOWN_TYPE': str_(UIStrings.manualReview),
+  'EMPTY_TYPE': str_(UIStrings.manualReview),
   'NAME_FIRST': 'given-name',
   'NAME_MIDDLE': 'additional-name',
   'NAME_LAST': 'family-name',
@@ -130,7 +130,7 @@ const predictionTypesToTokens = {
   'COMPANY_NAME': 'organization',
   'PASSWORD': 'current-password',
   'ACCOUNT_CREATION_PASSWORD': 'new-password',
-  'HTML_TYPE_UNSPECIFIED': UIStrings.manualReview,
+  'HTML_TYPE_UNSPECIFIED': str_(UIStrings.manualReview),
   'HTML_TYPE_NAME': 'name',
   'HTML_TYPE_HONORIFIC_PREFIX': 'honorific-prefix',
   'HTML_TYPE_GIVEN_NAME': 'given-name',
@@ -171,9 +171,9 @@ const predictionTypesToTokens = {
   'HTML_TYPE_CREDIT_CARD_EXP_DATE_4_DIGIT_YEAR': 'cc-exp-year',
   'HTML_TYPE_CREDIT_CARD_EXP_2_DIGIT_YEAR': 'cc-exp-year',
   'HTML_TYPE_CREDIT_CARD_EXP_4_DIGIT_YEAR': 'cc-exp-year',
-  'HTML_TYPE_UPI_VPA': UIStrings.manualReview,
+  'HTML_TYPE_UPI_VPA': str_(UIStrings.manualReview),
   'HTML_TYPE_ONE_TIME_CODE': 'one-time-code',
-  'HTML_TYPE_UNRECOGNIZED': UIStrings.manualReview,
+  'HTML_TYPE_UNRECOGNIZED': str_(UIStrings.manualReview),
   'HTML_TYPE_TRANSACTION_AMOUNT': 'transaction-amount',
   'HTML_TYPE_TRANSACTION_CURRENCY': 'transaction-currency',
 };
