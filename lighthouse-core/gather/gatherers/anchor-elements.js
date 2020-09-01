@@ -39,11 +39,10 @@ function collectAnchorElements() {
   /** @type {Array<HTMLAnchorElement|SVGAElement>} */
   // @ts-expect-error - put into scope via stringification
   const anchorElements = getElementsInDocument('a'); // eslint-disable-line no-undef
-  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
-  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
+
   return anchorElements.map(node => {
     // @ts-expect-error - put into scope via stringification
-    const outerHTML = getOuterHTMLSnippet(node, snippetIgnoreAttrs); // eslint-disable-line no-undef
+    const outerHTML = getOuterHTMLSnippet(node); // eslint-disable-line no-undef
     // @ts-expect-error - put into scope via stringification
     const nodePath = getNodePath(node); // eslint-disable-line no-undef
     // @ts-expect-error - getNodeSelector put into scope via stringification
