@@ -24,8 +24,6 @@ function collectFormElements() {
     inputs: [],
     labels: [],
   };
-  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
-  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
   for (const child of formChildren) {
     const isButton = child instanceof HTMLInputElement &&
       (child.type === 'submit' || child.type === 'button');
@@ -42,7 +40,7 @@ function collectFormElements() {
           // @ts-expect-error - put into scope via stringification
           nodeLabel: getNodeLabel(parentFormElement), // eslint-disable-line no-undef,
           // @ts-expect-error - put into scope via stringification
-          snippet: getOuterHTMLSnippet(parentFormElement, snippetIgnoreAttrs), // eslint-disable-line no-undef
+          snippet: getOuterHTMLSnippet(parentFormElement), // eslint-disable-line no-undef
         },
         inputs: [],
         labels: [],
@@ -65,7 +63,7 @@ function collectFormElements() {
         // @ts-expect-error - put into scope via stringification
         nodeLabel: getNodeLabel(child), // eslint-disable-line no-undef,
         // @ts-expect-error - put into scope via stringification
-        snippet: getOuterHTMLSnippet(child, snippetIgnoreAttrs), // eslint-disable-line no-undef
+        snippet: getOuterHTMLSnippet(child), // eslint-disable-line no-undef
       });
     }
     if (child instanceof HTMLLabelElement) {
