@@ -55,8 +55,7 @@ function runA11yChecks() {
     // axe just scrolled the page, scroll back to the top of the page so that element positions
     // are relative to the top of the page
     document.documentElement.scrollTop = 0;
-    /** Ignores the autofill information that is injected into the snippet via a chrome flag */
-    const snippetIgnoreAttrs = [];
+
     // @ts-expect-error
     const augmentAxeNodes = result => {
       // @ts-expect-error
@@ -64,8 +63,7 @@ function runA11yChecks() {
         // @ts-expect-error - getNodePath put into scope via stringification
         node.path = getNodePath(node.element);
         // @ts-expect-error - getOuterHTMLSnippet put into scope via stringification
-        node.snippet = getOuterHTMLSnippet(node.element, snippetIgnoreAttrs
-          .push('autofill-information', 'autofill-prediction', 'title'));
+        node.snippet = getOuterHTMLSnippet(node.element);
         // @ts-expect-error - getBoundingClientRect put into scope via stringification
         const rect = getBoundingClientRect(node.element);
         if (rect.width > 0 && rect.height > 0) {

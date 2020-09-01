@@ -121,19 +121,17 @@ function getDOMStats(element, deep = true) {
 
   const result = _calcDOMWidthAndHeight(element);
 
-  /** Ignores the autofill information that is injected into the snippet via a chrome flag and style tag*/
-  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title', 'style'];
   return {
     depth: {
       max: result.maxDepth,
       pathToElement: elementPathInDOM(deepestElement),
       // ignore style since it will provide no additional context, and is often long
-      snippet: getOuterHTMLSnippet(deepestElement, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(deepestElement, ['style']),
     },
     width: {
       max: result.maxWidth,
       pathToElement: elementPathInDOM(parentWithMostChildren),
-      snippet: getOuterHTMLSnippet(parentWithMostChildren, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(parentWithMostChildren, ['style']),
     },
     totalBodyElements: result.numElements,
   };

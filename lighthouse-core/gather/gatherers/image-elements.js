@@ -15,6 +15,7 @@ const Driver = require('../driver.js'); // eslint-disable-line no-unused-vars
 
 /* global window, getElementsInDocument, Image, getNodePath, getNodeSelector, getNodeLabel, getOuterHTMLSnippet */
 
+
 /** @param {Element} element */
 /* istanbul ignore next */
 function getClientRect(element) {
@@ -37,9 +38,6 @@ function getHTMLImages(allElements) {
   const allImageElements = /** @type {Array<HTMLImageElement>} */ (allElements.filter(element => {
     return element.localName === 'img';
   }));
-
-  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
-  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
 
   return allImageElements.map(element => {
     const computedStyle = window.getComputedStyle(element);
@@ -75,7 +73,7 @@ function getHTMLImages(allElements) {
       // @ts-ignore - put into scope via stringification
       nodeLabel: getNodeLabel(element),
       // @ts-ignore - put into scope via stringification
-      snippet: getOuterHTMLSnippet(element, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(element),
     };
   });
 }
@@ -92,9 +90,6 @@ function getCSSImages(allElements) {
 
   /** @type {Array<LH.Artifacts.ImageElement>} */
   const images = [];
-
-  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
-  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
 
   for (const element of allElements) {
     const style = window.getComputedStyle(element);
@@ -131,7 +126,7 @@ function getCSSImages(allElements) {
       // @ts-ignore - put into scope via stringification
       nodeLabel: getNodeLabel(element),
       // @ts-ignore - put into scope via stringification
-      snippet: getOuterHTMLSnippet(element, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(element),
     });
   }
 
