@@ -16,8 +16,6 @@ const pageFunctions = require('../../../lib/page-functions.js');
  */
 /* istanbul ignore next */
 function findPasswordInputsWithPreventedPaste() {
-  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
-  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
   return Array.from(document.querySelectorAll('input[type="password"]'))
     .filter(passwordInput =>
       !passwordInput.dispatchEvent(
@@ -26,7 +24,7 @@ function findPasswordInputsWithPreventedPaste() {
     )
     .map(passwordInput => ({
       // @ts-expect-error - getOuterHTMLSnippet put into scope via stringification
-      snippet: getOuterHTMLSnippet(passwordInput, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(passwordInput),
     }));
 }
 

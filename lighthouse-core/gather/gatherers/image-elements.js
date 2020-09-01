@@ -15,8 +15,6 @@ const Driver = require('../driver.js'); // eslint-disable-line no-unused-vars
 
 /* global window, getElementsInDocument, Image, getNodePath, getNodeSelector, getNodeLabel, getOuterHTMLSnippet */
 
-/** Ignores the autofill information that is injected into the snippet via a chrome flag */
-const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
 
 /** @param {Element} element */
 /* istanbul ignore next */
@@ -75,7 +73,7 @@ function getHTMLImages(allElements) {
       // @ts-ignore - put into scope via stringification
       nodeLabel: getNodeLabel(element),
       // @ts-ignore - put into scope via stringification
-      snippet: getOuterHTMLSnippet(element, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(element),
     };
   });
 }
@@ -128,7 +126,7 @@ function getCSSImages(allElements) {
       // @ts-ignore - put into scope via stringification
       nodeLabel: getNodeLabel(element),
       // @ts-ignore - put into scope via stringification
-      snippet: getOuterHTMLSnippet(element, snippetIgnoreAttrs),
+      snippet: getOuterHTMLSnippet(element),
     });
   }
 
