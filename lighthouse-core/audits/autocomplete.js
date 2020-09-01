@@ -230,8 +230,8 @@ class AutocompleteAudit extends Audit {
     let foundPrediction = false;
     for (const form of forms) {
       for (const input of form.inputs) {
-        const autocomplete = this.checkAttributeValidity(input);
-        if (autocomplete.hasValidTokens && autocomplete.isValidOrder) continue;
+        const validity = this.checkAttributeValidity(input);
+        if (validity.hasValidTokens && validity.isValidOrder) continue;
         if (!input.autocomplete.prediction) continue;
         if (noPrediction.includes(input.autocomplete.prediction) &&
           !input.autocomplete.attribute) continue;
@@ -247,14 +247,14 @@ class AutocompleteAudit extends Audit {
           warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
             snippet: input.snippet}));
         }
-        if (autocomplete.isValidOrder === false) {
+        if (validity.isValidOrder === false) {
           warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
             snippet: input.snippet}));
           suggestion = UIStrings.reviewOrder;
         }
         // If the autofill prediction is not in our autofill suggestion mapping, then we want to create a warning
         if (!(input.autocomplete.prediction in predictionTypesToTokens) &&
-          autocomplete.isValidOrder) {
+            validity.isValidOrder) {
           log.warn(`Autocomplete prediction (${input.autocomplete.prediction})
              not found in our mapping`);
           continue;
