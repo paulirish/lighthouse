@@ -69,6 +69,7 @@ describe('Best Practices: autocomplete audit', () => {
     expect(score).toBe(0);
     expect(details.items).toStrictEqual(expectedItems);
   });
+
   it('fails when an there is an invalid autocomplete attribute set', () => {
     const artifacts = {
       FormElements: [
@@ -127,6 +128,7 @@ describe('Best Practices: autocomplete audit', () => {
     expect(score).toBe(0);
     expect(details.items).toStrictEqual(expectedItems);
   });
+
   it('passes when an there is a valid autocomplete attribute set', () => {
     const artifacts = {
       FormElements: [
@@ -178,6 +180,7 @@ describe('Best Practices: autocomplete audit', () => {
     const {score} = Autocomplete.audit(artifacts);
     expect(score).toBe(1);
   });
+
   it('not applicable when an there is no autofill prediction and no attribute set', () => {
     const artifacts = {
       FormElements: [
@@ -215,6 +218,7 @@ describe('Best Practices: autocomplete audit', () => {
     const {notApplicable} = Autocomplete.audit(artifacts);
     expect(notApplicable).toBe(true);
   });
+
   it('fails when autocomplete is valid but prefix is invalid', () => {
     const artifacts = {
       FormElements: [
@@ -253,6 +257,7 @@ describe('Best Practices: autocomplete audit', () => {
     const {score} = Autocomplete.audit(artifacts);
     expect(score).toBe(0);
   });
+
   it('fails when autocomplete prefix is valid but out of order', () => {
     const artifacts = {
       FormElements: [
@@ -314,6 +319,49 @@ describe('Best Practices: autocomplete audit', () => {
     const {score, details} = Autocomplete.audit(artifacts);
     expect(score).toBe(0);
     expect(details.items).toStrictEqual(expectedItems);
+  });
+
+  it('creates a warning when there is an invalid attribute set', () => {
+    const artifacts = {
+      FormElements: [
+        {
+          inputs: [
+            {
+              id: '',
+              name: 'name_cc',
+              placeholder: '',
+              autocomplete: {
+                property: '',
+                attribute: 'namez',
+                prediction: 'UNKNOWN_TYPE',
+              },
+              nodeLabel: 'input',
+              snippet: '<input type="text" name="name_cc" autocomplete="namez">',
+            },
+            {
+              id: '',
+              name: 'CCNo',
+              placeholder: '',
+              autocomplete: {
+                property: '',
+                attribute: 'ccc-num',
+                prediction: 'HTML_TYPE_CREDIT_CARD_NUMBER',
+              },
+              nodeLabel: 'input',
+              snippet: '<input type="text" name="CCNo" autocomplete="ccc-num">',
+            },
+          ],
+          labels: [],
+        },
+      ],
+    };
+    const expectedWarnings = [
+      'lighthouse-core/audits/autocomplete.js | warningInvalid # 0',
+      'lighthouse-core/audits/autocomplete.js | warningInvalid # 1',
+    ]
+  ;
+    const {warnings} = Autocomplete.audit(artifacts);
+    expect(warnings).toStrictEqual(expectedWarnings);
   });
 });
 
