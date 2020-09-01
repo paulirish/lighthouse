@@ -262,9 +262,11 @@ describe('Best Practices: autocomplete audit', () => {
               id: '',
               name: 'name_cc2',
               placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'shipping section-red cc-name',
-              autofillPredict: 'HTML_TYPE_CREDIT_CARD_NAME_FULL',
+              autocomplete: {
+                property: '',
+                attribute: 'shipping section-red cc-name',
+                prediction: 'HTML_TYPE_CREDIT_CARD_NAME_FULL',
+              },
               nodeLabel: 'textarea',
               // eslint-disable-next-line max-len
               snippet: '<textarea type="text" name="name_cc2" autocomplete="shipping section-red cc-name">',
@@ -273,64 +275,45 @@ describe('Best Practices: autocomplete audit', () => {
               id: '',
               name: 'CCNo2',
               placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'shipping section-red  mobile tel',
-              autofillPredict: 'HTML_TYPE_TEL',
+              autocomplete: {
+                property: '',
+                attribute: 'shipping section-red mobile tel',
+                prediction: 'HTML_TYPE_TEL',
+              },
               nodeLabel: 'input',
               // eslint-disable-next-line max-len
-              snippet: '<input type="text" name="CCNo2" autocomplete="shipping section-red  mobile tel">',
+              snippet: '<input type="text" name="CCNo2" autocomplete="shipping section-red mobile tel">',
             },
           ],
           labels: [],
         },
       ],
     };
-    const expectedDetails = {
-      headings: [
-        {
-          itemType: 'node',
-          key: 'node',
-          text: 'lighthouse-core/lib/i18n/i18n.js | columnFailingElem # 0',
+    const expectedItems = [
+      {
+        current: 'shipping section-red cc-name',
+        node: {
+          nodeLabel: 'textarea',
+          // eslint-disable-next-line max-len
+          snippet: '<textarea type="text" name="name_cc2" autocomplete="shipping section-red cc-name">',
+          type: 'node',
         },
-        {
-          itemType: 'text',
-          key: 'suggestion',
-          text: 'lighthouse-core/audits/autocomplete.js | columnAutocompleteSuggestions # 0',
+        suggestion: 'Review order of tokens',
+      },
+      {
+        current: 'shipping section-red mobile tel',
+        node: {
+          nodeLabel: 'input',
+          // eslint-disable-next-line max-len
+          snippet: '<input type="text" name="CCNo2" autocomplete="shipping section-red mobile tel">',
+          type: 'node',
         },
-        {
-          itemType: 'text',
-          key: 'prefix',
-          text: 'lighthouse-core/audits/autocomplete.js | columnAutocompletePrefixSuggestion # 0',
-        },
-      ],
-      items: [
-        {
-          node: {
-            nodeLabel: 'textarea',
-            // eslint-disable-next-line max-len
-            snippet: '<textarea type="text" name="name_cc2" autocomplete="shipping section-red cc-name">',
-            type: 'node',
-          },
-          prefix: 'Review order of Autocomplete Tokens',
-          suggestion: 'cc-name',
-        },
-        {
-          node: {
-            nodeLabel: 'input',
-            // eslint-disable-next-line max-len
-            snippet: '<input type="text" name="CCNo2" autocomplete="shipping section-red  mobile tel">',
-            type: 'node',
-          },
-          prefix: 'Review: ',
-          suggestion: 'tel',
-        },
-      ],
-      summary: undefined,
-      type: 'table',
-    };
+        suggestion: 'Review order of tokens',
+      },
+    ];
     const {score, details} = Autocomplete.audit(artifacts);
     expect(score).toBe(0);
-    expect(details).toStrictEqual(expectedDetails);
+    expect(details.items).toStrictEqual(expectedItems);
   });
 });
 
