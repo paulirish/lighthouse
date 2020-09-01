@@ -197,17 +197,17 @@ class AutocompleteAudit extends Audit {
 
   /**
    * @param {LH.Artifacts.FormInput} input
-   * @return {{hasValidTokens: boolean, isValidOrder: boolean}}
+   * @return {{hasValidTokens: boolean, isValidOrder?: boolean}}
    */
   static checkAttributeValidity(input) {
-    if (!input.autocomplete.attribute) return {hasValidTokens: false, isValidOrder: true};
+    if (!input.autocomplete.attribute) return {hasValidTokens: false};
     const tokenArray = input.autocomplete.attribute.split(' ');
     for (const token of tokenArray) {
       // A `section-` prefix indicates a unique autofill scope.
       // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#:~:text=section-
       if (token.slice(0, 8) === 'section-') continue;
       if (validAutocompleteTokens.includes(token)) continue;
-      return {hasValidTokens: false, isValidOrder: true};
+      return {hasValidTokens: false};
     }
     // If all autocomplete tokens are valid but there is still no property attribute, then that means the tokens are out of order.
     // https://cloudfour.com/thinks/autofill-what-web-devs-should-know-but-dont/#all-the-tokens
@@ -243,7 +243,7 @@ class AutocompleteAudit extends Audit {
           warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
             snippet: input.snippet}));
         }
-        if (!autocomplete.isValidOrder) {
+        if (autocomplete.isValidOrder === false) {
           warnings.push(str_(UIStrings.warningOrder, {tokens: input.autocomplete.attribute,
             snippet: input.snippet}));
           suggestion = 'Review order of tokens';

@@ -540,10 +540,7 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
       snippet: '',
     };
     const output = Autocomplete.checkAttributeValidity(input);
-    const expectedOutput = {
-      hasValidTokens: false,
-      isValidOrder: true,
-    };
+    const expectedOutput = {hasValidTokens: false};
     expect(output).toStrictEqual(expectedOutput);
   });
 });
