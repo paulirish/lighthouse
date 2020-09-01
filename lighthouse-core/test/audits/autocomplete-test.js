@@ -581,4 +581,43 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
     const expectedOutput = {hasValidTokens: true, isValidOrder: true};
     expect(output).toStrictEqual(expectedOutput);
   });
+
+  it(`returns true for hasValidTokens and false for isValidOrder
+      when tokens are valid but out of order`, () => {
+    /** @type {LH.Artifacts.FormInput} */
+    const input = {
+      id: '',
+      name: '',
+      placeholder: '',
+      autocomplete: {
+        property: '',
+        attribute: 'mobile shipping tel',
+        prediction: '',
+      },
+      nodeLabel: '',
+      snippet: '',
+    };
+    const output = Autocomplete.checkAttributeValidity(input);
+    const expectedOutput = {hasValidTokens: true, isValidOrder: false};
+    expect(output).toStrictEqual(expectedOutput);
+  });
+
+  it('returns false for invalid tokens', () => {
+    /** @type {LH.Artifacts.FormInput} */
+    const input = {
+      id: '',
+      name: '',
+      placeholder: '',
+      autocomplete: {
+        property: '',
+        attribute: 'invalid-token',
+        prediction: '',
+      },
+      nodeLabel: '',
+      snippet: '',
+    };
+    const output = Autocomplete.checkAttributeValidity(input);
+    const expectedOutput = {hasValidTokens: false};
+    expect(output).toStrictEqual(expectedOutput);
+  });
 });
