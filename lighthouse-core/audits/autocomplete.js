@@ -42,9 +42,9 @@ const UIStrings = {
    * @example {<autocomplete="mobile section-red cc-name">} snippet
    */
   warningOrder: 'Review order of tokens: "{tokens}" in {snippet}',
-  /* Entry for under the Autocomplete Suggested Token Column that tells users to review the ordering of their tokens if they are valid. */
+  /** Entry for under the Autocomplete Suggested Token Column that tells users to review the ordering of their tokens if they are valid. */
   reviewOrder: 'Review order of tokens',
-  /* Entry for under the Autocomplete Suggested Token Column that appears when we have no autocomplete suggestion. */
+  /** Entry for under the Autocomplete Suggested Token Column that appears when we have no autocomplete suggestion. */
   manualReview: 'Requires manual review.',
 };
 

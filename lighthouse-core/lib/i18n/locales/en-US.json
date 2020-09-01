@@ -395,6 +395,12 @@
   "lighthouse-core/audits/autocomplete.js | failureTitle": {
     "message": "Input elements do not have correct attributes for autocomplete"
   },
+  "lighthouse-core/audits/autocomplete.js | manualReview": {
+    "message": "Requires manual review."
+  },
+  "lighthouse-core/audits/autocomplete.js | reviewOrder": {
+    "message": "Review order of tokens"
+  },
   "lighthouse-core/audits/autocomplete.js | title": {
     "message": "Input elements use autocomplete"
   },

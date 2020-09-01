@@ -395,6 +395,12 @@
   "lighthouse-core/audits/autocomplete.js | failureTitle": {
     "message": "Îńp̂út̂ él̂ém̂én̂t́ŝ d́ô ńôt́ ĥáv̂é ĉór̂ŕêćt̂ át̂t́r̂íb̂út̂éŝ f́ôŕ âút̂óĉóm̂ṕl̂ét̂é"
   },
+  "lighthouse-core/audits/autocomplete.js | manualReview": {
+    "message": "R̂éq̂úîŕêś m̂án̂úâĺ r̂év̂íêẃ."
+  },
+  "lighthouse-core/audits/autocomplete.js | reviewOrder": {
+    "message": "R̂év̂íêẃ ôŕd̂ér̂ óf̂ t́ôḱêńŝ"
+  },
   "lighthouse-core/audits/autocomplete.js | title": {
     "message": "Îńp̂út̂ él̂ém̂én̂t́ŝ úŝé âút̂óĉóm̂ṕl̂ét̂é"
   },
