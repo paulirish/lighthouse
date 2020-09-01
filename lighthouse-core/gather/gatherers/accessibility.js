@@ -20,6 +20,8 @@ const pageFunctions = require('../../lib/page-functions.js');
  */
 /* istanbul ignore next */
 function runA11yChecks() {
+  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
+  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
   // @ts-expect-error axe defined by axeLibSource
   return window.axe.run(document, {
     elementRef: true,
@@ -63,7 +65,7 @@ function runA11yChecks() {
         // @ts-expect-error - getNodePath put into scope via stringification
         node.path = getNodePath(node.element);
         // @ts-expect-error - getOuterHTMLSnippet put into scope via stringification
-        node.snippet = getOuterHTMLSnippet(node.element);
+        node.snippet = getOuterHTMLSnippet(node.element, snippetIgnoreAttrs);
         // @ts-expect-error - getBoundingClientRect put into scope via stringification
         const rect = getBoundingClientRect(node.element);
         if (rect.width > 0 && rect.height > 0) {
