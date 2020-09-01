@@ -319,7 +319,6 @@ describe('Best Practices: autocomplete audit', () => {
 
 describe('Autocomplete Audit: Check Attribute Validity', () => {
   it('returns false if the attribute is empty', () => {
-    /** @type {LH.Artifacts.FormInput} */
     const input = {
       id: '',
       name: '',
@@ -338,7 +337,6 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
   });
 
   it('returns true if attribute has optional "section=" token', () => {
-    /** @type {LH.Artifacts.FormInput} */
     const input = {
       id: '',
       name: '',
@@ -357,7 +355,6 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
   });
 
   it('returns true if all tokens are valid and in order', () => {
-    /** @type {LH.Artifacts.FormInput} */
     const input = {
       id: '',
       name: '',
@@ -377,7 +374,6 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
 
   it(`returns true for hasValidTokens and false for isValidOrder
       when tokens are valid but out of order`, () => {
-    /** @type {LH.Artifacts.FormInput} */
     const input = {
       id: '',
       name: '',
@@ -396,7 +392,6 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
   });
 
   it('returns false for invalid tokens', () => {
-    /** @type {LH.Artifacts.FormInput} */
     const input = {
       id: '',
       name: '',
