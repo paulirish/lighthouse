@@ -8,7 +8,6 @@
 /* eslint-env jest */
 
 const Autocomplete = require('../../audits/autocomplete.js');
-const lhEnv = require('../../lib/lh-env.js');
 
 
 describe('Best Practices: autocomplete audit', () => {
