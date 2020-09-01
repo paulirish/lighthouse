@@ -223,7 +223,7 @@ class AutocompleteAudit extends Audit {
     const forms = artifacts.FormElements;
     const failingFormsData = [];
     const warnings = [];
-    let foundPrediction = true;
+    let foundPrediction = false;
     for (const form of forms) {
       for (const input of form.inputs) {
         const autocomplete = this.checkAttributeValidity(input);
@@ -232,12 +232,13 @@ class AutocompleteAudit extends Audit {
         if (noPrediction.includes(input.autocomplete.prediction) &&
           !input.autocomplete.attribute) continue;
 
-        foundPrediction = false;
+        foundPrediction = true;
 
         // @ts-ignore
         let suggestion = autofillSuggestions[input.autocomplete.prediction];
         // This is here to satisfy typescript because the possible null value of autocomplete.attribute is not compatible with Audit details.
         if (!input.autocomplete.attribute) input.autocomplete.attribute = '';
+        // Warning is created because while there is an autocomplete attribute, the autocomplete property does not exsist, thus the attribute's value is invalid.
         if (input.autocomplete.attribute) {
           warnings.push(str_(UIStrings.warningInvalid, {token: input.autocomplete.attribute,
             snippet: input.snippet}));
@@ -247,7 +248,7 @@ class AutocompleteAudit extends Audit {
             snippet: input.snippet}));
           suggestion = 'Review order of tokens';
         }
-        // If the autofill prediction is not in our autofill suggestion mapping, then it requires manual review
+        // If the autofill prediction is not in our autofill suggestion mapping, then we want to create a warning
         if (!(input.autocomplete.prediction in autofillSuggestions) &&
           autocomplete.isValidOrder) {
           log.warn(`Autocomplete prediction (${input.autocomplete.prediction})
@@ -280,7 +281,7 @@ class AutocompleteAudit extends Audit {
     }
     return {
       score: (failingFormsData.length > 0) ? 0 : 1,
-      notApplicable: foundPrediction,
+      notApplicable: !foundPrediction,
       displayValue,
       details,
       warnings,
