@@ -280,12 +280,15 @@ function gatherTapTargets() {
     }
   });
 
+  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
+  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
+
   for (const {tapTargetElement, visibleClientRects} of tapTargetsWithVisibleClientRects) {
     targets.push({
       clientRects: visibleClientRects,
       // @ts-expect-error - getBoundingClientRect put into scope via stringification
       boundingRect: getBoundingClientRect(tapTargetElement),
-      snippet: truncate(tapTargetElement.outerHTML, 300),
+      snippet: truncate(tapTargetElement.outerHTML, snippetIgnoreAttrs, 300),
       // @ts-expect-error - getNodePath put into scope via stringification
       path: getNodePath(tapTargetElement),
       // @ts-expect-error - getNodeSelector put into scope via stringification

@@ -26,6 +26,8 @@ const Sentry = require('../../lib/sentry.js');
 function getNodeDetailsData() {
   const elem = this.nodeType === document.ELEMENT_NODE ? this : this.parentElement; // eslint-disable-line no-undef
   let traceElement;
+  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
+  const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
   if (elem) {
     traceElement = {
       // @ts-expect-error - put into scope via stringification
@@ -35,7 +37,7 @@ function getNodeDetailsData() {
       // @ts-expect-error - put into scope via stringification
       nodeLabel: getNodeLabel(elem), // eslint-disable-line no-undef
       // @ts-expect-error - put into scope via stringification
-      snippet: getOuterHTMLSnippet(elem), // eslint-disable-line no-undef
+      snippet: getOuterHTMLSnippet(elem, snippetIgnoreAttrs), // eslint-disable-line no-undef
       // @ts-expect-error - put into scope via stringification
       boundingRect: getBoundingClientRect(elem), // eslint-disable-line no-undef
     };

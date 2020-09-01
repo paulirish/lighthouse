@@ -24,6 +24,7 @@ function collectFormElements() {
     inputs: [],
     labels: [],
   };
+  /** Ignores the autofill information that is injected into the snippet via a chrome flag */
   const snippetIgnoreAttrs = ['autofill-information', 'autofill-prediction', 'title'];
   for (const child of formChildren) {
     const isButton = child instanceof HTMLInputElement &&
