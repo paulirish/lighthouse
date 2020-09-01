@@ -199,7 +199,7 @@ class AutocompleteAudit extends Audit {
    * @param {LH.Artifacts.FormInput} input
    * @return {{hasValidTokens: boolean, isValidOrder?: boolean}}
    */
-  static checkAttributeValidity(input) {
+  static validity(input) {
     if (!input.autocomplete.attribute) return {hasValidTokens: false};
     const tokenArray = input.autocomplete.attribute.split(' ');
     for (const token of tokenArray) {
@@ -226,7 +226,7 @@ class AutocompleteAudit extends Audit {
     let foundPrediction = false;
     for (const form of forms) {
       for (const input of form.inputs) {
-        const autocomplete = this.checkAttributeValidity(input);
+        const autocomplete = this.validity(input);
         if (autocomplete.hasValidTokens && autocomplete.isValidOrder) continue;
         if (!input.autocomplete.prediction) continue;
         if (noPrediction.includes(input.autocomplete.prediction) &&
