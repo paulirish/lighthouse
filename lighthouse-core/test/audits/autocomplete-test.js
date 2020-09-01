@@ -112,7 +112,7 @@ describe('Best Practices: autocomplete audit', () => {
           snippet: '<input type="text" name="name_cc" autocomplete="namez">',
           type: 'node',
         },
-        suggestion: 'Requires manual review.',
+        suggestion: 'lighthouse-core/audits/autocomplete.js | manualReview # 0',
       },
       {
         current: 'ccc-num',
