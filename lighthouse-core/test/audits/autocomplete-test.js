@@ -562,4 +562,23 @@ describe('Autocomplete Audit: Check Attribute Validity', () => {
     const expectedOutput = {hasValidTokens: true, isValidOrder: true};
     expect(output).toStrictEqual(expectedOutput);
   });
+
+  it('returns true if all tokens are valid and in order', () => {
+    /** @type {LH.Artifacts.FormInput} */
+    const input = {
+      id: '',
+      name: '',
+      placeholder: '',
+      autocomplete: {
+        property: 'shipping mobile tel',
+        attribute: 'shipping mobile tel',
+        prediction: '',
+      },
+      nodeLabel: '',
+      snippet: '',
+    };
+    const output = Autocomplete.checkAttributeValidity(input);
+    const expectedOutput = {hasValidTokens: true, isValidOrder: true};
+    expect(output).toStrictEqual(expectedOutput);
+  });
 });
