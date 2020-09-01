@@ -78,9 +78,11 @@ describe('Best Practices: autocomplete audit', () => {
               id: '',
               name: 'name_cc',
               placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'namez',
-              autofillPredict: 'UNKNOWN_TYPE',
+              autocomplete: {
+                property: '',
+                attribute: 'namez',
+                prediction: 'UNKNOWN_TYPE',
+              },
               nodeLabel: 'input',
               snippet: '<input type="text" name="name_cc" autocomplete="namez">',
             },
@@ -88,116 +90,42 @@ describe('Best Practices: autocomplete audit', () => {
               id: '',
               name: 'CCNo',
               placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'ccc-num',
-              autofillPredict: 'HTML_TYPE_CREDIT_CARD_NUMBER',
+              autocomplete: {
+                property: '',
+                attribute: 'ccc-num',
+                prediction: 'HTML_TYPE_CREDIT_CARD_NUMBER',
+              },
               nodeLabel: 'input',
               snippet: '<input type="text" name="CCNo" autocomplete="ccc-num">',
-            },
-            {
-              id: '',
-              name: 'CCExpiresMonth',
-              autocompleteProp: '',
-              autocompleteAttr: 'ccc-exp',
-              autofillPredict: 'HTML_TYPE_CREDIT_CARD_EXP_MONTH',
-              nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
-              snippet: '<select name="CCExpiresMonth" autocomplete="ccc-exp">',
-            },
-            {
-              id: '',
-              name: 'CCExpiresYear',
-              autocompleteProp: '',
-              autocompleteAttr: 'none',
-              autofillPredict: 'HTML_TYPE_CREDIT_CARD_EXP_YEAR',
-              nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
-              snippet: '<select name="CCExpiresYear" autocomplete="none">',
-            },
-            {
-              id: '',
-              name: 'cvc',
-              placeholder: '',
-              autocompleteProp: '',
-              autocompleteAttr: 'cc-cvc',
-              autofillPredict: 'HTML_TYPE_CREDIT_CARD_VERIFICATION_CODE',
-              nodeLabel: 'input',
-              snippet: '<input name="cvc" autocomplete="cc-cvc">',
             },
           ],
           labels: [],
         },
       ],
     };
-    const expectedDetails = {
-      headings: [
-        {
-          itemType: 'node',
-          key: 'node',
-          text: 'lighthouse-core/lib/i18n/i18n.js | columnFailingElem # 0',
+    const expectedItems = [
+      {
+        current: 'namez',
+        node: {
+          nodeLabel: 'input',
+          snippet: '<input type="text" name="name_cc" autocomplete="namez">',
+          type: 'node',
         },
-        {
-          itemType: 'text',
-          key: 'suggestion',
-          text: 'lighthouse-core/audits/autocomplete.js | columnAutocompleteSuggestions # 0',
+        suggestion: 'Requires manual review.',
+      },
+      {
+        current: 'ccc-num',
+        node: {
+          nodeLabel: 'input',
+          snippet: '<input type="text" name="CCNo" autocomplete="ccc-num">',
+          type: 'node',
         },
-        {
-          itemType: 'text',
-          key: 'prefix',
-          text: 'lighthouse-core/audits/autocomplete.js | columnAutocompletePrefixSuggestion # 0',
-        },
-      ],
-      items: [
-        {
-          node: {
-            nodeLabel: 'input',
-            snippet: '<input type="text" name="name_cc" autocomplete="namez">',
-            type: 'node',
-          },
-          prefix: '',
-          suggestion: 'Requires manual review.',
-        },
-        {
-          node: {
-            nodeLabel: 'input',
-            snippet: '<input type="text" name="CCNo" autocomplete="ccc-num">',
-            type: 'node',
-          },
-          prefix: '',
-          suggestion: 'cc-number',
-        },
-        {
-          node: {
-            nodeLabel: 'MM\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12',
-            snippet: '<select name="CCExpiresMonth" autocomplete="ccc-exp">',
-            type: 'node',
-          },
-          prefix: '',
-          suggestion: 'cc-exp-month',
-        },
-        {
-          node: {
-            nodeLabel: 'YY\n2019\n2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029',
-            snippet: '<select name="CCExpiresYear" autocomplete="none">',
-            type: 'node',
-          },
-          prefix: '',
-          suggestion: 'cc-exp-year',
-        },
-        {
-          node: {
-            nodeLabel: 'input',
-            snippet: '<input name="cvc" autocomplete="cc-cvc">',
-            type: 'node',
-          },
-          prefix: '',
-          suggestion: 'cc-csc',
-        },
-      ],
-      summary: undefined,
-      type: 'table',
-    };
+        suggestion: 'cc-number',
+      },
+    ];
     const {score, details} = Autocomplete.audit(artifacts);
     expect(score).toBe(0);
-    expect(details).toStrictEqual(expectedDetails);
+    expect(details.items).toStrictEqual(expectedItems);
   });
   it('passes when an there is a valid autocomplete attribute set', () => {
     const artifacts = {
