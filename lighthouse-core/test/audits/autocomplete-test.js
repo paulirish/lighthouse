@@ -410,7 +410,7 @@ describe('Best Practices: autocomplete audit', () => {
   });
 });
 
-describe('Autocomplete Audit: Validity', () => {
+describe('Autocomplete Audit: Check Attribute Validity', () => {
   it('returns false if the attribute is empty', () => {
     const input = {
       id: '',
@@ -424,7 +424,7 @@ describe('Autocomplete Audit: Validity', () => {
       nodeLabel: '',
       snippet: '',
     };
-    const output = Autocomplete.validity(input);
+    const output = Autocomplete.checkAttributeValidity(input);
     const expectedOutput = {hasValidTokens: false};
     expect(output).toStrictEqual(expectedOutput);
   });
@@ -442,7 +442,7 @@ describe('Autocomplete Audit: Validity', () => {
       nodeLabel: '',
       snippet: '',
     };
-    const output = Autocomplete.validity(input);
+    const output = Autocomplete.checkAttributeValidity(input);
     const expectedOutput = {hasValidTokens: true, isValidOrder: true};
     expect(output).toStrictEqual(expectedOutput);
   });
@@ -460,7 +460,7 @@ describe('Autocomplete Audit: Validity', () => {
       nodeLabel: '',
       snippet: '',
     };
-    const output = Autocomplete.validity(input);
+    const output = Autocomplete.checkAttributeValidity(input);
     const expectedOutput = {hasValidTokens: true, isValidOrder: true};
     expect(output).toStrictEqual(expectedOutput);
   });
@@ -479,7 +479,7 @@ describe('Autocomplete Audit: Validity', () => {
       nodeLabel: '',
       snippet: '',
     };
-    const output = Autocomplete.validity(input);
+    const output = Autocomplete.checkAttributeValidity(input);
     const expectedOutput = {hasValidTokens: true, isValidOrder: false};
     expect(output).toStrictEqual(expectedOutput);
   });
@@ -497,7 +497,7 @@ describe('Autocomplete Audit: Validity', () => {
       nodeLabel: '',
       snippet: '',
     };
-    const output = Autocomplete.validity(input);
+    const output = Autocomplete.checkAttributeValidity(input);
     const expectedOutput = {hasValidTokens: false};
     expect(output).toStrictEqual(expectedOutput);
   });
