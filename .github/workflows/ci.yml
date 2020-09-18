@@ -1,7 +1,6 @@
 name: 💡🏠
 
 on:
-  push:
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
