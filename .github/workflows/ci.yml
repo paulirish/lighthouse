@@ -17,6 +17,8 @@ jobs:
     - name: git clone
       uses: actions/checkout@v2
 
+    - run: cat $GITHUB_EVENT_PATH
+    
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
