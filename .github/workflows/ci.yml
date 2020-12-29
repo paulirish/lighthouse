@@ -23,6 +23,8 @@ jobs:
         GITHUB_CONTEXT_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         GITHUB_CONTEXT_BASE_SHA: ${{ github.event.before }}
 
+    - run: cat $GITHUB_EVENT_PATH
+    
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
