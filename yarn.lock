@@ -170,10 +170,10 @@
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.3.1.tgz#df4e79c38f759e606a421e866cecb7da4577b606"
   integrity sha512-DjdBY3dC6w7bIcTiGjBm2wNbWml3HA5JdIwOntrhRkmxSGWMxdkd4PxPFqAj3OES47PAUjcU/4lKW6/TJYB18g==
 
-"@firebase/auth-types@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@firebase/auth-types/-/auth-types-0.3.2.tgz#fc636084eb82cb098e4e76efc5fffd315e22abdd"
-  integrity sha512-u3Xbe9l90NDCdjb3G4O/oczKf6Q8bJe4rcRMCPva+Rr1dbjhTaYwHhtVYUqY3c64TPwcYT0+ahCEYmwfDmfsZA==
+"@firebase/auth-types@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@firebase/auth-types/-/auth-types-0.10.2.tgz#3fad953380c447b7545122430a4c7a9bc8355001"
+  integrity sha512-0GMWVWh5TBCYIQfVerxzDsuvhoFpK0++O9LtP3FWkwYo7EAxp6w0cftAg/8ntU1E5Wg56Ry0b6ti/YGP6g0jlg==
 
 "@firebase/util@0.2.1":
   version "0.2.1"
