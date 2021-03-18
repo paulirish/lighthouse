@@ -168,7 +168,7 @@
     "intl-pluralrules": "^1.0.3",
     "jpeg-js": "^0.4.1",
     "js-library-detector": "^6.4.0",
-    "jsonld": "^1.5.0",
+    "jsonld": "^5.0.0",
     "jsonlint-mod": "^1.7.5",
     "lighthouse-logger": "^1.2.0",
     "lighthouse-stack-packs": "^1.4.0",
