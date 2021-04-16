@@ -64,7 +64,7 @@ class TreemapViewer {
     this.viewModes = this.createViewModes();
     this.currentViewMode = this.viewModes[0];
 
-    renderViewModeButtons(this.viewModes);
+    this.renderViewModeButtons(this.viewModes);
     this.createHeader();
     this.render();
     this.initListeners();
@@ -213,18 +213,7 @@ class TreemapViewer {
     return viewModes;
   }
 
-  /**
-   * @param {LH.Treemap.ViewMode} viewMode
-   */
-  setViewMode(viewMode) {
-    this.currentViewMode = viewMode;
-    this.render();
-  }
-
   render() {
-    // todo remove
-    if (!this.currentTreemapRoot) { debugger; }
-
     TreemapUtil.walk(this.currentTreemapRoot, node => {
       // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
       // However, when we change the underlying data representation, we need to delete
@@ -319,37 +308,39 @@ class TreemapViewer {
       }
     });
   }
-}
 
-/**
- * @param {LH.Treemap.ViewMode[]} viewModes
- */
-function renderViewModeButtons(viewModes) {
   /**
-   * @param {LH.Treemap.ViewMode} viewMode
+   * @param {LH.Treemap.ViewMode[]} viewModes
    */
-  function render(viewMode) {
-    const viewModeEl = TreemapUtil.createChildOf(viewModesEl, 'div', 'view-mode');
-    viewModeEl.id = `view-mode--${viewMode.id}`;
+  renderViewModeButtons(viewModes) {
+    /**
+     * @param {LH.Treemap.ViewMode} viewMode
+     */
+    const render = (viewMode) => {
+      const viewModeEl = TreemapUtil.createChildOf(viewModesEl, 'div', 'view-mode');
+      viewModeEl.id = `view-mode--${viewMode.id}`;
 
-    const labelEl = TreemapUtil.createChildOf(viewModeEl, 'label');
-    TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__label').textContent = viewMode.label;
-    TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__sublabel lh-text-dim').textContent =
-      ` (${viewMode.subLabel})`;
+      const labelEl = TreemapUtil.createChildOf(viewModeEl, 'label');
+      TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__label').textContent = viewMode.label;
+      TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__sublabel lh-text-dim').textContent =
+        ` (${viewMode.subLabel})`;
 
-    const inputEl = TreemapUtil.createChildOf(labelEl, 'input', 'view-mode__button', {
-      type: 'radio',
-      name: 'view-mode',
-    });
+      const inputEl = TreemapUtil.createChildOf(labelEl, 'input', 'view-mode__button', {
+        type: 'radio',
+        name: 'view-mode',
+      });
 
-    inputEl.addEventListener('click', () => {
-      treemapViewer.setViewMode(viewMode);
-    });
+      const onclick = () => {
+        this.currentViewMode = viewMode;
+        this.render();
+      }
+      inputEl.addEventListener('click', () => onclick());
+    }
+
+    const viewModesEl = TreemapUtil.find('.lh-modes');
+    viewModesEl.innerHTML = '';
+    viewModes.forEach(render);
   }
-
-  const viewModesEl = TreemapUtil.find('.lh-modes');
-  viewModesEl.innerHTML = '';
-  viewModes.forEach(render);
 }
 
 /**

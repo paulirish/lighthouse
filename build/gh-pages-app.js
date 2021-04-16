@@ -156,10 +156,10 @@ class GhPagesApp {
       versionJs,
       ...this._resolveSourcesList(this.opts.javascripts),
     ];
-    return contents.join('\n');
+    if (process.env.DEBUG) return contents.join('\n');
 
     const options = {
-      output: {preamble: license, beautify: true}, // Insert license at top.
+      output: {preamble: license}, // Insert license at top.
     };
     const uglified = await terser.minify(contents, options);
     if (!uglified.code) {
