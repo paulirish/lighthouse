@@ -19,7 +19,7 @@ declare global {
 
     interface ViewMode {
       id: 'all' | 'unused-bytes';
-      selector?: Selector;
+      node?: Node;
       label: string;
       subLabel: string;
       partitionBy?: 'resourceBytes' | 'unusedBytes';

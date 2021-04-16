@@ -85,50 +85,38 @@ class TreemapViewer {
     const bundleSelectorEl = TreemapUtil.find('select.bundle-selector');
     bundleSelectorEl.innerHTML = ''; // Clear just in case document was saved with Ctrl+S.
 
-    /** @type {LH.Treemap.Selector[]} */
-    const selectors = [];
-
+    /** @type {WeakMap<HTMLOptionElement, LH.Treemap.Node>} */
+    const optionWeakMap = new WeakMap();
     /**
-     * @param {LH.Treemap.Selector} selector
+     * @param {LH.Treemap.Node} node
      * @param {string} text
      */
-    function makeOption(selector, text) {
-      if (!['depthOneNode', 'group'].includes(selector.type)) {
-        throw new Error('unexpected selector type ' + selector.type);
-      }
-
+    function makeOption(node, text) {
       const optionEl = TreemapUtil.createChildOf(bundleSelectorEl, 'option');
-      optionEl.value = String(selectors.length);
-      selectors.push(selector);
-      optionEl.innerText = text;
+      optionEl.textContent = text;
+      optionWeakMap.set(optionEl, node);
     }
 
-    function onChange() {
-      const index = Number(bundleSelectorEl.value);
-      const selector = selectors[index];
-      treemapViewer.setViewMode({
-        ...treemapViewer.currentViewMode,
-        selector,
-      });
+    const onChange = () => {
+      const option = bundleSelectorEl.selectedOptions[0];
+      const node = optionWeakMap.get(option);
+      if (!node) throw new Error('omggg');
+
+      this.currentTreemapRoot = node;
+      this.render();
     }
 
     for (const [group, depthOneNodes] of Object.entries(this.depthOneNodesByGroup)) {
-      makeOption({type: 'group', value: group}, `All ${group}`);
+      const rootNode = this.wrapNodesInNewRootNode(depthOneNodes);
+      makeOption(rootNode, `All ${group}`);
       for (const depthOneNode of depthOneNodes) {
         // Only add bundles.
         if (!depthOneNode.children) continue;
-
-        makeOption({type: 'depthOneNode', value: depthOneNode.name}, depthOneNode.name);
+        makeOption(depthOneNode, depthOneNode.name);
       }
     }
 
-    const currentSelectorIndex = selectors.findIndex(s => {
-      return this.currentViewMode.selector &&
-        s.type === this.currentViewMode.selector.type &&
-        s.value === this.currentViewMode.selector.value;
-    });
-    bundleSelectorEl.value = String(currentSelectorIndex !== -1 ? currentSelectorIndex : 0);
-    bundleSelectorEl.addEventListener('change', onChange);
+    bundleSelectorEl.addEventListener('change', _ => onChange());
   }
 
   initListeners() {
@@ -230,36 +218,13 @@ class TreemapViewer {
    */
   setViewMode(viewMode) {
     this.currentViewMode = viewMode;
-
-    const selector = this.currentViewMode.selector || {type: 'group', value: 'scripts'};
-
-    if (selector.type === 'group') {
-      this.currentTreemapRoot =
-        this.wrapNodesInNewRootNode(this.depthOneNodesByGroup[selector.value]);
-    } else if (selector.type === 'depthOneNode') {
-      let node;
-      outer: for (const depthOneNodes of Object.values(this.depthOneNodesByGroup)) {
-        for (const depthOneNode of depthOneNodes) {
-          if (depthOneNode.name === selector.value) {
-            node = depthOneNode;
-            break outer;
-          }
-        }
-      }
-
-      if (!node) {
-        throw new Error('unknown depthOneNode: ' + selector.value);
-      }
-
-      this.currentTreemapRoot = node;
-    } else {
-      throw new Error('unknown selector: ' + JSON.stringify(selector));
-    }
-
     this.render();
   }
 
   render() {
+    // todo remove
+    if (!this.currentTreemapRoot) { debugger; }
+
     TreemapUtil.walk(this.currentTreemapRoot, node => {
       // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
       // However, when we change the underlying data representation, we need to delete
@@ -378,10 +343,7 @@ function renderViewModeButtons(viewModes) {
     });
 
     inputEl.addEventListener('click', () => {
-      treemapViewer.setViewMode({
-        ...viewMode,
-        selector: treemapViewer.currentViewMode.selector,
-      });
+      treemapViewer.setViewMode(viewMode);
     });
   }
 
