@@ -1,0 +1,24 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: jsonld
+    versions:
+    - 3.3.0
+    - 3.3.2
+    - 4.0.1
+    - 5.0.0
+  - dependency-name: "@firebase/auth-types"
+    versions:
+    - 0.10.1
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
+  - dependency-name: chalk
+    versions:
+    - 4.1.0
