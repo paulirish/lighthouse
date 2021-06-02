@@ -187,7 +187,7 @@
     "speedline-core": "^1.4.3",
     "third-party-web": "^0.12.2",
     "update-notifier": "^4.1.0",
-    "ws": "3.3.2",
+    "ws": "6.2.2",
     "yargs": "^16.1.1",
     "yargs-parser": "^20.2.4"
   },
